@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# The rootfs skeleton is under svn control, which unfortunately means we
+# can't just copy it across: this is what we would like to do:
+#   cp -a skeleton/* "$1"
+# but we don't want the .svn directories.
+
+TARGET="$(cd "$1"; pwd)"
+
+cd skeleton
+find . -name .svn -prune -o -name . -o -type d -exec mkdir "$TARGET/"{} \;
+find . -name .svn -prune -o -type f -exec cp {} "$TARGET/"{} \;

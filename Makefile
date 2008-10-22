@@ -19,9 +19,8 @@ ifeq ($(shell id -u), 0)
 $(O)rootfs:
 	rm -rf $@
 	mkdir -p $@
-	cp -a skeleton/* $@
+	scripts/skeleton $@
 	scripts/populate $@ "$(BINUTILS_DIR)" "$(COMPILER_PREFIX)" 
-#	mkdir $@/dev && scripts/mkdevs.sh $@/dev
 	scripts/install-busybox $@ "$(BUSYBOX_DIR)"
 
 $(O)imagefile.cpio: $(O)rootfs
