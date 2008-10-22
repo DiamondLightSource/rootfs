@@ -1,0 +1,19 @@
+#!/bin/sh
+
+IMAGE_FILE="${1:?Image file}"
+KERNEL_IMAGE="${2:?Kernel image}"
+TARGET="${3:?Target file}"
+
+KERNEL_ADDR=a0001000
+IMAGE_ADDR=a2000000
+
+IMAGE_SIZE=$(stat -c %s "$IMAGE_FILE")
+IMAGE_NAME="$(basename "$IMAGE_FILE")"
+
+cat <<EOF >"$TARGET"
+echo 'Built: $(date)'
+tftpboot $KERNEL_ADDR $KERNEL_IMAGE
+tftpboot $IMAGE_ADDR $IMAGE_NAME
+setenv bootargs "\$bootargs root=/dev/ram initrd=0x$IMAGE_ADDR,$IMAGE_SIZE"
+bootm $KERNEL_ADDR
+EOF

@@ -1,0 +1,2 @@
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+serv0005:/home2/libera/nfs /mnt/nfs nfs nolock

@@ -1,0 +1,11 @@
+# Common paths
+
+BUILD_ROOT = /scratch/tmp/kernel
+ARCH = arm
+COMPILER_PREFIX = arm-diamond-linux-gnueabi
+
+BINUTILS_DIR = /dls_sw/work/common/x-tools/$(COMPILER_PREFIX)
+UBOOT_DIR = $(HOME)/tools/u-boot/u-boot/colibri/tools
+BUSYBOX_DIR = $(HOME)/tools/busybox/built
+
+FAKEROOT = /home/share/embedded/local/bin/fakeroot
