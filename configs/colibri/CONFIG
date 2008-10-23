@@ -1,0 +1,9 @@
+ARCH = arm
+COMPILER_PREFIX = arm-diamond-linux-gnueabi
+KERNEL_NAME = uImage-bare
+
+busybox_VERSION = 1.12.0
+busybox_CONFIG = $(configdir)/busybox-$(busybox_VERSION).config
+
+EXTRAS = busybox
+

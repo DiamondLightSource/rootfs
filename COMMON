@@ -1,0 +1,21 @@
+# Core environment makefile definitions.
+
+# Note that the build root must be an absolute path!
+BUILD_ROOT = $(TOP)/build/$(TARGET)
+SOURCE_ROOT = $(BUILD_ROOT)/src
+
+sysroot = $(BUILD_ROOT)/rootfs/
+
+BINUTILS_DIR = /dls_sw/work/common/x-tools/$(COMPILER_PREFIX)
+TAR_DIRS = /dls_sw/prod/common/sources /dls_sw/work/common/sources
+
+MKIMAGE = $(UBOOT_DIR)/mkimage
+
+
+include $(TOP)/CONFIG
+ifndef TARGET
+$(error Must specify TARGET)
+endif
+configdir = $(TOP)/configs/$(TARGET)
+include $(configdir)/CONFIG
+

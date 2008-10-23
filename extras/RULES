@@ -1,0 +1,21 @@
+# Build targets -- to be included at the end of the component make file
+
+
+$(srcdir):
+	mkdir -p $(SOURCE_ROOT) $(O)
+	$(TOP)/scripts/extract-tar \
+            "$(SOURCE_ROOT)" "$(TAR_FILE)" "$(MD5_SUM)" $(TAR_DIRS)
+
+untar: $(srcdir)
+
+config: untar
+
+build: config
+
+clean:
+	rm -rf $(O)
+
+clean-src: 
+	rm -rf $(srcdir)
+
+clean-all: clean clean-src

@@ -1,13 +1,10 @@
-include CONFIG
+# Set up sensible defaults before importing the configuration
 
-MKIMAGE = $(UBOOT_DIR)/mkimage
+TOP = $(CURDIR)
+include COMMON
 
-KERNEL_NAME = uImage-bare
+O = $(BUILD_ROOT)/
 
-
-
-# Note that this needs to be an absolute path!
-O = $(CURDIR)/built/
 
 default: deploy-boot-script
 
@@ -16,17 +13,19 @@ default: deploy-boot-script
 
 ifeq ($(shell id -u), 0)
 
-$(O)rootfs:
+$(sysroot):
 	rm -rf $@
 	mkdir -p $@
 	scripts/skeleton $@
 	scripts/populate $@ "$(BINUTILS_DIR)" "$(COMPILER_PREFIX)" 
-	scripts/install-busybox $@ "$(BUSYBOX_DIR)"
 
-$(O)imagefile.cpio: $(O)rootfs
+$(EXTRAS): $(sysroot)
+	make -C extras/$@ install
+
+$(O)imagefile.cpio: $(sysroot) $(EXTRAS)
 	cd $< && find . | cpio --quiet -H newc -o >$@
 
-.PHONY: $(O)rootfs
+.PHONY: $(sysroot)
 
 else
 
@@ -45,7 +44,7 @@ imagefile: $(O)imagefile.cpio
 # Assembles the final images and uploads them into the boot directory.
 
 $(O): 
-	mkdir $(O)
+	mkdir -p $(O)
 
 $(O)imagefile.cpio.gz: $(O)imagefile.cpio
 	gzip -c -1 $< >$@
@@ -56,20 +55,17 @@ $(O)boot-script: $(O)imagefile.cpio.gz
 $(O)boot-script.image: $(O)boot-script
 	$(MKIMAGE) -T script -d $< $@
 
-$(O)deploy-boot-script: $(O)boot-script.image $(O)imagefile.cpio.gz
+deploy-boot-script: $(O)boot-script.image $(O)imagefile.cpio.gz
 	for f in $^; do \
             scp $$f serv3:/tftpboot; \
         done
-	touch $@
-
-deploy-boot-script: $(O)deploy-boot-script
 
 .PHONY: deploy-boot-script
 
 # ----------------------------------------------------------------------------
 
-clean:
-	rm -rf built
+clean-all:
+	rm -rf build
 
 extras:
 	make -C extras

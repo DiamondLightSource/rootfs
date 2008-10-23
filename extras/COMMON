@@ -1,0 +1,31 @@
+include $(TOP)/COMMON
+
+COMPONENT = $(notdir $(CURDIR))
+
+srcdir = $(SOURCE_ROOT)/$(SOURCE_DIR_NAME)
+O = $(BUILD_ROOT)/$(COMPONENT)/
+
+MD5_SUM = $(MD5_SUM_$($(COMPONENT)_VERSION))
+
+CROSS_COMPILE = $(BINUTILS_DIR)/bin/$(COMPILER_PREFIX)-
+
+# AS      = $(CROSS_COMPILE)as
+# LD      = $(CROSS_COMPILE)ld
+# CC      = $(CROSS_COMPILE)gcc
+# AR      = $(CROSS_COMPILE)ar
+# NM      = $(CROSS_COMPILE)nm
+# STRIP   = $(CROSS_COMPILE)strip
+# OBJCOPY = $(CROSS_COMPILE)objcopy
+# OBJDUMP = $(CROSS_COMPILE)objdump
+# CPP     = $(CC) -E
+# 
+# 
+# CFLAGS += -Werror -Wall -Wextra -Wno-unused-parameter -Wno-trigraphs
+# CFLAGS += -std=gnu99 -O2
+# 
+# 
+# %.s: %.c
+# 	$(CC) $(CFLAGS) -S -o $@ $<
+
+
+default: build

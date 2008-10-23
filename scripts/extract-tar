@@ -1,0 +1,21 @@
+#!/bin/sh
+
+TARGET_DIR="${1:?}"
+TAR_FILE="${2:?}"
+MD5_SUM="${3:?}"
+shift 3
+
+find_and_extract()
+{
+    for dir; do
+        tar_path="$dir/$TAR_FILE"
+        [ -e "$tar_path" ]  && 
+        echo "$MD5_SUM  $tar_path" | md5sum -c  && 
+        tar xjf "$tar_path" -C "$TARGET_DIR"  && 
+        return
+    done
+    echo "Unable to find tar file $TAR_FILE"
+    return 1
+}
+
+find_and_extract "$@"
