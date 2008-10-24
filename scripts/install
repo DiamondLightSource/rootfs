@@ -1,0 +1,14 @@
+#!/bin/sh
+
+HERE="$(dirname "$0")"
+
+COMPILER_PREFIX="${1:?}"
+TARGET="${2:?}"
+shift 2
+
+
+. "$HERE"/functions
+
+for file; do
+    install_file "$file" "$TARGET"  ||  exit 1
+done

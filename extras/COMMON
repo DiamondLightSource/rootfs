@@ -1,13 +1,25 @@
 include $(TOP)/COMMON
 
 COMPONENT = $(notdir $(CURDIR))
+ifndef $(COMPONENT)_VERSION
+$(error Must specify $(COMPONENT)_VERSION)
+endif
+
+version = $($(COMPONENT)_VERSION)
+
+TAR_FILE = $(COMPONENT)-$(version).tar.bz2
+SOURCE_DIR_NAME = $(COMPONENT)-$(version)
 
 srcdir = $(SOURCE_ROOT)/$(SOURCE_DIR_NAME)
 O = $(BUILD_ROOT)/$(COMPONENT)/
 
-MD5_SUM = $(MD5_SUM_$($(COMPONENT)_VERSION))
+MD5_SUM = $(MD5_SUM_$(version))
 
-CROSS_COMPILE = $(BINUTILS_DIR)/bin/$(COMPILER_PREFIX)-
+# This can be overridden if path name hacking is needed after running untar.
+rename_source_dir = @:
+
+install = $(scripts)install '$(COMPILER_PREFIX)'
+
 
 # AS      = $(CROSS_COMPILE)as
 # LD      = $(CROSS_COMPILE)ld

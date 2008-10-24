@@ -1,0 +1,37 @@
+# Common functions to be shared among scripts.
+
+# The following environment variable should already be set before including
+# this file:
+#
+#   COMPILER_PREFIX     Compilation prefix
+
+STRIP="$COMPILER_PREFIX-strip"
+
+
+do_strip()
+{
+    chmod +w "$target"  &&
+    "$STRIP" "$target"
+}
+
+
+# Installs the file according to its type: the file is copied or linked, and
+# stripped if necessary.
+#
+#   process_file file target-dir
+#
+install_file()
+{
+    local target="$2/$(basename "$1")"
+    local link 
+    if link="$(readlink "$1")"; then
+        ln -s "$link" "$target"
+    else
+        cp "$1" "$target"  &&
+        case "$(file -i "$1")" in
+            *application/x-sharedlib*)  do_strip "$1" "$2" ;;
+            *application/x-executable*) do_strip "$1" "$2" ;;
+        esac  &&
+        chmod -w "$target"
+    fi
+}

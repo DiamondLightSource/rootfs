@@ -5,5 +5,7 @@ KERNEL_NAME = uImage-bare
 busybox_VERSION = 1.12.0
 busybox_CONFIG = $(configdir)/busybox-$(busybox_VERSION).config
 
-EXTRAS = busybox
+strace_VERSION = 4.5.17
+dropbear_VERSION = 0.51
 
+EXTRAS = busybox strace dropbear

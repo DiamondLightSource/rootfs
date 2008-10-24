@@ -16,8 +16,8 @@ ifeq ($(shell id -u), 0)
 $(sysroot):
 	rm -rf $@
 	mkdir -p $@
-	scripts/skeleton $@
-	scripts/populate $@ "$(BINUTILS_DIR)" "$(COMPILER_PREFIX)" 
+	$(scripts)skeleton $@
+	$(scripts)populate $@ '$(BINUTILS_DIR)' '$(COMPILER_PREFIX)' 
 
 $(EXTRAS): $(sysroot)
 	make -C extras/$@ install
@@ -50,7 +50,7 @@ $(O)imagefile.cpio.gz: $(O)imagefile.cpio
 	gzip -c -1 $< >$@
 
 $(O)boot-script: $(O)imagefile.cpio.gz
-	scripts/make-boot-script $< $(KERNEL_NAME) $@
+	$(scripts)make-boot-script $< $(KERNEL_NAME) '$(BOOTARGS)' $@
 
 $(O)boot-script.image: $(O)boot-script
 	$(MKIMAGE) -T script -d $< $@
@@ -68,4 +68,8 @@ clean-all:
 	rm -rf build
 
 extras:
-	make -C extras
+	for extra in $(EXTRAS); do \
+            make -C extras/$$extra; \
+        done
+
+.PHONY: extras

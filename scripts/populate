@@ -1,17 +1,15 @@
 #!/bin/sh
-
-#set -e
-#shopt -s nullglob
-
 # Simple populate script: simply populates from a hard-wired list.
+
+HERE="$(dirname "$0")"
 
 TARGET="${1:?}"
 BINUTILS_DIR="${2:?}"
-PREFIX="${3:?}"
+COMPILER_PREFIX="${3:?}"
 
+. "$HERE"/functions
 
-SYSROOT="$BINUTILS_DIR/$PREFIX/sys-root"
-STRIP="$BINUTILS_DIR/bin/$PREFIX-strip"
+SYSROOT="$BINUTILS_DIR/$COMPILER_PREFIX/sys-root"
 
 
 SKELETON='
@@ -23,13 +21,15 @@ LIB_FILES='
     ld
     ld-linux
     libc
+    libcrypt
     libgcc_s
     libm
     libpthread
     libresolv
     libnss_dns
     librt
-    libstdc++'
+    libstdc++
+    libutil'
 
 USR_LIB_FILES='
     libncurses'
@@ -46,33 +46,6 @@ create_skeleton()
 }
 
 
-do_strip()
-{
-    chmod +w "$target"  &&
-    "$STRIP" "$target"
-}
-
-
-# Processes the file according to its type: the file is copied or linked, and
-# stripped if necessary.
-#
-#   process_file file target-dir
-#
-process_file()
-{
-    local target="$2/$(basename "$1")"
-    local link 
-    if link="$(readlink "$1")"; then
-        ln -s "$link" "$target"
-    else
-        cp "$1" "$target"  &&
-        case "$(file -i "$1")" in
-            *application/x-sharedlib*)  do_strip "$1" "$2" ;;
-            *application/x-executable*) do_strip "$1" "$2" ;;
-        esac  &&
-        chmod -w "$target"
-    fi
-}
 
     
 # Copies list of files into specified target directory
@@ -84,14 +57,14 @@ populate()
     local dir="$1"
     local suffixes="$3"
     local prefix suffix file
-#    mkdir -p "$TARGET/$dir"
+
     for prefix in $2; do
         if [ -n "$suffixes" ]; then
             local found=0
             for suffix in $suffixes; do
                 for file in "$SYSROOT/$dir/$prefix"$suffix; do
                     if [ -e "$file" ]; then
-                        process_file $file "$TARGET"/$dir || return
+                        install_file $file "$TARGET"/$dir || return
                         found=1
                     fi
                 done
@@ -103,7 +76,7 @@ populate()
                 return 1
             fi
         else
-            process_file "$SYSROOT/$dir/$prefix" "$TARGET"/$dir
+            install_file "$SYSROOT/$dir/$prefix" "$TARGET"/$dir
         fi
     done
 }
@@ -113,7 +86,7 @@ populate()
 link_usr_lib()
 {
     local file link
-#    mkdir -p "$TARGET/usr/lib"
+
     for file in "$SYSROOT/usr/lib"/*; do
         link="$(readlink "$file")"  &&
         grep -q '^\.\./\.\./lib' <<<"$link"  &&

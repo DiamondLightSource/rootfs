@@ -1,10 +1,21 @@
 # Build targets -- to be included at the end of the component make file
 
 
+# Patch names are of the form PATCHES_<version> or <component>_PATCHES,
+# depending whether they're defined in the component or the configuration.
+PATCHES = \
+    $(patsubst %,$(CURDIR)/patches/%,$(PATCHES_$(version))) \
+    $(patsubst %,$(configdir)/patches/%,$($(COMPONENT)_PATCHES))
+
+
 $(srcdir):
 	mkdir -p $(SOURCE_ROOT) $(O)
-	$(TOP)/scripts/extract-tar \
-            "$(SOURCE_ROOT)" "$(TAR_FILE)" "$(MD5_SUM)" $(TAR_DIRS)
+	$(scripts)extract-tar \
+            '$(SOURCE_ROOT)' '$(TAR_FILE)' '$(MD5_SUM)' $(TAR_DIRS)
+	$(rename_source_dir) $(SOURCE_ROOT) $(SOURCE_DIR_NAME)
+	for patch in $(PATCHES); do \
+            patch -p1 -d $(srcdir) <$$patch; \
+        done
 
 untar: $(srcdir)
 
@@ -12,8 +23,10 @@ config: untar
 
 build: config
 
+
 clean:
 	rm -rf $(O)
+	make -C $(srcdir) clean
 
 clean-src: 
 	rm -rf $(srcdir)
