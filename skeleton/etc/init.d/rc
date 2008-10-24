@@ -19,3 +19,5 @@ mount -a
 for script in /etc/rc.d/*; do
     $script start
 done
+
+inetd

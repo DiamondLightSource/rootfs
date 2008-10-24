@@ -26,7 +26,11 @@ LIB_FILES='
     libm
     libpthread
     libresolv
+    libnsl
+    libnss_compat
     libnss_dns
+    libnss_files
+    libnss_nis
     librt
     libstdc++
     libutil'

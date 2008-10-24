@@ -67,9 +67,9 @@ deploy-boot-script: $(O)boot-script.image $(O)imagefile.cpio.gz
 clean-all:
 	rm -rf build
 
-extras:
-	for extra in $(EXTRAS); do \
-            make -C extras/$$extra; \
-        done
+$(EXTRAS:%=build_%):
+	make -C $(@:build_%=extras/%)
 
-.PHONY: extras
+build_extras: $(EXTRAS:%=build_%)
+
+.PHONY: build_extras $(EXTRAS:%=build_%)

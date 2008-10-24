@@ -8,4 +8,6 @@ busybox_CONFIG = $(configdir)/busybox-$(busybox_VERSION).config
 strace_VERSION = 4.5.17
 dropbear_VERSION = 0.51
 
+SSH_AUTHORIZED_KEYS = $(configdir)/authorized_keys
+
 EXTRAS = busybox strace dropbear

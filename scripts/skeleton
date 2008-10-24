@@ -10,3 +10,6 @@ TARGET="$(cd "$1"; pwd)"
 cd skeleton
 find . -name .svn -prune -o -name . -o -type d -exec mkdir "$TARGET/"{} \;
 find . -name .svn -prune -o -type f -exec cp {} "$TARGET/"{} \;
+
+# Some special ownerships settings.
+chmod 744 "$TARGET"/root
