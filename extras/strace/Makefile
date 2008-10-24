@@ -14,7 +14,7 @@ build:
 	make -C $(srcdir)
 
 install:
-	$(install) $(sysroot)/usr/bin $(srcdir)/strace 
+	$(install) /usr/bin $(srcdir)/strace 
 
 
 include ../RULES

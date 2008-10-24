@@ -22,7 +22,7 @@ build:
 
 # Normal installation
 install: install-root
-	$(install) $(sysroot)/sbin $(srcdir)/dropbearmulti
+	$(install) /sbin $(srcdir)/dropbearmulti
 	chmod g+s,u+s $(sysroot)/sbin/dropbearmulti
 	ln -s /sbin/dropbearmulti $(sysroot)/sbin/dropbear
 	for program in $(PROGRAMS); do \

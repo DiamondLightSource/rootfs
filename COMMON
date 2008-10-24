@@ -4,7 +4,7 @@
 BUILD_ROOT = $(TOP)/build/$(TARGET)
 SOURCE_ROOT = $(BUILD_ROOT)/src
 
-sysroot = $(BUILD_ROOT)/rootfs/
+sysroot = $(BUILD_ROOT)/rootfs
 scripts = $(TOP)/scripts/
 
 BINUTILS_DIR = /dls_sw/work/common/x-tools/$(COMPILER_PREFIX)
