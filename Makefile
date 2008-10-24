@@ -1,12 +1,11 @@
 # Set up sensible defaults before importing the configuration
 
+default: deploy-boot-script
+
 TOP = $(CURDIR)
 include COMMON
 
 O = $(BUILD_ROOT)/
-
-
-default: deploy-boot-script
 
 
 # ----------------------------------------------------------------------------
@@ -22,10 +21,12 @@ $(sysroot):
 $(EXTRAS): $(sysroot)
 	make -C extras/$@ install
 
-$(O)imagefile.cpio: $(sysroot) $(EXTRAS)
-	cd $< && find . | cpio --quiet -H newc -o >$@
+final-install: $(sysroot) $(EXTRAS) 
 
-.PHONY: $(sysroot)
+$(O)imagefile.cpio: final-install
+	cd $(sysroot) && find . | cpio --quiet -H newc -o >$@
+
+.PHONY: $(sysroot) final-install
 
 else
 

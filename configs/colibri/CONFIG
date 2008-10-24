@@ -1,16 +1,20 @@
+# Definitions for Toradex Colibri board: ARM PXA-270 processor.
+
 ARCH = arm
 COMPILER_PREFIX = arm-diamond-linux-gnueabi
 KERNEL_NAME = uImage-bare
 
-busybox_VERSION = 1.12.0
-busybox_CONFIG = $(configdir)/busybox-$(busybox_VERSION).config
-
-strace_VERSION = 4.5.17
-
-dropbear_VERSION = 0.51
 SSH_AUTHORIZED_KEYS = $(configdir)/authorized_keys
+
+EXTRAS = busybox strace dropbear
+
+busybox_VERSION = 1.12.0
+strace_VERSION = 4.5.17
+dropbear_VERSION = 0.51
+
 
 openntpd_VERSION = 3.9p1
 ntp_VERSION = 4.2.4p5
 
-EXTRAS = busybox strace dropbear
+final-install:
+	mkdir -p $(sysroot)/mnt/nfs
