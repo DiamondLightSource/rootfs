@@ -13,8 +13,7 @@ INETD_CONF = 22 stream tcp nowait root /sbin/dropbearmulti dropbear -i
 config: 
 	cd $(srcdir)  &&  ./configure \
             --host=$(COMPILER_PREFIX) --disable-zlib --disable-lastlog \
-            --disable-largefile --disable-shadow \
-            --prefix=$(O)
+            --disable-largefile 
 	make -C $(srcdir) clean
 
 build:

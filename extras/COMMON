@@ -7,7 +7,10 @@ endif
 
 version = $($(COMPONENT)_VERSION)
 
-TAR_FILE = $(COMPONENT)-$(version).tar.bz2
+# Default file extension, can be overridden in component makefile.
+SOURCE_EXTENSION = .tar.bz2
+
+TAR_FILE = $(COMPONENT)-$(version)$(SOURCE_EXTENSION)
 SOURCE_DIR_NAME = $(COMPONENT)-$(version)
 
 srcdir = $(SOURCE_ROOT)/$(SOURCE_DIR_NAME)
@@ -20,24 +23,4 @@ rename_source_dir = @:
 
 install = $(scripts)install '$(COMPILER_PREFIX)'
 
-
-# AS      = $(CROSS_COMPILE)as
-# LD      = $(CROSS_COMPILE)ld
-# CC      = $(CROSS_COMPILE)gcc
-# AR      = $(CROSS_COMPILE)ar
-# NM      = $(CROSS_COMPILE)nm
-# STRIP   = $(CROSS_COMPILE)strip
-# OBJCOPY = $(CROSS_COMPILE)objcopy
-# OBJDUMP = $(CROSS_COMPILE)objdump
-# CPP     = $(CC) -E
-# 
-# 
-# CFLAGS += -Werror -Wall -Wextra -Wno-unused-parameter -Wno-trigraphs
-# CFLAGS += -std=gnu99 -O2
-# 
-# 
-# %.s: %.c
-# 	$(CC) $(CFLAGS) -S -o $@ $<
-
-
-default: build
+default: all

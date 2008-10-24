@@ -5,13 +5,27 @@ TAR_FILE="${2:?}"
 MD5_SUM="${3:?}"
 shift 3
 
+
+do_extract()
+{
+    case "$1" in
+        *.tar.bz2)  tar xjf "$1" -C "$2" ;;
+        *.tar.gz)   tar xzf "$1" -C "$2" ;;
+        *.tgz)      tar xzf "$1" -C "$2" ;;
+        *.zip)      unzip "$1" -d "$2" ;;
+        *)  echo 2>& "Don't know how to extract $1"
+            return 1 ;;
+    esac
+}
+
+
 find_and_extract()
 {
     for dir; do
         tar_path="$dir/$TAR_FILE"
         [ -e "$tar_path" ]  && 
         echo "$MD5_SUM  $tar_path" | md5sum -c  && 
-        tar xjf "$tar_path" -C "$TARGET_DIR"  && 
+        do_extract "$tar_path" "$TARGET_DIR"  && 
         return
     done
     echo "Unable to find tar file $TAR_FILE"

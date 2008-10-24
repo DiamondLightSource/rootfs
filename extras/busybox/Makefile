@@ -11,6 +11,7 @@ busybox_CONFIG ?= $(CURDIR)/configs/busybox-$(version).config
 
 
 config: 
+	mkdir -p $(O)
 	cp $(busybox_CONFIG) $(O)/.config
 	make O=$(O) -C $(srcdir) oldconfig
 
