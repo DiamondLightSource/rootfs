@@ -9,13 +9,17 @@ PATCHES = \
 
 
 $(srcdir):
+ifdef TAR_FILE
 	mkdir -p $(SOURCE_ROOT) 
 	$(scripts)extract-tar \
             '$(SOURCE_ROOT)' '$(TAR_FILE)' '$(MD5_SUM)' $(TAR_DIRS)
 	$(rename_source_dir) $(SOURCE_ROOT) $(SOURCE_DIR_NAME)
+ifdef PATCHES
 	for patch in $(PATCHES); do \
             patch -p1 -d $(srcdir) <$$patch; \
         done
+endif
+endif
 
 untar: $(srcdir)
 

@@ -1,14 +1,25 @@
 #!/bin/sh
 
+# Install a file in target root filesystem.  Called as:
+#
+#   ./install <prefix> <sysroot> [options] <file> <target-dir> [<permissions>]
+#
+# Here <target-dir> is relative to <sysroot> and the given permissions are
+# set if specified.
+#
+# The following options are supported:
+#
+#   -s      Strip file if appropriate
+#   -m:     Set mode
+#   -o:     Set owner
+#   -g:     Set group
+
 HERE="$(dirname "$0")"
 
 COMPILER_PREFIX="${1:?}"
-TARGET="${2:?}/${3:?}"
-shift 3
-
+SYSROOT="${2:?}"
+shift 2
 
 . "$HERE"/functions
 
-for file; do
-    install_file "$file" "$TARGET"  ||  exit 1
-done
+install_file -S"$SYSROOT" "$@"

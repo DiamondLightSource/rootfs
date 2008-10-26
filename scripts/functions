@@ -10,28 +10,62 @@ STRIP="$COMPILER_PREFIX-strip"
 
 do_strip()
 {
-    chmod +w "$target"  &&
-    "$STRIP" "$target"
+    chmod +w "$1"  &&
+    "$STRIP" "$1"
 }
 
 
 # Installs the file according to its type: the file is copied or linked, and
 # stripped if necessary.
 #
-#   process_file file target-dir
+#   process_file file target-dir [permission]
 #
 install_file()
 {
-    local target="$2/$(basename "$1")"
+    local DO_STRIP=1
+    local MODE=
+    local OWNER=
+    local GROUP=
+    local option
+    local sysroot=
+
+    while getopts 'snm:o:g:S:' option; do
+        case "$option" in
+            s)  DO_STRIP=1 ;;
+            n)  DO_STRIP=0 ;;
+            m)  MODE="$OPTARG" ;;
+            o)  OWNER="$OPTARG" ;;
+            g)  GROUP="$OPTARG" ;;
+            S)  sysroot="$OPTARG" ;;
+            *)  echo >&2 Invalid option
+                return 1 ;;
+        esac
+    done
+    shift $((OPTIND-1))
+
     local link 
-    if link="$(readlink "$1")"; then
+    local source="$1"
+    local target="$sysroot$2/$(basename "$source")"
+    local perm="${3:-$(stat -c%a "$source")}"  &&
+    if [ -d "$source" ]; then
+        echo >&2 Cannot install directory "$source"
+        return 1
+    elif link="$(readlink "$source")"; then
         ln -s "$link" "$target"
     else
-        cp "$1" "$target"  &&
-        case "$(file -i "$1")" in
-            *application/x-sharedlib*)  do_strip "$1" "$2" ;;
-            *application/x-executable*) do_strip "$1" "$2" ;;
-        esac  &&
-        chmod -w "$target"
+        cp "$source" "$target"  &&
+        if ((DO_STRIP)); then
+            MODE="${MODE:-$(stat -c%a "$source")}"  &&
+            case "$(file -i "$target")" in
+                *application/x-sharedlib*)  do_strip "$target" ;;
+                *application/x-executable*) do_strip "$target" ;;
+            esac
+        fi  &&
+        if [ -n "$MODE" ]; then
+            chmod "$MODE" "$target";
+        fi  &&
+        if [ -n "$OWNER" -o -n "$GROUP" ]; then
+            chown "$OWNER:$GROUP" "$target"
+        fi  
     fi
 }

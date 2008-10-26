@@ -13,9 +13,9 @@ SYSROOT="$BINUTILS_DIR/$COMPILER_PREFIX/sys-root"
 
 
 SKELETON='
-    bin dev etc lib sbin
+    bin dev etc lib proc sbin sys tmp
     usr usr/bin usr/lib usr/sbin
-    var var/log var/run'
+    var var/lock var/log var/run'
 
 LIB_FILES='
     ld
@@ -68,7 +68,7 @@ populate()
             for suffix in $suffixes; do
                 for file in "$SYSROOT/$dir/$prefix"$suffix; do
                     if [ -e "$file" ]; then
-                        install_file $file "$TARGET"/$dir || return
+                        install_file -m-w $file "$TARGET"/$dir || return
                         found=1
                     fi
                 done
@@ -80,7 +80,7 @@ populate()
                 return 1
             fi
         else
-            install_file "$SYSROOT/$dir/$prefix" "$TARGET"/$dir
+            install_file -m-w "$SYSROOT/$dir/$prefix" "$TARGET"/$dir
         fi
     done
 }

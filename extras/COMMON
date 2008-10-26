@@ -1,3 +1,5 @@
+default: all
+
 include $(TOP)/COMMON
 
 COMPONENT = $(notdir $(CURDIR))
@@ -8,9 +10,8 @@ endif
 version = $($(COMPONENT)_VERSION)
 
 # Default file extension, can be overridden in component makefile.
-SOURCE_EXTENSION = .tar.bz2
-
-TAR_FILE = $(COMPONENT)-$(version)$(SOURCE_EXTENSION)
+TAR_EXTENSION = .tar.bz2
+TAR_FILE = $(COMPONENT)-$(version)$(TAR_EXTENSION)
 SOURCE_DIR_NAME = $(COMPONENT)-$(version)
 
 srcdir = $(SOURCE_ROOT)/$(SOURCE_DIR_NAME)
@@ -18,9 +19,13 @@ O = $(BUILD_ROOT)/$(COMPONENT)/
 
 MD5_SUM = $(MD5_SUM_$(version))
 
+
 # This can be overridden if path name hacking is needed after running untar.
 rename_source_dir = @:
 
+
+# Supporting scripts
 install = $(scripts)install '$(COMPILER_PREFIX)' '$(sysroot)'
 
-default: all
+#adduser = 
+

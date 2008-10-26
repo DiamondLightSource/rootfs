@@ -1,5 +1,3 @@
-# Set up sensible defaults before importing the configuration
-
 default: deploy-boot-script
 
 TOP = $(CURDIR)
@@ -31,7 +29,7 @@ $(O)imagefile.cpio: final-install
 else
 
 $(O)imagefile.cpio: $(O)
-	umask 2  &&  $(FAKEROOT) make $(O)imagefile.cpio
+	umask 22  &&  $(FAKEROOT) make $(O)imagefile.cpio
 
 .PHONY: $(O)imagefile.cpio
 
@@ -65,12 +63,17 @@ deploy-boot-script: $(O)boot-script.image $(O)imagefile.cpio.gz
 
 # ----------------------------------------------------------------------------
 
-clean-all:
-	rm -rf build
-
 $(EXTRAS:%=build_%):
 	make -C $(@:build_%=extras/%)
 
 build_extras: $(EXTRAS:%=build_%)
 
-.PHONY: build_extras $(EXTRAS:%=build_%)
+
+clean-all:
+	rm -rf build
+
+lssys:
+	cpio -t -v --quiet <$(O)imagefile.cpio
+
+
+.PHONY: build_extras clean-all lssys $(EXTRAS:%=build_%)

@@ -1,0 +1,50 @@
+The following components are defined here.
+
+
+These components already work:
+
+busybox
+    Web page: http://www.busybox.net/
+    Collection of basic utilities.
+
+dropbear
+    Web page: http://matt.ucc.asn.au/dropbear/dropbear.html
+    Small ssh server and client.
+
+ntp
+    Web page: http://www.ntp.org/
+    The definitive NTP clock synchronisation reference implementation.
+    Rather large! 
+
+openntpd
+    Web page: http://www.openntpd.org/
+    OpenBSD based implementation of NTP.  Really quite a lot smaller than ntp,
+    but more of a pain to set up (insists on running with privilege
+    separation!)
+
+portmap
+    Web page: http://neil.brown.name/portmap/
+    Required for nfs lock mounting.
+
+strace
+    Web page: http://sourceforge.net/projects/strace/
+    Invaluable debugging tool.
+
+
+These components may be implemented at a later date:
+
+bash
+    Maybe to be supported?
+
+nfs-utils
+    Web page: http://linux-nfs.org and http://nfs.sourceforge.net
+    Hopefully to fill in some missing busybox functions for NFS mounts.
+
+systemtap
+    Web page: http://sourceware.org/systemtap/
+    Alternative to strace?  Not yet investigated.
+
+tcp_wrappers
+    Web page: ftp://ftp.porcupine.org/pub/security/index.html
+    Provides libwrap, needed by nfs-utils.
+

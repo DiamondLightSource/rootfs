@@ -23,9 +23,8 @@ menuconfig: untar
 	make O=$(O) -C $(srcdir) menuconfig
 
 install:
-	$(install) /bin $(O)/busybox
-	chmod 555 $(sysroot)/bin/busybox
-	chmod u+s $(sysroot)/bin/busybox
+        # 4555 = rx,u+s
+	$(install) -m 4555 $(O)/busybox /bin 
 	cat $(O)/busybox.links | \
         while read -r; do \
             ln -s /bin/busybox $(sysroot)/$$REPLY  ||  exit 1; \

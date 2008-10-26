@@ -10,10 +10,16 @@ ln -s fd/1 /dev/stdout
 ln -s fd/2 /dev/stderr
 
 # Mount the remaining special file systems
-mkdir /proc /sys /tmp 
 mount -t proc proc /proc
 mount -t sysfs sysfs /sys
-mount -t tmpfs tmpfs /tmp
+mount -t tmpfs -o mode=1777 tmpfs /tmp
+
+# Following Debian, a few more tmpfs mounts
+mount -t tmpfs -o mode=755,nosuid varrun /var/run
+mount -t tmpfs -o mode=1777,nodev,noexec,nosuid varlock /var/lock
+
+# What about /dev/shm ?  Any use to anyone?
+# Also, a lot of this stuff should move into fstab, really.
 
 mkdir /dev/pts
 mount -t devpts -o gid=5,mode=0620 devpts /dev/pts

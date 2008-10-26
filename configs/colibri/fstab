@@ -1,0 +1,3 @@
+serv0005:/home2/libera/nfs /mnt/nfs nfs rw,nolock
+172.23.100.32:/exports/dls_sw/work /mnt/work nfs ro,nolock
+172.23.100.32:/exports/dls_sw/prod /mnt/prod nfs ro,nolock

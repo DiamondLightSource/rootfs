@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# Start and stop ntp daemon
+
+. /etc/init.d/functions
+
+TIMESERVERS="$(sed -n '/^server /{s///;p;}' /etc/ntp.conf)"
+
+case "$1" in
+    start)
+        # First try and get a sensible synchronisation using rdate
+        for TIMESERVER in $TIMESERVERS; do
+            echo -n Setting time from $TIMESERVER ...
+            rdate -s $TIMESERVER  &&  break
+        done
+        evaluate_retval
+        
+        echo -n Starting ntpd
+        ntpd -g
+        evaluate_retval
+        ;;
+    stop)
+        echo -n Stopping ntpd
+        kill "$(cat /var/run/ntpd.pid)"
+        evaluate_retval
+        ;;
+    restart)
+        "$0" stop
+        "$0" start
+        ;;
+    *)  echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac

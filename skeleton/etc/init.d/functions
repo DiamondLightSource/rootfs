@@ -1,0 +1,6 @@
+# Some helper shell functions for init.d scripts.
+
+evaluate_retval()
+{
+    [ "$?" = 0 ]  &&  echo ' ok.'  ||  echo ' failed.'
+}

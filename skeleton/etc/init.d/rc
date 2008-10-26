@@ -6,13 +6,14 @@
 /etc/init.d/makedevs
 # Get syslog up and running
 /sbin/syslogd
+# also klogd ?
+# /sbin/klogd
 # Freshen the ldconfig cache
 /sbin/ldconfig
 
 # Finally get the network running
 /etc/init.d/network start
 
-mkdir -p /mnt/nfs
 mount -a
 
 # Run all the scripts linked in rc.d
