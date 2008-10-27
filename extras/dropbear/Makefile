@@ -1,10 +1,12 @@
 TOP = $(CURDIR)/../..
 include ../COMMON
 
+dropbear_VERSION ?= 0.51
+
 MD5_SUM_0.51 = 95d900913bee4b27d7e9ce55f8a55427
 
 PROGRAMS = dbclient dropbearkey dropbearconvert scp
-INETD_CONF = 22 stream tcp nowait root /usr/sbin/dropbearmulti dropbear -i
+INETD_CONF = ssh stream tcp nowait root /usr/sbin/dropbearmulti dropbear -i
 
 
 # May want to automatically use this

@@ -4,3 +4,26 @@ evaluate_retval()
 {
     [ "$?" = 0 ]  &&  echo ' ok.'  ||  echo ' failed.'
 }
+
+do_start_stop()
+{
+    case "$1" in
+        start)      start "$@" ;;
+        stop)       stop "$@" ;;
+        restart)    restart "$@" ;;
+        *)          start_stop_usage "$@" ;;
+    esac
+}
+
+# Default implementations.
+restart()
+{
+    "$0" stop
+    "$0" start
+}
+
+start_stop_usage()
+{
+    echo >&2  "Usage: $0 {start|stop|restart}"
+    exit 1
+}

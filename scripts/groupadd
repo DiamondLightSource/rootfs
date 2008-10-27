@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# Add new group to /etc/group, emulating groupadd(8).
+#
+# Usage: groupadd <sysroot> -g <gid> <new-group>
+#
+# The -g flag is mandatory.
+
+HERE="$(dirname "$0")"
+
+sysroot="${1:?}"
+shift
+
+GID=
+
+while getopts 'g:' option; do
+    case "$option" in
+        g)  GID=$(($OPTARG)) ;;
+        *)  exit 1 ;;
+    esac
+done
+shift $((OPTIND-1))
+
+NAME="${1:?}"
+
+echo "$NAME:*:$GID:" >>$sysroot/etc/group

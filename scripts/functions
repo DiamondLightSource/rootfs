@@ -37,8 +37,7 @@ install_file()
             o)  OWNER="$OPTARG" ;;
             g)  GROUP="$OPTARG" ;;
             S)  sysroot="$OPTARG" ;;
-            *)  echo >&2 Invalid option
-                return 1 ;;
+            *)  return 1 ;;
         esac
     done
     shift $((OPTIND-1))

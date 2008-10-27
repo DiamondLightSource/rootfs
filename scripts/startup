@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# Install a startup script.
+#
+# Usage: startup <sysroot> [-S] <script> [<start-prefix>]
+
+HERE="$(dirname "$0")"
+
+sysroot="${1:?}"
+shift
+
+START=/etc/rc.d
+MODE=555
+
+while getopts 'Sm:' option; do
+    case "$option" in
+        S)  START=/etc/rcS.d ;;
+        m)  MODE="$OPTARG" ;;
+        *)  exit 1 ;;
+    esac
+done
+shift $((OPTIND-1))
+
+
+SCRIPT="${1:?}"
+AUTO="$2"
+
+FILENAME="$(basename "$SCRIPT")"
+
+install -m "$MODE" "$SCRIPT" "$sysroot/etc/init.d"  &&
+if [ -n "$AUTO" ]; then
+    ln -s ../init.d/"$FILENAME" "$sysroot/$START/$AUTO$FILENAME"
+fi

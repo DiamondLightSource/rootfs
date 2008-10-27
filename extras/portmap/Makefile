@@ -1,6 +1,8 @@
 TOP = $(CURDIR)/../..
 include ../COMMON
 
+portmap_VERSION ?= 6.0
+
 TAR_EXTENSION = .tgz
 SOURCE_DIR_NAME = $(COMPONENT)_$(version)
 

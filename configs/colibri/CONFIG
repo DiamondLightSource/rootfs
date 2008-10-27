@@ -4,20 +4,7 @@ ARCH = arm
 COMPILER_PREFIX = arm-diamond-linux-gnueabi
 KERNEL_NAME = uImage-bare
 
-
-busybox_VERSION = 1.12.0
-
-strace_VERSION = 4.5.17
-
-dropbear_VERSION = 0.51
 SSH_AUTHORIZED_KEYS = $(configdir)/authorized_keys
-
-openntpd_VERSION = 3.9p1
-
-ntp_VERSION = 4.2.4p5
-
-nfs-utils_VERSION = 1.1.4
-portmap_VERSION = 6.0
 
 
 final-install:

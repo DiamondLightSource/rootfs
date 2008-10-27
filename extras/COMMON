@@ -3,10 +3,6 @@ default: all
 include $(TOP)/COMMON
 
 COMPONENT = $(notdir $(CURDIR))
-ifndef $(COMPONENT)_VERSION
-$(error Must specify $(COMPONENT)_VERSION)
-endif
-
 version = $($(COMPONENT)_VERSION)
 
 # Default file extension, can be overridden in component makefile.
@@ -26,6 +22,7 @@ rename_source_dir = @:
 
 # Supporting scripts
 install = $(scripts)install '$(COMPILER_PREFIX)' '$(sysroot)'
-
-#adduser = 
+useradd = $(scripts)useradd '$(sysroot)'
+groupadd = $(scripts)groupadd '$(sysroot)'
+startup = $(scripts)/startup '$(sysroot)'
 

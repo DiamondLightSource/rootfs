@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+
+# Creates encoded password string suitable for use in /etc/passwd or
+# /etc/shadow.
+
+import sys
+import string
+import optparse
+import crypt
+import random
+
+
+charset = string.lowercase + string.uppercase + string.digits + './'
+
+
+parser = optparse.OptionParser(
+    usage = 'Usage: %prog [flags] Password\nEncode password')
+parser.add_option(
+    '-m', dest = 'md5', default = False, action = 'store_true',
+    help = 'Use MD5 algorithm')
+parser.add_option(
+    '-s', dest = 'salt', default = None, action = 'store',
+    help = 'Specify salt to use')
+parser.add_option(
+    '-n', dest = 'newline', default = True, action = 'store_false',
+    help = 'Omit newline after encoded password')
+
+options, args = parser.parse_args()
+if len(args) != 1:
+    parser.error('Must specify password to encode')
+
+
+def create_salt(length):
+    '''Creates the random part of a salt string.'''
+    return ''.join([charset[random.randint(0, len(charset) - 1)]
+        for n in range(length)])
+    
+    
+if options.salt is None:
+    # Need to create our own salt
+    if options.md5:
+        salt = '$1$%s$' % create_salt(8)
+    else:
+        salt = create_salt(2)
+else:
+    salt = options.salt
+    if not set(salt) < set(charset):
+        parser.error('Invalid characters in salt')
+    if options.md5:
+        if len(salt) > 8:
+            parser.error('Salt is too long')
+        salt = '$1$%s$' % salt
+    else:
+        if len(salt) != 2:
+            parser.error('Standard salt must be 2 characters')
+
+sys.stdout.write(crypt.crypt(args[0], salt))
+if options.newline:
+    sys.stdout.write('\n')

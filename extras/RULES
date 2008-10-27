@@ -1,5 +1,10 @@
 # Build targets -- to be included at the end of the component make file
 
+# Check that we've been given a version number by now!
+ifndef $(COMPONENT)_VERSION
+$(error Must specify $(COMPONENT)_VERSION)
+endif
+
 
 # Patch names are of the form PATCHES_<version> or <component>_PATCHES,
 # depending whether they're defined in the component or the configuration.
@@ -14,7 +19,7 @@ ifdef TAR_FILE
 	$(scripts)extract-tar \
             '$(SOURCE_ROOT)' '$(TAR_FILE)' '$(MD5_SUM)' $(TAR_DIRS)
 	$(rename_source_dir) $(SOURCE_ROOT) $(SOURCE_DIR_NAME)
-ifdef PATCHES
+ifneq ($(strip $(PATCHES)),)
 	for patch in $(PATCHES); do \
             patch -p1 -d $(srcdir) <$$patch; \
         done

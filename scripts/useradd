@@ -1,0 +1,49 @@
+#!/bin/sh
+
+# Add new user to /etc/passwd, emulating useradd(8).
+#
+# Usage: useradd <sysroot> [options] <new-user>
+#
+# The following options are supported:
+#
+#   -c:     Comment field
+#   -d:     Home directory
+#   -g:     Login group (must be by numeric id)
+#   -p:     Password (in clear)
+#   -s:     Login shell
+#   -u:     User id
+
+HERE="$(dirname "$0")"
+
+sysroot="${1:?}"
+shift
+
+COMMENT=
+HOME=/
+PASSWORD=
+SHELL=/bin/false
+_UID=
+GID=
+
+while getopts 'c:d:g:p:s:u:' option; do
+    echo Option "$option: $OPTARG"
+    case "$option" in
+        c)  COMMENT="$OPTARG" ;;
+        d)  HOME="$OPTARG" ;;
+        g)  GID=$(($OPTARG)) ;;
+        p)  PASSWORD=$("$HERE"/crypt -m "$OPTARG") ;;
+        s)  SHELL="$OPTARG" ;;
+        u)  _UID=$(($OPTARG)) ;;
+        *)  exit 1 ;;
+    esac
+done
+shift $((OPTIND-1))
+
+NAME="${1:?}"
+
+PWD='*'
+if [ -n "$PASSWORD" ]; then
+    PWD='x'
+    echo '$NAME:$PASSWORD:::::::' >>$sysroot/etc/shadow
+fi  &&
+echo "$NAME:$PWD:$_UID:$GID:$COMMENT:$HOME:$SHELL" >>$sysroot/etc/passwd
