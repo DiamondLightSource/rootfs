@@ -34,6 +34,10 @@ portmap
     Web page: http://neil.brown.name/portmap/
     Required for nfs lock mounting.
 
+screen
+    Web page: http://www.gnu.org/software/screen/
+    Needs an awkward patch to cross compile properly.
+
 strace
     Web page: http://sourceforge.net/projects/strace/
     Invaluable debugging tool.
@@ -52,7 +56,3 @@ systemtap
 tcp_wrappers
     Web page: ftp://ftp.porcupine.org/pub/security/index.html
     Provides libwrap, needed by nfs-utils.
-
-screen
-    Web page: http://www.gnu.org/software/screen/
-    Won't damned well configure for cross compilation!
