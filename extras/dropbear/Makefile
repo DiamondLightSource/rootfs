@@ -24,7 +24,7 @@ build:
 
 # Extra installation of configuration settings
 install-root:
-	echo '$(INETD_CONF)' >$(sysroot)/etc/inetd.conf
+	echo '$(INETD_CONF)' >>$(sysroot)/etc/inetd.conf
 	mkdir -m 700 $(sysroot)/root/.ssh $(sysroot)/etc/dropbear
 ifdef SSH_AUTHORIZED_KEYS
 	$(install) -m 644 $(SSH_AUTHORIZED_KEYS) /root/.ssh 

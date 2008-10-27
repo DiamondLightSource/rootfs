@@ -3,19 +3,4 @@
 # Start and stop openntpd daemon
 
 . /etc/init.d/functions
-
-start()
-{
-    echo -n 'Starting openntpd: '
-    start-stop-daemon -S -u _ntp -x ntpd -- -s
-    evaluate_retval
-}
-
-stop()
-{
-    echo -n 'Stopping openntpd: '
-    start-stop-daemon -K -u _ntp -x ntpd
-    evaluate_retval
-}
-
-do_start_stop "$@"
+do_start_stop_daemon "$1" openntpd -x /sbin/ntpd -u _ntp -- -s

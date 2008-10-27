@@ -19,5 +19,7 @@ install:
             $(install) -m-w $(srcdir)/$$file /sbin; \
         done
 
+	$(startup) $(CURDIR)/portmap S180
+
 
 include ../RULES

@@ -27,3 +27,27 @@ start_stop_usage()
     echo >&2  "Usage: $0 {start|stop|restart}"
     exit 1
 }
+
+# do_start_stop_daemon {start|stop} program <start-stop-daemon args>
+#
+do_start_stop_daemon()
+{
+    action="$1"
+    name="$2"
+    shift 2
+    
+    case "$action" in
+        start)
+            echo -n "Starting $name: "
+            start-stop-daemon -S "$@"
+            evaluate_retval
+            ;;
+        stop)
+            echo -n "Stopping $name: "
+            start-stop-daemon -K "$@"
+            evaluate_retval
+            ;;
+        restart)    restart "$@" ;;
+        *)          start_stop_usage "$@" ;;
+    esac
+}

@@ -18,11 +18,3 @@ MD5_SUM = $(MD5_SUM_$(version))
 
 # This can be overridden if path name hacking is needed after running untar.
 rename_source_dir = @:
-
-
-# Supporting scripts
-install = $(scripts)install '$(COMPILER_PREFIX)' '$(sysroot)'
-useradd = $(scripts)useradd '$(sysroot)'
-groupadd = $(scripts)groupadd '$(sysroot)'
-startup = $(scripts)/startup '$(sysroot)'
-

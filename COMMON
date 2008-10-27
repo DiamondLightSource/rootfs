@@ -4,9 +4,6 @@
 BUILD_ROOT = $(TOP)/build/$(TARGET)
 SOURCE_ROOT = $(BUILD_ROOT)/src
 
-sysroot = $(BUILD_ROOT)/rootfs
-scripts = $(TOP)/scripts/
-
 BINUTILS_DIR = /dls_sw/work/common/x-tools/$(COMPILER_PREFIX)
 TAR_DIRS = /dls_sw/prod/common/sources /dls_sw/work/common/sources
 
@@ -20,7 +17,16 @@ endif
 configdir = $(TOP)/configs/$(TARGET)
 include $(configdir)/CONFIG
 
-#CROSS_COMPILE = $(BINUTILS_DIR)/bin/$(COMPILER_PREFIX)-
 
 PATH := $(BINUTILS_DIR)/bin:$(PATH)
+
+
+sysroot = $(BUILD_ROOT)/rootfs
+scripts = $(TOP)/scripts/
+
+# Support scripts for installation.
+install = $(scripts)install '$(COMPILER_PREFIX)' '$(sysroot)'
+useradd = $(scripts)useradd '$(sysroot)'
+groupadd = $(scripts)groupadd '$(sysroot)'
+startup = $(scripts)/startup '$(sysroot)'
 

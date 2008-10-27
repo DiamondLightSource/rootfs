@@ -14,5 +14,6 @@ final-install:
 	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
 
 
-EXTRAS = busybox strace dropbear openntpd portmap
+TERMS = xterm xterm-color screen vt102
 
+EXTRAS = busybox strace dropbear openntpd portmap nano bash

@@ -6,6 +6,7 @@ HERE="$(dirname "$0")"
 TARGET="${1:?}"
 BINUTILS_DIR="${2:?}"
 COMPILER_PREFIX="${3:?}"
+TERMS="${4}"
 
 . "$HERE"/functions
 
@@ -22,6 +23,7 @@ LIB_FILES='
     ld-linux
     libc
     libcrypt
+    libdl
     libgcc_s
     libm
     libpthread
@@ -101,8 +103,20 @@ link_usr_lib()
 }
 
 
+install_terminfo()
+{
+    for term; do
+        local dir=/usr/share/terminfo/${term::1}  
+        mkdir -p "$TARGET/$dir"  &&
+        cp "$SYSROOT/$dir/$term" "$TARGET/$dir"  ||  return 1
+    done
+}
+
+
 create_skeleton  &&
 populate lib "$LIB_FILES" "-2.7.so $SO_FILES"  &&
 populate usr/lib "$USR_LIB_FILES" "$SO_FILES"  &&  link_usr_lib  &&
 
 populate sbin ldconfig 
+
+install_terminfo $TERMS

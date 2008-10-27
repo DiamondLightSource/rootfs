@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Start and stop port mapper daemon
+
+. /etc/init.d/functions
+do_start_stop_daemon "$1" portmap -x /sbin/portmap -u daemon

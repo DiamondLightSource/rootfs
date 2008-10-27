@@ -14,11 +14,10 @@
 # Finally get the network running
 /etc/init.d/network start
 
-mount -a
 
 # Run all the scripts linked in rc.d
 for script in /etc/rc.d/*; do
     $script start
 done
 
-inetd
+mount -a

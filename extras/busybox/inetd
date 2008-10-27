@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# Start and stop inetd daemon
+
+. /etc/init.d/functions
+
+start()
+{
+    echo -n 'Starting inetd: '
+    inetd
+    evaluate_retval
+}
+
+stop()
+{
+    echo -n 'Stopping inetd: '
+    kill $(cat /var/run/inetd.pid)
+    evaluate_retval
+}
+
+do_start_stop "$@"

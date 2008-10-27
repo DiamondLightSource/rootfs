@@ -29,7 +29,7 @@ install:
 	$(install) -m 555 $(srcdir)/ntpd /sbin
 	$(install) $(NTPD_CONF) /etc
 
-	$(startup) $(CURDIR)/openntpd S20
+	$(startup) $(CURDIR)/openntpd S210
 
 
 include ../RULES

@@ -13,8 +13,9 @@ ifeq ($(shell id -u), 0)
 $(sysroot):
 	rm -rf $@
 	mkdir -p $@
-	$(scripts)skeleton $@
-	$(scripts)populate $@ '$(BINUTILS_DIR)' '$(COMPILER_PREFIX)' 
+	make -C skeleton install
+#	$(scripts)skeleton $@
+	$(scripts)populate $@ '$(BINUTILS_DIR)' '$(COMPILER_PREFIX)' '$(TERMS)'
 
 $(EXTRAS): $(sysroot)
 	make -C extras/$@ install
