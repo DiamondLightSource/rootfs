@@ -4,6 +4,8 @@ ARCH = arm
 COMPILER_PREFIX = arm-diamond-linux-gnueabi
 KERNEL_NAME = uImage-bare
 
+ROOT_PASSWORD = Jungle
+
 SSH_AUTHORIZED_KEYS = $(configdir)/authorized_keys
 
 

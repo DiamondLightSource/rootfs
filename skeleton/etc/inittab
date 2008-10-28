@@ -11,7 +11,8 @@
 #   <process>   Command to run
 
 ::sysinit:/etc/init.d/rc
-# ::respawn:/bin/sh
+
+
 ::respawn:/sbin/getty 9600 ttyS0
 # ::wait:/etc/init.d/rc     -- could do vital init stuff, spawn shell, do rest
 

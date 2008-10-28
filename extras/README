@@ -45,6 +45,23 @@ strace
 
 These components may be implemented at a later date:
 
+cron
+    The big puzzle about cron is *which* version?
+    1. Debian: uses Vixie Cron, version 3.0pl1.  Can't find canonical web site
+       for this version, but `apt-get source cron` fetches the Debian version.
+       Linux From Scratch also have patches to Vixie Cron, see:
+        http://wiki.linuxfromscratch.org/patches/browser/trunk/vixie-cron
+    2. Open embedded fetches 
+        http://ibiblio.org/pub/Linux/system/daemons/cron/cronr8.tar.gz
+       together with a few patches.  Unfortunately that is out of date.  The
+       directory http://ibiblio.org/pub/Linux/system/daemons/cron/ contains a
+       variety of crons, including 3.0pl1.
+    3. FreeBSD and OpenBSD have their own versions of cron, but lets ignore
+       those (porting would be crazy).
+    4. ISC Cron can be downloaded from http://ftp.isc.org/isc/cron/ as a
+       "shell archive" -- this is version 4.1, described by Wikipedia as
+       version 4 of Vixie cron.
+
 nfs-utils
     Web page: http://linux-nfs.org and http://nfs.sourceforge.net
     Hopefully to fill in some missing busybox functions for NFS mounts.

@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ "$1" != start ]; then
+    echo >&2 Not a good idea, seriously.
+    exit 1
+fi
+
 mount -t tmpfs tmpfs /dev
 makedevs -d /etc/device_table /dev
 
@@ -22,4 +27,6 @@ mount -t tmpfs -o mode=1777,nodev,noexec,nosuid varlock /var/lock
 # Also, a lot of this stuff should move into fstab, really.
 
 mkdir /dev/pts
-mount -t devpts -o gid=5,mode=0620 devpts /dev/pts
+mount -t devpts -o gid=5,mode=0620,noexec,nosuid devpts /dev/pts
+mkdir /dev/shm
+mount -t tmpfs -o nosuid,nodev devshm /dev/shm

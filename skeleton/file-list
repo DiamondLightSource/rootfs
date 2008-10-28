@@ -1,0 +1,37 @@
+# Rootfs file specification
+#
+# The format of each line is:
+#
+#   <type> <mode> <path> <value>
+#
+# Where <type> is one of:
+#
+#   d   Create new directory
+#   c   Copy file 
+#   l   Create link to specified location
+#   n   Create empty file
+
+# First the directories.
+d 755 /root
+d 755 /etc
+d 755 /etc/init.d
+d 755 /etc/rc.d
+
+# c 755 /etc/init.d/makedevs
+c 755 /etc/init.d/rc
+c 644 /etc/init.d/functions
+# c 755 /etc/init.d/network
+c 644 /etc/fstab
+c 644 /etc/hosts
+c 644 /etc/profile
+n 644 /etc/passwd
+c 644 /etc/ld.so.conf
+c 644 /etc/services
+n 600 /etc/shadow
+c 644 /etc/device_table
+c 644 /etc/nsswitch.conf
+c 644 /etc/inittab
+c 644 /etc/group
+c 644 /etc/hostname
+c 644 /etc/resolv.conf
+# c 755 /etc/rcS.d

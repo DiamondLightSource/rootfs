@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# install-files <sysroot> <file-list>
+
+sysroot="${1:?}"
+FILE_LIST="${2:?}"
+
+SOURCE_DIR="$(dirname "$FILE_LIST")"
+
+cat "$FILE_LIST" |
+sed '/^[ \t]*#/d; /^[ \t]*$/d' |
+while read type mode name value; do
+    case $type in
+        c)  install -m $mode "$SOURCE_DIR/${value:-$name}" "$sysroot/$name" ;;
+        d)  mkdir -m $mode "$sysroot/$name" ;;
+        l)  ln -s "$value" "$value" "$sysroot/$name" ;;
+        n)  install -m $mode /dev/null "$sysroot/$name" ;;
+        *)  false ;;
+    esac  ||  exit 1
+done

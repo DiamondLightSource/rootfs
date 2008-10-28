@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Rather hacky network startup: pick up our configuration from the u-boot
 # configuration settings.
 

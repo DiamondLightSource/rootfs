@@ -21,17 +21,18 @@ shift
 COMMENT=
 HOME=/
 PASSWORD=
+SET_PASSWORD=0
 SHELL=/bin/false
 _UID=
 GID=
 
 while getopts 'c:d:g:p:s:u:' option; do
-    echo Option "$option: $OPTARG"
     case "$option" in
         c)  COMMENT="$OPTARG" ;;
         d)  HOME="$OPTARG" ;;
         g)  GID=$(($OPTARG)) ;;
-        p)  PASSWORD=$("$HERE"/crypt -m "$OPTARG") ;;
+        p)  PASSWORD="$("$HERE"/crypt -m "$OPTARG")"
+            SET_PASSWORD=1 ;;
         s)  SHELL="$OPTARG" ;;
         u)  _UID=$(($OPTARG)) ;;
         *)  exit 1 ;;
@@ -42,8 +43,8 @@ shift $((OPTIND-1))
 NAME="${1:?}"
 
 PWD='*'
-if [ -n "$PASSWORD" ]; then
+if ((SET_PASSWORD)); then
     PWD='x'
-    echo '$NAME:$PASSWORD:::::::' >>$sysroot/etc/shadow
+    echo "$NAME:$PASSWORD:::::::" >>$sysroot/etc/shadow
 fi  &&
 echo "$NAME:$PWD:$_UID:$GID:$COMMENT:$HOME:$SHELL" >>$sysroot/etc/passwd

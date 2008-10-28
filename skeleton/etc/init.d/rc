@@ -2,22 +2,19 @@
 
 # System initialisation script.
 
-# Mount the core file systems
-/etc/init.d/makedevs
-# Get syslog up and running
-/sbin/syslogd
-# also klogd ?
-# /sbin/klogd
-# Freshen the ldconfig cache
-/sbin/ldconfig
-
-# Finally get the network running
-/etc/init.d/network start
 
 
 # Run all the scripts linked in rc.d
-for script in /etc/rc.d/*; do
+for script in /etc/rc.d/S*; do
     $script start
 done
 
 mount -a
+/sbin/ldconfig
+
+
+# Still to do:
+# * Perform the nfs mounts in their own startup script.
+# * Possibly move more stuff into fstab and mount in an rc.d script.
+# * Run logger so that the rc output goes into syslog.  Clearly can't start
+#   this until syslogd is running, and have to have /dev initialised first.
