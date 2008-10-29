@@ -9,13 +9,15 @@ MD5_SUM_1.10.1 = 052a1b5474b3681bc5f3167d2b3711a8
 
 
 config: 
-	cd $(srcdir)  &&  ./configure 
+	make -C $(srcdir) clean
+	cd $(srcdir)  &&  ./configure --prefix=$(OBJECT_ROOT)
 
 build:
 	make -C $(srcdir)
 
-# install:
-# 	$(install) -m 555 $(srcdir)/src/nano /usr/bin 
+install: config build
+        # Actually we probably only want fakeroot libfakeroot-0.so.
+	make -C $(srcdir) install
 
 
 include ../RULES

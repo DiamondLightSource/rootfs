@@ -17,4 +17,5 @@ final-install:
 
 TERMS = xterm xterm-color screen vt102
 
-EXTRAS = busybox strace dropbear openntpd portmap nano bash screen
+EXTRAS = busybox strace dropbear openntpd portmap 
+EXTRAS += nano bash screen nologin

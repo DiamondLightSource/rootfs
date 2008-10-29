@@ -1,10 +1,8 @@
 # Common paths
 
-BUILD_ROOT = /scratch/tmp/rootfs/$(TARGET)
+BUILD_ROOT = /scratch/tmp/rootfs
 
-UBOOT_DIR = $(HOME)/tools/u-boot/u-boot/colibri/tools
+UBOOT_DIR = $(HOME)/tools/u-boot/u-boot/$(TARGET)/tools
 TAR_DIRS += /scratch/incoming
-
-FAKEROOT = /home/share/embedded/local/bin/fakeroot
 
 TARGET = colibri

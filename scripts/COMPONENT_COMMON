@@ -1,0 +1,25 @@
+# To be included when building components, either toolkit or extras.
+#
+# CURDIR will be the component to be built, its name will automatically be
+# used for configuration.
+#
+# Requires the following environment:
+#
+#   SOURCE_ROOT     Set to directory where sources will be unpacked
+#   OBJECT_ROOT     Set to build directory for out of tree builds.
+
+COMPONENT = $(notdir $(CURDIR))
+version = $($(COMPONENT)_VERSION)
+
+srcdir = $(SOURCE_ROOT)/$(SOURCE_DIR_NAME)
+O = $(OBJECT_ROOT)/$(COMPONENT)/
+
+# Default file extension, can be overridden in component makefile.
+TAR_EXTENSION = .tar.bz2
+TAR_FILE = $(COMPONENT)-$(version)$(TAR_EXTENSION)
+SOURCE_DIR_NAME = $(COMPONENT)-$(version)
+
+MD5_SUM = $(MD5_SUM_$(version))
+
+# This can be overridden if path name hacking is needed after running untar.
+rename_source_dir = @:

@@ -64,6 +64,9 @@ cron
     Actually, cron is provided by crosstool, so there's not much point in
     spending any more time on it.
 
+    There's also a fairly comprehenstive list of cron implementations at
+        http://ibiblio.org/pub/Linux/system/daemons/cron/!INDEX.html
+
 epics
     This is probably normally built separately.
 

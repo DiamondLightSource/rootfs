@@ -11,9 +11,8 @@ busybox_CONFIG ?= $(CURDIR)/configs/busybox-$(version).config
 INETD_ENABLE ?= Y
 
 
-export CROSS_COMPILE = $(COMPILER_PREFIX)-
-
-config: 
+config:
+	rm -rf $(O)
 	mkdir -p $(O)
 	cp $(busybox_CONFIG) $(O)/.config
 	make O=$(O) -C $(srcdir) oldconfig

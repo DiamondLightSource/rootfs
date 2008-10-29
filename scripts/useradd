@@ -22,7 +22,7 @@ COMMENT=
 HOME=/
 PASSWORD=
 SET_PASSWORD=0
-SHELL=/bin/false
+SHELL=/bin/sh
 _UID=
 GID=
 

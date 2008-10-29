@@ -1,0 +1,45 @@
+# Build targets -- to be included at the end of the component make file
+
+# Check that we've been given a version number by now!
+ifndef $(COMPONENT)_VERSION
+$(error Must specify $(COMPONENT)_VERSION)
+endif
+
+
+ifneq ($(version),local)
+# Patch names are of the form PATCHES_<version> and should be placed in a
+# patches subdirectory of the component configuration.
+PATCHES = $(patsubst %,$(CURDIR)/patches/%,$(PATCHES_$(version)))
+
+
+$(srcdir):
+ifdef TAR_FILE
+	mkdir -p $(SOURCE_ROOT) 
+	$(scripts)extract-tar \
+            '$(SOURCE_ROOT)' '$(TAR_FILE)' '$(MD5_SUM)' $(TAR_DIRS)
+	$(rename_source_dir) $(SOURCE_ROOT) $(SOURCE_DIR_NAME)
+ifneq ($(strip $(PATCHES)),)
+	for patch in $(PATCHES); do \
+            patch -p1 -d $(srcdir) <$$patch; \
+        done
+endif
+endif
+
+untar: $(srcdir)
+
+config: untar
+endif
+
+build: 
+
+all: config build
+
+
+clean:
+	rm -rf $(O)
+	make -C $(srcdir) clean
+
+clean-src: 
+	rm -rf $(srcdir)
+
+clean-all: clean clean-src

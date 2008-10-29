@@ -3,7 +3,9 @@ default: deploy-boot-script
 TOP = $(CURDIR)
 include COMMON
 
-O = $(BUILD_ROOT)/
+O = $(BUILD_ROOT)/$(TARGET)/
+
+FAKEROOT = $(TOOLKIT_BIN)/fakeroot
 
 
 # ----------------------------------------------------------------------------

@@ -1,16 +1,19 @@
 # Core environment makefile definitions.
 
-# Note that the build root must be an absolute path!
-BUILD_ROOT = $(TOP)/build/$(TARGET)
-SOURCE_ROOT = $(BUILD_ROOT)/src
+# Note that the build root must be an absolute path.  By default we build in
+# tree, but this should normally be configured on a large scratch workspace.
+BUILD_ROOT = $(TOP)/build
 
 BINUTILS_DIR = /dls_sw/work/common/x-tools/$(COMPILER_PREFIX)
 TAR_DIRS = /dls_sw/prod/common/sources /dls_sw/work/common/sources
+
+TOOLKIT_BIN = $(BUILD_ROOT)/toolkit/bin
 
 MKIMAGE = $(UBOOT_DIR)/mkimage
 
 
 include $(TOP)/CONFIG
+
 ifndef TARGET
 $(error Must specify TARGET)
 endif
@@ -21,7 +24,7 @@ include $(configdir)/CONFIG
 PATH := $(BINUTILS_DIR)/bin:$(PATH)
 
 
-sysroot = $(BUILD_ROOT)/rootfs
+sysroot = $(BUILD_ROOT)/$(TARGET)/rootfs
 scripts = $(TOP)/scripts/
 
 # Support scripts for installation.
