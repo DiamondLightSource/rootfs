@@ -14,7 +14,6 @@ $(sysroot):
 	rm -rf $@
 	mkdir -p $@
 	make -C skeleton install
-#	$(scripts)skeleton $@
 	$(scripts)populate $@ '$(BINUTILS_DIR)' '$(COMPILER_PREFIX)' '$(TERMS)'
 
 $(EXTRAS): $(sysroot)

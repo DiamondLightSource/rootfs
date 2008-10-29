@@ -61,6 +61,11 @@ cron
     4. ISC Cron can be downloaded from http://ftp.isc.org/isc/cron/ as a
        "shell archive" -- this is version 4.1, described by Wikipedia as
        version 4 of Vixie cron.
+    Actually, cron is provided by crosstool, so there's not much point in
+    spending any more time on it.
+
+epics
+    This is probably normally built separately.
 
 nfs-utils
     Web page: http://linux-nfs.org and http://nfs.sourceforge.net

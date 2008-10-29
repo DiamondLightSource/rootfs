@@ -3,7 +3,6 @@
 BUILD_ROOT = /scratch/tmp/rootfs/$(TARGET)
 
 UBOOT_DIR = $(HOME)/tools/u-boot/u-boot/colibri/tools
-BUSYBOX_DIR = $(CURDIR)/extras/busybox/built
 TAR_DIRS += /scratch/incoming
 
 FAKEROOT = /home/share/embedded/local/bin/fakeroot

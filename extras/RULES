@@ -6,11 +6,9 @@ $(error Must specify $(COMPONENT)_VERSION)
 endif
 
 
-# Patch names are of the form PATCHES_<version> or <component>_PATCHES,
-# depending whether they're defined in the component or the configuration.
-PATCHES = \
-    $(patsubst %,$(CURDIR)/patches/%,$(PATCHES_$(version))) \
-    $(patsubst %,$(configdir)/patches/%,$($(COMPONENT)_PATCHES))
+# Patch names are of the form PATCHES_<version> and should be placed in a
+# patches subdirectory of the component configuration.
+PATCHES = $(patsubst %,$(CURDIR)/patches/%,$(PATCHES_$(version)))
 
 
 $(srcdir):

@@ -1,6 +1,5 @@
 # Definitions for Toradex Colibri board: ARM PXA-270 processor.
 
-ARCH = arm
 COMPILER_PREFIX = arm-diamond-linux-gnueabi
 KERNEL_NAME = uImage-bare
 
