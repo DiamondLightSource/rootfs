@@ -37,7 +37,7 @@ all: config build
 
 clean:
 	rm -rf $(O)
-	make -C $(srcdir) clean
+#	make -C $(srcdir) clean
 
 clean-src: 
 	rm -rf $(srcdir)

@@ -14,11 +14,12 @@ NTPD_CONF ?= $(CURDIR)/ntpd.conf
 
 config: 
 	mkdir -p $(O)
-	make -C $(srcdir) distclean
-	cd $(srcdir)  &&  ./configure --host=$(COMPILER_PREFIX) --prefix=/
+	cd $(O)  &&  \
+        $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)' \
+            --prefix=/
 
 build:
-	make -C $(srcdir)
+	make -C $(O)
 
 install:
 	mkdir -m 755 -p $(sysroot)/var/empty/ntp
@@ -26,7 +27,7 @@ install:
 	$(useradd) -u $(OPENNTPD_UID) -g $(OPENNTPD_GID) \
             -c 'OpenNTP daemon' -d /var/empty/ntp -s /sbin/nologin _ntp
 
-	$(install) -m 555 $(srcdir)/ntpd /sbin
+	$(install) -m 555 $(O)/ntpd /sbin
 	$(install) $(NTPD_CONF) /etc
 
 	$(startup) $(CURDIR)/openntpd S210

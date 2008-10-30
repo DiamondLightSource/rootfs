@@ -1,22 +1,23 @@
 TOP = $(CURDIR)/../..
-include ../COMMON
-include ../EXTRAS
+include $(CURDIR)/../COMMON
+include $(CURDIR)/../EXTRAS
 
 nologin_VERSION = local
 
-CFLAGS ?= -O2
+VPATH := $(CURDIR)
 
 config: 
 	mkdir -p $(O)
 
-$(O)nologin: nologin.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+build:
+	make -C $(O) CURDIR=$(CURDIR) -f $(CURDIR)/Makefile do-build
 
-build: $(O)nologin
+do-build: nologin
 
 install:
 	$(install) -m 555 $(O)/nologin /sbin
 
 
 
-include ../RULES
+
+include $(CURDIR)/../RULES

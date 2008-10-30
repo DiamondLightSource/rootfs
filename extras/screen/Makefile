@@ -10,13 +10,15 @@ PATCHES_4.0.3 = 100-cross_compile_fix.patch
 
 
 config: 
-	cd $(srcdir)  &&  ./configure --host=$(COMPILER_PREFIX)
+	mkdir -p $(O)
+	cd $(O)  &&  \
+        $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)' 
 
 build:
-	make -C $(srcdir)
+	make -C $(O)
 
 install:
-	$(install) $(srcdir)/screen /usr/bin 
+	$(install) $(O)/screen /usr/bin 
 
 
 include ../RULES

@@ -10,13 +10,15 @@ PATCHES_4.5.17 = strace-4.5.17-arm.patch
 
 
 config: 
-	cd $(srcdir)  &&  ./configure --host=$(COMPILER_PREFIX) 
+	mkdir -p $(O)
+	cd $(O)  &&  \
+        $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)'
 
 build:
-	make -C $(srcdir)
+	make -C $(O)
 
 install:
-	$(install) -m 555 $(srcdir)/strace /usr/bin 
+	$(install) -m 555 $(O)/strace /usr/bin 
 
 
 include ../RULES
