@@ -20,6 +20,7 @@ mount -t sysfs sysfs /sys
 mount -t tmpfs -o mode=1777 tmpfs /tmp
 
 # Following Debian, a few more tmpfs mounts
+mount -t tmpfs -o mode=755,nosuid varlog /var/log
 mount -t tmpfs -o mode=755,nosuid varrun /var/run
 mount -t tmpfs -o mode=1777,nodev,noexec,nosuid varlock /var/lock
 

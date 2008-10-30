@@ -1,4 +1,4 @@
-default: deploy-boot-script
+default: deploy-rootfs
 
 TOP = $(CURDIR)
 include COMMON
@@ -6,6 +6,9 @@ include COMMON
 O = $(BUILD_ROOT)/$(TARGET)/
 
 FAKEROOT = $(TOOLKIT_BIN)/fakeroot
+
+$(O): 
+	mkdir -p $(O)
 
 
 # ----------------------------------------------------------------------------
@@ -24,7 +27,8 @@ $(EXTRAS): $(sysroot)
 final-install: $(sysroot) $(EXTRAS) 
 
 $(O)imagefile.cpio: final-install
-	cd $(sysroot) && find . | cpio --quiet -H newc -o >$@
+	cd $(sysroot) && \
+        find -name . -o -print | cpio --quiet -H newc -o >$@
 
 .PHONY: $(sysroot) final-install
 
@@ -44,24 +48,58 @@ imagefile: $(O)imagefile.cpio
 # ----------------------------------------------------------------------------
 # Assembles the final images and uploads them into the boot directory.
 
-$(O): 
-	mkdir -p $(O)
+deploy-rootfs: 
+.PHONY: deploy-rootfs
 
-$(O)imagefile.cpio.gz: $(O)imagefile.cpio
-	gzip -c -1 $< >$@
-
-$(O)boot-script: $(O)imagefile.cpio.gz
-	$(scripts)make-boot-script $< $(KERNEL_NAME) '$(BOOTARGS)' $@
 
 $(O)boot-script.image: $(O)boot-script
 	$(MKIMAGE) -T script -d $< $@
 
-deploy-boot-script: $(O)boot-script.image $(O)imagefile.cpio.gz
+ifeq ($(BOOT),initramfs)
+$(O)imagefile.cpio.gz: $(O)imagefile.cpio
+	gzip -c -1 $< >$@
+
+$(O)boot-script: $(O)imagefile.cpio.gz
+	$(scripts)make-boot-script $@ $(KERNEL_NAME) '$(BOOTARGS)' $<
+
+deploy-rootfs: $(O)boot-script.image $(O)imagefile.cpio.gz
 	for f in $^; do \
             scp $$f serv3:/tftpboot; \
         done
+else
 
-.PHONY: deploy-boot-script
+ifeq ($(BOOT),nfs)
+$(O)boot-script: $(O)imagefile.cpio
+	$(scripts)make-nfsboot-script $@ '$(KERNEL_NAME)' '$(BOOTARGS)' \
+            '$(NFS_NFSROOT)' '$(NFS_IP_STRING)'
+
+deploy-rootfs: $(O)imagefile.cpio $(O)boot-script.image
+	ssh -t $(NFS_SERVER) \
+            'sudo rm -rf $(NFS_ROOTFS); mkdir -p $(NFS_ROOTFS)'
+	scp $(O)imagefile.cpio $(NFS_SERVER):/tmp
+	ssh -t $(NFS_SERVER) \
+            'cd $(NFS_ROOTFS) && \
+             sudo cpio -i </tmp/imagefile.cpio'
+	ssh $(NFS_SERVER) rm /tmp/imagefile.cpio
+	scp $(O)boot-script.image serv3:/tftpboot
+
+else
+
+ifeq ($(BOOT),jffs2)
+$(error Don't know how to do jffs2 yet)
+else
+
+ifeq ($(BOOT),)
+deploy-rootfs: $(O)imagefile.cpio
+else
+$(error Boot option BOOT=$(BOOT) not recognised)
+endif
+endif
+endif
+endif
+
+
+
 
 # ----------------------------------------------------------------------------
 

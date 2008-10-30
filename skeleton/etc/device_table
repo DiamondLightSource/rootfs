@@ -1,5 +1,7 @@
 # Device table for makedevs
 #<name>  <type><mode> <uid><gid><major> <minor> <start> <inc> <count>
+# If repeats are specified then <minor> is the initial minor device number,
+# while <start> is use to number the created node.
 
 mem         c   640     0   0   1   1   # Direct access to physical memory
 kmem        c   600     0   0   1   2   # Kernel virtual memory
@@ -24,4 +26,6 @@ ptmx        c   666     0   0   5   2   # PTY master multiplex
 #   mtdblock2:  kernel
 #   mtdblock3:  filesystem
 mtdblock    b   660     0   0  31   0   0   1   4   
+mtd         c   660     0   0  90   0   0   2   4
+mtdr        c   660     0   0  90   1   0   2   4
 

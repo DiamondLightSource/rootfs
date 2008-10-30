@@ -13,13 +13,14 @@ INETD_CONF = ssh stream tcp nowait root /usr/sbin/dropbearmulti dropbear -i
 # EXTRA_LIBS = libcrypt libutil libnss_compat libnsl libnss_nis libnss_files
 
 config: 
-	cd $(srcdir)  &&  ./configure \
-            --host=$(COMPILER_PREFIX) --disable-zlib --disable-lastlog \
-            --disable-largefile 
-	make -C $(srcdir) clean
+	mkdir -p $(O)
+	cd $(O)  &&  \
+        $(srcdir)/configure \
+            --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)' \
+            --disable-zlib --disable-lastlog --disable-largefile 
 
 build:
-	make -C $(srcdir) PROGRAMS="dropbear $(PROGRAMS)" \
+	make -C $(O) PROGRAMS="dropbear $(PROGRAMS)" \
             MULTI=1 SCPPROGRESS=1
 
 # Extra installation of configuration settings
@@ -36,9 +37,9 @@ endif
 
 install: install-root
         # Normal installation (6555 = rw,u+s,g+s)
-	$(install) -m 6555 $(srcdir)/dropbearmulti /usr/sbin 
+	$(install) -m 6555 $(O)/dropbearmulti /usr/sbin 
 	ln -s /usr/sbin/dropbearmulti $(sysroot)/usr/sbin/dropbear
-	for program in $(PROGRAMS); do \
+	for program in $(PROGRAMS) ssh; do \
             ln -s /usr/sbin/dropbearmulti $(sysroot)/usr/bin/$$program; \
         done
 

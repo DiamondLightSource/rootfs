@@ -8,13 +8,15 @@ MD5_SUM_3.2 = 00bfa16d58e034e3c2aa27f390390d30
 
 
 config: 
-	cd $(srcdir)  &&  ./configure --host=$(COMPILER_PREFIX) 
+	mkdir -p $(O)
+	cd $(O)  &&  \
+        $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)' 
 
 build:
-	make -C $(srcdir)
+	make -C $(O)
 
 install:
-	$(install) $(srcdir)/bash /bin
+	$(install) $(O)/bash /bin
 
 # EXTRA_LIBS = libdl
 

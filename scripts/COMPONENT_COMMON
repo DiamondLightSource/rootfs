@@ -14,6 +14,11 @@ version = $($(COMPONENT)_VERSION)
 srcdir = $(SOURCE_ROOT)/$(SOURCE_DIR_NAME)
 O = $(OBJECT_ROOT)/$(COMPONENT)/
 
+# These two are for shared libraries.  To use them export
+#   CPPFLAGS=-I$(includedir) LDFLAGS=-L$(libdir) 
+includedir = $(OBJECT_ROOT)/include
+libdir = $(OBJECT_ROOT)/lib
+
 # Default file extension, can be overridden in component makefile.
 TAR_EXTENSION = .tar.bz2
 TAR_FILE = $(COMPONENT)-$(version)$(TAR_EXTENSION)

@@ -81,3 +81,17 @@ systemtap
 tcp_wrappers
     Web page: ftp://ftp.porcupine.org/pub/security/index.html
     Provides libwrap, needed by nfs-utils.
+
+mtd-utils
+    Web page: http://www.linux-mtd.infradead.org/source.html
+    Download from: ftp://ftp.infradead.org/pub/mtd-utils
+    Git repository: git://git.infradead.org/mtd-utils.git 
+    Needed for jffs2 support.  We only build flash_eraseall and flashcp.
+
+zlib
+    Web page: http://zlib.net/
+    Compression library, needed for mkfs.jffs2.
+
+lzo
+    Web page: http://www.oberhumer.com/opensource/lzo/
+    Another compression library, needed for mkfs.jffs2.

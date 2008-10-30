@@ -3,12 +3,14 @@ include ../COMMON
 include ../EXTRAS
 
 nologin_VERSION = local
-TAR_FILE =
 
+CFLAGS ?= -O2
 
 config: 
 	mkdir -p $(O)
-	ln -fs $(CURDIR)/nologin.c $(O)
+
+$(O)nologin: nologin.c
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 
 build: $(O)nologin
 

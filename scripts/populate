@@ -49,6 +49,7 @@ create_skeleton()
     for dir in $SKELETON; do
         mkdir -p "$TARGET/$dir"  ||  return
     done
+    mknod -m 600 "$TARGET"/dev/console c 5 1
 }
 
 
