@@ -1,0 +1,34 @@
+General Notes
+=============
+
+Booting from an NFS root filesystem
+-----------------------------------
+
+Notes on this here: http://www.faqs.org/docs/Linux-HOWTO/Diskless-root-NFS-other-HOWTO.html#ss4.1[].
+
+Kernel configuration:
+ * Build in support for the cient 's network card (Network device support ---> Select your card driver).
+ * Build in support for the BOOTP protocol (Networking options ---> IP: kernel level autoconfiguration ---> IP: BOOTP support).
+ * Build in support for NFS and root over NFS (File systems ---> Network File Systems ---> NFS file system support and File systems ---> Network File Systems ---> NFS file system support ---> Root over NFS).
+ * Build in support for loopback devices (Block devices ---> Loopback device support).
+
+
+Building with `-mthumb`
+-----------------------
+
+    bash        23% smaller
+    busybox     
+    dropbear    17% smaller
+    mtd-utils   
+    nano        25% smaller
+    nologin     
+    ntp         
+    openntpd    21% smaller
+    portmap     7%  smaller
+    screen      27% smaller
+    strace      16% smaller
+
+We don't use `-mthumb` with dropbear: although the size improvement is
+worthwhile, the performance reduction is significant: 
+    `time ssh $machine true`
+reports 1.3 seconds using thumb, 0.5 with standard architecture!

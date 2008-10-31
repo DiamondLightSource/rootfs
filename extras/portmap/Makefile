@@ -12,12 +12,9 @@ PATCHES_6.0 = exclude-libwrap-6.0.patch out-of-tree.patch
 
 PORTMAP_PROGRAMS = portmap pmap_dump pmap_set
 
-config:
-	mkdir -p $(O)
-	cp $(srcdir)/Makefile $(O)
 
 build:
-	make -C $(O) $(PORTMAP_PROGRAMS) \
+	make -C $(O) -f $(srcdir)/Makefile $(PORTMAP_PROGRAMS) \
             srcdir=$(srcdir) VPATH=$(srcdir) \
             CC=$(COMPILER_PREFIX)-gcc CFLAGS='$(CFLAGS)' NO_TCP_WRAPPER=y
 

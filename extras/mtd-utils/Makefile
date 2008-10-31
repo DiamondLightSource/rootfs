@@ -9,7 +9,6 @@ MTD_TOOLS = flash_eraseall flashcp
 
 
 build:
-	mkdir -p $(O)
 	CROSS=$(CROSS_COMPILE) make -C $(srcdir) WITHOUT_XATTR=1 \
             $(MTD_TOOLS:%=$(O)/%) BUILDDIR=$(O)
 

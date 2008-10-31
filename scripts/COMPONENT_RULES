@@ -5,6 +5,10 @@ ifndef $(COMPONENT)_VERSION
 $(error Must specify $(COMPONENT)_VERSION)
 endif
 
+ifdef CFLAGS_$(COMPONENT)
+CFLAGS = $(CFLAGS_$(COMPONENT))
+endif
+
 
 ifneq ($(version),local)
 # Patch names are of the form PATCHES_<version> and should be placed in a
@@ -27,13 +31,15 @@ endif
 
 untar: $(srcdir)
 
-config: untar
+config: untar $(O)
 endif
 
-build: 
+build: $(O)
 
 all: config build
 
+$(O):
+	mkdir -p $(O)
 
 clean:
 	rm -rf $(O)

@@ -12,7 +12,6 @@ INETD_ENABLE ?= Y
 
 
 config:
-	mkdir -p $(O)
 	cp $(busybox_CONFIG) $(O)/.config
 	make O=$(O) -C $(srcdir) oldconfig
 

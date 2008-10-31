@@ -3,4 +3,4 @@
 # Start and stop openntpd daemon
 
 . /etc/init.d/functions
-do_start_stop_daemon "$1" openntpd -x /sbin/ntpd -u _ntp -- -s
+do_start_stop_daemon "$1" /sbin/ntpd -u _ntp -- -s

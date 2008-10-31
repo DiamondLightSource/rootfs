@@ -5,12 +5,12 @@
 #
 # Requires the following environment:
 #
-#   SOURCE_ROOT     Set to directory where sources will be unpacked
 #   OBJECT_ROOT     Set to build directory for out of tree builds.
 
 COMPONENT = $(notdir $(CURDIR))
 version = $($(COMPONENT)_VERSION)
 
+SOURCE_ROOT = $(BUILD_ROOT)/src
 srcdir = $(SOURCE_ROOT)/$(SOURCE_DIR_NAME)
 O = $(OBJECT_ROOT)/$(COMPONENT)/
 

@@ -3,7 +3,6 @@ default: all
 include $(TOP)/COMMON
 include $(scripts)COMPONENT_COMMON
 
-SOURCE_ROOT = $(BUILD_ROOT)/$(TARGET)/src
 OBJECT_ROOT = $(BUILD_ROOT)/$(TARGET)
 
 export CROSS_COMPILE = $(COMPILER_PREFIX)-

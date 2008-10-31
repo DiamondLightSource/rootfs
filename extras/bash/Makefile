@@ -8,7 +8,6 @@ MD5_SUM_3.2 = 00bfa16d58e034e3c2aa27f390390d30
 
 
 config: 
-	mkdir -p $(O)
 	cd $(O)  &&  \
         $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)' 
 

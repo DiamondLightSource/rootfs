@@ -6,9 +6,6 @@ nologin_VERSION = local
 
 VPATH := $(CURDIR)
 
-config: 
-	mkdir -p $(O)
-
 build:
 	make -C $(O) CURDIR=$(CURDIR) -f $(CURDIR)/Makefile do-build
 

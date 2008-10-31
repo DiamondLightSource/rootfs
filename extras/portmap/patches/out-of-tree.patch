@@ -1,0 +1,12 @@
+--- portmap_6.0/Makefile	2007-05-11 04:02:10.000000000 +0100
++++ portmap/Makefile	2008-10-30 15:56:24.000000000 +0000
+@@ -148,7 +148,7 @@
+ 	    core portmap.man
+ 
+ -include .depend
+-.depend: *.c
+-	$(CC) -MM $(CFLAGS) *.c > .depend
++.depend: $(srcdir)/*.c
++	$(CC) -MM $(CFLAGS) $(srcdir)/*.c > .depend
+ 
+ .PHONY: all clean install

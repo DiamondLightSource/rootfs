@@ -4,18 +4,4 @@
 
 . /etc/init.d/functions
 
-do_start()
-{
-    echo -n 'Starting inetd: '
-    inetd
-    evaluate_retval
-}
-
-do_stop()
-{
-    echo -n 'Stopping inetd: '
-    kill $(cat /var/run/inetd.pid)
-    evaluate_retval
-}
-
-do_start_stop "$@"
+do_start_stop_daemon "$1" /usr/sbin/inetd -p /var/run/inetd.pid

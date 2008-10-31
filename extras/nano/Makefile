@@ -7,7 +7,6 @@ TAR_EXTENSION = .tar.gz
 MD5_SUM_2.0.9 = 2be94dc43fb60fff4626a2401a977220
 
 config: 
-	mkdir -p $(O)
 	cd $(O)  &&  \
         $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)'
 

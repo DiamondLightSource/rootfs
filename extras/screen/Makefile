@@ -10,7 +10,6 @@ PATCHES_4.0.3 = 100-cross_compile_fix.patch
 
 
 config: 
-	mkdir -p $(O)
 	cd $(O)  &&  \
         $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)' 
 

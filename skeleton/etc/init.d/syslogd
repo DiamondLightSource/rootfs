@@ -2,16 +2,5 @@
 
 . /etc/init.d/functions
 
-do_start()
-{
-    start-stop-daemon -S -x /sbin/syslogd -p /var/run/syslogd.pid
-    start-stop-daemon -S -x /sbin/klogd
-}
-
-do_stop()
-{
-    start-stop-daemon -K -x /sbin/klogd
-    start-stop-daemon -K -x /sbin/syslogd -p /var/run/syslogd.pid
-}
-
-do_start_stop "$@"
+do_start_stop_daemon "$1" /sbin/syslogd -p /var/run/syslogd.pid
+do_start_stop_daemon "$1" /sbin/klogd

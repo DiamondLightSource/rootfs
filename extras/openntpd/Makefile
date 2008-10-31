@@ -13,7 +13,6 @@ NTPD_CONF ?= $(CURDIR)/ntpd.conf
 
 
 config: 
-	mkdir -p $(O)
 	cd $(O)  &&  \
         $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)' \
             --prefix=/

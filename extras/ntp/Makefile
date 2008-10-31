@@ -10,14 +10,15 @@ NTP_CONF ?= $(CURDIR)/ntp.conf
 
 
 config: 
-	cd $(srcdir)  &&  ./configure --host=$(COMPILER_PREFIX) \
+	cd $(O)  &&  \
+        $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)' \
             --disable-all-clocks --disable-parse-clocks 
 
 build:
-	make -C $(srcdir)
+	make -C $(O)
 
 install:
-	$(install) -m 555 $(srcdir)/ntpd/ntpd /usr/sbin 
+	$(install) -m 555 $(O)/ntpd/ntpd /usr/sbin 
 	$(install) $(NTP_CONF) /etc
 	$(startup) $(CURDIR)/ntpd S20
 

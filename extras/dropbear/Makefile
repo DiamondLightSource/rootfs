@@ -13,7 +13,6 @@ INETD_CONF = ssh stream tcp nowait root /usr/sbin/dropbearmulti dropbear -i
 # EXTRA_LIBS = libcrypt libutil libnss_compat libnsl libnss_nis libnss_files
 
 config: 
-	mkdir -p $(O)
 	cd $(O)  &&  \
         $(srcdir)/configure \
             --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)' \
