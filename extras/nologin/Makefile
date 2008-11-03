@@ -4,12 +4,7 @@ include $(CURDIR)/../EXTRAS
 
 nologin_VERSION = local
 
-VPATH := $(CURDIR)
-
-build:
-	make -C $(O) CURDIR=$(CURDIR) -f $(CURDIR)/Makefile do-build
-
-do-build: nologin
+build-local: nologin
 
 install:
 	$(install) -m 555 $(O)/nologin /sbin

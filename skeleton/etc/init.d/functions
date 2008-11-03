@@ -20,16 +20,12 @@ evaluate_retval()
 
 do_start()
 {
-    echo -n "Starting $(basename $program): "
     start-stop-daemon -S -x $program "$@"
-    evaluate_retval
 }
 
 do_stop()
 {
-    echo -n "Stopping $(basename $program): "
     start-stop-daemon -K -x $program "$@"
-    evaluate_retval
 }
 
 # Default implementations.
@@ -52,10 +48,19 @@ do_start_stop()
     shift 2
     
     case "$action" in
-        start)      do_start "$@" ;;
-        stop)       do_stop "$@" ;;
-        restart)    do_restart "$@" ;;
-        *)          start_stop_usage "$@" ;;
+        start)
+            echo -n "Starting $(basename $program): "
+            do_start "$@"
+            evaluate_retval
+            ;;
+        stop)
+            echo -n "Stopping $(basename $program): "
+            do_stop "$@" 
+            evaluate_retval
+            ;;
+        restart)
+            do_restart "$@" ;;
+        *)  start_stop_usage "$@" ;;
     esac
 }
 

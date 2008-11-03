@@ -7,10 +7,18 @@ Booting from an NFS root filesystem
 Notes on this here: http://www.faqs.org/docs/Linux-HOWTO/Diskless-root-NFS-other-HOWTO.html#ss4.1[].
 
 Kernel configuration:
- * Build in support for the cient 's network card (Network device support ---> Select your card driver).
- * Build in support for the BOOTP protocol (Networking options ---> IP: kernel level autoconfiguration ---> IP: BOOTP support).
- * Build in support for NFS and root over NFS (File systems ---> Network File Systems ---> NFS file system support and File systems ---> Network File Systems ---> NFS file system support ---> Root over NFS).
- * Build in support for loopback devices (Block devices ---> Loopback device support).
+
+* Build in support for the cient 's network card 
+    (Network device support -> Select your card driver).
+* Build in support for the BOOTP protocol 
+    (Networking options -> IP: kernel level autoconfiguration -> 
+    IP: BOOTP support).
+* Build in support for NFS and root over NFS 
+    (File systems -> Network File Systems -> 
+    NFS file system support and File systems -> Network File Systems -> 
+    NFS file system support -> Root over NFS).
+* Build in support for loopback devices 
+    (Block devices -> Loopback device support).
 
 
 Building with `-mthumb`
@@ -36,3 +44,18 @@ reports 1.3 seconds using thumb, 0.5 with standard architecture!
 
 To Do
 -----
+
+* Sort out network configuration.  The main problem here is how do we
+configure the IP address?  At the moment this is done by a nasty hack
+involving the u-boot configuration, but this won't keep.    
++
+Also want to use the `/etc/network/interfaces` system for network
+configuration, as it will be better understood.
+
+* Similarly sort out initialisation of the dropbear machine identity.  At the
+moment we're using a canned identity because it's a pain for the machine id to
+change on each reboot!
++
+Probably want to create a configuration for automatic initialisation on first
+boot.
+

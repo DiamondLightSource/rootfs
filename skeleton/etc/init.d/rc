@@ -3,6 +3,8 @@
 # System initialisation script.
 . /etc/init.d/functions
 
+export PATH
+
 # Before anything else we must:
 /etc/init.d/makedevs            #   1. populate /dev
 mount_pass 0                    #   2. mount the initial file systems
@@ -23,5 +25,5 @@ mount_pass 0                    #   2. mount the initial file systems
 
     # Do any post init mounts
     mount_pass 2
-} |
+} 2>&1 |
 logger -s -t rc 

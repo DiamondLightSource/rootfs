@@ -1,5 +1,5 @@
-#PATH := $(PATH):/dls_sw/tools/local/bin
-# PATH := $(PATH):
+PATH := $(PATH):/dls_sw/tools/local/bin
+
 
 ASCIIDOC = /home/share/embedded/local/bin/asciidoc
 

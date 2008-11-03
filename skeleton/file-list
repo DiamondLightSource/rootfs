@@ -16,11 +16,7 @@ d 755 /root
 d 755 /etc
 d 755 /etc/init.d
 d 755 /etc/rc.d
-
-c 755 /etc/init.d/rc
-c 644 /etc/init.d/functions
-c 755 /etc/init.d/makedevs
-c 755 /etc/init.d/syslogd
+d 755 /sbin
 
 c 644 /etc/fstab
 c 644 /etc/group
@@ -34,3 +30,17 @@ n 600 /etc/shadow
 n 644 /etc/passwd
 c 644 /etc/profile
 c 644 /etc/resolv.conf
+
+c 755 /etc/init.d/rc
+c 644 /etc/init.d/functions
+c 755 /etc/init.d/makedevs
+c 755 /etc/init.d/syslogd
+
+d 755 /etc/network
+d 755 /etc/network/if-pre-up.d
+d 755 /etc/network/if-up.d
+d 755 /etc/network/if-down.d
+d 755 /etc/network/if-post-down.d
+c 755 /etc/network/interfaces 
+
+c 755 /sbin/nologin

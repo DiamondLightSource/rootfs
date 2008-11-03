@@ -3,27 +3,44 @@
 # Rather hacky network startup: pick up our configuration from the u-boot
 # configuration settings.
 
+. /etc/init.d/functions
 
-BOOT_CONFIG="$(
-    cat /dev/mtdblock1 |
-    tr '\0' '\n' |
-    sed '1{s/^....//;}; /^$/q')"
 
-boot_config()
+# BOOT_CONFIG="$(
+#     cat /dev/mtdblock1 |
+#     tr '\0' '\n' |
+#     sed '1{s/^....//;}; /^$/q')"
+# 
+# boot_config()
+# {
+#     echo "$BOOT_CONFIG" |
+#     sed -n "/^$1=/{s///;p;q;}"
+# }
+# 
+# 
+# 
+# # Quick network hack
+# ifconfig lo 127.0.0.1 netmask 255.0.0.0
+# 
+# IPADDR="$(boot_config ipaddr)"
+# NETMASK="$(boot_config netmask)"
+# 
+# ifconfig eth0 $IPADDR netmask $NETMASK
+# route add default gw 172.23.240.254
+# 
+# hostname $(cat /etc/hostname)
+
+
+do_start()
 {
-    echo "$BOOT_CONFIG" |
-    sed -n "/^$1=/{s///;p;q;}"
+    hostname $(cat /etc/hostname)  &&
+    ifup lo  &&
+    ifup -a
 }
 
+do_stop()
+{
+    ifdown -a
+}
 
-
-# Quick network hack
-ifconfig lo 127.0.0.1 netmask 255.0.0.0
-
-IPADDR="$(boot_config ipaddr)"
-NETMASK="$(boot_config netmask)"
-
-ifconfig eth0 $IPADDR netmask $NETMASK
-route add default gw 172.23.240.254
-
-hostname $(cat /etc/hostname)
+do_start_stop "$@" networking

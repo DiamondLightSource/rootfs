@@ -9,8 +9,21 @@ ifdef CFLAGS_$(COMPONENT)
 CFLAGS = $(CFLAGS_$(COMPONENT))
 endif
 
+all: config build
 
-ifneq ($(version),local)
+
+config: $(O)
+
+build: $(O)
+
+
+ifeq ($(version),local)
+
+build:
+	make -C $(O) -f $(CURDIR)/Makefile build-local \
+            CURDIR=$(CURDIR) VPATH=$(CURDIR)
+
+else
 # Patch names are of the form PATCHES_<version> and should be placed in a
 # patches subdirectory of the component configuration.
 PATCHES = $(patsubst %,$(CURDIR)/patches/%,$(PATCHES_$(version)))
@@ -31,19 +44,16 @@ endif
 
 untar: $(srcdir)
 
-config: untar $(O)
+config: untar
+
 endif
 
-build: $(O)
-
-all: config build
 
 $(O):
 	mkdir -p $(O)
 
 clean:
 	rm -rf $(O)
-#	make -C $(srcdir) clean
 
 clean-src: 
 	rm -rf $(srcdir)

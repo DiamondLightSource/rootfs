@@ -12,10 +12,11 @@ CFLAGS_dropbear = -O2
 
 TERMS = xterm xterm-color screen vt100 vt102
 
-EXTRAS = busybox strace dropbear openntpd portmap 
-EXTRAS += nano bash screen nologin mtd-utils
-EXTRAS += ntpclient procinfo
-
+EXTRAS = busybox strace dropbear portmap 
+EXTRAS += nano bash screen mtd-utils
+EXTRAS += ntpclient procinfo 
+# EXTRAS += openntpd
+EXTRAS += ntp
 
 BOOT = initramfs
 
@@ -29,5 +30,6 @@ NFS_IP_STRING = 172.23.252.9::172.23.240.254:255.255.240.0:colibri::none
 
 
 final-install:
+        # Install the regular nfs mounts.
 	mkdir -p $(patsubst %,$(sysroot)/mnt/%,nfs prod work)
 	cat $(configdir)/fstab >>$(sysroot)/etc/fstab

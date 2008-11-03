@@ -1,0 +1,9 @@
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+    address 172.23.252.9
+    network 172.23.240.0
+    netmask 255.255.240.0
+    broadcast 172.23.192.255
+    gateway 172.23.240.254

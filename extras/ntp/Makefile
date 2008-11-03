@@ -20,7 +20,7 @@ build:
 install:
 	$(install) -m 555 $(O)/ntpd/ntpd /usr/sbin 
 	$(install) $(NTP_CONF) /etc
-	$(startup) $(CURDIR)/ntpd S20
+	$(startup) $(CURDIR)/ntpd S800
 
 
 include ../RULES
