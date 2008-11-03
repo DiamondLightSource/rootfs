@@ -3,5 +3,4 @@
 # Start and stop inetd daemon
 
 . /etc/init.d/functions
-
-do_start_stop_daemon "$1" /usr/sbin/inetd -p /var/run/inetd.pid
+do_start_stop "$1" /usr/sbin/inetd -p /var/run/inetd.pid

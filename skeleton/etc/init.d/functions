@@ -1,18 +1,35 @@
 # Some helper shell functions for init.d scripts.
 
+
+# Functions to simplify starting and stopping daemons.  By default all the
+# start/stop script needs to do is:
+#
+#   . /etc/init.d/functions
+#   do_start_stop "$1" PROGRAM ARGS
+#
+# where PROGRAM is the path to the program to start and ARGS is a list of
+# extra arguments passed to start-stop-daemon.
+#
+# The action can be customised by locally overwriting do_start and do_stop
+# after sourcing this file.
+
 evaluate_retval()
 {
     [ "$?" = 0 ]  &&  echo ' ok.'  ||  echo ' failed.'
 }
 
-do_start_stop()
+do_start()
 {
-    case "$1" in
-        start)      do_start "$@" ;;
-        stop)       do_stop "$@" ;;
-        restart)    do_restart "$@" ;;
-        *)          start_stop_usage "$@" ;;
-    esac
+    echo -n "Starting $(basename $program): "
+    start-stop-daemon -S -x $program "$@"
+    evaluate_retval
+}
+
+do_stop()
+{
+    echo -n "Stopping $(basename $program): "
+    start-stop-daemon -K -x $program "$@"
+    evaluate_retval
 }
 
 # Default implementations.
@@ -28,26 +45,31 @@ start_stop_usage()
     exit 1
 }
 
-# do_start_stop_daemon {start|stop} program <start-stop-daemon args>
-#
-do_start_stop_daemon()
+do_start_stop()
 {
-    action="$1"
-    program="$2"
+    local action="$1"
+    local program="$2"
     shift 2
     
     case "$action" in
-        start)
-            echo -n "Starting $(basename $program): "
-            start-stop-daemon -S -x $program "$@"
-            evaluate_retval
-            ;;
-        stop)
-            echo -n "Stopping $(basename $program): "
-            start-stop-daemon -K -x $program "$@"
-            evaluate_retval
-            ;;
-        restart)    restart "$@" ;;
+        start)      do_start "$@" ;;
+        stop)       do_stop "$@" ;;
+        restart)    do_restart "$@" ;;
         *)          start_stop_usage "$@" ;;
     esac
+}
+
+
+# Mount all file systems with the specified pass number.  We use the fsck
+# pass field for this identification, and we respect the noauto option.
+
+mount_pass()
+{
+    cat /etc/fstab |
+    while read spec file type opts freq passno; do
+        if [ "$passno" = "$1" ]  &&
+           ! { echo "$opts" | grep -qE '(^|,)noauto(,|$)'; }; then
+            mount -t $type -o $opts $spec $file
+        fi
+    done
 }

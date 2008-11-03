@@ -24,6 +24,12 @@ ntp
     The definitive NTP clock synchronisation reference implementation.
     Rather large, but very functional.
 
+ntpclient
+    Web page: http://doolittle.icarus.com/ntpclient/
+    Microscopic ntp client.
+    The writer of this also refers to xntpd, and links to a detailed man page,
+    but I can't find a download.
+
 openntpd
     Web page: http://www.openntpd.org/
     OpenBSD based implementation of NTP.  Really quite a lot smaller than ntp,
@@ -95,3 +101,9 @@ zlib
 lzo
     Web page: http://www.oberhumer.com/opensource/lzo/
     Another compression library, needed for mkfs.jffs2.
+
+udev
+    Web page: http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev.html
+    Download: http://www.kernel.org/pub/linux/utils/kernel/hotplug/
+    This is the original udev, but it looks as if busybox mdev will be good
+    enough for us.

@@ -16,7 +16,7 @@ config:
 	make O=$(O) -C $(srcdir) oldconfig
 
 build: 
-	make -C $(O)
+	CFLAGS='$(CFLAGS)' make -C $(O)
 	make -C $(O) busybox.links
 
 menuconfig: untar

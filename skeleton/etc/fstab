@@ -1,1 +1,5 @@
-# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# <file system> <mount point>   <type>  <options>               <dump>  <pass>
+tmpfs       /tmp            tmpfs   mode=1777                           0   0
+varlog      /var/log        tmpfs   mode=755,nosuid                     0   0
+varrun      /var/run        tmpfs   mode=755,nosuid                     0   0
+varlock     /var/lock       tmpfs   mode=1777,nosuid,nodev,noexec       0   0

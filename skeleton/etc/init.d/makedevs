@@ -1,33 +1,22 @@
 #!/bin/sh
 
-if [ "$1" != start ]; then
-    echo >&2 Not a good idea, seriously.
-    exit 1
-fi
+# Create all the devices.  Before we populate /dev we need to have /proc and
+# /sys mounted: see busybox/docs/mdev.txt.
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t tmpfs mdev /dev
+echo /bin/mdev >/proc/sys/kernel/hotplug
+mdev -s
 
-mount -t tmpfs tmpfs /dev
-makedevs -d /etc/device_table /dev
-
-# The following devices actually come from /proc
+# The following devices actually come from /proc and aren't managed by mdev.
 ln -s /proc/self/fd /dev/fd
 ln -s fd/0 /dev/stdin
 ln -s fd/1 /dev/stdout
 ln -s fd/2 /dev/stderr
 
-# Mount the remaining special file systems
-mount -t proc proc /proc
-mount -t sysfs sysfs /sys
-mount -t tmpfs -o mode=1777 tmpfs /tmp
-
-# Following Debian, a few more tmpfs mounts
-mount -t tmpfs -o mode=755,nosuid varlog /var/log
-mount -t tmpfs -o mode=755,nosuid varrun /var/run
-mount -t tmpfs -o mode=1777,nodev,noexec,nosuid varlock /var/lock
-
-# What about /dev/shm ?  Any use to anyone?
-# Also, a lot of this stuff should move into fstab, really.
-
+# The /dev/pts directory also isn't managed by mdev
 mkdir /dev/pts
 mount -t devpts -o gid=5,mode=0620,noexec,nosuid devpts /dev/pts
+# Finally the /dev/shm directory -- don't know if we want this.
 mkdir /dev/shm
 mount -t tmpfs -o nosuid,nodev devshm /dev/shm

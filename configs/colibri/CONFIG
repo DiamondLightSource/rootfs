@@ -14,12 +14,12 @@ TERMS = xterm xterm-color screen vt100 vt102
 
 EXTRAS = busybox strace dropbear openntpd portmap 
 EXTRAS += nano bash screen nologin mtd-utils
+EXTRAS += ntpclient procinfo
 
 
 BOOT = initramfs
 
 # BOOT = nfs
-#NFS_SERVER = 127.23.244.13
 NFS_SERVER = pc0013
 NFS_ROOTFS = /scratch/mga83/rootfs
 NFS_NFSROOT = $(shell host $(NFS_SERVER) | sed 's/^.*address //'):$(NFS_ROOTFS)
@@ -29,7 +29,5 @@ NFS_IP_STRING = 172.23.252.9::172.23.240.254:255.255.240.0:colibri::none
 
 
 final-install:
-	for dir in nfs prod work; do \
-            mkdir -p $(sysroot)/mnt/$$dir; \
-        done
+	mkdir -p $(patsubst %,$(sysroot)/mnt/%,nfs prod work)
 	cat $(configdir)/fstab >>$(sysroot)/etc/fstab

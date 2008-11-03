@@ -1,20 +1,27 @@
 #!/bin/sh
 
 # System initialisation script.
+. /etc/init.d/functions
 
+# Before anything else we must:
+/etc/init.d/makedevs            #   1. populate /dev
+mount_pass 0                    #   2. mount the initial file systems
+/etc/init.d/syslogd start       #   3. start logging
 
+# Send everything that follows to logger -- can't do this until syslog
+# started.
+{
+    # This troublemaker needs to be run at some point if we're using it.  Need
+    # to do a bit of research: is ldconfig really useful (speeds up loading),
+    # and can we run it in advance?
+    /sbin/ldconfig
 
-# Run all the scripts linked in rc.d
-for script in /etc/rc.d/S*; do
-    $script start
-done
+    # Run all the scripts linked in rc.d
+    for script in /etc/rc.d/S*; do
+        $script start
+    done
 
-mount -a
-/sbin/ldconfig
-
-
-# Still to do:
-# * Perform the nfs mounts in their own startup script.
-# * Possibly move more stuff into fstab and mount in an rc.d script.
-# * Run logger so that the rc output goes into syslog.  Clearly can't start
-#   this until syslogd is running, and have to have /dev initialised first.
+    # Do any post init mounts
+    mount_pass 2
+} |
+logger -s -t rc 
