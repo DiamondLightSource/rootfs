@@ -7,40 +7,67 @@
 # Where <type> is one of:
 #
 #   d   Create new directory
-#   c   Copy file 
+#   f   Copy file 
 #   l   Create link to specified location
 #   n   Create empty file
+#   c   Create character device node
 
-# First the directories.
-d 755 /root
+# First the directories.  This is the complete basic skeleton of a root file
+# system.
+d 755 /bin
+d 755 /dev
 d 755 /etc
+d 755 /lib
+d 755 /mnt
+d 555 /proc
+d 755 /root
+d 755 /sys
+d 755 /sbin
+d 1777 /tmp
+d 755 /usr
+d 755 /usr/bin
+d 755 /usr/lib
+d 755 /usr/sbin
+d 755 /var
+d 755 /var/lock
+d 755 /var/log
+d 755 /var/run
+
+# The console device needs to be present in /dev.  We'll create everything
+# else on the fly, but the kernel needs this to be present at boot.
+c 600 /dev/console 5 1
+
 d 755 /etc/init.d
 d 755 /etc/rc.d
-d 755 /sbin
 
-c 644 /etc/fstab
-c 644 /etc/group
-c 644 /etc/hostname
-c 644 /etc/hosts
-c 644 /etc/inittab
-c 644 /etc/ld.so.conf
-c 644 /etc/nsswitch.conf
-c 644 /etc/services
-n 600 /etc/shadow
+n 755 /etc/first-time.sh
+f 644 /etc/fstab
+f 644 /etc/group
+f 644 /etc/hostname
+f 644 /etc/hosts
+f 644 /etc/inittab
+f 644 /etc/ld.so.conf
+f 644 /etc/nsswitch.conf
 n 644 /etc/passwd
-c 644 /etc/profile
-c 644 /etc/resolv.conf
+f 644 /etc/profile
+f 644 /etc/resolv.conf
+f 644 /etc/services
+n 600 /etc/shadow
 
-c 755 /etc/init.d/rc
-c 644 /etc/init.d/functions
-c 755 /etc/init.d/makedevs
-c 755 /etc/init.d/syslogd
+f 755 /etc/init.d/rc
+f 644 /etc/init.d/functions
+f 755 /etc/init.d/makedevs
+f 755 /etc/init.d/syslogd
 
 d 755 /etc/network
 d 755 /etc/network/if-pre-up.d
 d 755 /etc/network/if-up.d
 d 755 /etc/network/if-down.d
 d 755 /etc/network/if-post-down.d
-c 755 /etc/network/interfaces 
+f 755 /etc/network/interfaces 
 
-c 755 /sbin/nologin
+f 755 /sbin/nologin
+
+# Not sure about these ones:
+f 755 /etc/protocols
+f 755 /etc/rpc

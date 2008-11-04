@@ -19,10 +19,7 @@ build:
             CC=$(COMPILER_PREFIX)-gcc CFLAGS='$(CFLAGS)' NO_TCP_WRAPPER=y
 
 install:
-	for file in $(PORTMAP_PROGRAMS); do \
-            $(install) -m-w $(O)/$$file /sbin; \
-        done
-
+	$(install) -m-w $(PORTMAP_PROGRAMS:%=$(O)/%) /sbin
 	$(startup) $(CURDIR)/portmap S180
 
 

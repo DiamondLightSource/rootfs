@@ -3,20 +3,18 @@
 
 HERE="$(dirname "$0")"
 
-TARGET="${1:?}"
+sysroot="${1:?}"
 BINUTILS_DIR="${2:?}"
 COMPILER_PREFIX="${3:?}"
 TERMS="${4}"
 
 . "$HERE"/functions
 
+# We have two notions of sysroot here.  $sysroot is the root of the *target*
+# filesystem that we're building, while $SYSROOT defined here is the glibc
+# sysroot: in effect we're copying $SYSROOT -> $sysroot.
 SYSROOT="$BINUTILS_DIR/$COMPILER_PREFIX/sys-root"
 
-
-SKELETON='
-    bin dev etc lib proc sbin sys tmp
-    usr usr/bin usr/lib usr/sbin
-    var var/lock var/log var/run'
 
 LIB_FILES='
     ld
@@ -43,17 +41,6 @@ USR_LIB_FILES='
 SO_FILES='.so .so.*'
 
 
-create_skeleton()
-{
-    local dir
-    for dir in $SKELETON; do
-        mkdir -p "$TARGET/$dir"  ||  return
-    done
-    mknod -m 600 "$TARGET"/dev/console c 5 1
-}
-
-
-
     
 # Copies list of files into specified target directory
 #
@@ -71,7 +58,7 @@ populate()
             for suffix in $suffixes; do
                 for file in "$SYSROOT/$dir/$prefix"$suffix; do
                     if [ -e "$file" ]; then
-                        install_file -m-w $file "$TARGET"/$dir || return
+                        install_file -m-w $file /$dir || return 1
                         found=1
                     fi
                 done
@@ -83,7 +70,7 @@ populate()
                 return 1
             fi
         else
-            install_file -m-w "$SYSROOT/$dir/$prefix" "$TARGET"/$dir
+            install_file -m-w "$SYSROOT/$dir/$prefix" /$dir
         fi
     done
 }
@@ -95,11 +82,11 @@ link_usr_lib()
     local file link
 
     for file in "$SYSROOT/usr/lib"/*; do
-        link="$(readlink "$file")"  &&
-        grep -q '^\.\./\.\./lib' <<<"$link"  &&
-        [ -e "$TARGET/usr/lib/$link" ]  &&
-        ln -s "$link" "$TARGET/usr/lib/$(basename "$file")"  ||
-        true
+        if link="$(readlink "$file")"  &&
+           grep -q '^\.\./\.\./lib' <<<"$link"  &&
+           [ -e "$sysroot/usr/lib/$link" ]; then
+            ln -s "$link" "$sysroot/usr/lib/$(basename "$file")"  
+        fi  ||  return 1
     done
 }
 
@@ -108,16 +95,16 @@ install_terminfo()
 {
     for term; do
         local dir=/usr/share/terminfo/${term::1}  
-        mkdir -p "$TARGET/$dir"  &&
-        cp "$SYSROOT/$dir/$term" "$TARGET/$dir"  ||  return 1
+        mkdir -p "$sysroot/$dir"  &&
+        cp "$SYSROOT/$dir/$term" "$sysroot/$dir"  ||  return 1
     done
 }
 
 
-create_skeleton  &&
 populate lib "$LIB_FILES" "-2.7.so $SO_FILES"  &&
-populate usr/lib "$USR_LIB_FILES" "$SO_FILES"  &&  link_usr_lib  &&
+populate usr/lib "$USR_LIB_FILES" "$SO_FILES"  &&
+link_usr_lib  &&
 
-populate sbin ldconfig 
+populate sbin ldconfig &&
 
 install_terminfo $TERMS

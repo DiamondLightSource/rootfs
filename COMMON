@@ -32,4 +32,4 @@ install = $(scripts)install '$(COMPILER_PREFIX)' '$(sysroot)'
 useradd = $(scripts)useradd '$(sysroot)'
 groupadd = $(scripts)groupadd '$(sysroot)'
 startup = $(scripts)/startup '$(sysroot)'
-
+first-time = $(scripts)/first-time '$(sysroot)'

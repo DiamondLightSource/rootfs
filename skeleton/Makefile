@@ -7,6 +7,7 @@ INIT_D = $(CURDIR)/etc/init.d
 
 install:
 	$(scripts)install-files '$(sysroot)' '$(CURDIR)/file-list'
+	$(first-time) '#!/bin/sh'
 
 	$(startup) $(INIT_D)/network S100
 
@@ -14,3 +15,4 @@ install:
             -p'$(ROOT_PASSWORD)' root
 	$(useradd) -c 'daemon' -d /usr/sbin -g 1 -u 1 -s /bin/sh daemon
 #	$(useradd) -c 'User' -d / -g 1 -u 10 -s /bin/sh -p '' user
+

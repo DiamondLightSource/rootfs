@@ -1,0 +1,11 @@
+--- old/configure	2008-11-04 07:51:37.000000000 +0000
++++ patched/configure	2008-11-04 07:51:47.000000000 +0000
+@@ -14796,7 +14796,7 @@
+ See \`config.log' for more details." >&5
+ echo "$as_me: error: cannot run test program while cross compiling
+ See \`config.log' for more details." >&2;}
+-   { (exit 1); exit 1; }; }
++  }
+ else
+   cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */

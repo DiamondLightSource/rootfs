@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Adds commands to be executed on initialisation.
+
+SYSROOT="$1"
+shift
+
+if [ "$1" = -f ]; then
+    shift
+    for file; do
+        cat file 
+    done
+else
+    for arg; do
+        echo "$arg"
+    done
+fi >>"$SYSROOT"/etc/first-time.sh

@@ -17,9 +17,9 @@
 HERE="$(dirname "$0")"
 
 COMPILER_PREFIX="${1:?}"
-SYSROOT="${2:?}"
+sysroot="${2:?}"
 shift 2
 
 . "$HERE"/functions
 
-install_file -S"$SYSROOT" "$@"
+install_file "$@"

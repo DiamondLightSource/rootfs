@@ -27,6 +27,7 @@ $(EXTRAS): $(sysroot)
 final-install: $(sysroot) $(EXTRAS) 
 
 $(O)imagefile.cpio: final-install
+	$(first-time) 'rm /etc/first-time.sh'
 	cd $(sysroot) && \
         find -name . -o -print | cpio --quiet -H newc -o >$@
 

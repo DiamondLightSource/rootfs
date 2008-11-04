@@ -13,10 +13,10 @@ CFLAGS_dropbear = -O2
 TERMS = xterm xterm-color screen vt100 vt102
 
 EXTRAS = busybox strace dropbear portmap 
-EXTRAS += nano bash screen mtd-utils
+EXTRAS += nano bash screen mtd-utils sudo
 EXTRAS += ntpclient procinfo 
 # EXTRAS += openntpd
-EXTRAS += ntp
+EXTRAS += ntp 
 
 BOOT = initramfs
 
@@ -33,3 +33,7 @@ final-install:
         # Install the regular nfs mounts.
 	mkdir -p $(patsubst %,$(sysroot)/mnt/%,nfs prod work)
 	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
+
+ifeq ($(DEVELOPMENT),y)
+DROPBEAR_KEYS = y
+endif

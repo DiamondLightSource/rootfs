@@ -9,9 +9,7 @@ TEST_FILES = testing
 build-local: $(TEST_FILES)
 
 install:
-	for f in $(TEST_FILES); do \
-            $(install) $(O)/$$f /usr/bin; \
-        done
+	$(install) $(TEST_FILES:%=$(O)/%) /usr/bin
 
 
 include $(CURDIR)/../RULES

@@ -6,3 +6,5 @@ UBOOT_DIR = $(HOME)/tools/u-boot/u-boot/$(TARGET)/tools
 # TAR_DIRS += /scratch/incoming
 
 TARGET = colibri
+# TARGET = xlnx-xup
+DEVELOPMENT = y

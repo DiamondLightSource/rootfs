@@ -13,9 +13,7 @@ build:
             $(MTD_TOOLS:%=$(O)/%) BUILDDIR=$(O)
 
 install:
-	for file in $(MTD_TOOLS:%=$(O)/%); do \
-            $(install) -m-w $$file /usr/sbin; \
-        done
+	$(install) -m-w $(MTD_TOOLS:%=$(O)/%) /usr/sbin
 
 
 include ../RULES

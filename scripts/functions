@@ -4,6 +4,10 @@
 # this file:
 #
 #   COMPILER_PREFIX     Compilation prefix
+#
+# The following environment variable must be set before using install_file
+#
+#   sysroot             Target system root
 
 STRIP="$COMPILER_PREFIX-strip"
 
@@ -16,9 +20,17 @@ do_strip()
 
 
 # Installs the file according to its type: the file is copied or linked, and
-# stripped if necessary.
+# stripped if necessary.  This function is designed to behave as much like
+# install as possible.
 #
-#   process_file file target-dir [permission]
+#   process_file [options] file [... file] target-dir 
+#
+#   -n      Suppress attempt to strip file, even if file thinks it's code
+#   -m:     Set file mode (default is to use mode of file being copied)
+#   -o:     Set file owner (default is root)
+#   -g:     Set file group (default is root)
+#   -f      Destination is file name, not directory: only one file can be
+#           copied in this case.
 #
 install_file()
 {
@@ -26,45 +38,65 @@ install_file()
     local MODE=
     local OWNER=
     local GROUP=
+    local FILENAME=0
     local option
-    local sysroot=
 
-    while getopts 'snm:o:g:S:' option; do
+    while getopts 'snm:o:g:f' option; do
         case "$option" in
             s)  DO_STRIP=1 ;;
             n)  DO_STRIP=0 ;;
             m)  MODE="$OPTARG" ;;
             o)  OWNER="$OPTARG" ;;
             g)  GROUP="$OPTARG" ;;
-            S)  sysroot="$OPTARG" ;;
+            f)  FILENAME=1 ;;
             *)  return 1 ;;
         esac
     done
     shift $((OPTIND-1))
-
-    local link 
-    local source="$1"
-    local target="$sysroot$2/$(basename "$source")"
-    local perm="${3:-$(stat -c%a "$source")}"  &&
-    if [ -d "$source" ]; then
-        echo >&2 Cannot install directory "$source"
+    if (($# < 2)); then
+        echo >&2 Missing arguments
         return 1
-    elif link="$(readlink "$source")"; then
-        ln -s "$link" "$target"
-    else
-        cp "$source" "$target"  &&
-        if ((DO_STRIP)); then
-            MODE="${MODE:-$(stat -c%a "$source")}"  &&
-            case "$(file -i "$target")" in
-                *application/x-sharedlib*)  do_strip "$target" ;;
-                *application/x-executable*) do_strip "$target" ;;
-            esac
-        fi  &&
-        if [ -n "$MODE" ]; then
-            chmod "$MODE" "$target";
-        fi  &&
-        if [ -n "$OWNER" -o -n "$GROUP" ]; then
-            chown "$OWNER:$GROUP" "$target"
-        fi  
+    elif ((FILENAME && $# != 2)); then
+        echo >&2 Cannot specify multiple files with filename target
+        return 1
     fi
+
+    # Some evil bash trickery to get at the list of arguments.  Want to
+    # iterate over all of the files -- except for the last one!
+    local -a args=("$@")
+    local target_dir="$sysroot${args[$#-1]}"
+    unset args[$#-1]
+
+    local source
+    for source in "${args[@]}"; do
+        local target
+        if ((FILENAME)); then
+            target="$target_dir"
+        else
+            target="$target_dir/$(basename "$source")"
+        fi
+
+        local link 
+        if [ -d "$source" ]; then
+            echo >&2 Cannot install directory "$source"
+            return 1
+        elif link="$(readlink "$source")"; then
+            ln -s "$link" "$target"
+        else
+            cp "$source" "$target"  &&
+            if ((DO_STRIP)); then
+                MODE="${MODE:-$(stat -c%a "$source")}"  &&
+                case "$(file -i "$target")" in
+                    *application/x-sharedlib*)  do_strip "$target" ;;
+                    *application/x-executable*) do_strip "$target" ;;
+                esac
+            fi  &&
+            if [ -n "$MODE" ]; then
+                chmod "$MODE" "$target";
+            fi  &&
+            if [ -n "$OWNER" -o -n "$GROUP" ]; then
+                chown "$OWNER:$GROUP" "$target"
+            fi  
+        fi
+    done
 }
