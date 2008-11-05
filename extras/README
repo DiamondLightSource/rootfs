@@ -1,11 +1,8 @@
 The following components are defined here.
 
-
-These components already work:
-
 bash
     Web page: http://www.gnu.org/software/bash
-    Maybe to be supported?
+    The standard bash shell, but rather large.
 
 busybox
     Web page: http://www.busybox.net/
@@ -15,9 +12,22 @@ dropbear
     Web page: http://matt.ucc.asn.au/dropbear/dropbear.html
     Small ssh server and client.
 
+mtd-utils
+    Web page: http://www.linux-mtd.infradead.org/source.html
+    Download from: ftp://ftp.infradead.org/pub/mtd-utils
+    Git repository: git://git.infradead.org/mtd-utils.git 
+    Needed for jffs2 support.  We only build flash_eraseall and flashcp.
+
 nano
     Web page: http://www.nano-editor.org/
     Small editor
+
+nfs-utils
+    Web page: http://linux-nfs.org and http://nfs.sourceforge.net
+    Hopefully to fill in some missing busybox functions for NFS mounts.
+    This has been succesfully built (with a surprising amount of effort
+    required) but not yet installed or tried.
+        If we want to export an nfs filesystem we'll want this.
 
 ntp
     Web page: http://www.ntp.org/
@@ -29,6 +39,7 @@ ntpclient
     Microscopic ntp client.
     The writer of this also refers to xntpd, and links to a detailed man page,
     but I can't find a download.
+    Probably too small to be useful, but here for testing.
 
 openntpd
     Web page: http://www.openntpd.org/
@@ -39,6 +50,15 @@ openntpd
 portmap
     Web page: http://neil.brown.name/portmap/
     Required for nfs lock mounting.
+
+procinfo
+    Download from: ftp://ftp.cistron.nl/pub/people/00-OLD/svm/
+    Ancient proc monitoring program, last updated 2001-03-02!
+
+procinfo-ng
+    Web page: http://sourceforge.net/projects/procinfo-ng/
+    Updated proc monitoring program, updated recently, but doesn't look all
+    that great.
 
 screen
     Web page: http://www.gnu.org/software/screen/
@@ -52,37 +72,14 @@ sudo
     Web page: http://www.gratisoft.us/sudo/
     Controled delegation of authority.
 
+testing
+    Example for components with local sources.
+
 
 These components may be implemented at a later date:
 
-cron
-    The big puzzle about cron is *which* version?
-    1. Debian: uses Vixie Cron, version 3.0pl1.  Can't find canonical web site
-       for this version, but `apt-get source cron` fetches the Debian version.
-       Linux From Scratch also have patches to Vixie Cron, see:
-        http://wiki.linuxfromscratch.org/patches/browser/trunk/vixie-cron
-    2. Open embedded fetches 
-        http://ibiblio.org/pub/Linux/system/daemons/cron/cronr8.tar.gz
-       together with a few patches.  Unfortunately that is out of date.  The
-       directory http://ibiblio.org/pub/Linux/system/daemons/cron/ contains a
-       variety of crons, including 3.0pl1.
-    3. FreeBSD and OpenBSD have their own versions of cron, but lets ignore
-       those (porting would be crazy).
-    4. ISC Cron can be downloaded from http://ftp.isc.org/isc/cron/ as a
-       "shell archive" -- this is version 4.1, described by Wikipedia as
-       version 4 of Vixie cron.
-    Actually, cron is provided by crosstool, so there's not much point in
-    spending any more time on it.
-
-    There's also a fairly comprehenstive list of cron implementations at
-        http://ibiblio.org/pub/Linux/system/daemons/cron/!INDEX.html
-
 epics
     This is probably normally built separately.
-
-nfs-utils
-    Web page: http://linux-nfs.org and http://nfs.sourceforge.net
-    Hopefully to fill in some missing busybox functions for NFS mounts.
 
 systemtap
     Web page: http://sourceware.org/systemtap/
@@ -90,24 +87,12 @@ systemtap
 
 tcp_wrappers
     Web page: ftp://ftp.porcupine.org/pub/security/index.html
-    Provides libwrap, needed by nfs-utils.
+    Provides libwrap, possibly wanted by nfs-utils.
 
-mtd-utils
-    Web page: http://www.linux-mtd.infradead.org/source.html
-    Download from: ftp://ftp.infradead.org/pub/mtd-utils
-    Git repository: git://git.infradead.org/mtd-utils.git 
-    Needed for jffs2 support.  We only build flash_eraseall and flashcp.
 
-zlib
-    Web page: http://zlib.net/
-    Compression library, needed for mkfs.jffs2.
 
-lzo
-    Web page: http://www.oberhumer.com/opensource/lzo/
-    Another compression library, needed for mkfs.jffs2.
-
-udev
-    Web page: http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev.html
-    Download: http://www.kernel.org/pub/linux/utils/kernel/hotplug/
-    This is the original udev, but it looks as if busybox mdev will be good
-    enough for us.
+The components below are appropriate for a basic system:
+    busybox         Not optional, unless replaced by something equivalent.
+    dropbear        Ssh server.
+    ntp/openntpd    One of these is needed to provide NTP synchronisation.
+    portmap         Required for NFS locking.

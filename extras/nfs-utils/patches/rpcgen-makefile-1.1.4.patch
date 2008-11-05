@@ -1,0 +1,59 @@
+ This patch is required to work around a disagreeable aspect of the way rpcgen
+ operates: there seems to be no way to persuade rpcgen to properly build "out
+ of tree", so this hacks the makefile for this to work.
+
+diff -ur nfs-utils-1.1.4.original/support/export/Makefile.in nfs-utils-1.1.4/support/export/Makefile.in
+--- nfs-utils-1.1.4.original/support/export/Makefile.in	2008-10-17 15:23:51.000000000 +0100
++++ nfs-utils-1.1.4/support/export/Makefile.in	2008-11-05 10:12:48.000000000 +0000
+@@ -512,15 +512,18 @@
+ @CONFIG_RPCGEN_TRUE@$(RPCGEN):
+ @CONFIG_RPCGEN_TRUE@	make -C $(top_srcdir)/tools/rpcgen all
+ 
+-$(GENFILES_CLNT): %_clnt.c: %.x $(RPCGEN)
++$(CURDIR)/%.x: %.x
++	ln -s $< $@
++
++$(GENFILES_CLNT): %_clnt.c: $(CURDIR)/%.x $(RPCGEN)
+ 	test -f $@ && rm -rf $@ || true
+ 	$(RPCGEN) -l -o $@ $<
+ 
+-$(GENFILES_XDR): %_xdr.c: %.x $(RPCGEN)
++$(GENFILES_XDR): %_xdr.c: $(CURDIR)/%.x $(RPCGEN)
+ 	test -f $@ && rm -rf $@ || true
+ 	$(RPCGEN) -c -o $@ $<
+ 
+-$(GENFILES_H): %.h: %.x $(RPCGEN)
++$(GENFILES_H): %.h: $(CURDIR)/%.x $(RPCGEN)
+ 	test -f $@ && rm -rf $@ || true
+ 	$(RPCGEN) -h -o $@ $<
+ 	rm -f $(top_builddir)/support/include/mount.h
+diff -ur nfs-utils-1.1.4.original/utils/statd/Makefile.in nfs-utils-1.1.4/utils/statd/Makefile.in
+--- nfs-utils-1.1.4.original/utils/statd/Makefile.in	2008-10-17 15:23:57.000000000 +0100
++++ nfs-utils-1.1.4/utils/statd/Makefile.in	2008-11-05 10:13:51.000000000 +0000
+@@ -637,19 +637,22 @@
+ @CONFIG_RPCGEN_TRUE@$(RPCGEN):
+ @CONFIG_RPCGEN_TRUE@	make -C ../../tools/rpcgen all
+ 
+-$(GENFILES_CLNT): %_clnt.c: %.x $(RPCGEN)
++$(CURDIR)/%.x: %.x
++	ln -s $< $@
++
++$(GENFILES_CLNT): %_clnt.c: $(CURDIR)/%.x $(RPCGEN)
+ 	test -f $@ && rm -rf $@ || true
+ 	$(RPCGEN) -l -o $@ $<
+ 
+-$(GENFILES_SVC): %_svc.c: %.x $(RPCGEN)
++$(GENFILES_SVC): %_svc.c: $(CURDIR)/%.x $(RPCGEN)
+ 	test -f $@ && rm -rf $@ || true
+ 	$(RPCGEN) -m -o $@ $<
+ 
+-$(GENFILES_XDR): %_xdr.c: %.x $(RPCGEN)
++$(GENFILES_XDR): %_xdr.c: $(CURDIR)/%.x $(RPCGEN)
+ 	test -f $@ && rm -rf $@ || true
+ 	$(RPCGEN) -c -o $@ $<
+ 
+-$(GENFILES_H): %.h: %.x $(RPCGEN)
++$(GENFILES_H): %.h: $(CURDIR)/%.x $(RPCGEN)
+ 	test -f $@ && rm -rf $@ || true
+ 	$(RPCGEN) -h -o $@ $<
+ 

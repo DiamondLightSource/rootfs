@@ -5,7 +5,7 @@
 BUILD_ROOT = $(TOP)/build
 
 BINUTILS_DIR = /dls_sw/work/common/x-tools/$(COMPILER_PREFIX)
-TAR_DIRS = /dls_sw/prod/common/sources /dls_sw/work/common/sources
+TAR_DIRS = /dls_sw/prod/common/sources /dls_sw/work/targetOS/sources
 
 TOOLKIT_BIN = $(BUILD_ROOT)/toolkit/bin
 

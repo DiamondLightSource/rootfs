@@ -1,0 +1,12 @@
+diff -u procinfo-ng-2.0.217.original/Makefile.in procinfo-ng-2.0.217/Makefile.in
+--- procinfo-ng-2.0.217.original/Makefile.in	2008-08-22 05:55:32.000000000 +0100
++++ procinfo-ng-2.0.217/Makefile.in	2008-11-05 11:04:22.000000000 +0000
+@@ -44,7 +44,7 @@
+ linux26_procstat.cpp linux26_rendercpupagestat.cpp linux26_netstat.cpp \
+ cygwin_procstat.cpp cygwin_rendercpupagestat.cpp \
+ Makefile
+-	$(CXX) $(CFLAGS) $(LDFLAGS) procinfo.cpp -o $@
++	$(CXX) $(CFLAGS) $(LDFLAGS) $< -o $@
+ 
+ #procinfo.o: procinfo.cpp procinfo.h
+ #	$(XX) $(CFLAGS) procinfo.cpp -o procinfo.o

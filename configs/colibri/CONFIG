@@ -14,7 +14,7 @@ TERMS = xterm xterm-color screen vt100 vt102
 
 EXTRAS = busybox strace dropbear portmap 
 EXTRAS += nano bash screen mtd-utils sudo
-EXTRAS += ntpclient procinfo 
+EXTRAS += procinfo-ng
 # EXTRAS += openntpd
 EXTRAS += ntp 
 

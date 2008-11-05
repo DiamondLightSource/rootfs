@@ -59,3 +59,98 @@ change on each reboot!
 Probably want to create a configuration for automatic initialisation on first
 boot.
 
+* Work on powerpc targets, both MVME 5500 and the Xylinx embedded core.
+
+* Wrap up Colibri.
+
+* Work on Libera.  This should be able to use most of the Colibri work, but
+quite a bit more kernel work is likely to be needed.
+
+
+Running Read-Only
+~~~~~~~~~~~~~~~~~
+
+Need to make a decision about read only vs read write.  Here's an interesting
+idea: would it be possible to have a read-write sub-mount of a file system
+mounted read only?  Difficult.
+
+The main issue is JFFS2: the argument against a dedicated read-write partition
+is the small number of erase blocks.  The choices seem to be:
+
+. Forget about it, run read write and stop worrying about it.
+. Create a dedicated writeable partition, and worry about wear on the flash
+file system.
+. Run read only, but create a process with operates as follows:
++
+    mount -o rw,remount /
+    <perform write>
+    mount -o ro,remount /
++
+Tempting...
+
+
+
+Wrapping up Colibri
+~~~~~~~~~~~~~~~~~~~
+
+To wrap up the Colibri work still need to somehow wrap everything up and
+generate a distribution to place on each board.  Actually creating such a
+distribution is a bit involved, as the following components are all required:
+
+. Cross compiler toolchain.  This is currently generated using `crosstool-ng`,
+which is a very satisfactory solution.  The following files record the current
+state:
++
+`$SVN_ROOT/diamond/trunk/tools/crosstool-ng`::
+This builds using version 1.2.2 of `crosstool-ng`, and we're currently using
+target `arm-diamond-linux-gnueabi`.  
++
+`/dls_sw/work/common/x-tools/arm-diamond-linux-gnueabi`::
+This is where the toolchain above is currently installed.  This probably needs
+to move into a more permanent home, probably in `/dls_sw/targetOS/linux-arm`.
++
+`/dls_sw/prod/common/sources`::
+All the sources required by `crosstool-ng`, as well as all the other builds
+here, are placed here.
+
+. U-boot.  Currently building version 1.1.6 with extensive patches for Colibri
+support and a small patch to ensure sensible operation with the power supply
+controller.  The following files are involved:
++
+`$SVN_ROOT/diamond/trunk/tools/u-boot`::
+This builds the appropriate version of `u-boot`, instructions are in the
+`README` file:
++
+    make TARGET=colibri
+    make install TARGET=colibri
++
+Unfortunately the build is not perfectly repeatable (the build date is encoded
+in the `u-boot.bin` file), and the build doesn't have a final home as yet.  At
+present the files below are involved.
++
+`/scratch/tmp/u-boot/colibri/{src,build}`::
+Temporary build directory: this is where the sources are extracted and patched
+and built -- unfortunately, as patching is target specific, it isn't practical
+to share the `src` directory.
++
+`~mga83/tools/u-boot/u-boot/colibri/{u-boot.bin,tools/mkimage}`::
+This is where the default installation is.  The `mkimage` tool is needed by
+the kernel build and for other loadable images, and the `u-boot.bin` image
+is what needs to be written to devices.
++
+`pc50:/scratch/git/u-boot/.git`::
+This is the current Git repository for our local U-boot development work.
+This is not backed up anywhere.
+
+. Kernel.
+
+. Rootfs.
+
+
+
+
+
+Issues Arising
+^^^^^^^^^^^^^^
+
+* The `u-boot` build really needs to be exported to the build server somehow.

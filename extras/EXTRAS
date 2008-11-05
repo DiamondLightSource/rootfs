@@ -10,8 +10,14 @@ OBJDUMP = $(CROSS_COMPILE)objdump
 CPP     = $(CC) -E
 
 
+CFLAGS = 
 CFLAGS += -Werror -Wall -Wextra -Wno-unused-parameter -Wno-trigraphs
 CFLAGS += -std=gnu99 -O2
+CFLAGS += -Wunreachable-code -Wformat-security
+CFLAGS += -Wuninitialized -Winit-self
+CFLAGS += -Wstrict-aliasing=2
+CFLAGS += -Wwrite-strings
+CFLAGS += -Wmissing-noreturn -Wmissing-format-attribute
 
 
 %.s: %.c

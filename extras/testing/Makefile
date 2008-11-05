@@ -4,7 +4,9 @@ include $(CURDIR)/../EXTRAS
 
 testing_VERSION = local
 
-TEST_FILES = testing
+LDLIBS += -lrt
+
+TEST_FILES = testing timestamps 
 
 build-local: $(TEST_FILES)
 

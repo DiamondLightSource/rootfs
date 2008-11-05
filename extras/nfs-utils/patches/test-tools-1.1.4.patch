@@ -1,0 +1,28 @@
+ This patch simply converts the test tools so that they're cross compiled 
+ rather than natively compiled, avoiding disagreeable flag clashes and 
+ possibly adding useful functionality.
+
+diff -ur nfs-utils-1.1.4.original/tools/locktest/Makefile.in nfs-utils-1.1.4/tools/locktest/Makefile.in
+--- nfs-utils-1.1.4.original/tools/locktest/Makefile.in	2008-10-17 15:23:53.000000000 +0100
++++ nfs-utils-1.1.4/tools/locktest/Makefile.in	2008-11-05 10:32:51.000000000 +0000
+@@ -82,7 +82,7 @@
+ AUTOHEADER = @AUTOHEADER@
+ AUTOMAKE = @AUTOMAKE@
+ AWK = @AWK@
+-CC = $(CC_FOR_BUILD)
++CC = @CC@
+ CCDEPMODE = @CCDEPMODE@
+ CC_FOR_BUILD = @CC_FOR_BUILD@
+ CFLAGS = @CFLAGS@
+diff -ur nfs-utils-1.1.4.original/tools/rpcdebug/Makefile.in nfs-utils-1.1.4/tools/rpcdebug/Makefile.in
+--- nfs-utils-1.1.4.original/tools/rpcdebug/Makefile.in	2008-10-17 15:23:53.000000000 +0100
++++ nfs-utils-1.1.4/tools/rpcdebug/Makefile.in	2008-11-05 10:32:51.000000000 +0000
+@@ -87,7 +87,7 @@
+ AUTOHEADER = @AUTOHEADER@
+ AUTOMAKE = @AUTOMAKE@
+ AWK = @AWK@
+-CC = $(CC_FOR_BUILD)
++CC = @CC@
+ CCDEPMODE = @CCDEPMODE@
+ CC_FOR_BUILD = @CC_FOR_BUILD@
+ CFLAGS = @CFLAGS@
