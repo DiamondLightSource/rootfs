@@ -34,14 +34,19 @@ struct timespec diff_ts(struct timespec ts1, struct timespec ts2)
 
 int main(int argc, char **argv)
 {
-    if (argc != 2)
+    if (argc < 2  ||  3 < argc)
     {
-        printf("Usage: %s <interval>\n\nThe interval is in ms\n", argv[0]);
+        printf(
+            "Usage: %s <interval> [<count>]\n\n"
+            "The interval is in ms\n", argv[0]);
         return 1;
     }
 
     double integer;
     double fraction = modf(atof(argv[1]) * 1e-3, &integer);
+
+    int count = argc >= 3 ? atoi(argv[2]) : 0;
+    
     struct timespec sleep;
     sleep.tv_sec = (time_t) integer;
     sleep.tv_nsec = (long) (fraction * NS);
@@ -58,6 +63,8 @@ int main(int argc, char **argv)
     
     while (true)
     {
+        TEST_(nanosleep, &sleep, NULL);
+        
         struct timespec now;
         if (TEST_(clock_gettime, CLOCK_REALTIME, &now))
         {
@@ -67,7 +74,12 @@ int main(int argc, char **argv)
                 now.tv_sec, now.tv_nsec, delta.tv_sec, delta.tv_nsec);
         }
 
-        TEST_(nanosleep, &sleep, NULL);
+        if (count > 0)
+        {
+            count -= 1;
+            if (count == 0)
+                break;
+        }
     }
-//    return 0;
+    return 0;
 }

@@ -140,7 +140,8 @@ is what needs to be written to devices.
 +
 `pc50:/scratch/git/u-boot/.git`::
 This is the current Git repository for our local U-boot development work.
-This is not backed up anywhere.
+This is not backed up anywhere.  The two branches currently of interest are
+`colibri` and `xcep`.
 
 . Kernel.
 
@@ -154,3 +155,6 @@ Issues Arising
 ^^^^^^^^^^^^^^
 
 * The `u-boot` build really needs to be exported to the build server somehow.
+After discussion with Nick we'll move the four tools components
+`crosstool-ng`, `u-boot`, `kernel`, `rootfs` to a `targetOS` path and prepare
+a structure in `/dls_sw/targetOS`.

@@ -1,10 +1,12 @@
 TOP = $(CURDIR)/../..
 include ../COMMON
 
+ntp_VERSION ?= 4.2.4p5
+
 TAR_EXTENSION = .tar.gz
 MD5_SUM_4.2.2p3 = 45cee6d1ebf8fe46e412fd818b8e7b74
 MD5_SUM_4.2.4p5 = eb647e07ecbd6e9e07bf8d3dc555490e
-ntp_VERSION ?= 4.2.4p5
+
 
 NTP_CONF ?= $(CURDIR)/ntp.conf
 

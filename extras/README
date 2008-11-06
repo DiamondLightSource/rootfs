@@ -12,6 +12,10 @@ dropbear
     Web page: http://matt.ucc.asn.au/dropbear/dropbear.html
     Small ssh server and client.
 
+lsof
+    Web page: http://people.freebsd.org/~abe/
+    Lists all open files.  Rather horrible to configure!
+
 mtd-utils
     Web page: http://www.linux-mtd.infradead.org/source.html
     Download from: ftp://ftp.infradead.org/pub/mtd-utils

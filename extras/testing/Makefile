@@ -6,7 +6,7 @@ testing_VERSION = local
 
 LDLIBS += -lrt
 
-TEST_FILES = testing timestamps 
+TEST_FILES = testing timestamps
 
 build-local: $(TEST_FILES)
 

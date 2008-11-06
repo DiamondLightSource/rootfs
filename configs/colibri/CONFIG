@@ -12,11 +12,20 @@ CFLAGS_dropbear = -O2
 
 TERMS = xterm xterm-color screen vt100 vt102
 
-EXTRAS = busybox strace dropbear portmap 
+
+# This one is essential, nothing builds without it.
+EXTRAS += busybox 
+# Components required for normal operation.
+EXTRAS += ntp dropbear portmap
+# Useful debugging tools
+EXTRAS += strace lsof
+# Miscellaneous extra components of variable utility.
 EXTRAS += nano bash screen mtd-utils sudo
-EXTRAS += procinfo-ng
+EXTRAS += procinfo procinfo-ng
+EXTRAS += testing
+# Alternative lightweight NTP clients.
 # EXTRAS += openntpd
-EXTRAS += ntp 
+# EXTRAS += ntpclient
 
 BOOT = initramfs
 

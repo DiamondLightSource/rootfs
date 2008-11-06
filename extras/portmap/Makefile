@@ -4,6 +4,7 @@ include ../COMMON
 portmap_VERSION ?= 6.0
 
 TAR_EXTENSION = .tgz
+SOURCE_SEPARATOR = _
 SOURCE_DIR_NAME = $(COMPONENT)_$(version)
 
 MD5_SUM_6.0 = ac108ab68bf0f34477f8317791aaf1ff
