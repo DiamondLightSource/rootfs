@@ -12,18 +12,20 @@ endif
 all: config build
 
 
-config: $(O)
-
-build: $(O)
-
-
 ifeq ($(version),local)
+# Local builds are handled a little oddly: we need to turn the make file
+# around so that it builds out of $(O), targeting soruces in $(CURDIR).  For
+# local there is no srcdir, so nothing to untar.
+
+untar:
 
 build:
 	make -C $(O) -f $(CURDIR)/Makefile build-local \
             CURDIR=$(CURDIR) VPATH=$(CURDIR)
 
 else
+# For normal builds we have to extract and possibly patch the sources.
+
 # Patch names are of the form PATCHES_<version> and should be placed in a
 # patches subdirectory of the component configuration.
 PATCHES = $(patsubst %,$(CURDIR)/patches/%,$(PATCHES_$(version)))
@@ -45,8 +47,6 @@ endif
 
 untar: $(srcdir)
 
-config: untar
-
 .PHONY: untar do-untar untar-extra patch
 
 endif
@@ -54,6 +54,11 @@ endif
 
 $(O):
 	mkdir -p $(O)
+
+config: $(O) untar
+
+build: $(O) 
+
 
 clean:
 	rm -rf $(O)

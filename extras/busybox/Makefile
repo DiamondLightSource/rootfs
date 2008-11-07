@@ -1,10 +1,23 @@
 TOP = $(CURDIR)/../..
 include ../COMMON
 
-busybox_VERSION ?= 1.12.0
+busybox_VERSION ?= 1.12.1
 
 MD5_SUM_1.11.1 = c64bbb5c0c3e19f12892941a0ae86c48
 MD5_SUM_1.12.0 = 427a4802f27f04484e0833307f0a7844
+MD5_SUM_1.12.1 = dc2e5e00d6fee8229ae92884c68733a7
+
+# These are all bugfixes downloaded from the busybox site.
+PATCHES_1.12.1 = \
+    busybox-1.12.1-basename.patch   \
+    busybox-1.12.1-modprobe.patch   \
+    busybox-1.12.1-grep.patch       \
+    busybox-1.12.1-standalone.patch \
+    busybox-1.12.1-lineedit.patch   \
+    busybox-1.12.1-vi.patch         \
+    busybox-1.12.1-login.patch
+
+
 # If no config specified, use one we prepared earlier.
 busybox_CONFIG ?= $(CURDIR)/configs/busybox-$(version).config
 

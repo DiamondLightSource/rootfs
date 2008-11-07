@@ -44,7 +44,8 @@ BUILD_LIB_ENV = \
 
 config:
 	mkdir -p $(O)/lib
-	ln -sf $(lsof_srcdir)/dialects/linux/*.{c,h} $(O)
+	ln -sf $(lsof_srcdir)/dialects/linux/*.c $(O)
+	ln -sf $(lsof_srcdir)/dialects/linux/*.h $(O)
 	ln -sf $(lsof_srcdir)/lib/Makefile.skel $(O)/lib/Makefile
 	echo ".ds VN $(version)" >$(O)/version
 
