@@ -17,6 +17,7 @@ build:
 install: config build
         # Actually we probably only want fakeroot libfakeroot-0.so.
 	make -C $(O) install
+	cp $(srcdir)/config.guess $(OBJECT_ROOT)/bin
 
 
 include ../RULES

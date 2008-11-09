@@ -1,0 +1,154 @@
+--- screen-4.0.3.original/configure.in	2003-06-03 12:58:24.000000000 +0100
++++ screen-4.0.3/configure.in	2008-11-08 16:14:15.000000000 +0000
+@@ -46,7 +46,7 @@
+ AC_PROG_GCC_TRADITIONAL
+ AC_ISC_POSIX
+ 
+-AC_TRY_RUN(main(){exit(0);},,[
++AC_TRY_LINK(main(){exit(0);},,[
+ if test $CC != cc ; then
+ AC_NOTE(Your $CC failed - restarting with CC=cc)
+ AC_NOTE()
+@@ -56,14 +56,14 @@
+ fi
+ ])
+ 
+-AC_TRY_RUN(main(){exit(0);},,
++AC_TRY_LINK(main(){exit(0);},,
+ exec 5>&2
+ eval $ac_link
+ AC_NOTE(CC=$CC; CFLAGS=$CFLAGS; LIBS=$LIBS;)
+ AC_NOTE($ac_compile)
+ AC_MSG_ERROR(Can't run the compiler - sorry))
+ 
+-AC_TRY_RUN([
++AC_TRY_LINK([
+ main()
+ {
+   int __something_strange_();
+@@ -270,7 +270,7 @@
+ dnl     multiuser screen sessions
+ AC_CHECKING(seteuid)
+ AC_TRY_LINK(,[
+-#if defined(linux) || defined(NeXT) || defined(_AUX_SOURCE) || defined(AUX) || defined(ultrix) || (defined(sun) && defined(SVR4)) || defined(ISC) || defined(sony_news)
++#if defined(NeXT) || defined(_AUX_SOURCE) || defined(AUX) || defined(ultrix) || (defined(sun) && defined(SVR4)) || defined(ISC) || defined(sony_news)
+ seteuid_is_broken(0);
+ #else
+ seteuid(0);
+@@ -358,7 +358,8 @@
+   exit(0);
+ }
+ ], AC_NOTE(- your fifos are usable) fifo=1,
+-AC_NOTE(- your fifos are not usable))
++AC_NOTE(- your fifos are not usable), 
++AC_NOTE(- cross compiling - assuming good fifos) fifo=1)
+ rm -f /tmp/conftest*
+ 
+ if test -n "$fifo"; then
+@@ -408,7 +409,8 @@
+   exit(0);
+ }
+ ], AC_NOTE(- your implementation is ok), 
+-AC_NOTE(- you have a broken implementation) AC_DEFINE(BROKEN_PIPE) fifobr=1)
++AC_NOTE(- you have a broken implementation) AC_DEFINE(BROKEN_PIPE) fifobr=1,
++AC_NOTE(- cross compiling - assuming fifos ok))
+ rm -f /tmp/conftest*
+ fi
+ 
+@@ -470,7 +472,8 @@
+   exit(0);
+ }
+ ], AC_NOTE(- your sockets are usable) sock=1,
+-AC_NOTE(- your sockets are not usable))
++AC_NOTE(- your sockets are not usable),
++AC_NOTE(- cross compiling - assuming good sockets) sock=1)
+ rm -f /tmp/conftest*
+ 
+ if test -n "$sock"; then
+@@ -502,7 +505,8 @@
+ }
+ ],AC_NOTE(- you are normal),
+ AC_NOTE(- unix domain sockets are not kept in the filesystem)
+-AC_DEFINE(SOCK_NOT_IN_FS) socknofs=1)
++AC_DEFINE(SOCK_NOT_IN_FS) socknofs=1,
++AC_NOTE(- cross compiling - assuming normal sockets))
+ rm -f /tmp/conftest*
+ fi
+ 
+@@ -635,7 +639,8 @@
+   exit(0);
+ }
+ ],AC_NOTE(- select is ok),
+-AC_NOTE(- select can't count) AC_DEFINE(SELECT_BROKEN))
++AC_NOTE(- select can't count) AC_DEFINE(SELECT_BROKEN),
++AC_NOTE(- cross compiling - assuming good select))
+ 
+ dnl
+ dnl    ****  termcap or terminfo  ****
+@@ -668,7 +673,9 @@
+ {
+  exit(strcmp(tgoto("%p1%d", 0, 1), "1") ? 0 : 1);
+ }], AC_NOTE(- you use the termcap database),
+-AC_NOTE(- you use the terminfo database) AC_DEFINE(TERMINFO))
++AC_NOTE(- you use the terminfo database) AC_DEFINE(TERMINFO),
++AC_NOTE(- cross compiling - assuming termcap))
++
+ AC_CHECKING(ospeed)
+ AC_TRY_LINK(extern short ospeed;,ospeed=5;,,AC_DEFINE(NEED_OSPEED))
+ 
+@@ -730,6 +737,7 @@
+ AC_DEFINE_UNQUOTED(PTYGROUP,$ptygrp)
+ else
+ 
++
+ AC_CHECKING(default tty permissions/group)
+ rm -f conftest_grp
+ AC_TRY_RUN([
+@@ -803,6 +811,8 @@
+     else
+       AC_NOTE(- can't determine - assume ptys are world accessable)
+     fi
++  ],[
++    AC_NOTE(- cross compiling - assume ptys are world accessable)
+   ]
+ )
+ rm -f conftest_grp
+@@ -1160,7 +1170,8 @@
+   if (strncmp(buf, "cdedef", 6))
+     exit(1);
+   exit(0); /* libc version works properly.  */
+-}], AC_DEFINE(USEBCOPY))
++}], AC_DEFINE(USEBCOPY),,
++AC_NOTE(- cross compiling - assume bcopy) AC_DEFINE(USEBCOPY))
+ 
+ AC_TRY_RUN([
+ #define bcopy(s,d,l) memmove(d,s,l)
+@@ -1175,8 +1186,8 @@
+   if (strncmp(buf, "cdedef", 6))
+     exit(1);
+   exit(0); /* libc version works properly.  */
+-}], AC_DEFINE(USEMEMMOVE))
+-
++}], AC_DEFINE(USEMEMMOVE),,
++AC_NOTE(- cross compiling - assume memmove) AC_DEFINE(USEMEMMOVE))
+ 
+ AC_TRY_RUN([
+ #define bcopy(s,d,l) memcpy(d,s,l)
+@@ -1191,7 +1202,7 @@
+   if (strncmp(buf, "cdedef", 6))
+     exit(1);
+   exit(0); /* libc version works properly.  */
+-}], AC_DEFINE(USEMEMCPY))
++}], AC_DEFINE(USEMEMCPY),,AC_NOTE(- cross compiling))
+ 
+ AC_MSG_CHECKING(long file names)
+ (echo 1 > /tmp/conftest9012345) 2>/dev/null
+@@ -1266,7 +1277,7 @@
+ dnl Ptx bug workaround -- insert -lc after -ltermcap
+ test -n "$seqptx" && LIBS="-ltermcap -lc -lsocket -linet -lnsl -lsec -lseq"
+ 
+-AC_TRY_RUN(main(){exit(0);},,AC_MSG_ERROR(Can't run the compiler - internal error. Sorry.))
++AC_TRY_LINK(main(){exit(0);},,AC_MSG_ERROR(Can't run the compiler - internal error. Sorry.),)
+ 
+ ETCSCREENRC="\"/usr/local/etc/screenrc\""
+ if test -n "$prefix"; then
