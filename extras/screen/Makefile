@@ -10,7 +10,7 @@ PATCHES_4.0.3 = configure-4.0.3.patch
 
 
 config: 
-	cd $(srcdir)  &&  autoconf -o $(O)/configure
+	cd $(srcdir)  &&  $(AUTOCONF) -o $(O)/configure
 	cd $(O)  &&  \
         ./configure --srcdir=$(srcdir) CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) 

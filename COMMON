@@ -34,3 +34,6 @@ useradd = $(scripts)useradd '$(sysroot)'
 groupadd = $(scripts)groupadd '$(sysroot)'
 startup = $(scripts)/startup '$(sysroot)'
 first-time = $(scripts)/first-time '$(sysroot)'
+
+# Our local autoconf
+AUTOCONF = $(TOOLKIT_BIN)/autoconf

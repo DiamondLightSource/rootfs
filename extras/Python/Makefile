@@ -13,12 +13,12 @@ PATCHES_2.6 = Python2.6-configure.patch
 O-target = $(O)/target
 O-build = $(O)/build
 
-config:
+config-broken:
 	mkdir -p $(O-target) $(O-build)
 
         # Configure the target.  For this we need to take the patched
         # configuration into account.
-	cd $(srcdir)  &&  autoconf -o $(O-target)/configure
+	cd $(srcdir)  &&  $(AUTOCONF) -o $(O-target)/configure
 	cd $(O-target)  &&  \
         ./configure --srcdir=$(srcdir) CFLAGS='$(CFLAGS)' \
              --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
@@ -30,7 +30,7 @@ config:
 $(O-build)/python:
 	make -C $(O-build) python Parser/pgen
 
-build: $(O-build)/python
+build-broken: $(O-build)/python
 	make -C $(O-target) \
             HOSTPYTHON=$(O-build)/python HOSTPGEN=$(O-build)/Parser/pgen \
             CROSS_COMPILE=yes
