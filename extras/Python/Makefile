@@ -1,16 +1,39 @@
 TOP = $(CURDIR)/../..
 include ../COMMON
 
-Python_VERSION ?= 2.5.2
+Python_VERSION ?= 2.6
 
 MD5_SUM_2.5.2 = afb5451049eda91fbde10bd5a4b7fadc
+MD5_SUM_2.6   = 837476958702cb386c657b5dba61cdc5
 
-config: 
-# 	cd $(O)  &&  \
-#         $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)'
+PATCHES_2.6 = Python2.6-configure.patch
 
-build:
-# 	make -C $(O)
+# Python is rather tedious -- we need to build it twice!  The problem is, we
+# need a working copy of Python for the target build.
+O-target = $(O)/target
+O-build = $(O)/build
+
+config:
+	mkdir -p $(O-target) $(O-build)
+
+        # Configure the target.  For this we need to take the patched
+        # configuration into account.
+	cd $(srcdir)  &&  autoconf -o $(O-target)/configure
+	cd $(O-target)  &&  \
+        ./configure --srcdir=$(srcdir) CFLAGS='$(CFLAGS)' \
+             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
+
+        # Also configure the build so we can make a local build.  For this we
+        # can use the stock configuration.
+	cd $(O-build)  &&  $(srcdir)/configure 
+
+$(O-build)/python:
+	make -C $(O-build) python Parser/pgen
+
+build: $(O-build)/python
+	make -C $(O-target) \
+            HOSTPYTHON=$(O-build)/python HOSTPGEN=$(O-build)/Parser/pgen \
+            CROSS_COMPILE=yes
 
 install:
 

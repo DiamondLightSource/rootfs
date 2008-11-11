@@ -1,0 +1,131 @@
+# ------------------------------------------------------------------------
+Patch: python-cross-compile
+For: Python 2.2.1
+From: Klaus Reimer <k@ailis.de>
+Desc: Adds some modifications to support cross compiling
+
+Cross-compiling Python is difficult. This patch makes this process a little
+bit easier. After applying this patch it is possible to specify the use of
+a host compiled python binary and parser-generator (HOSTPYTHON and HOSTPGEN)
+and it disables the removing of modules if they fail the import-check if
+the variable CROSS_COMPILE is set to "yes".
+
+Check out my cross compiling howto for more details:
+
+http://www.ailis.de/~k/knowledge/crosscompiling/python.php
+# ------------------------------------------------------------------------
+
+diff -u Python-2.2.1.orig/Makefile.pre.in Python-2.2.1/Makefile.pre.in
+--- Python-2.2.1.orig/Makefile.pre.in	Tue Mar  5 14:52:29 2002
++++ Python-2.2.1/Makefile.pre.in	Sun May  5 18:17:41 2002
+@@ -152,6 +152,7 @@
+ 
+ PYTHON=		python$(EXE)
+ BUILDPYTHON=	python$(BUILDEXE)
++HOSTPYTHON=	./$(BUILDPYTHON)
+ 
+ # === Definitions added by makesetup ===
+ 
+@@ -179,6 +180,8 @@
+ # Parser
+ PGEN=		Parser/pgen$(EXE)
+ 
++HOSTPGEN=	$(PGEN)
++
+ POBJS=		\
+ 		Parser/acceler.o \
+ 		Parser/grammar1.o \
+@@ -303,8 +306,8 @@
+ # Build the shared modules
+ sharedmods: $(BUILDPYTHON)
+ 	case $$MAKEFLAGS in \
+-	*-s*) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' ./$(BUILDPYTHON) -E $(srcdir)/setup.py -q build;; \
+-	*) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' ./$(BUILDPYTHON) -E $(srcdir)/setup.py build;; \
++	*-s*) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' $(HOSTPYTHON) -E $(srcdir)/setup.py -q build;; \
++	*) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' $(HOSTPYTHON) -E $(srcdir)/setup.py build;; \
+ 	esac
+ 
+ # buildno should really depend on something like LIBRARY_SRC
+@@ -404,7 +407,7 @@
+ 
+ 
+ $(GRAMMAR_H) $(GRAMMAR_C): $(PGEN) $(GRAMMAR_INPUT)
+-		-$(PGEN) $(GRAMMAR_INPUT) $(GRAMMAR_H) $(GRAMMAR_C)
++		-$(HOSTPGEN) $(GRAMMAR_INPUT) $(GRAMMAR_H) $(GRAMMAR_C)
+ 
+ $(PGEN):	$(PGENOBJS)
+ 		$(CC) $(OPT) $(PGENOBJS) $(LIBS) -o $(PGEN)
+@@ -641,10 +644,10 @@
+ 	done
+ 	$(INSTALL_DATA) $(srcdir)/LICENSE $(LIBDEST)/LICENSE.txt
+ 	PYTHONPATH=$(LIBDEST) \
+-		./$(BUILDPYTHON) -tt $(LIBDEST)/compileall.py -x badsyntax \
++		$(HOSTPYTHON) -tt $(LIBDEST)/compileall.py -x badsyntax \
+ 	        $(LIBDEST)
+ 	PYTHONPATH=$(LIBDEST) \
+-		./$(BUILDPYTHON) -O $(LIBDEST)/compileall.py -x badsyntax $(LIBDEST)
++		$(HOSTPYTHON) -O $(LIBDEST)/compileall.py -x badsyntax $(LIBDEST)
+ 
+ # Create the PLATDIR source directory, if one wasn't distributed..
+ $(srcdir)/Lib/$(PLATDIR):
+@@ -733,7 +736,8 @@
+ # Install the dynamically loadable modules
+ # This goes into $(exec_prefix)
+ sharedinstall:
+-	./$(BUILDPYTHON) -E $(srcdir)/setup.py install \
++	CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' CROSS_COMPILE='$(CROSS_COMPILE)' \
++		$(HOSTPYTHON) -E $(srcdir)/setup.py install \
+ 		--install-scripts=$(BINDIR) \
+ 		--install-platlib=$(DESTSHARED)
+ 
+diff -u Python-2.2.1.orig/setup.py Python-2.2.1/setup.py
+--- Python-2.2.1.orig/setup.py	Tue Mar 26 14:43:04 2002
++++ Python-2.2.1/setup.py	Sun May  5 18:17:49 2002
+@@ -164,25 +164,29 @@
+         try:
+             __import__(ext.name)
+         except ImportError:
+-            self.announce('WARNING: removing "%s" since importing it failed' %
+-                          ext.name)
+-            assert not self.inplace
+-            fullname = self.get_ext_fullname(ext.name)
+-            ext_filename = os.path.join(self.build_lib,
+-                                        self.get_ext_filename(fullname))
+-            os.remove(ext_filename)
++            if os.environ.get('CROSS_COMPILE') != "yes":
++                self.announce('WARNING: removing "%s" since importing it failed' %
++                              ext.name)
++                assert not self.inplace
++                fullname = self.get_ext_fullname(ext.name)
++                ext_filename = os.path.join(self.build_lib,
++                                            self.get_ext_filename(fullname))
++                os.remove(ext_filename)
+ 
+-            # XXX -- This relies on a Vile HACK in
+-            # distutils.command.build_ext.build_extension().  The
+-            # _built_objects attribute is stored there strictly for
+-            # use here.
+-            # If there is a failure, _built_objects may not be there,
+-            # so catch the AttributeError and move on.
+-            try:
+-                for filename in self._built_objects:
+-                    os.remove(filename)
+-            except AttributeError:
+-                self.announce('unable to remove files (ignored)')
++                # XXX -- This relies on a Vile HACK in
++                # distutils.command.build_ext.build_extension().  The
++                # _built_objects attribute is stored there strictly for
++                # use here.
++                # If there is a failure, _built_objects may not be there,
++                # so catch the AttributeError and move on.
++                try:
++                    for filename in self._built_objects:
++                        os.remove(filename)
++                except AttributeError:
++                    self.announce('unable to remove files (ignored)')
++            else:
++                self.announce('WARNING: "%s" failed importing, but we leave it because we are cross-compiling' %
++                              ext.name)
+ 
+     def get_platform (self):
+         # Get value of sys.platform

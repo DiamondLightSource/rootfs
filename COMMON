@@ -19,6 +19,7 @@ $(error Must specify TARGET)
 endif
 configdir = $(TOP)/configs/$(TARGET)
 include $(configdir)/CONFIG
+-include $(TOP)/CONFIG.local
 
 
 PATH := $(BINUTILS_DIR)/bin:$(PATH)

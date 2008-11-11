@@ -131,3 +131,19 @@ The components below are appropriate for a basic system:
 `dropbear`:: Ssh server.
 `ntp` or `openntpd`:: One of these is needed to provide NTP synchronisation.
 `portmap`:: Required for NFS locking.
+
+
+Toolkit Components
+==================
+
+One toolkit component is needed for building the root filesystem.
+
+`fakeroot`::
+Web page: http://fakeroot.alioth.debian.org/
++
+Unfortunately, finding the right place to download `fakeroot` is remarkably
+difficult.  It's part of Debian and Ubuntu, but the two distributions are very
+different!
++
+OpenEmbedded download from ftp://ftp.debian.org/debian/pool/main/f/fakeroot/[]
+which seems the best reference.
