@@ -9,7 +9,7 @@ MD5_SUM_1.10.1 = 052a1b5474b3681bc5f3167d2b3711a8
 
 
 config: 
-	cd $(O)  &&  $(srcdir)/configure --prefix=$(OBJECT_ROOT)
+	cd $(O)  &&  $(srcdir)/configure --prefix=$(TOOLKIT_ROOT)
 
 build:
 	make -C $(O)
@@ -17,7 +17,7 @@ build:
 install: config build
         # Actually we probably only want fakeroot libfakeroot-0.so.
 	make -C $(O) install
-	cp $(srcdir)/config.guess $(OBJECT_ROOT)/bin
+	cp $(srcdir)/config.guess $(TOOLKIT_ROOT)/bin
 
 
 include ../RULES

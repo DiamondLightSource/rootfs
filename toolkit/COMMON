@@ -1,6 +1,7 @@
-default: all
-
 include $(TOP)/COMMON
 include $(scripts)COMPONENT_COMMON
 
-OBJECT_ROOT = $(BUILD_ROOT)/toolkit/
+TOOLKIT_ROOT = $(BUILD_ROOT)/toolkit
+OBJECT_ROOT = $(TOOLKIT_ROOT)/build/
+
+default: all

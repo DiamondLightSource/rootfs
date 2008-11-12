@@ -10,7 +10,8 @@ PATCHES_2.0.217 = makefile-2.0.217.patch
 
 config: 
 	cd $(O)  &&  \
-        $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)' 
+        $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
 
 build:
 	make -C $(O) VPATH=$(srcdir)

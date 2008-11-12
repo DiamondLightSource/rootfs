@@ -14,7 +14,8 @@ NTPD_CONF ?= $(CURDIR)/ntpd.conf
 
 config: 
 	cd $(O)  &&  \
-        $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)' \
+        $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --prefix=/
 
 build:

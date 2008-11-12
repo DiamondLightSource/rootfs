@@ -13,7 +13,7 @@ PATCHES_2.6 = Python2.6-configure.patch
 O-target = $(O)/target
 O-build = $(O)/build
 
-config-broken:
+config:
 	mkdir -p $(O-target) $(O-build)
 
         # Configure the target.  For this we need to take the patched
@@ -30,12 +30,14 @@ config-broken:
 $(O-build)/python:
 	make -C $(O-build) python Parser/pgen
 
-build-broken: $(O-build)/python
+build: $(O-build)/python
 	make -C $(O-target) \
             HOSTPYTHON=$(O-build)/python HOSTPGEN=$(O-build)/Parser/pgen \
             CROSS_COMPILE=yes
 
 install:
+	echo Don\'t know what to do here
+	false
 
 
 
@@ -56,3 +58,5 @@ include ../RULES
 # Need to define HAVE_DEV_PTMX and try and catch any others like this.  Maybe
 # the simplest thing will be to fudge this test, but properly it should be
 # overridden from outside.
+
+# The current build works okish, but we don't know how to install it.

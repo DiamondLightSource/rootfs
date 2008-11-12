@@ -1,5 +1,3 @@
-default: all
-
 include $(TOP)/COMMON
 include $(scripts)COMPONENT_COMMON
 
@@ -7,3 +5,5 @@ OBJECT_ROOT = $(BUILD_ROOT)/$(TARGET)
 
 export CROSS_COMPILE = $(COMPILER_PREFIX)-
 BUILD_TYPE = $(shell $(TOOLKIT_BIN)/config.guess)
+
+default: all

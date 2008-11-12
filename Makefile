@@ -1,5 +1,3 @@
-default: deploy-rootfs
-
 TOP = $(CURDIR)
 include COMMON
 
@@ -118,3 +116,5 @@ lssys:
 
 
 .PHONY: build_extras clean-all lssys $(EXTRAS:%=build_%)
+
+default: deploy-rootfs

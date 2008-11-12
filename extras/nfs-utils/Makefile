@@ -14,7 +14,8 @@ config:
         # We disable libwrap and libblkid in the configuration so that we
         # don't have any external dependencies.
 	cd $(O)  &&  \
-        $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)' \
+        $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --disable-gss --disable-nfsv4 --without-tcp-wrappers \
             --disable-uuid
 

@@ -1,5 +1,10 @@
 # Core environment makefile definitions.
 
+# Define the default target straight away to avoid accidentally picking up
+# the wrong target.
+default:
+
+
 # Note that the build root must be an absolute path.  By default we build in
 # tree, but this should normally be configured on a large scratch workspace.
 BUILD_ROOT = $(TOP)/build

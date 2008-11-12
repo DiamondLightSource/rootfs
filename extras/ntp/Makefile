@@ -13,7 +13,8 @@ NTP_CONF ?= $(CURDIR)/ntp.conf
 
 config: 
 	cd $(O)  &&  \
-        $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)' \
+        $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --disable-all-clocks --disable-parse-clocks 
 
 build:

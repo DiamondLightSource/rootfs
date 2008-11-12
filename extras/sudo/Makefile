@@ -11,7 +11,8 @@ PATCHES_1.6.9p17 = cross-compile-1.6.9p17.patch
 
 config: 
 	cd $(O)  &&  \
-        $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)' \
+        $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --without-pam --with-editor=/bin/vi
 
 build:

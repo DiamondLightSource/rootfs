@@ -11,7 +11,8 @@ PATCHES_4.5.17 = strace-4.5.17-arm.patch
 
 config: 
 	cd $(O)  &&  \
-        $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)'
+        $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
 
 build:
 	make -C $(O)

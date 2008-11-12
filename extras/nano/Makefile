@@ -8,7 +8,8 @@ MD5_SUM_2.0.9 = 2be94dc43fb60fff4626a2401a977220
 
 config: 
 	cd $(O)  &&  \
-        $(srcdir)/configure --host=$(COMPILER_PREFIX) CFLAGS='$(CFLAGS)'
+        $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
 
 build:
 	make -C $(O)

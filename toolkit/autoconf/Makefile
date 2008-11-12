@@ -8,7 +8,7 @@ MD5_SUM_2.63 = 7565809ed801bb5726da0631ceab3699
 
 config: 
 	cd $(O)  &&  \
-        M4=$(TOOLKIT_BIN)/m4 $(srcdir)/configure --prefix=$(OBJECT_ROOT) 
+        M4=$(TOOLKIT_BIN)/m4 $(srcdir)/configure --prefix=$(TOOLKIT_ROOT) 
 
 build:
 	make -C $(O)

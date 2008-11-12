@@ -19,6 +19,10 @@ PATCHES_1.12.1 = \
     busybox-1.12.1-vi.patch         \
     busybox-1.12.1-login.patch
 
+# Patches downloaded from http://busybox.net/downloads/fixes-1.12.2/
+PATCHES_1.12.2 = \
+    busybox-1.12.2-lineedit.patch
+
 
 # If no config specified, use one we prepared earlier.
 busybox_CONFIG ?= $(CURDIR)/configs/busybox-$(version).config
