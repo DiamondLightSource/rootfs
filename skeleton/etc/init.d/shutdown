@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Shutdown script.  Don't run this directly, instead use `halt` or `reboot`.
+
+export PATH
+
+# Try to make the shutdown process as orderly as possible.
+/etc/init.d/syslogd stop
+umount -arf
