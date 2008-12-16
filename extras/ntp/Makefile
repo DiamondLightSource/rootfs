@@ -10,6 +10,8 @@ MD5_SUM_4.2.4p5 = eb647e07ecbd6e9e07bf8d3dc555490e
 
 NTP_CONF ?= $(CURDIR)/ntp.conf
 
+NTP_PROGRAMS ?= ntpd/ntpd util/ntptime ntpq/ntpq
+
 
 config: 
 	cd $(O)  &&  \
@@ -21,7 +23,7 @@ build:
 	make -C $(O)
 
 install:
-	$(install) -m 555 $(O)/ntpd/ntpd /usr/sbin 
+	$(install) $(NTP_PROGRAMS:%=$(O)/%) /usr/sbin
 	$(install) $(NTP_CONF) /etc
 	$(startup) $(CURDIR)/ntpd S800
 

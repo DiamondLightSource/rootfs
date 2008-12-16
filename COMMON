@@ -1,4 +1,4 @@
-# Core environment makefile definitions.
+# Core environment makefile definitions.  This is included by *all* makefiles.
 
 # Define the default target straight away to avoid accidentally picking up
 # the wrong target.
@@ -27,7 +27,7 @@ include $(configdir)/CONFIG
 -include $(TOP)/CONFIG.local
 
 
-PATH := $(BINUTILS_DIR)/bin:$(PATH)
+export PATH := $(TOOLKIT_BIN):$(BINUTILS_DIR)/bin:$(PATH)
 
 
 sysroot = $(BUILD_ROOT)/$(TARGET)/rootfs

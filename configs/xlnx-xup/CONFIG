@@ -1,35 +1,23 @@
 # Definitions for Toradex Colibri board: ARM PXA-270 processor.
 
 COMPILER_PREFIX = arm-diamond-linux-gnueabi
-KERNEL_NAME = uImage-bare
+# KERNEL_NAME = uImage-bare
 
-ROOT_PASSWORD = Jungle
+ROOT_PASSWORD = xilinx
 
 SSH_AUTHORIZED_KEYS = $(configdir)/authorized_keys
 
-CFLAGS = -O2 -mthumb
-CFLAGS_dropbear = -O2
-
 TERMS = xterm xterm-color screen vt100 vt102
 
-
-# This one is essential, nothing builds without it.
-EXTRAS += busybox 
-# Components required for normal operation.
-EXTRAS += ntp dropbear portmap
-# Useful debugging tools
-EXTRAS += strace lsof
-# Miscellaneous extra components of variable utility.
+EXTRAS = busybox strace dropbear portmap 
 EXTRAS += nano bash screen mtd-utils sudo
-EXTRAS += procinfo procinfo-ng
-EXTRAS += testing
-# Alternative lightweight NTP clients.
+EXTRAS += ntpclient procinfo 
 # EXTRAS += openntpd
-# EXTRAS += ntpclient
+EXTRAS += ntp 
 
 BOOT = initramfs
-# BOOT = nfs
 
+# BOOT = nfs
 NFS_SERVER = pc0013
 NFS_ROOTFS = /scratch/mga83/rootfs
 NFS_NFSROOT = $(shell host $(NFS_SERVER) | sed 's/^.*address //'):$(NFS_ROOTFS)

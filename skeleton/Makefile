@@ -9,7 +9,8 @@ install:
 	$(scripts)install-files '$(sysroot)' '$(CURDIR)/file-list'
 	$(first-time) '#!/bin/sh'
 
-	$(startup) $(INIT_D)/network S100
+#	$(startup) $(INIT_D)/network S100
+	$(startup) $(INIT_D)/network.mtd S100
 
 	@$(useradd) -c 'root' -d /root -g 0 -u 0  -s /bin/sh \
             -p'$(ROOT_PASSWORD)' root
