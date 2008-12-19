@@ -54,6 +54,7 @@ f 644 /etc/resolv.conf
 f 644 /etc/services
 n 600 /etc/shadow
 
+f 755 /etc/init.d/rcS
 f 755 /etc/init.d/rc
 f 644 /etc/init.d/functions
 f 755 /etc/init.d/makedevs

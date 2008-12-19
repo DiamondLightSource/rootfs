@@ -70,7 +70,7 @@ do_start_stop()
 
 mount_pass()
 {
-    cat /etc/fstab |
+    sed '/^#/d' /etc/fstab |
     while read spec file type opts freq passno; do
         if [ "$passno" = "$1" ]  &&
            ! { echo "$opts" | grep -qE '(^|,)noauto(,|$)'; }; then

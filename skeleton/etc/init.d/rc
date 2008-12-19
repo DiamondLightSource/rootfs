@@ -1,14 +1,10 @@
 #!/bin/sh
 
-# System initialisation script.
-. /etc/init.d/functions
+# System initialisation script.  
 
 export PATH
+. /etc/init.d/functions
 
-# Before anything else we must:
-/etc/init.d/makedevs            #   1. populate /dev
-mount_pass 0                    #   2. mount the initial file systems
-/etc/init.d/syslogd start       #   3. start logging
 
 # Send everything that follows to logger -- can't do this until syslog
 # started.

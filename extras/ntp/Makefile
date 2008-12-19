@@ -10,7 +10,7 @@ MD5_SUM_4.2.4p5 = eb647e07ecbd6e9e07bf8d3dc555490e
 
 NTP_CONF ?= $(CURDIR)/ntp.conf
 
-NTP_PROGRAMS ?= ntpd/ntpd util/ntptime ntpq/ntpq
+NTP_PROGRAMS ?= ntpd/ntpd util/ntptime ntpq/ntpq ntpdate/ntpdate
 
 
 config: 

@@ -10,10 +10,9 @@
 #               ctrlaltdel, shutdown.
 #   <process>   Command to run
 
-::sysinit:/etc/init.d/rc
-
+::sysinit:/etc/init.d/rcS
 ::respawn:/sbin/getty 9600 ttyS0
-# ::wait:/etc/init.d/rc     -- could do vital init stuff, spawn shell, do rest
+::once:/etc/init.d/rc
 
 ::shutdown:/etc/init.d/shutdown
 ::restart:/sbin/init

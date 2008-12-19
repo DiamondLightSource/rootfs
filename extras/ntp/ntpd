@@ -4,19 +4,9 @@
 
 . /etc/init.d/functions
 
-TIMESERVERS="$(sed -n '/^server /{s///;p;}' /etc/ntp.conf)"
-
 do_start()
 {
-    # First try and get a sensible synchronisation using rdate
-    for TIMESERVER in $TIMESERVERS; do
-        echo -n Setting time from $TIMESERVER ...
-        if rdate -s $TIMESERVER; then
-            echo -n ' ok...'
-            break
-        fi
-    done
-
+    ntpdate -b $(sed -n '/^server /{s///;p;}' /etc/ntp.conf)
     start-stop-daemon -S -x $program "$@"
 }
 

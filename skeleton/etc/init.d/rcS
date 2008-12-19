@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# System initialisation script run before starting the console.  At this
+# point all we really want to do is ensure all the devices are created and
+# logging has started.
+
+export PATH
+. /etc/init.d/functions
+
+# Before anything else we must:
+/etc/init.d/makedevs            #   1. populate /dev
+mount_pass 0                    #   2. mount the initial file systems
+/etc/init.d/syslogd start       #   3. start logging
