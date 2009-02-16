@@ -15,10 +15,11 @@ TERMS="${4}"
 # sysroot: in effect we're copying $SYSROOT -> $sysroot.
 SYSROOT="$BINUTILS_DIR/$COMPILER_PREFIX/sys-root"
 
+READELF="$COMPILER_PREFIX-readelf"
+
 
 LIB_FILES='
     ld
-    ld-linux
     libc
     libcrypt
     libdl
@@ -38,55 +39,53 @@ LIB_FILES='
 USR_LIB_FILES='
     libncurses'
 
-SO_FILES='.so .so.*'
+SO_FILES='.so -*.so .so.*'
 
+
+# Performs the easy half of the work done by ldconfig: creates the
+# appropriate soft links.
+#
+#   link_lib dir file
+#
+link_lib()
+{
+    local target_dir="$sysroot/$1"
+    local target_file="$(basename "$2")"
+    SONAME="$(
+        "$READELF" -d "$target_dir/$target_file" |
+        sed -rn '/\(SONAME\)/{s/^.*\[(.*)\]/\1/; p;}' )"  &&
+    echo $? "$SONAME"  &&
+    [ -e "$target_dir/$SONAME" ]  ||
+        ln -s "$target_file" "$target_dir/$SONAME"
+}
 
     
-# Copies list of files into specified target directory
+# Copies list of libraries into specified target directory
 #
-#   populate target-dir lib-list [suffixes]
+#   populate target-dir lib-list
 #
 populate()
 {
     local dir="$1"
-    local suffixes="$3"
-    local prefix suffix file
-
-    for prefix in $2; do
-        if [ -n "$suffixes" ]; then
-            local found=0
-            for suffix in $suffixes; do
-                for file in "$SYSROOT/$dir/$prefix"$suffix; do
-                    if [ -e "$file" ]; then
-                        install_file -m-w $file /$dir || return 1
-                        found=1
-                    fi
-                done
+    shift
+    
+    for prefix; do
+        local found=0
+        for suffix in $SO_FILES; do
+            for file in "$SYSROOT/$dir/$prefix"$suffix; do
+                if [ -f "$file"  -a  ! -L "$file" ]; then
+                    found=1
+                    install_file -m-w "$file" /$dir  &&
+                    link_lib $dir "$file" ||
+                        return 1
+                fi
             done
-            if ! ((found)); then
-                echo -n File "$prefix"
-                [ -n "$suffixes" ]  && echo -n "[$suffixes]"
-                echo " not found"
-                return 1
-            fi
-        else
-            install_file -m-w "$SYSROOT/$dir/$prefix" /$dir
+        done
+        
+        if ! ((found)); then
+            echo -n "Library $prefix not found"
+            return 1
         fi
-    done
-}
-
-
-# Special hack to search /usr/lib for links to /lib.
-link_usr_lib()
-{
-    local file link
-
-    for file in "$SYSROOT/usr/lib"/*; do
-        if link="$(readlink "$file")"  &&
-           grep -q '^\.\./\.\./lib' <<<"$link"  &&
-           [ -e "$sysroot/usr/lib/$link" ]; then
-            ln -s "$link" "$sysroot/usr/lib/$(basename "$file")"  
-        fi  ||  return 1
     done
 }
 
@@ -101,10 +100,9 @@ install_terminfo()
 }
 
 
-populate lib "$LIB_FILES" "-2.7.so $SO_FILES"  &&
-populate usr/lib "$USR_LIB_FILES" "$SO_FILES"  &&
-link_usr_lib  &&
+populate lib $LIB_FILES  &&
+populate usr/lib $USR_LIB_FILES  &&
 
-populate sbin ldconfig &&
+# /sbin/ldconfig -v -r "$sysroot"  &&
 
 install_terminfo $TERMS

@@ -1,6 +1,7 @@
 # Definitions for Toradex Colibri board: ARM PXA-270 processor.
 
-COMPILER_PREFIX = arm-diamond-linux-gnueabi
+TOOLCHAIN_VERSION = gcc-4.3.2-glibc-2.7
+COMPILER_PREFIX = arm-xscale-linux-gnueabi
 KERNEL_NAME = uImage-bare
 
 ROOT_PASSWORD = Jungle
@@ -19,10 +20,12 @@ EXTRAS += busybox
 EXTRAS += ntp dropbear portmap
 # Useful debugging tools
 EXTRAS += strace lsof
+
 # Miscellaneous extra components of variable utility.
-EXTRAS += nano bash screen mtd-utils sudo
-EXTRAS += procinfo procinfo-ng
-EXTRAS += testing
+# EXTRAS += nano bash screen mtd-utils sudo
+# EXTRAS += procinfo procinfo-ng
+# EXTRAS += testing
+
 # Alternative lightweight NTP clients.
 # EXTRAS += openntpd
 # EXTRAS += ntpclient

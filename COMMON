@@ -9,8 +9,9 @@ default:
 # tree, but this should normally be configured on a large scratch workspace.
 BUILD_ROOT = $(TOP)/build
 
-BINUTILS_DIR = /dls_sw/work/common/x-tools/$(COMPILER_PREFIX)
-TAR_DIRS = /dls_sw/prod/common/sources /dls_sw/work/targetOS/sources
+#BINUTILS_DIR = /dls_sw/work/common/x-tools/$(COMPILER_PREFIX)
+BINUTILS_DIR = /dls_sw/targetOS/x-tools/$(TOOLCHAIN_VERSION)/$(COMPILER_PREFIX)
+TAR_DIRS = /dls_sw/prod/targetOS/tar-files /dls_sw/work/targetOS/tar-files
 
 TOOLKIT_BIN = $(BUILD_ROOT)/toolkit/bin
 

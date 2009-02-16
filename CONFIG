@@ -2,7 +2,7 @@
 
 BUILD_ROOT = /scratch/tmp/rootfs
 
-UBOOT_DIR = $(HOME)/tools/u-boot/u-boot/$(TARGET)/tools
+UBOOT_DIR = /dls_sw/targetOS/u-boot/$(TARGET)
 # TAR_DIRS += /scratch/incoming
 
 TARGET = colibri
