@@ -97,6 +97,6 @@ install_file()
             if [ -n "$OWNER" -o -n "$GROUP" ]; then
                 chown "$OWNER:$GROUP" "$target"
             fi  
-        fi
+        fi || return
     done
 }

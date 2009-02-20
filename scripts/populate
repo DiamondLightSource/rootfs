@@ -3,10 +3,10 @@
 
 HERE="$(dirname "$0")"
 
-sysroot="${1:?}"
-BINUTILS_DIR="${2:?}"
-COMPILER_PREFIX="${3:?}"
-TERMS="${4}"
+# sysroot="${1:?}"
+# BINUTILS_DIR="${2:?}"
+# COMPILER_PREFIX="${3:?}"
+# TERMS="${4}"
 
 . "$HERE"/functions
 
@@ -54,7 +54,6 @@ link_lib()
     SONAME="$(
         "$READELF" -d "$target_dir/$target_file" |
         sed -rn '/\(SONAME\)/{s/^.*\[(.*)\]/\1/; p;}' )"  &&
-    echo $? "$SONAME"  &&
     [ -e "$target_dir/$SONAME" ]  ||
         ln -s "$target_file" "$target_dir/$SONAME"
 }

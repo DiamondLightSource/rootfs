@@ -17,7 +17,10 @@ $(sysroot):
 	rm -rf $@
 	mkdir -p $@
 	make -C skeleton install
-	$(scripts)populate $@ '$(BINUTILS_DIR)' '$(COMPILER_PREFIX)' '$(TERMS)'
+#	$(scripts)populate $@ '$(BINUTILS_DIR)' '$(COMPILER_PREFIX)' '$(TERMS)'
+	$(call EXPORT,sysroot BINUTILS_DIR COMPILER_PREFIX TERMS) \
+            $(scripts)populate
+	$(first-time) 'rm /etc/first-time.sh'
 
 $(EXTRAS): $(sysroot)
 	make -C extras/$@ install
@@ -25,7 +28,6 @@ $(EXTRAS): $(sysroot)
 final-install: $(sysroot) $(EXTRAS) 
 
 $(O)imagefile.cpio: final-install
-	$(first-time) 'rm /etc/first-time.sh'
 	cd $(sysroot) && \
         find -name . -o -print | cpio --quiet -H newc -o >$@
 

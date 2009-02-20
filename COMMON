@@ -43,3 +43,16 @@ first-time = $(scripts)/first-time '$(sysroot)'
 
 # Our local autoconf
 AUTOCONF = $(TOOLKIT_BIN)/autoconf
+
+
+# Passing makefile exports through is a bit tiresome.  We could mark our
+# symbols with export -- but that means *every* command gets the them, and I
+# don't like that.  This macro instead just exports the listed symbols into a
+# called function, designed to be called like:
+#
+#	$(call EXPORT,$(EXPORTS)) script
+#
+# Unfortunately, for essentially unavoidable reasons, if any exported
+# variable contains a ' then the generated command will probably fail
+# miserably! 
+EXPORT = $(foreach var,$(1),$(var)='$($(var))')

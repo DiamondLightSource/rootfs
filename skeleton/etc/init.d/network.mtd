@@ -7,7 +7,7 @@
 
 
 BOOT_CONFIG="$(
-    cat /dev/mtdblock1 |
+    cat /dev/mtd1ro |
     tr '\0' '\n' |
     sed '1{s/^....//;}; /^$/q')"
 
