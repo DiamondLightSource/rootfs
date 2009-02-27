@@ -1,0 +1,51 @@
+# Definitions for Toradex Colibri board: ARM PXA-270 processor.
+
+TOOLCHAIN_VERSION = gcc-4.3.2-glibc-2.7
+COMPILER_PREFIX = arm-xscale-linux-gnueabi
+KERNEL_NAME = uImage-libera
+
+ROOT_PASSWORD = Jungle
+
+SSH_AUTHORIZED_KEYS = $(configdir)/authorized_keys
+
+CFLAGS = -O2 -mthumb
+CFLAGS_dropbear = -O2
+
+TERMS = xterm xterm-color screen vt100 vt102
+
+
+# This one is essential, nothing builds without it.
+EXTRAS += busybox 
+# Components required for normal operation.
+EXTRAS += ntp dropbear portmap
+# Useful debugging tools
+EXTRAS += strace lsof
+
+# Miscellaneous extra components of variable utility.
+# EXTRAS += nano bash screen mtd-utils sudo
+# EXTRAS += procinfo procinfo-ng
+# EXTRAS += testing
+
+# Alternative lightweight NTP clients.
+# EXTRAS += openntpd
+# EXTRAS += ntpclient
+
+# BOOT = initramfs
+BOOT = nfs
+
+NFS_SERVER = pc0013
+NFS_ROOTFS = /scratch/mga83/rootfs/$(TARGET)
+NFS_NFSROOT = $(shell host $(NFS_SERVER) | sed 's/^.*address //'):$(NFS_ROOTFS)
+NFS_IP_STRING = 172.23.252.9::172.23.240.254:255.255.240.0:colibri::none
+
+# BOOT = jffs2
+
+
+final-install:
+        # Install the regular nfs mounts.
+	mkdir -p $(patsubst %,$(sysroot)/mnt/%,nfs prod work)
+	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
+
+ifeq ($(DEVELOPMENT),y)
+DROPBEAR_KEYS = y
+endif
