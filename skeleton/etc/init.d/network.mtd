@@ -6,10 +6,13 @@
 . /etc/init.d/functions
 
 
+# Pick up all the configuration from the u-boot configuration block in
+# /dev/mtd1.  The first four bytes are a checksum which we skip, and the rest
+# are null separated name=value pairs.
 BOOT_CONFIG="$(
-    cat /dev/mtd1ro |
+    tail -c+5 /dev/mtd1ro |
     tr '\0' '\n' |
-    sed '1{s/^....//;}; /^$/q')"
+    sed '/^$/q')"
 
 boot_config()
 {
