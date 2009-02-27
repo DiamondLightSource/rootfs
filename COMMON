@@ -15,8 +15,6 @@ TAR_DIRS = /dls_sw/prod/targetOS/tar-files /dls_sw/work/targetOS/tar-files
 
 TOOLKIT_BIN = $(BUILD_ROOT)/toolkit/bin
 
-MKIMAGE = $(UBOOT_DIR)/mkimage
-
 
 include $(TOP)/CONFIG
 

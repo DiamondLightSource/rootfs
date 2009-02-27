@@ -1,0 +1,21 @@
+TOP = $(CURDIR)/..
+include COMMON
+
+EXPORTS = \
+    KERNEL_NAME KERNEL_ADDR \
+    BOOTARGS QUOTE_BOOTARGS \
+    NFS_NFSROOT NFS_IP_STRING
+
+
+
+$(O)boot-script: $(O)imagefile.cpio
+	$(call EXPORT, $(EXPORTS)) ./make-nfsboot-script $@
+
+default: $(O)imagefile.cpio push-boot-script
+	ssh -t $(NFS_SERVER) \
+            'sudo rm -rf $(NFS_ROOTFS); mkdir -p $(NFS_ROOTFS)'
+	scp $(O)imagefile.cpio $(NFS_SERVER):/tmp
+	ssh -t $(NFS_SERVER) \
+            'cd $(NFS_ROOTFS) && \
+             sudo cpio -i </tmp/imagefile.cpio && \
+             rm /tmp/imagefile.cpio'

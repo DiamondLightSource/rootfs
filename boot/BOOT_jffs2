@@ -1,0 +1,8 @@
+ERASE_BLOCK_SIZE = 0x40000
+JFFS2_SIZE = 0x280000
+ENDIAN = -l
+
+mtd.out:
+	mkfs.jffs2 -r$(SYSROOT) -o $@ \
+            -e$$(($(ERASE_BLOCK_SIZE)) $(ENDIAN) -p$$(($(JFFS2_SIZE)))
+

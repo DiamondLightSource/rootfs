@@ -1,11 +1,16 @@
 TOP = $(CURDIR)/../..
 include ../COMMON
 
-fakeroot_VERSION ?= 1.7.1
+# Project and download directories for fakeroot:
+#   http://fakeroot.alioth.debian.org/
+#   http://alioth.debian.org/projects/fakeroot/
+#   http://ftp.de.debian.org/debian/pool/main/f/fakeroot/
+
+fakeroot_VERSION ?= 1.11
 
 TAR_FILE = fakeroot_$(version).tar.gz
-MD5_SUM_1.7.1  = 3654bbbf01deeb0d804df194e1b1a2b3
 MD5_SUM_1.10.1 = 052a1b5474b3681bc5f3167d2b3711a8
+MD5_SUM_1.11   = b95de26a01338eec7a9b372d0fb24507
 
 
 config: 

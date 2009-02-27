@@ -1,0 +1,4 @@
+NFS_SERVER = pc0013
+NFS_ROOTFS = /scratch/mga83/rootfs/$(TARGET)
+NFS_NFSROOT = $(shell host $(NFS_SERVER) | sed 's/^.*address //'):$(NFS_ROOTFS)
+NFS_IP_STRING = 172.23.252.9::172.23.240.254:255.255.240.0:colibri::none

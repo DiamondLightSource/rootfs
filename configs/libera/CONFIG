@@ -2,7 +2,12 @@
 
 TOOLCHAIN_VERSION = gcc-4.3.2-glibc-2.7
 COMPILER_PREFIX = arm-xscale-linux-gnueabi
+
 KERNEL_NAME = uImage-libera
+KERNEL_ADDR = a0001000
+MKIMAGE = /dls_sw/targetOS/u-boot/xcep/mkimage
+BOOTARGS = console=ttyS0,115200 mem=64M
+QUOTE_BOOTARGS = 0
 
 ROOT_PASSWORD = Jungle
 
@@ -31,13 +36,8 @@ EXTRAS += strace lsof
 # EXTRAS += ntpclient
 
 # BOOT = initramfs
+IMAGE_ADDR = a2000000
 BOOT = nfs
-
-NFS_SERVER = pc0013
-NFS_ROOTFS = /scratch/mga83/rootfs/$(TARGET)
-NFS_NFSROOT = $(shell host $(NFS_SERVER) | sed 's/^.*address //'):$(NFS_ROOTFS)
-NFS_IP_STRING = 172.23.252.9::172.23.240.254:255.255.240.0:colibri::none
-
 # BOOT = jffs2
 
 

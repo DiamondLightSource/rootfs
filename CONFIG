@@ -2,9 +2,8 @@
 
 BUILD_ROOT = /scratch/tmp/rootfs
 
-UBOOT_DIR = /dls_sw/targetOS/u-boot/$(TARGET)
 # TAR_DIRS += /scratch/incoming
 
-TARGET = colibri
+TARGET = libera
 # TARGET = xlnx-xup
 DEVELOPMENT = y
