@@ -12,7 +12,7 @@ OPENNTPD_GID ?= 101
 NTPD_CONF ?= $(CURDIR)/ntpd.conf
 
 
-config: 
+config:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \

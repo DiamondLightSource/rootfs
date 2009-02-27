@@ -13,7 +13,7 @@ build:
             LDLIBS=-lncurses
 
 install:
-	$(install) -m 555 $(O)/procinfo /usr/bin 
+	$(install) -m 555 $(O)/procinfo /usr/bin
 
 
 include ../RULES

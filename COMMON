@@ -52,5 +52,5 @@ AUTOCONF = $(TOOLKIT_BIN)/autoconf
 #
 # Unfortunately, for essentially unavoidable reasons, if any exported
 # variable contains a ' then the generated command will probably fail
-# miserably! 
+# miserably!
 EXPORT = $(foreach var,$(1),$(var)='$($(var))')

@@ -7,10 +7,10 @@ TAR_EXTENSION = .tar.gz
 MD5_SUM_3.2 = 00bfa16d58e034e3c2aa27f390390d30
 
 
-config: 
+config:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
-            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) 
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
 
 build:
 	make -C $(O)

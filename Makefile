@@ -4,7 +4,7 @@ include COMMON
 O = $(BUILD_ROOT)/$(TARGET)/
 
 
-$(O): 
+$(O):
 	mkdir -p $(O)
 
 
@@ -24,7 +24,7 @@ $(sysroot):
 $(EXTRAS): $(sysroot)
 	make -C extras/$@ install
 
-final-install: $(sysroot) $(EXTRAS) 
+final-install: $(sysroot) $(EXTRAS)
 
 $(O)imagefile.cpio: final-install
 	cd $(sysroot) && \
@@ -50,22 +50,16 @@ imagefile: $(O)imagefile.cpio
 #
 # These are all gathered into a single target, deploy-rootfs
 
-
 BOOT_DEPENDS ?= $(BOOT_$(BOOT)_DEPENDS)
 
 BOOT_nfs_DEPENDS = $(O)imagefile.cpio
 BOOT_initramfs_DEPENDS = $(O)imagefile.cpio
-
+BOOT_jffs2_DEPENDS = $(sysroot)
 
 deploy-rootfs: $(BOOT_DEPENDS)
-	make -C boot -f BOOT_$(BOOT) 
+	make -C boot -f BOOT_$(BOOT)
 
 .PHONY: deploy-rootfs
-
-# include boot/COMMON
-# include boot/BOOT_$(BOOT)
-# -include $(configdir)/BOOT_$(BOOT)
-
 
 
 

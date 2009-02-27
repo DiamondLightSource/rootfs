@@ -20,7 +20,7 @@ TERMS = xterm xterm-color screen vt100 vt102
 
 
 # This one is essential, nothing builds without it.
-EXTRAS += busybox 
+EXTRAS += busybox
 # Components required for normal operation.
 EXTRAS += ntp dropbear portmap
 # Useful debugging tools

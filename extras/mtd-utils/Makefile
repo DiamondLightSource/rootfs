@@ -5,7 +5,7 @@ mtd-utils_VERSION ?= 1.2.0
 
 MD5_SUM_1.2.0 = ca41f1fbaa056e8b8d71e8d52c0b1bad
 
-MTD_TOOLS = flash_eraseall flashcp 
+MTD_TOOLS = flash_eraseall flashcp
 
 
 build:

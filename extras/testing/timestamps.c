@@ -46,7 +46,7 @@ int main(int argc, char **argv)
     double fraction = modf(atof(argv[1]) * 1e-3, &integer);
 
     int count = argc >= 3 ? atoi(argv[2]) : 0;
-    
+
     struct timespec sleep;
     sleep.tv_sec = (time_t) integer;
     sleep.tv_nsec = (long) (fraction * NS);
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     struct timespec then;
     TEST_(clock_gettime, CLOCK_REALTIME, &then);
     printf("%ld.%09ld\n", then.tv_sec, then.tv_nsec);
-    
+
     while (true)
     {
         TEST_(nanosleep, &sleep, NULL);

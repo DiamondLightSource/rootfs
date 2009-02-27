@@ -20,7 +20,7 @@ build:
             make -C $(O) -f $(srcdir)/Makefile
 
 install:
-	$(install) -m 555 $(O)/ntpclient /usr/bin 
+	$(install) -m 555 $(O)/ntpclient /usr/bin
 #	$(startup) $(CURDIR)/ntpclient S210
 
 

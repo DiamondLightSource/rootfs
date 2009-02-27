@@ -12,19 +12,19 @@ INETD_CONF = ssh stream tcp nowait root /usr/sbin/dropbearmulti dropbear -i
 # May want to automatically use this
 # EXTRA_LIBS = libcrypt libutil libnss_compat libnsl libnss_nis libnss_files
 
-config: 
+config:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
-            --disable-zlib --disable-lastlog --disable-largefile 
+            --disable-zlib --disable-lastlog --disable-largefile
 
 build:
 	make -C $(O) PROGRAMS="dropbear $(PROGRAMS)" \
             MULTI=1 SCPPROGRESS=1
 
-install: 
+install:
         # Normal installation (6555 = rx,u+s,g+s)
-	$(install) -m 6555 $(O)/dropbearmulti /usr/sbin 
+	$(install) -m 6555 $(O)/dropbearmulti /usr/sbin
 	ln -s /usr/sbin/dropbearmulti $(sysroot)/usr/sbin/dropbear
 	for program in $(PROGRAMS) ssh; do \
             ln -s /usr/sbin/dropbearmulti $(sysroot)/usr/bin/$$program; \
@@ -33,7 +33,7 @@ install:
 	echo '$(INETD_CONF)' >>$(sysroot)/etc/inetd.conf
 	mkdir -m 700 $(sysroot)/root/.ssh $(sysroot)/etc/dropbear
 ifdef SSH_AUTHORIZED_KEYS
-	$(install) -m 644 $(SSH_AUTHORIZED_KEYS) /root/.ssh 
+	$(install) -m 644 $(SSH_AUTHORIZED_KEYS) /root/.ssh
 endif
 
 ifdef DROPBEAR_KEYS

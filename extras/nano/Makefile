@@ -6,7 +6,7 @@ nano_VERSION ?= 2.0.9
 TAR_EXTENSION = .tar.gz
 MD5_SUM_2.0.9 = 2be94dc43fb60fff4626a2401a977220
 
-config: 
+config:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
@@ -15,7 +15,7 @@ build:
 	make -C $(O)
 
 install:
-	$(install) -m 555 $(O)/src/nano /usr/bin 
+	$(install) -m 555 $(O)/src/nano /usr/bin
 
 
 include ../RULES

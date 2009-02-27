@@ -13,11 +13,11 @@ NTP_CONF ?= $(CURDIR)/ntp.conf
 NTP_PROGRAMS ?= ntpd/ntpd util/ntptime ntpq/ntpq ntpdate/ntpdate
 
 
-config: 
+config:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
-            --disable-all-clocks --disable-parse-clocks 
+            --disable-all-clocks --disable-parse-clocks
 
 build:
 	make -C $(O)

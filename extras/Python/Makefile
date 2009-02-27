@@ -25,7 +25,7 @@ config:
 
         # Also configure the build so we can make a local build.  For this we
         # can use the stock configuration.
-	cd $(O-build)  &&  $(srcdir)/configure 
+	cd $(O-build)  &&  $(srcdir)/configure
 
 $(O-build)/python:
 	make -C $(O-build) python Parser/pgen
@@ -43,7 +43,7 @@ install:
 
 include ../RULES
 
-# See here for notes on cross-compiling Python (all gleaned from google: 
+# See here for notes on cross-compiling Python (all gleaned from google:
 #   cross compiling python)
 # http://whatschrisdoing.com/blog/2006/10/06/howto-cross-compile-python-25
 # http://www.ailis.de/~k/archives/19-ARM-cross-compiling-howto.html
@@ -52,7 +52,7 @@ include ../RULES
 # Will need to fix up quite a few things which are tested on the local
 # machine, for example have
 #   AC_CHECK_FILE(/dev/ptmx, AC_DEFINE(HAVE_DEV_PTMX, 1))
-# in 2.5 which seems to have mutated into an explicit 
+# in 2.5 which seems to have mutated into an explicit
 #   if test -r /dev/ptmx; then AC_DEFINE(HAVE_DEV_PTMX, 1)
 #
 # Need to define HAVE_DEV_PTMX and try and catch any others like this.  Maybe

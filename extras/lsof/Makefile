@@ -23,7 +23,7 @@ endef
 # It's a little tricky to see which configurations we need.  GLIBCV just
 # needs to be defined (any value will do), and I think the _FILE_OFFSET_BITS
 # flag tells us that off_t is 64 bits.
-BUILD_CFGF = -DGLIBCV=207 -DHAS_STRFTIME -D_FILE_OFFSET_BITS=64 
+BUILD_CFGF = -DGLIBCV=207 -DHAS_STRFTIME -D_FILE_OFFSET_BITS=64
 
 # The -iquote option below ensures that certain header files are not mistaken
 # for system header files.
@@ -34,7 +34,7 @@ BUILD_ENV = \
     CFGL='-L./lib -llsof' \
     DEBUG='$(CFLAGS)' \
     VPATH='$(lsof_srcdir):$(lsof_srcdir)/lib' \
-    DINC='-iquote$(O)/lib -iquote$(O) -iquote$(lsof_srcdir)' 
+    DINC='-iquote$(O)/lib -iquote$(O) -iquote$(lsof_srcdir)'
 
 BUILD_LIB_ENV = \
     AR='ar cr $$(LIB) $$(OBJ)' \
@@ -49,12 +49,12 @@ config:
 	ln -sf $(lsof_srcdir)/lib/Makefile.skel $(O)/lib/Makefile
 	echo ".ds VN $(version)" >$(O)/version
 
-build: 
+build:
 	$(BUILD_ENV) $(BUILD_LIB_ENV) \
         make -C $(O) -f $(lsof_srcdir)/dialects/linux/Makefile
 
 install:
-	$(install) -m a-w,u+s $(O)/lsof /usr/bin 
+	$(install) -m a-w,u+s $(O)/lsof /usr/bin
 
 
 include ../RULES

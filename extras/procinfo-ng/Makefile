@@ -8,7 +8,7 @@ MD5_SUM_2.0.217 = 7c1c05a462988731b0165f0a789f2669
 PATCHES_2.0.217 = makefile-2.0.217.patch
 
 
-config: 
+config:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)

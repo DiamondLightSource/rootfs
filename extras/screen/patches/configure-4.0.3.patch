@@ -40,7 +40,7 @@
  }
  ], AC_NOTE(- your fifos are usable) fifo=1,
 -AC_NOTE(- your fifos are not usable))
-+AC_NOTE(- your fifos are not usable), 
++AC_NOTE(- your fifos are not usable),
 +AC_NOTE(- cross compiling - assuming good fifos) fifo=1)
  rm -f /tmp/conftest*
  

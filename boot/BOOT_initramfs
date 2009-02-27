@@ -14,7 +14,7 @@ $(O)imagefile.cpio.gz: $(O)imagefile.cpio
 	gzip -c -1 $< >$@
 
 $(O)boot-script: $(O)imagefile.cpio.gz
-	$(call EXPORT,$(EXPORTS)) ./make-boot-script $@ $<
+	$(call EXPORT,$(EXPORTS)) ./make-initramfs-script $@ $<
 
 default: $(O)imagefile.cpio.gz push-boot-script
 	scp $< $(TFTP_SERVER)/$(IMAGE_NAME)

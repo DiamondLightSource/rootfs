@@ -10,7 +10,7 @@ MD5_SUM_1.1.4 = 3ed5b9cb73fd1c9b358c7bfa7a6ae150
 PATCHES_1.1.4 = rpcgen-makefile-1.1.4.patch test-tools-1.1.4.patch
 
 
-config: 
+config:
         # We disable libwrap and libblkid in the configuration so that we
         # don't have any external dependencies.
 	cd $(O)  &&  \
