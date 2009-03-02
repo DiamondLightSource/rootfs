@@ -32,3 +32,40 @@ is_executable()
         *)  return 1 ;;
     esac
 }
+
+
+# From an IP address and a net mask computes the associated network as
+#   IP & mask
+compute_network()
+{
+    (
+        IFS=.
+        IP=($1)
+        MASK=($2)
+
+        for ((i = 0; i < 4; i ++)); do
+            ip=${IP[$i]}
+            mask=${MASK[$i]}
+            ((i > 0))  &&  echo -n .
+            echo -n $((ip & mask))
+        done
+    )
+}
+
+# From IP address and net mask compute broadcast address as
+#   ~mask | (mask & ip)
+compute_broadcast()
+{
+    (
+        IFS=.
+        IP=($1)
+        MASK=($2)
+
+        for ((i = 0; i < 4; i ++)); do
+            ip=${IP[$i]}
+            mask=${MASK[$i]}
+            ((i > 0))  &&  echo -n .
+            echo -n $((255 & ~(mask & ~ip)))
+        done
+    )
+}

@@ -1,5 +1,4 @@
 include $(TOP)/COMMON
--include $(configdir)/BOOT_$(BOOT)
 
 O = $(BUILD_ROOT)/$(TARGET)/
 

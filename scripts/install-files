@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# install-files <sysroot> <file-list>
+# install-files <file-list>
 #
 # The environment variable sysroot must be set to point to the target rootfs.
 

@@ -36,7 +36,7 @@ do_start()
 
 do_stop()
 {
-    ifdown -a
+    ifconfig eth0 down
 }
 
 do_start_stop "$@" networking

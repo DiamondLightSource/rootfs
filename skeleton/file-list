@@ -40,10 +40,9 @@ c 600 /dev/console 5 1
 d 755 /etc/init.d
 d 755 /etc/rc.d
 
-n 755 /etc/first-time.sh
+f 755 /etc/first-time.sh
 f 644 /etc/fstab
 f 644 /etc/group
-f 644 /etc/hostname
 f 644 /etc/hosts
 f 644 /etc/inittab
 f 644 /etc/ld.so.conf
@@ -60,13 +59,6 @@ f 644 /etc/init.d/functions
 f 755 /etc/init.d/makedevs
 f 755 /etc/init.d/shutdown
 f 755 /etc/init.d/syslogd
-
-d 755 /etc/network
-d 755 /etc/network/if-pre-up.d
-d 755 /etc/network/if-up.d
-d 755 /etc/network/if-down.d
-d 755 /etc/network/if-post-down.d
-f 755 /etc/network/interfaces 
 
 # Not sure about these ones:
 f 755 /etc/protocols

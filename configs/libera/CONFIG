@@ -6,7 +6,9 @@ COMPILER_PREFIX = arm-xscale-linux-gnueabi
 KERNEL_NAME = uImage-libera
 KERNEL_ADDR = a0001000
 MKIMAGE = /dls_sw/targetOS/u-boot/xcep/mkimage
-BOOTARGS = console=ttyS0,115200 mem=64M
+CONSOLE_BAUD = 115200
+CONSOLE_TTY = ttyS0
+BOOTARGS = console=$(CONSOLE_TTY),$(CONSOLE_BAUD) mem=64M
 QUOTE_BOOTARGS = 0
 
 ROOT_PASSWORD = Jungle
@@ -26,16 +28,18 @@ EXTRAS += ntp dropbear portmap
 # Useful debugging tools
 EXTRAS += strace lsof
 
-# Miscellaneous extra components of variable utility.
-# EXTRAS += nano bash screen mtd-utils sudo
-# EXTRAS += procinfo procinfo-ng
-# EXTRAS += testing
-
 
 # BOOT = initramfs
-IMAGE_ADDR = a2000000
 BOOT = nfs
 # BOOT = jffs2
+
+
+# Network configuration
+NETWORK = nfs
+NW_HOSTNAME = libera
+NW_ADDRESS = 172.23.252.20
+NW_NETMASK = 255.255.240.0
+NW_GATEWAY = 172.23.240.254
 
 
 final-install:

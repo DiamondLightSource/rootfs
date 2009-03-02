@@ -6,12 +6,16 @@
 #   KERNEL_ADDR     Where to load the kernel into memory
 #   BOOTARGS        Arguments to pass as bootargs
 #   QUOTE_BOOTARGS  Whether to quote bootargs (depends on target u-boot!)
-#   NFS_IP_STRING   IP address of NFS server
-#   NFS_NFSROOT     Path to root on NFS server
+#   NFS_SERVER      Name of NFS server
+#   NFS_ROOTFS      Path to rootfs on NFS server
+#   NFS_IP_STRING   Client IP string (ip address & network specification)
 
 TARGET="${1:?Target file}"
 
-BOOTARGS="$BOOTARGS root=/dev/nfs nfsroot=$NFS_NFSROOT ip=$NFS_IP_STRING"
+NFS_NFSROOT="$(host "$NFS_SERVER" | sed 's/^.*address //'):$NFS_ROOTFS"
+NFS_IP_STRING=$NW_ADDRESS::$NW_GATEWAY:$NW_NETMASK:$NW_HOSTNAME::none
+
+BOOTARGS="$BOOTARGS root=/dev/nfs nfsroot=$NFS_NFSROOT ip=$NFS_IP_STRING ro"
 (($QUOTE_BOOTARGS))  &&
     BOOTARGS=\""$BOOTARGS"\"
 

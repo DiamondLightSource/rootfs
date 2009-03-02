@@ -6,6 +6,8 @@ COMPILER_PREFIX = arm-xscale-linux-gnueabi
 KERNEL_NAME = uImage-colibri
 KERNEL_ADDR = a0001000
 MKIMAGE = /dls_sw/targetOS/u-boot/colibri/mkimage
+CONSOLE_BAUD = 9600
+CONSOLE_TTY = ttyS0
 BOOTARGS = $$bootargs
 QUOTE_BOOTARGS = 1
 
@@ -38,10 +40,18 @@ EXTRAS += strace lsof
 # EXTRAS += ntpclient
 
 BOOT = initramfs
-IMAGE_ADDR = a2000000
-
 # BOOT = nfs
 # BOOT = jffs2
+
+
+# Network installation: this determines how the network is configured.
+NETWORK = mtd
+
+# The following are relevant if NETWORK != mtd above.
+NW_HOSTNAME = colibri
+NW_ADDRESS = 172.23.252.21
+NW_NETMASK = 255.255.240.0
+NW_GATEWAY = 172.23.240.254
 
 
 final-install:

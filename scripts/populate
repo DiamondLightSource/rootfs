@@ -144,6 +144,4 @@ for lib in $LIBS; do
 done
 
 
-# /sbin/ldconfig -v -r "$sysroot"  &&
-
 install_terminfo $TERMS

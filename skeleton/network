@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# Script to manage network installation.
+
+HERE="$(dirname "$0")"
+scripts="$HERE"/../scripts
+
+export sysroot
+
+. $scripts/functions
+
+
+case "$1" in
+    mtd)
+        "$scripts"/startup "$HERE"/etc/init.d/network.mtd S100
+        ;;
+    nfs)
+        # In nfs mode we leave the network well alone: reconfiguring the
+        # active connection will cause us to die!
+        ;;
+    network)
+        # This is the standard configuration: we install the normal network
+        # configuration files.
+        "$scripts"/install-files "$HERE"/network.files
+        "$scripts"/startup "$HERE"/etc/init.d/network S100
+        echo "$NW_HOSTNAME" > "$sysroot"/etc/hostname
+        cat <<EOF >>"$sysroot"/etc/network/interfaces
+auto eth0
+iface eth0 inet static
+    address $NW_ADDRESS
+    network $(compute_network $NW_ADDRESS $NW_NETMASK)
+    netmask $NW_NETMASK
+    broadcast $(compute_broadcast $NW_ADDRESS $NW_NETMASK)
+    gateway $NW_GATEWAY
+EOF
+        ;;
+    *)  Error Invalid network configuration ;;
+esac

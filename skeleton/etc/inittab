@@ -11,7 +11,6 @@
 #   <process>   Command to run
 
 ::sysinit:/etc/init.d/rcS
-::respawn:/sbin/getty 9600 ttyS0
 ::once:/etc/init.d/rc
 
 ::shutdown:/etc/init.d/shutdown

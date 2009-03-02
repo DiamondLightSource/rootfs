@@ -12,17 +12,20 @@ LDCONFIG ?= none
 
 
 INIT_D = $(CURDIR)/etc/init.d
-
+NW_EXPORTS = sysroot NW_HOSTNAME NW_ADDRESS NW_NETMASK NW_GATEWAY
 populate_EXPORTS = \
     sysroot BINUTILS_DIR COMPILER_PREFIX TERMS install_list EXTRA_LIBS
 
 pre-install:
 	rm -f $(install_list)
 	$(call EXPORT, sysroot) $(scripts)install-files '$(CURDIR)/file-list'
-	$(first-time) '#!/bin/sh'
 
-#	$(startup) $(INIT_D)/network S100
-	$(startup) $(INIT_D)/network.mtd S100
+        # Add target specific getty line to inittab
+	echo '::respawn:/sbin/getty $(CONSOLE_BAUD) $(CONSOLE_TTY)' \
+            >>$(sysroot)/etc/inittab
+
+        # Configure networking according to selected mode
+	$(call EXPORT, $(NW_EXPORTS)) $(CURDIR)/network $(NETWORK)
 
 	@$(useradd) -c 'root' -d /root -g 0 -u 0  -s /bin/sh \
             -p'$(ROOT_PASSWORD)' root
@@ -34,4 +37,7 @@ post-install:
 	$(call EXPORT,$(populate_EXPORTS)) $(scripts)populate
 	$(call EXPORT, sysroot BINUTILS_DIR COMPILER_PREFIX) \
             $(scripts)ldconfig $(LDCONFIG)
+
 	$(first-time) 'rm /etc/first-time.sh'
+	$(first-time) 'mount -o remount,ro /'
+

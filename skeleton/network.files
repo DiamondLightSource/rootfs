@@ -1,0 +1,8 @@
+# Files required to be installed for a standard network installation
+
+d 755 /etc/network
+d 755 /etc/network/if-pre-up.d
+d 755 /etc/network/if-up.d
+d 755 /etc/network/if-down.d
+d 755 /etc/network/if-post-down.d
+f 755 /etc/network/interfaces 
