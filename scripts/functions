@@ -10,12 +10,34 @@
 #   sysroot             Target system root
 
 STRIP="$COMPILER_PREFIX-strip"
+READELF="$COMPILER_PREFIX-readelf"
 
 
 do_strip()
 {
     chmod +w "$1"  &&
     "$STRIP" "$1"
+}
+
+
+# Checks whether the given file is executable (or a library).
+is_executable()
+{
+    case "$(file -i "$1")" in
+        *application/x-sharedlib*)  return 0 ;;
+        *application/x-executable*) return 0 ;;
+        *)  return 1 ;;
+    esac
+}
+
+
+# Outputs a list of all the library dependencies of the given executable file.
+list_dependencies()
+{
+    echo calling "$READELF" -d "$1" 
+    which "$READELF"
+    "$READELF" -d "$1" |
+    grep NEEDED
 }
 
 
@@ -84,12 +106,13 @@ install_file()
             ln -s "$link" "$target"
         else
             cp "$source" "$target"  &&
-            if ((DO_STRIP)); then
-                MODE="${MODE:-$(stat -c%a "$source")}"  &&
-                case "$(file -i "$target")" in
-                    *application/x-sharedlib*)  do_strip "$target" ;;
-                    *application/x-executable*) do_strip "$target" ;;
-                esac
+            if is_executable "$target"; then
+                echo Installing "$target"  &&
+#                list_dependencies "$target"  &&
+                if ((DO_STRIP)); then
+                    MODE="${MODE:-$(stat -c%a "$source")}"  &&
+                    do_strip "$target"
+                fi
             fi  &&
             if [ -n "$MODE" ]; then
                 chmod "$MODE" "$target";

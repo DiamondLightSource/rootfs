@@ -4,7 +4,7 @@ Notes on glibc Libraries
 Libraries in `/lib`
 -------------------
 
-The following appear to be core dependencies:::
+The following appear to be core dependencies::
 `ld-2.7.so`, `ld-linux.so.3` (link to `ld-2.7.so`), `libc-2.7.so`,
 `libgcc_s.so`
 
@@ -37,10 +37,8 @@ Debug implementations of `malloc` etcetera?
 `libnsl-2.7.so`:: 
 NIS (Network Information Service) or YP support.
 
-`libnss_compat-2.7.so`,
-`libnss_dns-2.7.so`,
-`libnss_files-2.7.so`,
-`libnss_hesiod-2.7.so`
+`libnss_compat-2.7.so`, `libnss_dns-2.7.so`, `libnss_files-2.7.so`, `libnss_hesiod-2.7.so`::
+These all appear to be part of DNS, and are dynamically loaded.
 
 `libnss_nis-2.7.so`, `libnss_nisplus-2.7.so`::
 Various name server resolvers.

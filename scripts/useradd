@@ -2,7 +2,7 @@
 
 # Add new user to /etc/passwd, emulating useradd(8).
 #
-# Usage: useradd <sysroot> [options] <new-user>
+# Usage: useradd [options] <new-user>
 #
 # The following options are supported:
 #
@@ -12,11 +12,10 @@
 #   -p:     Password (in clear)
 #   -s:     Login shell
 #   -u:     User id
+#
+# The environment variable sysroot must be set to point to the target rootfs.
 
 HERE="$(dirname "$0")"
-
-sysroot="${1:?}"
-shift
 
 COMMENT=
 HOME=/

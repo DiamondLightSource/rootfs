@@ -5,46 +5,41 @@
 default:
 
 
-# Note that the build root must be an absolute path.  By default we build in
-# tree, but this should normally be configured on a large scratch workspace.
-BUILD_ROOT = $(TOP)/build
+# Note that the build root must be an absolute path.  
+BUILD_ROOT = /scratch/tmp/rootfs
 
-#BINUTILS_DIR = /dls_sw/work/common/x-tools/$(COMPILER_PREFIX)
 BINUTILS_DIR = /dls_sw/targetOS/x-tools/$(TOOLCHAIN_VERSION)/$(COMPILER_PREFIX)
 TAR_DIRS = /dls_sw/prod/targetOS/tar-files /dls_sw/work/targetOS/tar-files
 
-TOOLKIT_BIN = $(BUILD_ROOT)/toolkit/bin
 
-
-include $(TOP)/CONFIG
+-include $(TOP)/CONFIG.local
 
 ifndef TARGET
 $(error Must specify TARGET)
 endif
 configdir = $(TOP)/configs/$(TARGET)
 include $(configdir)/CONFIG
--include $(TOP)/CONFIG.local
+-include $(TOP)/CONFIG.$(TARGET).local
 
 
-export PATH := $(TOOLKIT_BIN):$(BINUTILS_DIR)/bin:$(PATH)
-
-
+TOOLKIT_BIN = $(BUILD_ROOT)/toolkit/bin
 sysroot = $(BUILD_ROOT)/$(TARGET)/rootfs
 scripts = $(TOP)/scripts/
 
-# Support scripts for installation.
-install = $(scripts)install '$(COMPILER_PREFIX)' '$(sysroot)'
-useradd = $(scripts)useradd '$(sysroot)'
-groupadd = $(scripts)groupadd '$(sysroot)'
-startup = $(scripts)/startup '$(sysroot)'
-first-time = $(scripts)/first-time '$(sysroot)'
 
-# Our local autoconf
+# Support scripts for installation.
+install    = $(call EXPORT, sysroot COMPILER_PREFIX) $(scripts)install
+useradd    = $(call EXPORT, sysroot) $(scripts)useradd
+groupadd   = $(call EXPORT, sysroot) $(scripts)groupadd
+startup    = $(call EXPORT, sysroot) $(scripts)startup 
+first-time = $(call EXPORT, sysroot) $(scripts)first-time 
+
+# Our local autoconf -- probably redundant... 
 AUTOCONF = $(TOOLKIT_BIN)/autoconf
 
 
 # Passing makefile exports through is a bit tiresome.  We could mark our
-# symbols with export -- but that means *every* command gets the them, and I
+# symbols with export -- but that means *every* command gets them, and I
 # don't like that.  This macro instead just exports the listed symbols into a
 # called function, designed to be called like:
 #
@@ -54,3 +49,6 @@ AUTOCONF = $(TOOLKIT_BIN)/autoconf
 # variable contains a ' then the generated command will probably fail
 # miserably!
 EXPORT = $(foreach var,$(1),$(var)='$($(var))')
+
+
+export PATH := $(TOOLKIT_BIN):$(BINUTILS_DIR)/bin:$(PATH)

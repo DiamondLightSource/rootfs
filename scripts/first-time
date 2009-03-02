@@ -1,9 +1,8 @@
 #!/bin/sh
 
 # Adds commands to be executed on initialisation.
-
-SYSROOT="$1"
-shift
+#
+# The environment variable sysroot must be set to point to the target rootfs.
 
 if [ "$1" = -f ]; then
     shift

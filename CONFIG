@@ -1,9 +1,0 @@
-# Common paths
-
-BUILD_ROOT = /scratch/tmp/rootfs
-
-# TAR_DIRS += /scratch/incoming
-
-TARGET = libera
-# TARGET = xlnx-xup
-DEVELOPMENT = y

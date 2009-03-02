@@ -3,11 +3,10 @@
 # Install a startup script.
 #
 # Usage: startup <sysroot> [-S] <script> [<start-prefix>]
+#
+# The environment variable sysroot must be set to point to the target rootfs.
 
 HERE="$(dirname "$0")"
-
-sysroot="${1:?}"
-shift
 
 START=/etc/rc.d
 MODE=555

@@ -16,7 +16,6 @@ $(sysroot):
 	rm -rf $@
 	mkdir -p $@
 	make -C skeleton install
-#	$(scripts)populate $@ '$(BINUTILS_DIR)' '$(COMPILER_PREFIX)' '$(TERMS)'
 	$(call EXPORT,sysroot BINUTILS_DIR COMPILER_PREFIX TERMS) \
             $(scripts)populate
 	$(first-time) 'rm /etc/first-time.sh'

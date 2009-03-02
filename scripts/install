@@ -2,7 +2,12 @@
 
 # Install a file in target root filesystem.  Called as:
 #
-#   ./install <prefix> <sysroot> [options] <file> <target-dir> [<permissions>]
+#   ./install [options] <file> <target-dir> [<permissions>]
+#
+# with the following environment variables set:
+#
+#   COMPILER_PREFIX
+#   sysroot             Path to rootfs being built
 #
 # Here <target-dir> is relative to <sysroot> and the given permissions are
 # set if specified.
@@ -15,10 +20,6 @@
 #   -g:     Set group
 
 HERE="$(dirname "$0")"
-
-COMPILER_PREFIX="${1:?}"
-sysroot="${2:?}"
-shift 2
 
 . "$HERE"/functions
 
