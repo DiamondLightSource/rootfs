@@ -13,23 +13,20 @@ $(O):
 ifeq ($(shell id -u), 0)
 
 $(sysroot):
-	rm -rf $@
-	mkdir -p $@
-	make -C skeleton install
-	$(call EXPORT,sysroot BINUTILS_DIR COMPILER_PREFIX TERMS) \
-            $(scripts)populate
-	$(first-time) 'rm /etc/first-time.sh'
+	rm -rf $@  &&  mkdir -p $@
+	make -C skeleton pre-install
+	for extra in $(EXTRAS); do \
+            make -C extras/$$extra install; \
+        done
+	make -C skeleton post-install
 
-$(EXTRAS): $(sysroot)
-	make -C extras/$@ install
+final-install: $(sysroot)
 
-final-install: $(sysroot) $(EXTRAS)
-
-$(O)imagefile.cpio: final-install
+$(O)imagefile.cpio: $(sysroot) final-install
 	cd $(sysroot) && \
         find -name . -o -print | cpio --quiet -H newc -o >$@
 
-.PHONY: $(sysroot) final-install
+.PHONY: $(sysroot)
 
 else
 

@@ -13,4 +13,4 @@ else
     for arg; do
         echo "$arg"
     done
-fi >>"$SYSROOT"/etc/first-time.sh
+fi >>"$sysroot"/etc/first-time.sh

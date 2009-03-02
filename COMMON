@@ -26,9 +26,13 @@ TOOLKIT_BIN = $(BUILD_ROOT)/toolkit/bin
 sysroot = $(BUILD_ROOT)/$(TARGET)/rootfs
 scripts = $(TOP)/scripts/
 
+# Where install places the list of files it has installed.
+install_list = $(BUILD_ROOT)/$(TARGET)/install_list
+
 
 # Support scripts for installation.
-install    = $(call EXPORT, sysroot COMPILER_PREFIX) $(scripts)install
+install    = $(call EXPORT, sysroot COMPILER_PREFIX install_list) \
+    $(scripts)install
 useradd    = $(call EXPORT, sysroot) $(scripts)useradd
 groupadd   = $(call EXPORT, sysroot) $(scripts)groupadd
 startup    = $(call EXPORT, sysroot) $(scripts)startup 

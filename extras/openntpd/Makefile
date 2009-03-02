@@ -25,7 +25,7 @@ install:
 	mkdir -m 755 -p $(sysroot)/var/empty/ntp
 	$(groupadd) -g $(OPENNTPD_GID) _ntp
 	$(useradd) -u $(OPENNTPD_UID) -g $(OPENNTPD_GID) \
-            -c 'OpenNTP daemon' -d /var/empty/ntp -s /sbin/nologin _ntp
+            -c 'OpenNTP daemon' -d /var/empty/ntp -s /bin/false _ntp
 
 	$(install) -m 555 $(O)/ntpd /sbin
 	$(install) $(NTPD_CONF) /etc

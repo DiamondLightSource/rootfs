@@ -1,12 +1,18 @@
-#!/bin/sh
+#!/bin/bash
 # Simple populate script: simply populates from a hard-wired list.
+#
+# Should be called with the following environment variables set:
+#
+#   sysroot         Root of rootfs being constructed
+#   BINUTILS_DIR    Root of binutils directory
+#   COMPILER_PREFIX Cross-compiler prefix
+#   install_list    File containing list of installed files
+#   TERMS           List of terminals to install
+#   EXTRA_LIBS      Extra libraries to be installed
 
 HERE="$(dirname "$0")"
+set -o pipefail
 
-# sysroot="${1:?}"
-# BINUTILS_DIR="${2:?}"
-# COMPILER_PREFIX="${3:?}"
-# TERMS="${4}"
 
 . "$HERE"/functions
 
@@ -15,78 +21,6 @@ HERE="$(dirname "$0")"
 # sysroot: in effect we're copying $SYSROOT -> $sysroot.
 SYSROOT="$BINUTILS_DIR/$COMPILER_PREFIX/sys-root"
 
-READELF="$COMPILER_PREFIX-readelf"
-
-
-LIB_FILES='
-    ld
-    libc
-    libcrypt
-    libdl
-    libgcc_s
-    libm
-    libpthread
-    libresolv
-    libnsl
-    libnss_compat
-    libnss_dns
-    libnss_files
-    libnss_nis
-    librt
-    libstdc++
-    libutil'
-
-USR_LIB_FILES='
-    libncurses'
-
-SO_FILES='.so -*.so .so.*'
-
-
-# Performs the easy half of the work done by ldconfig: creates the
-# appropriate soft links.
-#
-#   link_lib dir file
-#
-link_lib()
-{
-    local target_dir="$sysroot/$1"
-    local target_file="$(basename "$2")"
-    SONAME="$(
-        "$READELF" -d "$target_dir/$target_file" |
-        sed -rn '/\(SONAME\)/{s/^.*\[(.*)\]/\1/; p;}' )"  &&
-    [ -e "$target_dir/$SONAME" ]  ||
-        ln -s "$target_file" "$target_dir/$SONAME"
-}
-
-    
-# Copies list of libraries into specified target directory
-#
-#   populate target-dir lib-list
-#
-populate()
-{
-    local dir="$1"
-    shift
-    
-    for prefix; do
-        local found=0
-        for suffix in $SO_FILES; do
-            for file in "$SYSROOT/$dir/$prefix"$suffix; do
-                if [ -f "$file"  -a  ! -L "$file" ]; then
-                    found=1
-                    install_file -m-w "$file" /$dir  &&
-                    link_lib $dir "$file" ||
-                        return 1
-                fi
-            done
-        done
-        
-        if ! ((found)); then
-            echo -n "Library $prefix not found"
-            return 1
-        fi
-    done
-}
 
 
 install_terminfo()
@@ -99,8 +33,116 @@ install_terminfo()
 }
 
 
-populate lib $LIB_FILES  &&
-populate usr/lib $USR_LIB_FILES  &&
+
+# Outputs a list of all the library dependencies of the given executable
+# files.  Called as
+#
+#   list_dependencies root files
+#
+list_dependencies()
+{
+    local root="$1"
+    shift
+    local file
+    for file; do
+        "$READELF" -d "$root/$file" |
+        sed -n '/(NEEDED)/{s/^.*\[//; s/\].*$//; p; }' 
+    done |
+    sort | uniq |
+    while read -r; do
+        locate_library "$REPLY"
+    done
+}
+
+
+# Searches for given library in lib and usr/lib, optionally searching for
+# match to suffixes as well.  Called as:
+#
+#   locate_library <library> [<suffixes>]
+#
+locate_library()
+{
+    local lib="$1"
+    shift
+
+    local lib_dir
+    for lib_dir in lib usr/lib; do
+        if (($#)); then
+            for suffix; do
+                for file in "$SYSROOT/$lib_dir/$lib"$suffix; do
+                    if [ -e "$file" ]; then
+                        echo "$lib_dir/$(basename "$file")"
+                        return 0
+                    fi
+                done
+            done
+        else
+            if [ -e "$SYSROOT/$lib_dir/$lib" ]; then
+                echo "$lib_dir/$lib"
+                return 0
+            fi
+        fi
+    done
+    Error "Can't find library $lib"
+}
+
+
+
+# -----------------------------------------------------------------------------
+
+# Resolve all the library dependencies.  From the list of installed files and
+# the list of extra libraries we work out which libraries need to be installed
+# for a working system.
+
+
+# Compute the initial list of libraries.  This list is always maintained in
+# order so that the set difference in the resolution loop below works.
+LIBS="$(
+    {
+        # For all installed files we generate the list of libraries needed by
+        # the loader.
+        list_dependencies '' $(cat "$install_list")
+
+        # For all extra libraries we resolve the library name.  Here we search
+        # quite hard for the file in question so that it does not have to be
+        # specified too exactly.
+        for lib in $EXTRA_LIBS; do
+            locate_library $lib '' '.so.*' '.so' '-*.so'  ||
+                break
+        done
+    } |
+    sort | uniq )"  ||
+    Error "Error finding libraries"
+
+# This is the tricky bit.   ND is "new dependencies", we start with the
+# entire library as dependencies, and only inspect genuinely new dependencies
+# on each fresh round.
+ND="$LIBS" 
+while :; do
+    # Resolve all the dependencies from our new list
+    ND="$(list_dependencies "$SYSROOT" $ND | sort | uniq)"
+    # and subtract from this list the libraries we're already installing
+    ND="$(comm -13 <(echo "$LIBS") <(echo "$ND"))"
+    # If nothing new we're done
+    [ -z "$ND" ]  &&  break
+    # otherwise add to the list of libraries and go around again.
+    LIBS="$(sort <<<"$LIBS"$'\n'"$ND" | uniq)"
+done
+
+
+# Now install all the libraries.
+for lib in $LIBS; do
+    if [ -L "$SYSROOT/$lib" ]; then
+        filename="$(readlink "$SYSROOT/$lib")"  &&
+        ln -s "$filename" "$sysroot/$lib"  &&
+        lib="$(dirname "$lib")/$filename"
+    fi  &&
+    cp "$SYSROOT/$lib" "$sysroot/$lib"  &&
+    do_strip "$sysroot/$lib"  &&
+    chmod -w "$sysroot/$lib"  ||
+        Error "Error installing libraries"
+done
+
 
 # /sbin/ldconfig -v -r "$sysroot"  &&
 

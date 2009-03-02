@@ -1,3 +1,0 @@
-#!/bin/sh
-echo 'This account is current not available.'
-exit 1

@@ -1,9 +1,10 @@
 #!/bin/sh
 
 # install-files <sysroot> <file-list>
+#
+# The environment variable sysroot must be set to point to the target rootfs.
 
-sysroot="${1:?}"
-FILE_LIST="${2:?}"
+FILE_LIST="${1:?}"
 
 SOURCE_DIR="$(dirname "$FILE_LIST")"
 

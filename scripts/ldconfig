@@ -1,0 +1,43 @@
+#!/bin/sh
+
+# Manage installation of ldconfig.
+#
+#   ldconfig <option>
+#
+# The following environment variables must be set on entry:
+#
+#   sysroot         Target rootfs
+#   BINUTILS_DIR    Root of binutils directory
+#   COMPILER_PREFIX Cross-compiler prefix
+
+
+HERE="$(dirname "$0")"
+. "$HERE/functions"
+
+export sysroot
+
+SYSROOT="$BINUTILS_DIR/$COMPILER_PREFIX/sys-root"
+
+
+case $1 in
+    install)
+        # Permanently install ldconfig
+        "$HERE"/install "$SYSROOT"/sbin/ldconfig /sbin
+        "$HERE"/first-time /sbin/ldconfig
+        ;;
+    once)
+        # Install ldconfig to be run once at startup.
+        "$HERE"/install "$SYSROOT"/sbin/ldconfig /sbin
+        "$HERE"/first-time /sbin/ldconfig
+        "$HERE"/first-time 'rm -f /sbin/ldconfig'
+        ;;
+    cross)
+        # Run the cross ldconfig program.
+        # Actually, this works when there is a close enough match between the
+        # host and target system, in particular a little endian target works!
+        /sbin/ldconfig -X -r "$sysroot"
+        ;;
+    none)
+        ;;
+    *)  Error Invalid option ;;
+esac

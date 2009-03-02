@@ -29,7 +29,6 @@ Building with `-mthumb`
     dropbear    17% smaller     But too slow!
     mtd-utils   
     nano        25% smaller
-    nologin     
     ntp         21% smaller
     openntpd    21% smaller
     portmap     7%  smaller

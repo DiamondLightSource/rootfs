@@ -68,8 +68,6 @@ d 755 /etc/network/if-down.d
 d 755 /etc/network/if-post-down.d
 f 755 /etc/network/interfaces 
 
-f 755 /sbin/nologin
-
 # Not sure about these ones:
 f 755 /etc/protocols
 f 755 /etc/rpc

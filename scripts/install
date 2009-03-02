@@ -6,7 +6,7 @@
 #
 # with the following environment variables set:
 #
-#   COMPILER_PREFIX
+#   COMPILER_PREFIX     Used to locate appropriate version of strip
 #   sysroot             Path to rootfs being built
 #
 # Here <target-dir> is relative to <sysroot> and the given permissions are
@@ -15,12 +15,75 @@
 # The following options are supported:
 #
 #   -s      Strip file if appropriate
+#   -n      Suppress attempt to strip file, even if file thinks it's code
 #   -m:     Set mode
 #   -o:     Set owner
 #   -g:     Set group
+#   -f      Destination is file name, not directory: only one file can be
+#           copied in this case.
+
 
 HERE="$(dirname "$0")"
 
 . "$HERE"/functions
 
-install_file "$@"
+
+DO_STRIP=1
+MODE=
+OWNER=
+GROUP=
+FILENAME=0
+
+while getopts 'snm:o:g:f' option; do
+    case "$option" in
+        s)  DO_STRIP=1 ;;
+        n)  DO_STRIP=0 ;;
+        m)  MODE="$OPTARG" ;;
+        o)  OWNER="$OPTARG" ;;
+        g)  GROUP="$OPTARG" ;;
+        f)  FILENAME=1 ;;
+        *)  Error Invalid switch ;;
+    esac
+done
+shift $((OPTIND-1))
+if (($# < 2)); then
+    Error Missing arguments
+elif ((FILENAME && $# != 2)); then
+    Error Cannot specify multiple files with filename target
+fi
+
+
+# Some evil bash trickery to get at the list of arguments.  Want to
+# iterate over all of the files -- except for the last one!
+args=("$@")
+target_dir="$sysroot${args[$#-1]}"
+unset args[$#-1]
+
+for source in "${args[@]}"; do
+    if ((FILENAME)); then
+        target="$target_dir"
+    else
+        target="$target_dir/$(basename "$source")"
+    fi
+
+    if [ -d "$source" ]; then
+        Error Cannot install directory "$source"
+    elif link="$(readlink "$source")"; then
+        ln -s "$link" "$target"
+    else
+        cp "$source" "$target"  &&
+        if is_executable "$target"; then
+            echo "$target" >> $install_list  &&
+            if ((DO_STRIP)); then
+                MODE="${MODE:-$(stat -c%a "$source")}"  &&
+                do_strip "$target"
+            fi
+        fi  &&
+        if [ -n "$MODE" ]; then
+            chmod "$MODE" "$target";
+        fi  &&
+        if [ -n "$OWNER" -o -n "$GROUP" ]; then
+            chown "$OWNER:$GROUP" "$target"
+        fi  
+    fi || exit
+done

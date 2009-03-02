@@ -18,6 +18,8 @@ CFLAGS_dropbear = -O2
 
 TERMS = xterm xterm-color screen vt100 vt102
 
+LDCONFIG = cross
+
 
 # This one is essential, nothing builds without it.
 EXTRAS += busybox

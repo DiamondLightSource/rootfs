@@ -4,14 +4,17 @@
 # this file:
 #
 #   COMPILER_PREFIX     Compilation prefix
-#
-# The following environment variable must be set before using install_file
-#
-#   sysroot             Target system root
+
 
 STRIP="$COMPILER_PREFIX-strip"
 READELF="$COMPILER_PREFIX-readelf"
 
+
+Error()
+{
+    echo >&2 "$@"
+    exit 1
+}
 
 do_strip()
 {
@@ -28,98 +31,4 @@ is_executable()
         *application/x-executable*) return 0 ;;
         *)  return 1 ;;
     esac
-}
-
-
-# Outputs a list of all the library dependencies of the given executable file.
-list_dependencies()
-{
-    echo calling "$READELF" -d "$1" 
-    which "$READELF"
-    "$READELF" -d "$1" |
-    grep NEEDED
-}
-
-
-# Installs the file according to its type: the file is copied or linked, and
-# stripped if necessary.  This function is designed to behave as much like
-# install as possible.
-#
-#   process_file [options] file [... file] target-dir 
-#
-#   -n      Suppress attempt to strip file, even if file thinks it's code
-#   -m:     Set file mode (default is to use mode of file being copied)
-#   -o:     Set file owner (default is root)
-#   -g:     Set file group (default is root)
-#   -f      Destination is file name, not directory: only one file can be
-#           copied in this case.
-#
-install_file()
-{
-    local DO_STRIP=1
-    local MODE=
-    local OWNER=
-    local GROUP=
-    local FILENAME=0
-    local option
-
-    while getopts 'snm:o:g:f' option; do
-        case "$option" in
-            s)  DO_STRIP=1 ;;
-            n)  DO_STRIP=0 ;;
-            m)  MODE="$OPTARG" ;;
-            o)  OWNER="$OPTARG" ;;
-            g)  GROUP="$OPTARG" ;;
-            f)  FILENAME=1 ;;
-            *)  return 1 ;;
-        esac
-    done
-    shift $((OPTIND-1))
-    if (($# < 2)); then
-        echo >&2 Missing arguments
-        return 1
-    elif ((FILENAME && $# != 2)); then
-        echo >&2 Cannot specify multiple files with filename target
-        return 1
-    fi
-
-    # Some evil bash trickery to get at the list of arguments.  Want to
-    # iterate over all of the files -- except for the last one!
-    local -a args=("$@")
-    local target_dir="$sysroot${args[$#-1]}"
-    unset args[$#-1]
-
-    local source
-    for source in "${args[@]}"; do
-        local target
-        if ((FILENAME)); then
-            target="$target_dir"
-        else
-            target="$target_dir/$(basename "$source")"
-        fi
-
-        local link 
-        if [ -d "$source" ]; then
-            echo >&2 Cannot install directory "$source"
-            return 1
-        elif link="$(readlink "$source")"; then
-            ln -s "$link" "$target"
-        else
-            cp "$source" "$target"  &&
-            if is_executable "$target"; then
-                echo Installing "$target"  &&
-#                list_dependencies "$target"  &&
-                if ((DO_STRIP)); then
-                    MODE="${MODE:-$(stat -c%a "$source")}"  &&
-                    do_strip "$target"
-                fi
-            fi  &&
-            if [ -n "$MODE" ]; then
-                chmod "$MODE" "$target";
-            fi  &&
-            if [ -n "$OWNER" -o -n "$GROUP" ]; then
-                chown "$OWNER:$GROUP" "$target"
-            fi  
-        fi || return
-    done
 }
