@@ -24,7 +24,7 @@ build:
 
 install:
         # Normal installation (6555 = rx,u+s,g+s)
-	$(install) -m 6555 $(O)/dropbearmulti /usr/sbin
+	$(install) -s -m 6555 $(O)/dropbearmulti /usr/sbin
 	ln -s /usr/sbin/dropbearmulti $(sysroot)/usr/sbin/dropbear
 	for program in $(PROGRAMS) ssh; do \
             ln -s /usr/sbin/dropbearmulti $(sysroot)/usr/bin/$$program; \

@@ -11,7 +11,7 @@ TEST_FILES = testing timestamps
 build-local: $(TEST_FILES)
 
 install:
-	$(install) $(TEST_FILES:%=$(O)/%) /usr/bin
+	$(install) -s -m-w $(TEST_FILES:%=$(O)/%) /usr/bin
 
 
 include $(CURDIR)/../RULES

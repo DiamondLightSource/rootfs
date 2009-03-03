@@ -19,7 +19,7 @@ build:
 	make -C $(O)
 
 install:
-	$(install) $(O)/screen /usr/bin
+	$(install) -s -m-w $(O)/screen /usr/bin
 
 
 include ../RULES

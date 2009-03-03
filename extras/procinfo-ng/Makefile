@@ -17,7 +17,7 @@ build:
 	make -C $(O) VPATH=$(srcdir)
 
 install:
-	$(install) -f -m 555 $(O)/procinfo /usr/bin/procinfo-ng
+	$(install) -f -s -m-w $(O)/procinfo /usr/bin/procinfo-ng
 
 
 include ../RULES

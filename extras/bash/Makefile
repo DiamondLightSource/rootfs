@@ -16,7 +16,7 @@ build:
 	make -C $(O)
 
 install:
-	$(install) $(O)/bash /bin
+	$(install) -s -m-w $(O)/bash /bin
 
 # EXTRA_LIBS = libdl
 

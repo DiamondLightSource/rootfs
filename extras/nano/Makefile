@@ -15,7 +15,7 @@ build:
 	make -C $(O)
 
 install:
-	$(install) -m 555 $(O)/src/nano /usr/bin
+	$(install) -s -m-w $(O)/src/nano /usr/bin
 
 
 include ../RULES

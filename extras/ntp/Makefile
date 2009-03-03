@@ -23,7 +23,7 @@ build:
 	make -C $(O)
 
 install:
-	$(install) $(NTP_PROGRAMS:%=$(O)/%) /usr/sbin
+	$(install) -s -m-w $(NTP_PROGRAMS:%=$(O)/%) /usr/sbin
 	$(install) $(NTP_CONF) /etc
 	$(startup) $(CURDIR)/ntpd S800
 

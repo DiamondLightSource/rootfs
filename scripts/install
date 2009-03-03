@@ -14,8 +14,8 @@
 #
 # The following options are supported:
 #
-#   -s      Strip file if appropriate
-#   -n      Suppress attempt to strip file, even if file thinks it's code
+#   -s      Strip file and mark as executable
+#   -x      Mark code as executable, but don't strip
 #   -m:     Set mode
 #   -o:     Set owner
 #   -g:     Set group
@@ -28,16 +28,18 @@ HERE="$(dirname "$0")"
 . "$HERE"/functions
 
 
-DO_STRIP=1
+DO_STRIP=0
+EXECUTABLE=0
 MODE=
 OWNER=
 GROUP=
 FILENAME=0
 
-while getopts 'snm:o:g:f' option; do
+while getopts 'sxm:o:g:f' option; do
     case "$option" in
-        s)  DO_STRIP=1 ;;
-        n)  DO_STRIP=0 ;;
+        s)  DO_STRIP=1
+            EXECUTABLE=1 ;;
+        x)  EXECUTABLE=1 ;;
         m)  MODE="$OPTARG" ;;
         o)  OWNER="$OPTARG" ;;
         g)  GROUP="$OPTARG" ;;
@@ -53,8 +55,8 @@ elif ((FILENAME && $# != 2)); then
 fi
 
 
-# Some evil bash trickery to get at the list of arguments.  Want to
-# iterate over all of the files -- except for the last one!
+# Some bash trickery to get at the list of arguments.  Want to iterate over
+# all of the files -- except for the last one!
 args=("$@")
 target_dir="$sysroot${args[$#-1]}"
 unset args[$#-1]
@@ -72,7 +74,7 @@ for source in "${args[@]}"; do
         ln -s "$link" "$target"
     else
         cp "$source" "$target"  &&
-        if is_executable "$target"; then
+        if ((EXECUTABLE)); then
             echo "$target" >> $install_list  &&
             if ((DO_STRIP)); then
                 MODE="${MODE:-$(stat -c%a "$source")}"  &&

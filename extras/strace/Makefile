@@ -18,7 +18,7 @@ build:
 	make -C $(O)
 
 install:
-	$(install) -m 555 $(O)/strace /usr/bin
+	$(install) -s -m-w $(O)/strace /usr/bin
 
 
 include ../RULES

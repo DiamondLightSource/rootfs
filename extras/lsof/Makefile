@@ -54,7 +54,7 @@ build:
         make -C $(O) -f $(lsof_srcdir)/dialects/linux/Makefile
 
 install:
-	$(install) -m a-w,u+s $(O)/lsof /usr/bin
+	$(install) -s -m a-w,u+s $(O)/lsof /usr/bin
 
 
 include ../RULES

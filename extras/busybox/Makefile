@@ -49,7 +49,7 @@ menuconfig: untar
 
 install:
         # 4555 = rx,u+s
-	$(install) -m 4555 $(O)/busybox /bin
+	$(install) -s -m 4555 $(O)/busybox /bin
 	cat $(O)/busybox.links | \
         while read -r; do \
             ln -s /bin/busybox $(sysroot)/$$REPLY  ||  exit 1; \

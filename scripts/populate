@@ -46,7 +46,8 @@ list_dependencies()
     local file
     for file; do
         "$READELF" -d "$root/$file" |
-        sed -n '/(NEEDED)/{s/^.*\[//; s/\].*$//; p; }' 
+        sed -n '/(NEEDED)/{s/^.*\[//; s/\].*$//; p; }' ||
+            Error "Error reading file: $root/$file"
     done |
     sort | uniq |
     while read -r; do
@@ -128,7 +129,6 @@ while :; do
     # otherwise add to the list of libraries and go around again.
     LIBS="$(sort <<<"$LIBS"$'\n'"$ND" | uniq)"
 done
-
 
 # Now install all the libraries.
 for lib in $LIBS; do

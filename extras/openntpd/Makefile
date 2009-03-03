@@ -27,7 +27,7 @@ install:
 	$(useradd) -u $(OPENNTPD_UID) -g $(OPENNTPD_GID) \
             -c 'OpenNTP daemon' -d /var/empty/ntp -s /bin/false _ntp
 
-	$(install) -m 555 $(O)/ntpd /sbin
+	$(install) -s -m-w $(O)/ntpd /sbin
 	$(install) $(NTPD_CONF) /etc
 
 	$(startup) $(CURDIR)/openntpd S210

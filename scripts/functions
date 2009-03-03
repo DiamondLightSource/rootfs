@@ -23,17 +23,6 @@ do_strip()
 }
 
 
-# Checks whether the given file is executable (or a library).
-is_executable()
-{
-    case "$(file -i "$1")" in
-        *application/x-sharedlib*)  return 0 ;;
-        *application/x-executable*) return 0 ;;
-        *)  return 1 ;;
-    esac
-}
-
-
 # From an IP address and a net mask computes the associated network as
 #   IP & mask
 compute_network()

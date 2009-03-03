@@ -19,8 +19,8 @@ build:
 	make -C $(O)
 
 install:
-	$(install) -m a=rx,u+s,g+s $(O)/sudo /usr/bin
-	$(install) -m a=rx,u+s,g+s $(O)/visudo /usr/bin
+	$(install) -s -m a=rx,u+s,g+s $(O)/sudo /usr/bin
+	$(install) -s -m a=rx,u+s,g+s $(O)/visudo /usr/bin
 
 ifeq ($(SUDOERS_FILE),)
 	$(install) -f -m ug=r /dev/null /etc/sudoers
