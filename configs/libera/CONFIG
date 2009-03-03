@@ -42,7 +42,7 @@ NW_NETMASK = 255.255.240.0
 NW_GATEWAY = 172.23.240.254
 
 
-final-install:
+final-install::
         # Install the regular nfs mounts.
 	mkdir -p $(patsubst %,$(sysroot)/mnt/%,nfs prod work)
 	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
