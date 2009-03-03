@@ -66,14 +66,7 @@ $(EXTRAS:%=build-%):
 
 build-extras: $(EXTRAS:%=build-%)
 
+.PHONY: build-extras  $(EXTRAS:%=build-%)
 
-clean-all:
-	rm -rf build
-
-lssys:
-	cpio -t -v --quiet <$(O)imagefile.cpio
-
-
-.PHONY: build_extras clean-all lssys $(EXTRAS:%=build_%)
 
 default: deploy-rootfs

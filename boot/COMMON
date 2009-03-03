@@ -3,6 +3,7 @@ include $(TOP)/COMMON
 O = $(BUILD_ROOT)/$(TARGET)/
 
 
+ifdef MKIMAGE
 $(O)boot-script.image: $(O)boot-script
 	$(MKIMAGE) -T script -d $< $@
 
@@ -10,5 +11,8 @@ push-boot-script: $(O)boot-script.image
 	scp $< $(TFTP_SERVER)/boot-script-$(TARGET).image
 
 .PHONY: default push-boot-script $(O)boot-script
+
+BOOT_SCRIPT_TARGET = push-boot-script
+endif
 
 TFTP_SERVER = serv3:/tftpboot

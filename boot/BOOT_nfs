@@ -12,7 +12,7 @@ EXPORTS = \
 $(O)boot-script: $(O)imagefile.cpio
 	$(call EXPORT, $(EXPORTS)) ./make-nfsboot-script $@
 
-default: $(O)imagefile.cpio push-boot-script
+default: $(O)imagefile.cpio $(BOOT_SCRIPT_TARGET)
 	ssh -t $(NFS_SERVER) \
             'sudo rm -rf $(NFS_ROOTFS); mkdir -p $(NFS_ROOTFS)'
 	scp $(O)imagefile.cpio $(NFS_SERVER):/tmp

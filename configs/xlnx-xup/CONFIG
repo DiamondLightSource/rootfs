@@ -26,8 +26,8 @@ EXTRAS += strace lsof
 BOOT = nfs
 NETWORK = nfs
 
-NFS_SERVER = pc0013
-NFS_ROOTFS = /scratch/mga83/rootfs/$(TARGET)
+NFS_SERVER ?= pc0013
+NFS_ROOTFS ?= /scratch/mga83/rootfs/$(TARGET)
 
 
 final-install:
