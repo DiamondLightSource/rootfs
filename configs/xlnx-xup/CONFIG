@@ -30,7 +30,7 @@ NFS_SERVER ?= pc0013
 NFS_ROOTFS ?= /scratch/mga83/rootfs/$(TARGET)
 
 
-final-install:
+final-install::
         # Install the regular nfs mounts.
 	mkdir -p $(patsubst %,$(sysroot)/mnt/%,nfs prod work)
 	cat $(configdir)/fstab >>$(sysroot)/etc/fstab

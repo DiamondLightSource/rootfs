@@ -20,7 +20,7 @@ $(sysroot):
         done
 	make -C skeleton post-install
 
-final-install: $(sysroot)
+final-install:: $(sysroot)
 
 $(O)imagefile.cpio: $(sysroot) final-install
 	cd $(sysroot) && \
