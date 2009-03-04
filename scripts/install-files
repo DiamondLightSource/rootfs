@@ -14,7 +14,7 @@ while read type mode name value; do
     case $type in
         f)  install -m $mode "$SOURCE_DIR/${value:-$name}" "$sysroot/$name" ;;
         d)  mkdir -m $mode "$sysroot/$name" ;;
-        l)  ln -s "$value" "$value" "$sysroot/$name" ;;
+        l)  ln -s "$value" "$sysroot/$name" ;;
         n)  install -m $mode /dev/null "$sysroot/$name" ;;
         c)  mknod -m $mode "$sysroot/$name" c $value ;;
         b)  mknod -m $mode "$sysroot/$name" b $value ;;

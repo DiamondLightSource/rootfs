@@ -32,12 +32,13 @@ install_list = $(BUILD_ROOT)/$(TARGET)/install_list
 
 
 # Support scripts for installation.
-install    = $(call EXPORT, sysroot COMPILER_PREFIX install_list) \
-    $(scripts)install
-useradd    = $(call EXPORT, sysroot) $(scripts)useradd
-groupadd   = $(call EXPORT, sysroot) $(scripts)groupadd
-startup    = $(call EXPORT, sysroot) $(scripts)startup 
-first-time = $(call EXPORT, sysroot) $(scripts)first-time 
+install    = \
+    $(call EXPORT, sysroot COMPILER_PREFIX install_list) $(scripts)install
+install-files = $(call EXPORT, sysroot) $(scripts)install-files
+useradd       = $(call EXPORT, sysroot) $(scripts)useradd
+groupadd      = $(call EXPORT, sysroot) $(scripts)groupadd
+startup       = $(call EXPORT, sysroot) $(scripts)startup 
+first-time    = $(call EXPORT, sysroot) $(scripts)first-time 
 
 # Our local autoconf -- probably redundant... 
 AUTOCONF = $(TOOLKIT_BIN)/autoconf

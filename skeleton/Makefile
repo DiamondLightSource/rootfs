@@ -5,7 +5,8 @@ include $(TOP)/COMMON
 
 # By default install DNS and hosts support for name lookup -- these are
 # dynamically loaded by the C library, so won't be picked up automatically.
-EXTRA_LIBS ?= libnss_dns libnss_files
+# Also want to install real time libraries as well.
+EXTRA_LIBS ?= libnss_dns libnss_files librt libstdc++
 
 # By default don't bother with ldconfig at all.
 LDCONFIG ?= none
@@ -18,7 +19,7 @@ populate_EXPORTS = \
 
 pre-install:
 	rm -f $(install_list)
-	$(call EXPORT, sysroot) $(scripts)install-files '$(CURDIR)/file-list'
+	$(install-files) '$(CURDIR)/file-list'
 
         # Add target specific getty line to inittab
 	echo '::respawn:/sbin/getty $(CONSOLE_BAUD) $(CONSOLE_TTY)' \
