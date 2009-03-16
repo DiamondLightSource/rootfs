@@ -1,7 +1,7 @@
 TOP = $(CURDIR)
 include COMMON
 
-O = $(BUILD_ROOT)/$(TARGET)/
+O = $(BUILD_TARGET)/
 
 
 $(O):
@@ -16,7 +16,7 @@ $(sysroot):
 	rm -rf $@  &&  mkdir -p $@
 	make -C skeleton pre-install
 	for extra in $(EXTRAS); do \
-            make -C extras/$$extra install; \
+            make -C extras/$$extra install || exit 1; \
         done
 	make -C skeleton post-install
 
@@ -51,6 +51,7 @@ BOOT_DEPENDS ?= $(BOOT_$(BOOT)_DEPENDS)
 BOOT_nfs_DEPENDS = $(O)imagefile.cpio
 BOOT_initramfs_DEPENDS = $(O)imagefile.cpio
 BOOT_jffs2_DEPENDS = $(sysroot)
+BOOT__DEPENDS = $(O)imagefile.cpio
 
 deploy-rootfs: $(BOOT_DEPENDS)
 	make -C boot -f BOOT_$(BOOT)

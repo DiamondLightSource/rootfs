@@ -1,6 +1,6 @@
 include $(TOP)/COMMON
 
-O = $(BUILD_ROOT)/$(TARGET)/
+O = $(BUILD_TARGET)/
 
 
 ifdef MKIMAGE

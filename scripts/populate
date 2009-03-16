@@ -51,7 +51,7 @@ list_dependencies()
     done |
     sort | uniq |
     while read -r; do
-        locate_library "$REPLY"
+        locate_library "$REPLY"  ||  exit 1
     done
 }
 
@@ -102,14 +102,13 @@ LIBS="$(
     {
         # For all installed files we generate the list of libraries needed by
         # the loader.
-        list_dependencies '' $(cat "$install_list")
+        list_dependencies '' $(cat "$install_list")  &&
 
         # For all extra libraries we resolve the library name.  Here we search
         # quite hard for the file in question so that it does not have to be
         # specified too exactly.
         for lib in $EXTRA_LIBS; do
-            locate_library $lib '' '.so.*' '.so' '-*.so'  ||
-                break
+            locate_library $lib '' '.so.*' '.so' '-*.so'  ||  exit 1
         done
     } |
     sort | uniq )"  ||

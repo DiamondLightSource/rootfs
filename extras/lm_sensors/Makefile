@@ -1,0 +1,42 @@
+# Hardware monitoring by lm-sensors
+#
+# Download from http://www.lm-sensors.org
+
+
+TOP = $(CURDIR)/../..
+include ../COMMON
+
+lm_sensors_VERSION ?= 3.1.0
+
+MD5_SUM_3.1.0 = e23130eaa46c66b861729835e08bdccf
+
+
+# To make out of tree building work need to create Module.mk links for all
+# the components we're going to build.  Because the target makefile is a bit
+# stupid about cross compiling, we override the list of directories it makes.
+SRCDIRS = lib prog/sensors prog/dump 
+config:
+	for dir in $(SRCDIRS); do \
+            mkdir -p $(O)$$dir; \
+            ln -sf $(srcdir)/$$dir/Module.mk $(O)$$dir; \
+        done
+
+# Building out of tree seems to need these.
+CFLAGS += -I$(srcdir) -I$(srcdir)/lib
+
+build:
+	make -C $(O) -f $(srcdir)/Makefile \
+            SRCDIRS='$(SRCDIRS)' \
+            srcdir=$(srcdir) VPATH=$(srcdir) \
+            CC=$(CROSS_COMPILE)gcc CFLAGS='$(CFLAGS)'
+
+
+install:
+	$(install) -s -m-w $(O)/prog/sensors/sensors /usr/bin
+
+
+include ../RULES
+
+
+# prog/sensord requires RRD, apparently available from
+#   http://people.ee.ethz.ch/~oetiker/webtools/rrdtool/

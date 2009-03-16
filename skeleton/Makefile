@@ -26,7 +26,9 @@ pre-install:
             >>$(sysroot)/etc/inittab
 
         # Configure networking according to selected mode
+ifdef NETWORK
 	$(call EXPORT, $(NW_EXPORTS)) $(CURDIR)/network $(NETWORK)
+endif
 
 	@$(useradd) -c 'root' -d /root -g 0 -u 0  -s /bin/sh \
             -p'$(ROOT_PASSWORD)' root

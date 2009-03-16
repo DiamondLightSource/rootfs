@@ -12,7 +12,9 @@ BINUTILS_DIR = /dls_sw/targetOS/x-tools/$(TOOLCHAIN_VERSION)/$(COMPILER_PREFIX)
 TAR_DIRS = /dls_sw/prod/targetOS/tar-files /dls_sw/work/targetOS/tar-files
 
 
+ifndef NOLOCAL
 -include $(TOP)/CONFIG.local
+endif
 
 ifndef TARGET
 $(error Must specify TARGET)
@@ -20,15 +22,20 @@ endif
 configdir = $(TOP)/configs/$(TARGET)
 include $(configdir)/CONFIG
 -include $(configdir)/BOOT_$(BOOT)
+
+ifndef NOLOCAL
 -include $(TOP)/CONFIG.$(TARGET).local
+endif
 
 
 TOOLKIT_BIN = $(BUILD_ROOT)/toolkit/bin
-sysroot = $(BUILD_ROOT)/$(TARGET)/rootfs
+
+BUILD_TARGET = $(BUILD_ROOT)/$(TARGET)
+sysroot = $(BUILD_TARGET)/rootfs
 scripts = $(TOP)/scripts/
 
 # Where install places the list of files it has installed.
-install_list = $(BUILD_ROOT)/$(TARGET)/install_list
+install_list = $(BUILD_TARGET)/install_list
 
 
 # Support scripts for installation.

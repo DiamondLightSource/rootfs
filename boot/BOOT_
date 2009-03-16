@@ -1,0 +1,3 @@
+# Trivial make script when no BOOT target specified.
+
+default:
