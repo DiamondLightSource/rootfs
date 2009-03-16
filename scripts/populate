@@ -9,6 +9,7 @@
 #   install_list    File containing list of installed files
 #   TERMS           List of terminals to install
 #   EXTRA_LIBS      Extra libraries to be installed
+#   LIB_PREFIX      Directory of locally generated libraries
 
 HERE="$(dirname "$0")"
 set -o pipefail
@@ -34,6 +35,40 @@ install_terminfo()
 
 
 
+# Searches for given library in lib and usr/lib, optionally searching for
+# match to suffixes as well.  Called as:
+#
+#   locate_library <library> [<suffixes>]
+#
+locate_library()
+{
+    local lib="$1"
+    shift
+
+    local lib_dir lib_prefix
+    for lib_prefix in "$SYSROOT" "$LIB_PREFIX"; do
+        for lib_dir in lib usr/lib; do
+            if (($#)); then
+                for suffix; do
+                    for file in "$lib_prefix/$lib_dir/$lib"$suffix; do
+                        if [ -e "$file" ]; then
+                            echo "$lib_dir/$(basename "$file")"
+                            return 0
+                        fi
+                    done
+                done
+            else
+                if [ -e "$lib_prefix/$lib_dir/$lib" ]; then
+                    echo "$lib_dir/$lib"
+                    return 0
+                fi
+            fi
+        done
+    done
+    Error "Can't find library $lib"
+}
+
+
 # Outputs a list of all the library dependencies of the given executable
 # files.  Called as
 #
@@ -56,37 +91,18 @@ list_dependencies()
 }
 
 
-# Searches for given library in lib and usr/lib, optionally searching for
-# match to suffixes as well.  Called as:
-#
-#   locate_library <library> [<suffixes>]
-#
-locate_library()
+# Given a library identified by locate_library returns the true path to that
+# library.
+library_path()
 {
-    local lib="$1"
-    shift
-
-    local lib_dir
-    for lib_dir in lib usr/lib; do
-        if (($#)); then
-            for suffix; do
-                for file in "$SYSROOT/$lib_dir/$lib"$suffix; do
-                    if [ -e "$file" ]; then
-                        echo "$lib_dir/$(basename "$file")"
-                        return 0
-                    fi
-                done
-            done
-        else
-            if [ -e "$SYSROOT/$lib_dir/$lib" ]; then
-                echo "$lib_dir/$lib"
-                return 0
-            fi
+    for lib_prefix in "$SYSROOT" "$LIB_PREFIX"; do
+        if [ -e "$lib_prefix/$1" ]; then
+            echo "$lib_prefix/$1"
+            return 0
         fi
     done
-    Error "Can't find library $lib"
+    Error "That was unexpected"
 }
-
 
 
 # -----------------------------------------------------------------------------
@@ -131,12 +147,13 @@ done
 
 # Now install all the libraries.
 for lib in $LIBS; do
-    if [ -L "$SYSROOT/$lib" ]; then
-        filename="$(readlink "$SYSROOT/$lib")"  &&
+    lib_path="$(library_path "$lib")"  &&
+    if [ -L "$lib_path" ]; then
+        filename="$(readlink "$lib_path")"  &&
         ln -s "$filename" "$sysroot/$lib"  &&
         lib="$(dirname "$lib")/$filename"
     fi  &&
-    cp "$SYSROOT/$lib" "$sysroot/$lib"  &&
+    cp "$lib_path" "$sysroot/$lib"  &&
     do_strip "$sysroot/$lib"  &&
     chmod -w "$sysroot/$lib"  ||
         Error "Error installing libraries"

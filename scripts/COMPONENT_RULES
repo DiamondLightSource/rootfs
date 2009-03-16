@@ -9,7 +9,7 @@ ifdef CFLAGS_$(COMPONENT)
 CFLAGS = $(CFLAGS_$(COMPONENT))
 endif
 
-all: config build
+all: config build install-lib
 
 
 ifeq ($(version),local)
@@ -55,9 +55,15 @@ endif
 $(O):
 	mkdir -p $(O)
 
+$(LIB_PREFIX):
+	mkdir -p $(LIB_PREFIX)/include $(LIB_PREFIX)/lib $(LIB_PREFIX)/usr/lib
+
+
 config: $(O) untar
 
 build: $(O) 
+
+install-lib: build $(LIB_PREFIX)
 
 
 clean:

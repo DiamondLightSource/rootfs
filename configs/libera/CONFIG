@@ -25,6 +25,8 @@ TERMS = xterm xterm-color screen vt100 vt102
 EXTRAS += busybox
 # Components required for normal operation.
 EXTRAS += ntp dropbear portmap
+# Needed for the health daemon
+EXTRAS += lm_sensors
 # Useful debugging tools
 EXTRAS += strace lsof
 

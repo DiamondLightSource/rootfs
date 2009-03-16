@@ -31,6 +31,14 @@ build:
             CC=$(CROSS_COMPILE)gcc CFLAGS='$(CFLAGS)'
 
 
+install-lib:
+	cp -a $(O)/lib/libsensors.* $(LIB_PREFIX)/usr/lib
+	mkdir -p $(LIB_PREFIX)/include/sensors
+	for h in error.h sensors.h; do \
+            cp $(srcdir)/lib/$$h $(LIB_PREFIX)/include/sensors; \
+        done
+
+
 install:
 	$(install) -s -m-w $(O)/prog/sensors/sensors /usr/bin
 

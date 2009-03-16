@@ -32,6 +32,8 @@ TOOLKIT_BIN = $(BUILD_ROOT)/toolkit/bin
 
 BUILD_TARGET = $(BUILD_ROOT)/$(TARGET)
 sysroot = $(BUILD_TARGET)/rootfs
+LIB_PREFIX = $(BUILD_TARGET)/local
+
 scripts = $(TOP)/scripts/
 
 # Where install places the list of files it has installed.

@@ -15,7 +15,8 @@ LDCONFIG ?= none
 INIT_D = $(CURDIR)/etc/init.d
 NW_EXPORTS = sysroot NW_HOSTNAME NW_ADDRESS NW_NETMASK NW_GATEWAY
 populate_EXPORTS = \
-    sysroot BINUTILS_DIR COMPILER_PREFIX TERMS install_list EXTRA_LIBS
+    sysroot BINUTILS_DIR COMPILER_PREFIX TERMS install_list EXTRA_LIBS \
+    LIB_PREFIX
 
 pre-install:
 	rm -f $(install_list)
