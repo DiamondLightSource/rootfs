@@ -22,13 +22,12 @@ config:
         done
 
 # Building out of tree seems to need these.
-CFLAGS += -I$(srcdir) -I$(srcdir)/lib
+CPPFLAGS += -I$(srcdir) -I$(srcdir)/lib
 
 build:
 	make -C $(O) -f $(srcdir)/Makefile \
-            SRCDIRS='$(SRCDIRS)' \
-            srcdir=$(srcdir) VPATH=$(srcdir) \
-            CC=$(CROSS_COMPILE)gcc CFLAGS='$(CFLAGS)'
+            $(call EXPORT,SRCDIRS srcdir CFLAGS CPPFLAGS) \
+            VPATH=$(srcdir) CC=$(CROSS_COMPILE)gcc
 
 
 install-lib:

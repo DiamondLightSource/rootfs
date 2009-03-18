@@ -6,8 +6,8 @@
 #
 # with the following environment variables set:
 #
-#   COMPILER_PREFIX     Used to locate appropriate version of strip
-#   sysroot             Path to rootfs being built
+: ${COMPILER_PREFIX:?}  # Used to locate appropriate version of strip
+: ${sysroot:?}          # Path to rootfs being built
 #
 # Here <target-dir> is relative to <sysroot> and the given permissions are
 # set if specified.

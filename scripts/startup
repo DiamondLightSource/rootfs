@@ -4,7 +4,9 @@
 #
 # Usage: startup <sysroot> [-S] <script> [<start-prefix>]
 #
-# The environment variable sysroot must be set to point to the target rootfs.
+# The following environment variable must be set:
+#
+: ${sysroot:?}      # Target rootfs, where to install files
 
 HERE="$(dirname "$0")"
 

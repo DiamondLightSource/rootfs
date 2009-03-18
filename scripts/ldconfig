@@ -6,9 +6,9 @@
 #
 # The following environment variables must be set on entry:
 #
-#   sysroot         Target rootfs
-#   BINUTILS_DIR    Root of binutils directory
-#   COMPILER_PREFIX Cross-compiler prefix
+${sysroot:?}            # Target rootfs
+${BINUTILS_DIR:?}       # Root of binutils directory
+${COMPILER_PREFIX:?}    # Cross-compiler prefix
 
 
 HERE="$(dirname "$0")"

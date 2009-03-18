@@ -44,4 +44,3 @@ post-install:
 
 	$(first-time) 'rm /etc/first-time.sh'
 	$(first-time) 'mount -o remount,ro /'
-

@@ -14,7 +14,7 @@ all: config build install-lib
 
 ifeq ($(version),local)
 # Local builds are handled a little oddly: we need to turn the make file
-# around so that it builds out of $(O), targeting soruces in $(CURDIR).  For
+# around so that it builds out of $(O), targeting sources in $(CURDIR).  For
 # local there is no srcdir, so nothing to untar.
 
 untar:

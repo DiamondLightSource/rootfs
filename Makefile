@@ -18,11 +18,12 @@ $(sysroot):
 	for extra in $(EXTRAS); do \
             make -C extras/$$extra install || exit 1; \
         done
+	make final-install
 	make -C skeleton post-install
 
-final-install:: $(sysroot)
+final-install::
 
-$(O)imagefile.cpio: $(sysroot) final-install
+$(O)imagefile.cpio: $(sysroot)
 	cd $(sysroot) && \
         find -name . -o -print | cpio --quiet -H newc -o >$@
 

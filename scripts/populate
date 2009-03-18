@@ -3,13 +3,17 @@
 #
 # Should be called with the following environment variables set:
 #
-#   sysroot         Root of rootfs being constructed
-#   BINUTILS_DIR    Root of binutils directory
-#   COMPILER_PREFIX Cross-compiler prefix
-#   install_list    File containing list of installed files
-#   TERMS           List of terminals to install
-#   EXTRA_LIBS      Extra libraries to be installed
-#   LIB_PREFIX      Directory of locally generated libraries
+: ${sysroot:?}          # Root of rootfs being constructed
+: ${BINUTILS_DIR:?}     # Root of binutils directory
+: ${COMPILER_PREFIX:?}  # Cross-compiler prefix
+: ${install_list:?}     # File containing list of installed files
+: ${LIB_PREFIX:?}       # Directory of locally generated libraries
+
+# The following environment variables are optional
+#
+#  TERMS                  List of terminals to install
+#  EXTRA_LIBS             Extra libraries to be installed
+
 
 HERE="$(dirname "$0")"
 set -o pipefail

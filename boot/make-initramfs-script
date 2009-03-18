@@ -2,16 +2,15 @@
 
 # Expects to be called with the following environment variables set:
 #
-#   KERNEL_NAME     Name of kernel to load from tftp server
-#   KERNEL_ADDR     Where to load the kernel into memory
-#   IMAGE_NAME      Name of rootfs image to load from tftp server
-#   IMAGE_ADDR      Where to load the rootfs image into memory
-#   BOOTARGS        Arguments to pass as bootargs
-#   QUOTE_BOOTARGS  Whether to quote bootargs (depends on target u-boot!)
+: ${KERNEL_NAME:?}     # Name of kernel to load from tftp server
+: ${KERNEL_ADDR:?}     # Where to load the kernel into memory
+: ${IMAGE_NAME:?}      # Name of rootfs image to load from tftp server
+: ${IMAGE_ADDR:?}      # Where to load the rootfs image into memory
+: ${BOOTARGS:?}        # Arguments to pass as bootargs
+: ${QUOTE_BOOTARGS:?}  # Whether to quote bootargs (depends on target u-boot!)
 
 TARGET="${1:?Target file}"
 IMAGE_FILE="${2:?Image file}"
-
 
 IMAGE_SIZE=$(stat -c %s "$IMAGE_FILE")
 
