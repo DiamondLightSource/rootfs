@@ -33,6 +33,8 @@ EXTRAS += strace lsof
 BOOT = nfs
 # BOOT = jffs2
 
+TFTP_SERVER = serv3:/tftpboot
+
 
 # Network configuration
 NETWORK = nfs

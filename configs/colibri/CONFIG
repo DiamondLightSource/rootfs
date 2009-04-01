@@ -29,6 +29,8 @@ EXTRAS += busybox
 EXTRAS += ntp dropbear portmap
 # Useful debugging tools
 EXTRAS += strace lsof
+# Useful
+EXTRAS += nano mtd-utils
 
 # Miscellaneous extra components of variable utility.
 # EXTRAS += nano bash screen mtd-utils sudo
@@ -42,6 +44,8 @@ EXTRAS += strace lsof
 BOOT = initramfs
 # BOOT = nfs
 # BOOT = jffs2
+
+TFTP_SERVER = serv3:/tftpboot
 
 
 # Network installation: this determines how the network is configured.

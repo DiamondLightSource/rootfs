@@ -14,5 +14,3 @@ push-boot-script: $(O)boot-script.image
 .PHONY: default push-boot-script $(O)boot-script
 
 endif
-
-TFTP_SERVER = serv3:/tftpboot
