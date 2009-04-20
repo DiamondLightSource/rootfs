@@ -5,7 +5,7 @@ include $(TOP)/COMMON
 
 # By default install DNS and hosts support for name lookup -- these are
 # dynamically loaded by the C library, so won't be picked up automatically.
-# Also want to install real time libraries as well.
+# Also want to install real time and C++ libraries.
 EXTRA_LIBS ?= libnss_dns libnss_files librt libstdc++
 
 # By default don't bother with ldconfig at all.
@@ -44,3 +44,7 @@ post-install:
 
 	$(first-time) 'rm /etc/first-time.sh'
 	$(first-time) 'mount -o remount,ro /'
+
+ifdef ROOTFS_VERSION
+	echo $(call SAFE_QUOTE,$(ROOTFS_VERSION)) >$(sysroot)/etc/version
+endif

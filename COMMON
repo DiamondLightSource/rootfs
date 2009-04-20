@@ -52,6 +52,12 @@ first-time    = $(call EXPORT, sysroot) $(scripts)first-time
 # Our local autoconf -- probably redundant... 
 AUTOCONF = $(TOOLKIT_BIN)/autoconf
 
+# Function for safely quoting a string before exposing it to the shell.
+# Wraps string in quotes, and escapes all internal quotes.  Invoke as
+#
+#   $(call SAFE_QUOTE,string to expand)
+#
+SAFE_QUOTE = '$(subst ','\'',$(1))'
 
 # Passing makefile exports through is a bit tiresome.  We could mark our
 # symbols with export -- but that means *every* command gets them, and I
@@ -60,10 +66,7 @@ AUTOCONF = $(TOOLKIT_BIN)/autoconf
 #
 #	$(call EXPORT,$(EXPORTS)) script
 #
-# Unfortunately, for essentially unavoidable reasons, if any exported
-# variable contains a ' then the generated command will probably fail
-# miserably!
-EXPORT = $(foreach var,$(1),$(var)='$($(var))')
+EXPORT = $(foreach var,$(1),$(var)=$(call SAFE_QUOTE,$($(var))))
 
 
 export PATH := $(TOOLKIT_BIN):$(BINUTILS_DIR)/bin:$(PATH)

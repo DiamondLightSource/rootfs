@@ -3,6 +3,8 @@
 TOOLCHAIN_VERSION = gcc-4.3.2-glibc-2.7
 COMPILER_PREFIX = arm-xscale-linux-gnueabi
 
+ROOTFS_VERSION = DLS Colibri version 0.0.
+
 KERNEL_NAME = uImage-colibri
 KERNEL_ADDR = a0001000
 MKIMAGE = /dls_sw/targetOS/u-boot/colibri/mkimage
