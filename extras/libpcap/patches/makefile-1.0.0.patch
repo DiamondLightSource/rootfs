@@ -1,0 +1,22 @@
+Only in libpcap-1.0.0: bpf_filter.c
+diff -ur libpcap-1.0.0/Makefile.in libpcap-1.0.0-patched/Makefile.in
+--- libpcap-1.0.0/Makefile.in	2008-10-28 01:26:13.000000000 +0000
++++ libpcap-1.0.0-patched/Makefile.in	2009-05-05 11:25:02.000000000 +0100
+@@ -346,7 +346,7 @@
+ 
+ scanner.c: $(srcdir)/scanner.l
+ 	@rm -f $@
+-	./runlex.sh $(LEX) -o$@ $<
++	$(srcdir)/runlex.sh $(LEX) -o$@ $<
+ 
+ scanner.o: scanner.c tokdefs.h
+ 	$(CC) $(CFLAGS) -c scanner.c
+@@ -400,7 +400,7 @@
+ 	sed -e 's|@includedir[@]|$(includedir)|g' \
+ 	    -e 's|@libdir[@]|$(libdir)|g' \
+ 	    -e 's|@DEPLIBS[@]|$(DEPLIBS)|g' \
+-	    pcap-config.in >$@.tmp
++	    $< >$@.tmp
+ 	mv $@.tmp $@
+ 	chmod a+x $@
+ 

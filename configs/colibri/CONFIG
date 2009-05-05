@@ -32,7 +32,7 @@ EXTRAS += ntp dropbear portmap
 # Useful debugging tools
 EXTRAS += strace lsof
 # Useful
-EXTRAS += nano mtd-utils
+EXTRAS += nano mtd-utils libpcap tcpdump
 
 # Miscellaneous extra components of variable utility.
 # EXTRAS += nano bash screen mtd-utils sudo
