@@ -1,7 +1,7 @@
 TOP = $(CURDIR)/../..
 include ../COMMON
 
-busybox_VERSION ?= 1.13.3
+busybox_VERSION ?= 1.14.3
 
 MD5_SUM_1.11.1 = c64bbb5c0c3e19f12892941a0ae86c48
 MD5_SUM_1.12.0 = 427a4802f27f04484e0833307f0a7844
@@ -9,6 +9,8 @@ MD5_SUM_1.12.1 = dc2e5e00d6fee8229ae92884c68733a7
 MD5_SUM_1.12.2 = 1a47c00828c7b38b7516f6fdc35800e2
 MD5_SUM_1.12.3 = cc4cb0b131e2789ab099edf2b94b2976
 MD5_SUM_1.13.3 = 0cde6d2790e790837d6d7e82faae3ca1
+MD5_SUM_1.13.4 = 8a5eb7f15d4077d18fa97bda7a4e5412
+MD5_SUM_1.14.3 = d170bf5f97a41aec3a505eab690d5699
 
 # These are all bugfixes downloaded from the busybox site:
 #   http://busybox.net/downloads/fixes-1.12.1/
@@ -38,6 +40,9 @@ PATCHES_1.13.3 = \
     busybox-1.13.3-tar.patch        \
     busybox-1.13.3-volumeid.patch
 
+# Patches downloaded from http://busybox.net/downloads/fixes-1.14.3/
+PATCHES_1.14.3 = 
+
 
 # If no config specified, use one we prepared earlier.
 busybox_CONFIG ?= $(CURDIR)/busybox-default-$(busybox_VERSION).config
@@ -55,6 +60,9 @@ build:
 
 menuconfig: untar
 	make O=$(O) -C $(srcdir) menuconfig
+
+saveconfig:
+	cp $(O)/.config $(busybox_CONFIG)
 
 install:
         # 4555 = rx,u+s
