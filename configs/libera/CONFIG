@@ -3,13 +3,15 @@
 TOOLCHAIN_VERSION = gcc-4.3.2-glibc-2.7
 COMPILER_PREFIX = arm-xscale-linux-gnueabi
 
+ROOTFS_VERSION = DLS development 0.00
+
 KERNEL_NAME = uImage-libera
 KERNEL_ADDR = a0001000
 MKIMAGE = /dls_sw/targetOS/u-boot/xcep/mkimage
 CONSOLE_BAUD = 115200
 CONSOLE_TTY = ttyS0
 BOOTARGS = console=$(CONSOLE_TTY),$(CONSOLE_BAUD) mem=64M
-QUOTE_BOOTARGS = 0
+QUOTE_BOOTARGS = 1
 
 ROOT_PASSWORD = Jungle
 
@@ -29,15 +31,16 @@ EXTRAS += ntp dropbear portmap
 EXTRAS += strace lsof
 
 
-# BOOT = initramfs
-BOOT = nfs
+BOOT = initramfs
+# BOOT = nfs
 # BOOT = jffs2
 
 TFTP_SERVER = serv3:/tftpboot
 
 
 # Network configuration
-NETWORK = nfs
+# NETWORK = nfs
+NETWORK = mtd
 NW_HOSTNAME = TS-DI-EBPM-20
 NW_ADDRESS = 172.23.252.20
 NW_NETMASK = 255.255.240.0
