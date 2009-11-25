@@ -1,8 +1,10 @@
 Extra Components
 ================
 
+Rootfs Components
+-----------------
 
-The following ``extra'' components can be included in any build.
+The following ``extra'' components can be included in any rootfs build.
 
 `bash`::
 Web page: http://www.gnu.org/software/bash[]
@@ -134,9 +136,9 @@ The components below are appropriate for a basic system:
 
 
 Toolkit Components
-==================
+------------------
 
-One toolkit component is needed for building the root filesystem.
+The following toolkit component is needed for building the root filesystem.
 
 `fakeroot`::
 Web page: http://fakeroot.alioth.debian.org/
@@ -147,3 +149,14 @@ different!
 +
 OpenEmbedded download from ftp://ftp.debian.org/debian/pool/main/f/fakeroot/[]
 which seems the best reference.
+
+The following toolkit components are needed for reproducible rootfs builds.
+
+`autoconf`, `m4`::
+Web pages:  http://www.gnu.org/software/autoconf/,
+http://www.gnu.org/software/m4/ 
++
+This is needed for rebuilding `./configure` after local patches to certain
+components.
+
+May well also need up to date versions of `automake` and `libtool`.

@@ -1,0 +1,285 @@
+Building Packages
+=================
+
+
+
+
+Specifying a Package
+--------------------
+
+Building a package consists of the following steps:
+
+. Untarring the sources and patching them.
+. Configuring the build.
+. Performing the build.
+. Installing the package in the rootfs.
+
+These steps are specified in the package description.  There are two
+complications in building packages: building rootfs packages involves
+cross-compiling, and the build must be ``out of tree'', which means that the
+source directory should not be modified by the build process.  Achieving both
+of these goals often requires patches to the source and configuration.
+
+
+Specifying sources and patches
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The package description specifies enough information to identify the name of
+the package sources.  This is expected to be a single compressed file in tar
+gz, bz2 or zip format (see `scripts/extract-tar` for processing) located in
+one of the directories specified by `TAR_DIRS`, and should extract into
+a single subdirectory.
+
+The default name of the ``tar'' file and the directory it expands is defined
+by the following makefile definitions:
+
+----
+TAR_EXTENSION = .tar.bz2
+SEPARATOR = -
+TAR_SEPARATOR = $(SEPARATOR)
+SOURCE_SEPARATOR = $(SEPARATOR)
+TAR_FILE = $(COMPONENT)$(TAR_SEPARATOR)$(version)$(TAR_EXTENSION)
+SOURCE_DIR_NAME = $(COMPONENT)$(SOURCE_SEPARATOR)$(version)
+untar-extra = @:
+----
+
+A package description should overwrite the minimum possible: typically only
+`TAR_EXTENSION` needs to be overwritten.  The command `untar-extra` is invoked
+immediately after extracting the sources, and can be used to repair source
+directories with improper names, for example if the version number is not part
+of the source tree name.  See `ntpclient` package for an example of this.
+
+Package sources should be properly identified by version, in particular for
+each version to be supported there needs to be a definition of the symbol
+`MD5_SUM_$(version)` equal to the md5 checksum of the ``tar'' file.
+
+After sources have been extracted (and corrected by invoking `$(untar-extra)`)
+any patches specified by the symbol `PATCHES_$(version)` will be applied.  All
+the patches must be in a subdirectory `patches` of the package specification
+directory.
+
+
+
+Configuring the Build
+~~~~~~~~~~~~~~~~~~~~~
+
+When configuring the build the following symbols are involved:
+
+`O`:: This is the path to the directory where the build should take place.
+`srcdir`:: This is the path to the extracted sources.  This directory should
+be treated as pristine and not modified.
+`COMPILER_PREFIX`:: If the package is being configured for cross-compilation
+this defines the cross compliation prefix.  By default this symbol is exported
+into the shell environment.
+`BUILD_TYPE`:: This is a canonical system name for the build system: the
+configure script often likes to be passed this.
+`CFLAGS`:: Set to any complier flags specified in the global configuration
+script. 
+`includedir`, `libdir`:: Paths for shared libraries installed from components
+built earlier.
+`AUTOCONF`:: Autoconf program.
+
+The simplest configure definition (for example `nano` is as easy as this) is
+of the form:
+
+----
+config:
+        cd $(O)  &&  \
+        $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
+----
+
+Unfortunately it's sometimes necessary patch the `configure` script, in which
+case it has to be rebuilt before being run.  In this case the configure
+definition looks more like this (eg `screen`)
+
+----
+config:
+        cd $(srcdir) && $(AUTOCONF) -o $(O)/configure
+        cd $(O) && ./configure --srcdir=$(srcdir) CFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
+----
+
+In other cases it is necessary to do lots of horribly hacking around to get
+the configure to work.
+
+
+Performing the Build
+~~~~~~~~~~~~~~~~~~~~
+
+During the build the same environment is passed through.  The simplest build
+is just:
+
+----
+build:
+        make -C $(O)
+----
+
+In other cases where configuration is more difficult or perhaps has to be
+bypassed altogether more work needs to be done at this step.
+
+
+Installation
+~~~~~~~~~~~~
+
+There are three types of installation:
+
+. Rootfs or target installation.  
+. Full installation.
+. Library installation.
+
+
+Target Installation
+^^^^^^^^^^^^^^^^^^^
+
+This installation is performed by the `install` target, and should perform the
+minimum possible installation for an embedded install.  During this install
+the following makefile symbols are available:
+
+`sysroot`:: Location of the rootfs where target files are installed.
+`install`:: Install command to place files in the rootfs.  
+`useradd`, `groupadd`:: Commands for adding users and groups to rootfs.
+`startup`:: Installes a startup script into `/etc/init.d` and `/etc/rc.d`.
+
+
+
+
+
+Building Packages
+-----------------
+
+To build packages the following symbols must be defined.
+
+`EXTRAS`:: 
+List of packages to be built.  Normally defined in the target configuration,
+but can also be defined on the command line.
+
+
+
+
+Makefile Symbols
+~~~~~~~~~~~~~~~~
+
+`OBJECT_ROOT`:: 
+Path to directory where packages are built
+
+`O`:: 
+Path to particular package directory, `O` = `$(OBJECT_ROOT)/$(COMPONENT)`
+
+`COMPONENT`:: 
+Name of package being built
+
+
+Symbols Defined During Build
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following symbols are defined by the makefile while the extract, configure
+and build targes are being generated.
+
+
+
+Symbols Defined During Install
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following symbols are defined by the makefile while the rootfs install
+target is being invoked.
+
+
+
+Specifying a Configuration
+--------------------------
+
+A configuration consists of the following specifications:
+
+Cross-Compilation Toolchain
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As a minimum this is specified by two definitions:
+
+`COMPILER_PREFIX`::
+Compiler tuple to be prefixed before compiler commands, used as the tuple to
+pass to `--host=` on `configure` commands.
+
+`BINUTILS_DIR`::
+Path to the complete toolchain directory.  This defaults to
++
+----
+BINUTILS_DIR = /dls_sw/targetOS/x-tools/$(TOOLCHAIN_VERSION)/$(COMPILER_PREFIX)
+----
++
+and so it can be sufficient to specify `TOOLCHAIN_VERSION` if a standard
+toolchain is being used.
+
+
+File Locations
+~~~~~~~~~~~~~~
+
+Where to find stuff.
+
+
+Overrideable Symbol Definitions
+-------------------------------
+
+Global Definitions
+~~~~~~~~~~~~~~~~~~
+
+`ROOTFS_TOP`::
+Absolute path to top of rootfs tree.
+
+`BUILD_ROOT`::
+Absolute path to where all rootfs files are stored, sets defaults for
+following.
+
+`SOURCE_ROOT = $(BUILD_ROOT)/src`::
+Path to extracted and patched sources.
+
+`TOOLKIT_ROOT = $(BUILD_ROOT)/toolkit`::
+Path to local prefix for installed toolkit.
+
+
+Target Specific Definitions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`TARGET`::
+Name of target to build.
+
+`TARGET_PATH = $(ROOTFS_TOP)/configs/$(TARGET)`::
+Path to target description directory.
+
+`BUILD_TARGET = $(BUILD_ROOT)/$(TARGET)`::
+Path to location where the entire target system is built.  !!!This is a poor
+name, not very consistent with other names!!!
+
+`OBJECT_ROOT = $(BUILD_TARGET)/packages`::
+Path to location where all packages are built.
+
+`LIB_ROOT = $(BUILD_TARGET)/local`::
+Path to location where libraries are installed.
+
+
+Parameters to Package Build
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`COMPONENT`::
+Name of package to build.
+
+`version = $(COMPONENT)_VERSION`::
+Version of package to build.  This determines both the name of the compressed
+sources and the source directory.  Typically a default value is specified in
+the package description.
+
+`COMPONENT_PATH = $(ROOTFS_TOP)/packages/$(COMPONENT)`::
+Absolute path to package description directory.
+
+
+Other Symbol Definitions
+------------------------
+
+These symbol definitions are not meant to be overridden, but are important.
+
+`O = $(OBJECT_ROOT)/$(COMPONENT)`::
+Individual package build.
+
+`srcdir = $(SOURCE_ROOT)/$(COMPONENT)-$(version)`::
+Package sources.  Probably want to enforce consistent naming here, forcing the
+package description to place the sources in the right place if necessary.
