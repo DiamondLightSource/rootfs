@@ -7,7 +7,7 @@ $(eval $(call COMPUTE_PATH,TARGET,configdir,configs))
 # # Pull in the common definitions from the target
 # include $(configdir)/CONFIG
 
-TARGET_ROOT = $(ROOTFS_ROOT)/targets/$(TARGET)
+TARGET_ROOT ?= $(ROOTFS_ROOT)/targets/$(TARGET)
 OBJECT_ROOT = $(TARGET_ROOT)/packages
 
 # We always need the list of packages and associated toolchain definition.

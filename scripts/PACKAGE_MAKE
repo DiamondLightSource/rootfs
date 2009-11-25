@@ -44,15 +44,20 @@ untar-extra = @:
 
 version = $($(PACKAGE)_VERSION)
 
-
 # Where the sources are placed and where the package will be built.
 srcdir = $(SOURCE_ROOT)/$(SOURCE_DIR_NAME)
 O = $(OBJECT_ROOT)/$(PACKAGE)
 
-# These two are for shared libraries.  To use them export
-#   CPPFLAGS=-I$(includedir) LDFLAGS=-L$(libdir)
-includedir = $(OBJECT_ROOT)/local/include
-libdir = $(OBJECT_ROOT)/local/lib
+# This symbol defines where shared libraries will be installed.  To use
+# installed shared libraries add the following to any relevant configuration:
+#
+#   CPPFLAGS += -I$(LIB_PREFIX)/include
+#   LDFLAGS += -L$(LIB_PREFIX)/lib
+# or
+#   LDFLAGS += -L$(LIB_PREFIX)/usr/lib
+#
+# as appropriate.
+LIB_PREFIX = $(TARGET_ROOT)/local
 
 
 # Finally we can pull in the real package definitions.

@@ -15,7 +15,7 @@ config:
 
         # Configure the target.  For this we need to take the patched
         # configuration into account.
-	cd $(srcdir)  &&  $(AUTOCONF) -o $(O-target)/configure
+	cd $(srcdir)  &&  autoconf -o $(O-target)/configure
 	cd $(O-target)  &&  \
         ./configure --srcdir=$(srcdir) CFLAGS='$(CFLAGS)' \
              --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)

@@ -56,7 +56,7 @@ $(LIB_PREFIX):
 
 config: $(O) untar
 
-build: $(O) 
+build: $(O) config
 
 install-lib: build $(LIB_PREFIX)
 

@@ -75,7 +75,8 @@ Running the rootfs builder requires the following steps.
 . Build the selected target packages.
 . Build the selected target.
 
-For the final two steps a target configuration must be specified.
+For the final two steps a target configuration must be specified by setting
+the symbol `TARGET`, either in the `CONFIG` file or on the command line.
 
 
 `rootfs` Command
@@ -94,8 +95,21 @@ Shows help text.
 Builds the toolkit prerequisites.  This should only need to be done once for
 any particular `ROOTFS_ROOT` configuration.  
 
-The following extra parameters can be passed on the command line to any of the
-commands above to override the default makefile definitions.
+`rootfs docs`::
+Builds the documentation (runs `make` in the `docs` directory).
+
+`rootfs package` '<package>'::
+Builds the named '<package>' for the configured target.  
+
+`rootfs all`::
+Builds all packages for the configured target.
+
+`rootfs make`::
+Assembles the configured rootfs for the selected target.
+
+
+The following extra parameters can be passed on the command line to many of
+the commands above to override the default makefile definitions.
 
 `CONFIG`::
 Location of the rootfs configuration file.  This should define any further
@@ -134,7 +148,8 @@ file and their default values.
 `ROOTFS_ROOT = $(TOP)/build`::
 This specifies the root of the workspace used by rootfs.  By default all
 rootfs files are built under this directory.  This can be overridden by an
-entry in the specified `CONFIG` file.
+entry in the specified `CONFIG` file.  The sample `CONFIG` file sets this to
+`/scratch/tmp/rootfs`.
 
 `TOOLKIT_ROOT = $(ROOTFS_ROOT)/toolkit`::
 This contains local installations of the tools required for the operation of
@@ -149,20 +164,20 @@ directory as read-only, and will be ``out of tree''.
 This is where the entire rootfs build will take place.
 
 `TAR_DIRS = /dls_sw/prod/targetOS/tar-files`::
-All sources packages will be searched for in directories specified by this
+All source packages will be searched for in directories specified by this
 symbol.
 
 
 Building the Toolkit
 ~~~~~~~~~~~~~~~~~~~~
 
-This is simply a matter of running the command `make toolkit` in the rootfs
-top level directory.  This will populate the toolkit directory with the
-necessary tools required for a reproducible build, including the following
+This is simply a matter of running the command `rootfs toolkit` in the rootfs
+top level directory.  This will populate the configured toolkit directory with
+the necessary tools required for a reproducible build, including the following
 components:
 
 `fakeroot`::  
-This is needed to assemble the rootfs.
+This is needed to assemble the target filesystem (the ``rootfs'').
 
 `autoconf`, `automake`, `libtool`, `m4`::
 These tools are needed by some packages, particularly after patching
@@ -172,17 +187,63 @@ configuration files.
 Building Target Packages
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
+The `rootfs` sub-commands `all` and `package` support the building of
+packages, see file:build-extras.html[] for details.  The simplest usage is to
+invoke `rootfs all` which will ensure that all packages are built.
+
+Note that the target package building process is not particularly intelligent
+about detecting whether a package has already been built, and in general
+packages will be rebuilt from scratch when the appropriate command is invoked.
+
+The general form of these commands is:
+
+----
+rootfs all [<target>] [CONFIG=<config>] [TARGET=<target>]
+rootfs package <package> [<target>] [CONFIG=<config>] [TARGET=<target>]
+----
+
+Possible values for '<target>' are:
+
+`default`::
+Default selection if no target specified: invokes `untar`, `config`, `build`
+and `install-lib`.
+
+`untar`::
+Extracts sources for the selected package (or packages) into `$(SOURCE_ROOT)`
+and applies any configured patches.
+
+`config`::
+Runs the configured configure step, necessary preparation for building.
+
+`build`::
+Compiles the selected package.
+
+`install-lib`::
+If the package generates libraries needed by other packages, this installs the
+libraries in `$(LIB_PREFIX)` ready to be used.
+
+The following targets are useful for tidying things up.
+
+`clean`::
+Removes all built files including all configured settings.
+
+`clean-src`::
+Removes the extracted and patched source directory.
+
+`clean-all`::
+Invoked `clean` and `clean-src`.
+
+
 Building Target System
 ~~~~~~~~~~~~~~~~~~~~~~
-
+x
 
 
 
 
 Specifying a Target Configuration
 ---------------------------------
-
-
+x
 
 
 
