@@ -1,0 +1,23 @@
+# Core environment makefile definitions.  This is included by *all*
+# makefiles.
+
+# TOP must have been defined, otherwise this script couldn't have been
+# called.
+
+# Define the default target straight away to avoid accidentally picking up
+# the wrong target.
+default:
+.PHONY: default
+
+
+
+# Default paths that can be overridden by the CONFIG file.
+ROOTFS_ROOT = /scratch/tmp/rootfs-test
+TAR_DIRS = /dls_sw/prod/targetOS/tar-files /dls_sw/work/targetOS/tar-files
+
+
+TOOLKIT_ROOT = $(ROOTFS_ROOT)/toolkit
+TOOLKIT_BIN = $(TOOLKIT_ROOT)/bin
+SOURCE_ROOT = $(ROOTFS_ROOT)/src
+
+export PATH := $(TOOLKIT_BIN):$(PATH)

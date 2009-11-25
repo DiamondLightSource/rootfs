@@ -1,7 +1,0 @@
-Tools needed for building root filesystem.
-
-fakeroot
-    Web page: http://fakeroot.alioth.debian.org/
-    Download from: http://ftp.debian.org/debian/pool/main/f/fakeroot/
-    Allows archive files to be built with internal root privileges.  Works by
-    tricking application into believing it's running as root.

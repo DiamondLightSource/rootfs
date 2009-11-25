@@ -1,7 +1,0 @@
-include $(TOP)/COMMON
-include $(scripts)COMPONENT_COMMON
-
-TOOLKIT_ROOT = $(BUILD_ROOT)/toolkit
-OBJECT_ROOT = $(TOOLKIT_ROOT)/build/
-
-default: all

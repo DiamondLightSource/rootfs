@@ -1,3 +1,0 @@
-# Build targets -- to be included at the end of the component make file
-
-include $(scripts)COMPONENT_RULES
