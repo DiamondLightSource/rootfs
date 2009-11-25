@@ -1,9 +1,9 @@
 # Makefile for building a single package.  Must be called with PACKAGE
 # defined.
 
-include $(TOP)/scripts/COMMON
-include $(scripts)/TARGET_COMMON
-include $(scripts)/PACKAGE_COMMON
+include $(TOP)/scripts/makefiles/COMMON
+include $(makefiles)/TARGET_COMMON
+include $(makefiles)/PACKAGE_COMMON
 
 
 # Definitions specific to source extraction
@@ -38,4 +38,4 @@ BUILD_TYPE = $(shell $(TOOLKIT_BIN)/config.guess)
 # Finally we can pull in the real package definitions and fire the
 # appropriate rules.
 include $(PACKAGE_PATH)/CONFIG
-include $(scripts)/PACKAGE_RULES
+include $(makefiles)/PACKAGE_RULES

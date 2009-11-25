@@ -2,12 +2,12 @@
 # PACKAGE_MAKE for every package in the system, in the order that they are
 # specified by the selected target.
 
-include $(TOP)/scripts/COMMON
-include $(scripts)/TARGET_COMMON
+include $(TOP)/scripts/makefiles/COMMON
+include $(makefiles)/TARGET_COMMON
 
 
 define make_package
-$(MAKE) -f $(TOP)/scripts/PACKAGE_$(1) $(call EXPORT,PACKAGE) $@
+$(MAKE) -f $(makefiles)/PACKAGE_$(1) $(call EXPORT,PACKAGE) $@
 
 endef
 

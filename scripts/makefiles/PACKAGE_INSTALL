@@ -1,0 +1,7 @@
+# Makefile wrapper for invoking the install target for packages.
+
+include $(TOP)/scripts/makefiles/COMMON
+include $(makefiles)/SYSROOT_COMMON
+include $(makefiles)/PACKAGE_COMMON
+
+include $(PACKAGE_PATH)/CONFIG

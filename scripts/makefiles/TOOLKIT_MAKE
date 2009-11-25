@@ -1,6 +1,6 @@
 # Script for building common environment needed for rootfs builder.
 
-include $(TOP)/scripts/COMMON
+include $(TOP)/scripts/makefiles/COMMON
 # At this point the following symbols define where we will operate:
 #
 #   TOOLKIT_ROOT    This is where the toolkit will be built and installed
@@ -9,14 +9,14 @@ include $(TOP)/scripts/COMMON
 #   TOOLKIT_BIN = $(TOOLKIT_ROOT)/bin
 #       This is on the path, and is where the toolkit commands are found.
 
-include $(scripts)/TOOLKIT_DEFS
+include $(makefiles)/TOOLKIT_DEFS
 
 
 # The following trick is so that we can have default TAR_EXTENSION and
 # SEPARATOR definitions, but override them for fakeroot.
-SOURCE_NAME   = $@-$($@_VERSION)
-TAR_FILE      = $(if $($@_TAR_FILE),$($@_TAR_FILE),$(SOURCE_NAME).tar.bz2)
-MD5_SUM       = $(MD5_SUM_$@_$($@_VERSION))
+SOURCE_NAME = $@-$($@_VERSION)
+TAR_FILE    = $(if $($@_TAR_FILE),$($@_TAR_FILE),$(SOURCE_NAME).tar.bz2)
+MD5_SUM     = $(MD5_SUM_$@_$($@_VERSION))
 
 srcdir = $(SOURCE_ROOT)/$(SOURCE_NAME)
 O      = $(TOOLKIT_ROOT)/build/$@

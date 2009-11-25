@@ -36,6 +36,7 @@ export PATH := $(TOOLKIT_BIN):$(PATH)
 
 # Some convenience definitions.
 scripts = $(TOP)/scripts
+makefiles = $(SCRIPTS)/makefiles
 
 # Function for safely quoting a string before exposing it to the shell.
 # Wraps string in quotes, and escapes all internal quotes.  Invoke as

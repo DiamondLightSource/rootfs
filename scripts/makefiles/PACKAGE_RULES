@@ -2,14 +2,12 @@
 # These rules are included at the end of PACKAGE_MAKE, just to help manage
 # the structure of the build system.
 
-
 # Allow package specific overrides of CFLAGS.
 ifdef CFLAGS_$(PACKAGE)
 CFLAGS = $(CFLAGS_$(PACKAGE))
 endif
 
 default: config build install-lib
-
 
 ifeq ($(version),local)
 # Local builds are handled a little oddly: we need to turn the make file
@@ -55,11 +53,8 @@ $(LIB_PREFIX):
 
 
 config: $(O) untar
-
 build: $(O) config
-
 install-lib: build $(LIB_PREFIX)
-
 
 clean:
 	rm -rf $(O)
@@ -73,7 +68,6 @@ clean-lib:
 	rm -rf $(LIB_PREFIX)
 
 clean-all: clean clean-src clean-lib
-
 
 .PHONY: untar config build install-lib install
 .PHONY: clean clean-src clean-all

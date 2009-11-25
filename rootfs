@@ -12,7 +12,7 @@ call_make()
 {
     MAKEFILE="$1"
     shift
-    make -f "$TOP"/scripts/"$MAKEFILE" TOP="$TOP" "$@"
+    make -f "$TOP"/scripts/makefiles/"$MAKEFILE" TOP="$TOP" "$@"
 }
 
 

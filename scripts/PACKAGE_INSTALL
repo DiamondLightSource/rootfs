@@ -1,7 +1,0 @@
-# Makefile wrapper for invoking the install target for packages.
-
-include $(TOP)/scripts/COMMON
-include $(scripts)/FAKEROOT_COMMON
-include $(scripts)/PACKAGE_COMMON
-
-include $(PACKAGE_PATH)/CONFIG
