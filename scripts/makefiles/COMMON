@@ -36,7 +36,7 @@ export PATH := $(TOOLKIT_BIN):$(PATH)
 
 # Some convenience definitions.
 scripts = $(TOP)/scripts
-makefiles = $(SCRIPTS)/makefiles
+makefiles = $(scripts)/makefiles
 
 # Function for safely quoting a string before exposing it to the shell.
 # Wraps string in quotes, and escapes all internal quotes.  Invoke as
@@ -57,7 +57,7 @@ EXPORT = $(foreach var,$(1),$(var)=$(call SAFE_QUOTE,$($(var))))
 
 # Sometimes we allow a parameter to be specified either as a name which we
 # look up in a predefined directory, or as a fixed path.  This macro
-# encapsulates this, designed to be called this:
+# encapsulates this, designed to be called thus:
 #
 #   $(eval $(call DEF_PARAM,param_name,path_name,default_dir))
 #

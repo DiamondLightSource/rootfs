@@ -41,7 +41,7 @@ while getopts 'c:d:g:p:s:u:' option; do
 done
 shift $((OPTIND-1))
 
-NAME="${1:?}"
+NAME="${1:?Name of user to add}"
 
 PWD='*'
 if ((SET_PASSWORD)); then

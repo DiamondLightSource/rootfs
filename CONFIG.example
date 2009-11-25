@@ -1,0 +1,10 @@
+# Local definitinos and overrides.
+
+TARGET = colibri
+# TARGET = libera
+# TARGET = xlnx-xup
+
+TAR_DIRS += /dls_sw/work/targetOS/tar-files
+TAR_DIRS += /home/mga83/Desktop
+
+ROOTFS_ROOT = /scratch/tmp/rootfs

@@ -3,16 +3,18 @@
 # Script to manage network installation.
 
 HERE="$(dirname "$0")"
-scripts="$HERE"/../scripts
+skeleton="$HERE/../skeleton"
 
 export sysroot
 
-. $scripts/functions
+. $HERE/functions
 
+# If no network configured, exit silently.
+[ -z "$1" ]  &&  exit 0
 
 case "$1" in
     mtd)
-        "$scripts"/startup "$HERE"/etc/init.d/network.mtd S100
+        "$HERE"/startup "$skeleton"/etc/init.d/network.mtd S100
         ;;
     nfs)
         # In nfs mode we leave the network well alone: reconfiguring the
@@ -21,8 +23,8 @@ case "$1" in
     network)
         # This is the standard configuration: we install the normal network
         # configuration files.
-        "$scripts"/install-files "$HERE"/network.files
-        "$scripts"/startup "$HERE"/etc/init.d/network S100
+        "$HERE"/install-files "$skeleton"/network.files
+        "$HERE"/startup "$skeleton"/etc/init.d/network S100
         echo "$NW_HOSTNAME" > "$sysroot"/etc/hostname
         cat <<EOF >>"$sysroot"/etc/network/interfaces
 auto eth0

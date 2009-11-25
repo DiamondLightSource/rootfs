@@ -1,4 +1,6 @@
-# Common definitions when building targets.
+# Common definitions when building targets.  Included by all make files
+# except for TOOLKIT_MAKE, which is the only target independent build.
+
 
 # Compute configdir = $(TOP)/configs/$(TARGET), or take configdir from
 # $(TARGET) and update TARGET if TARGET is a path name.
@@ -25,8 +27,16 @@ OBJECT_ROOT = $(TARGET_ROOT)/packages
 LIB_PREFIX = $(TARGET_ROOT)/local
 
 
-# We always need the list of packages and associated toolchain definition.
-include $(configdir)/PACKAGES
+ifeq ($(wildcard $(configdir)/CONFIG),)
+    # No CONFIG file, must be a separated configuration instead.
+    SEPARATED_CONFIG = yes
+    # We always need the list of packages and associated toolchain definition.
+    include $(configdir)/PACKAGES
+else
+    # TARGET CONFIG file exists, pull this in.
+    include $(configdir)/CONFIG
+endif
+
 
 # If the PACKAGES file doesn't define TOOLCHAIN then it needs to define
 # BINUTILS_DIR and COMPILER_PREFIX.
@@ -41,3 +51,17 @@ endif
 ifdef COMPILER_PREFIX
     export CROSS_COMPILE = $(COMPILER_PREFIX)-
 endif
+
+
+# The target configuration can be specified in one of two ways, either as a
+# unified configuration included as $(configdir)/CONFIG, or as separate
+# configuration $(configdir)/ PACKAGES, SYSROOT, ROOTFS, each included at the
+# appropriate point.  Call this as
+#
+#   $(eval $(call INCLUDE_CONFIG,config_name))
+#
+define INCLUDE_CONFIG
+    ifeq ($$(SEPARATED_CONFIG),yes)
+        include $$(configdir)/$1
+    endif
+endef

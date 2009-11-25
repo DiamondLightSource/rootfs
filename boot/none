@@ -1,0 +1,4 @@
+# Boot definition file if no BOOT target specified.
+
+boot:
+        # No action required.

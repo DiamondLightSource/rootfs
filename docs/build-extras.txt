@@ -168,7 +168,7 @@ Building Packages
 
 To build packages the following symbols must be defined.
 
-`EXTRAS`:: 
+`PACKAGES`:: 
 List of packages to be built.  Normally defined in the target configuration,
 but can also be defined on the command line.
 

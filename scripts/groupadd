@@ -2,7 +2,7 @@
 
 # Add new group to /etc/group, emulating groupadd(8).
 #
-# Usage: groupadd <sysroot> -g <gid> <new-group>
+# Usage: groupadd -g <gid> <new-group>
 #
 # The -g flag is mandatory.
 #

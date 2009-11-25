@@ -1,0 +1,13 @@
+# Targets for generating u-boot script and pushing it out to the configured
+# TFTP server.
+
+
+BOOT_SCRIPT_IMAGE ?= boot-script-$(TARGET).image
+
+$(O)/$(BOOT_SCRIPT_IMAGE): $(O)/boot-script
+	$(MKIMAGE) -T script -d $< $@
+
+push-boot-script: $(O)/$(BOOT_SCRIPT_IMAGE)
+	scp $< $(TFTP_SERVER)
+
+.PHONY: push-boot-script $(O)/boot-script

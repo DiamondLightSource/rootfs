@@ -4,50 +4,44 @@
 include $(TOP)/scripts/makefiles/COMMON
 include $(makefiles)/TARGET_COMMON
 
+# Ensure we pull in the ROOTFS specific TARGET configuration.
+$(eval $(call INCLUDE_CONFIG,ROOTFS))
 
 
-$(TARGET_ROOT):
-	mkdir -p $(TARGET_ROOT)
+O = $(TARGET_ROOT)
 
+
+$(O):
+	mkdir -p $(O)
 
 # Assembling $(sysroot) has to be done entirely within fakeroot.
-$(TARGET_ROOT)/imagefile.cpio: $(TARGET_ROOT)
+$(O)/imagefile.cpio: $(O)
 	umask 22  &&  \
-        fakeroot -s $(TARGET_ROOT)/fakeroot.env \
+        fakeroot -s $(O)/fakeroot.env \
             $(MAKE) $@ -f $(makefiles)/SYSROOT_MAKE \
                 $(call EXPORT,TARGET configdir)
 
-imagefile: $(TARGET_ROOT)/imagefile.cpio
+imagefile: $(O)/imagefile.cpio
 
 # Force rebuild of the image file, even if it already exists.
-.PHONY: imagefile $(TARGET_ROOT)/imagefile.cpio
-
-
-default: imagefile
+.PHONY: imagefile $(O)/imagefile.cpio
 
 
 
-# ----------------------------------------------------------------------------
-# Assembles the final images and uploads them into the boot directory.
-#
-# These are all gathered into a single target, deploy-rootfs
+# The boot target specifies the action to take when assembling the final
+# rootfs build.  This should define the boot target and any actions to be
+# taken.
+BOOT ?= none
+bootdir = $(TOP)/boot
+ifeq ($(findstring /,$(BOOT)),)
+    include $(bootdir)/$(BOOT)
+else
+    include $(BOOT)
+endif
 
-BOOT_DEPENDS ?= $(BOOT_$(BOOT)_DEPENDS)
+boot: $(O)/imagefile.cpio
 
-BOOT_nfs_DEPENDS = $(O)/imagefile.cpio
-BOOT_initramfs_DEPENDS = $(O)/imagefile.cpio
-BOOT_jffs2_DEPENDS = $(sysroot)
-BOOT__DEPENDS = $(O)/imagefile.cpio
-
-deploy-rootfs: $(BOOT_DEPENDS)
-	make -C boot -f BOOT_$(BOOT)
-
-.PHONY: deploy-rootfs
+.PHONY: boot
 
 
-
-
-
-default: deploy-rootfs
-
-
+default: boot

@@ -27,5 +27,3 @@ CFLAGS = -O2 -mthumb
 
 # Dropbear is a little slow when built with thumb, so we override that.
 CFLAGS_dropbear = -O2
-# Authorised keys to be installed when installing dropbear.
-SSH_AUTHORIZED_KEYS = $(configdir)/authorized_keys

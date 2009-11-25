@@ -122,7 +122,8 @@ LIBS="$(
     {
         # For all installed files we generate the list of libraries needed by
         # the loader.
-        list_dependencies '' $(cat "$install_list")  &&
+        DEPENDENCIES="$(cat "$install_list")"  &&
+        list_dependencies '' $DEPENDENCIES  &&
 
         # For all extra libraries we resolve the library name.  Here we search
         # quite hard for the file in question so that it does not have to be

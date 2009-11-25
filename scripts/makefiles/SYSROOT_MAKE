@@ -8,10 +8,9 @@
 # target file system.
 
 include $(TOP)/scripts/makefiles/COMMON
+include $(makefiles)/TARGET_COMMON
 include $(makefiles)/SYSROOT_COMMON
 
-# Where the skeleton of the rootfs is located.
-SKELETON = $(TOP)/skeleton
 
 # By default install DNS and hosts support for name lookup -- these are
 # dynamically loaded by the C library, so won't be picked up automatically.
@@ -23,10 +22,19 @@ LDCONFIG ?= none
 
 
 
-NW_EXPORTS = sysroot NW_HOSTNAME NW_ADDRESS NW_NETMASK NW_GATEWAY
-populate_EXPORTS = \
+# Special commands for rootfs building.  Each command takes particular
+# parameters from the envirionment.
+_network_EXPORTS = sysroot NW_HOSTNAME NW_ADDRESS NW_NETMASK NW_GATEWAY
+configure-network = \
+    $(call EXPORT,$(_network_EXPORTS)) $(scripts)/configure-network
+
+_populate_EXPORTS = \
     sysroot BINUTILS_DIR COMPILER_PREFIX TERMS install_list EXTRA_LIBS \
     LIB_PREFIX
+populate = $(call EXPORT,$(_populate_EXPORTS)) $(scripts)/populate
+
+_ldconfig_EXPORTS = sysroot BINUTILS_DIR COMPILER_PREFIX
+ldconfig = $(call EXPORT,$(_ldconfig_EXPORTS)) $(scripts)/ldconfig
 
 
 
@@ -49,24 +57,22 @@ clean-sysroot:
 # Prepare the sysroot directory tree, populate with the template skeleton and
 # a number of other configurations, and install the packages.
 install-sysroot: clean-sysroot
-	rm -f $(install_list);  touch $(install_list)
-	$(install-files) '$(SKELETON)/file-list'
+	$(install-files) '$(TOP)/skeleton/file-list'
+	$(useradd) -c 'Root user' -d /root -g 0 -u 0  -s /bin/sh \
+            -p $(call SAFE_QUOTE,$(ROOT_PASSWORD)) root
 
         # Add target specific getty line to inittab
 	echo '::respawn:/sbin/getty $(CONSOLE_BAUD) $(CONSOLE_TTY)' \
             >>$(sysroot)/etc/inittab
 
-        # Configure networking according to selected mode
-ifdef NETWORK
-	$(call EXPORT,$(NW_EXPORTS)) $(CURDIR)/network $(NETWORK)
-endif
+        # Record the version string.
+	echo $(call SAFE_QUOTE,$(ROOTFS_VERSION)) >$(sysroot)/etc/version
 
-	$(useradd) -c 'Root user' -d /root -g 0 -u 0  -s /bin/sh \
-            -p $(call SAFE_QUOTE,$(ROOT_PASSWORD)) root
-	$(useradd) -c 'daemon' -d /usr/sbin -g 1 -u 1 -s /bin/sh daemon
-#	$(useradd) -c 'User' -d / -g 1 -u 10 -s /bin/sh -p '' user
+        # Configure networking according to selected mode
+	$(configure-network) $(NETWORK)
 
         # Install all the selected packages
+	rm -f $(install_list);  touch $(install_list)
 	$(MAKE) install -f $(makefiles)/ALL_PACKAGES
 
 
@@ -76,16 +82,15 @@ final-install: install-sysroot
 
 # Final configuration: populate the libraries and sort out first-time.sh.
 post-install: final-install
-	$(call EXPORT,$(populate_EXPORTS)) $(scripts)/populate
-	$(call EXPORT,sysroot BINUTILS_DIR COMPILER_PREFIX) \
-            $(scripts)/ldconfig $(LDCONFIG)
+        # Populate the libraries: key final step!
+	$(populate)
+        # Sort out ldconfig.  Wish we had a proper cross-compiled version of
+        # this tool.
+	$(ldconfig) $(LDCONFIG)
 
+        # Ensure the first-time.sh script removes itself.
 	$(first-time) 'rm /etc/first-time.sh'
 	$(first-time) 'mount -o remount,ro /'
-
-ifdef ROOTFS_VERSION
-	echo $(call SAFE_QUOTE,$(ROOTFS_VERSION)) >$(sysroot)/etc/version
-endif
 
 
 $(TARGET_ROOT)/imagefile.cpio: post-install

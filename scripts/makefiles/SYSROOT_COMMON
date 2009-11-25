@@ -5,7 +5,9 @@ ifneq ($(shell id -u),0)
     $(error Must be called from fakeroot)
 endif
 
-include $(makefiles)/TARGET_COMMON
+
+#include $(configdir)/SYSROOT
+$(eval $(call INCLUDE_CONFIG,SYSROOT))
 
 
 # Where the build system root is assembled.  Only fakerooted scripts should
