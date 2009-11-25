@@ -9,8 +9,7 @@ include $(TOP)/scripts/COMMON
 #   TOOLKIT_BIN = $(TOOLKIT_ROOT)/bin
 #       This is on the path, and is where the toolkit commands are found.
 
-include $(TOP)/scripts/TOOLKIT_DEFS
-
+include $(scripts)/TOOLKIT_DEFS
 
 
 # The following trick is so that we can have default TAR_EXTENSION and
@@ -25,12 +24,17 @@ O      = $(TOOLKIT_ROOT)/build/$@
 # All the components have a completely uniform build: basically untar,
 # configure with local prefix, build and install.
 $(TOOLKIT_COMPONENTS):  $(TOOLKIT_ROOT)
-	$(TOP)/scripts/extract-tar \
+	$(scripts)/extract-tar \
             $(SOURCE_ROOT) $(TAR_FILE) $(MD5_SUM) $(TAR_DIRS)
+	chmod -R -w $(srcdir)
+
 	mkdir -p $(O)
 	cd $(O)  &&  $(srcdir)/configure --prefix=$(TOOLKIT_ROOT)
 	$(MAKE) -C $(O) install
 	$($@_POST_INSTALL)
+
+$(TOOLKIT_ROOT):
+	mkdir -p $(SOURCE_ROOT) $(TOOLKIT_ROOT)
 
 
 default: toolkit
@@ -38,10 +42,17 @@ default: toolkit
 toolkit: $(TOOLKIT_COMPONENTS)
 
 
-$(TOOLKIT_ROOT):
-	mkdir -p $(SOURCE_ROOT) $(TOOLKIT_ROOT)
-
 clean:
 	rm -rf $(TOOLKIT_ROOT)
 
-.PHONY: toolkit clean $(TOOLKIT_COMPONENTS)
+define force_rm
+if [ -e $(srcdir) ]; then chmod -R +w $(srcdir) && rm -rf $(srcdir); fi
+
+endef
+clean-src: 
+	$(foreach @,$(TOOLKIT_COMPONENTS), $(force_rm))
+
+
+clean-all: clean clean-src
+
+.PHONY: toolkit clean clean-all clean-src $(TOOLKIT_COMPONENTS)

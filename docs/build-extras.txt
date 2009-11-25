@@ -1,5 +1,12 @@
+Building and Specifying Packages
+================================
+
+
 Building Packages
-=================
+-----------------
+
+Packages are built by running the script ... 
+This is integrated into the top level make file target ...
 
 
 
@@ -9,7 +16,7 @@ Specifying a Package
 
 Building a package consists of the following steps:
 
-. Untarring the sources and patching them.
+. Extracting the sources and patching them.
 . Configuring the build.
 . Performing the build.
 . Installing the package in the rootfs.
@@ -217,11 +224,77 @@ File Locations
 Where to find stuff.
 
 
-Overrideable Symbol Definitions
--------------------------------
+Symbol Definitions
+------------------
 
-Global Definitions
-~~~~~~~~~~~~~~~~~~
+The package build system is managed through make symbols, and there are many
+symbols involved in the process.  They are all documented here, grouped by
+role and source.
+
+
+Parameters to Package Build
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following are specified where?
+
+
+`COMPONENT`::
+Name of package to build.
+
+`version = $(COMPONENT)_VERSION`::
+Version of package to build.  This determines both the name of the compressed
+sources and the source directory.  Typically a default value is specified in
+the package description.
+
+`COMPONENT_PATH = $(ROOTFS_TOP)/packages/$(COMPONENT)`::
+Absolute path to package description directory.
+
+
+Symbols Define in Package Definition
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Symbols that *must* be defined in a package
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Only two symbols need to be defined to build a package: the package version
+and the corresponding md5 sum.  A package should define a default version,
+which can then be overridden by the target configuration.
+
+
+`$(PACKAGE)_VERSION`::
+Typically a package should define a default version which can be overridden by
+a target configuration, for example `nano` defines
++
+----
+nano_VERSION ?= 2.0.9
+----
+
+
+`MD5_SUM_$($(PACKAGE)_VERSION)`::
+For each supported version the md5 sum of the corresponding source package
+must be given, for example the `nano` package defines
++
+----
+MD5_SUM_2.0.9 = 2be94dc43fb60fff4626a2401a977220
+----
++
+Compute this by running `md5sum` on the corresponding source file.
+
+
+Symbols that can optionally be defined
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+`TAR_EXTENSION = .tar.bz2`::
+Needs to be overridden if the source file is of a different format.
+
+`untar-extra = @:`::
+Commands to be executed after extracting source files but before patching.
+Use this rename directories or perform extra extraction operations.
+
+
+
+Global Symbols from Rootfs System
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `ROOTFS_TOP`::
 Absolute path to top of rootfs tree.
@@ -236,6 +309,9 @@ Path to extracted and patched sources.
 `TOOLKIT_ROOT = $(BUILD_ROOT)/toolkit`::
 Path to local prefix for installed toolkit.
 
+
+Symbols Used in Package Definitions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Target Specific Definitions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -257,23 +333,8 @@ Path to location where all packages are built.
 Path to location where libraries are installed.
 
 
-Parameters to Package Build
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-`COMPONENT`::
-Name of package to build.
-
-`version = $(COMPONENT)_VERSION`::
-Version of package to build.  This determines both the name of the compressed
-sources and the source directory.  Typically a default value is specified in
-the package description.
-
-`COMPONENT_PATH = $(ROOTFS_TOP)/packages/$(COMPONENT)`::
-Absolute path to package description directory.
-
-
 Other Symbol Definitions
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 These symbol definitions are not meant to be overridden, but are important.
 
@@ -283,3 +344,6 @@ Individual package build.
 `srcdir = $(SOURCE_ROOT)/$(COMPONENT)-$(version)`::
 Package sources.  Probably want to enforce consistent naming here, forcing the
 package description to place the sources in the right place if necessary.
+
+
+

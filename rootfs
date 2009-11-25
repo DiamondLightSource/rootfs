@@ -1,0 +1,64 @@
+#!/bin/sh
+
+# Top level rootfs builder.  This calls the makefile scripts that do the real
+# work.
+
+TOP="$(cd "$(dirname "$0")"; pwd)"
+
+. "$TOP"/scripts/functions
+
+
+call_make()
+{
+    MAKEFILE="$1"
+    shift
+    make -f "$TOP"/scripts/"$MAKEFILE" TOP="$TOP" "$@"
+}
+
+
+
+action="$1"
+shift
+
+
+MAKEFILE=
+case "$action" in
+    h|help)
+        cat <<EOF
+Usage: rootfs <action> [<arguments>]
+
+Invokes the appropriate rootfs action.  The following actions are available:
+
+    help
+        Shows this help message
+        
+    toolkit
+        Builds the toolkit.  Only needs to be done once.
+
+    docs
+        Builds the documentation
+        
+    build
+        Builds all configured packages for selected target.
+
+    package <package>
+        Invokes make for selected package and target: must specify <package>
+        on command line.
+
+    rootfs
+        Assembles the configured rootfs for the selected target.
+EOF
+        ;;
+    docs)
+        make -C "$TOP"/docs ;;
+    
+    toolkit)
+        call_make TOOLKIT_MAKE "$@" ;;
+    b|build)
+        call_make ALL_PACKAGES "$@" ;;
+    p|package)
+        PACKAGE="$1"
+        shift
+        call_make PACKAGE_MAKE PACKAGE="$PACKAGE" "$@" ;;
+    *)  Error 'Unknown action.  Try `rootfs help` for help' ;;
+esac

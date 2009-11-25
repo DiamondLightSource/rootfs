@@ -1,0 +1,7 @@
+TARGET = colibri
+# TARGET = libera
+# TARGET = xlnx-xup
+
+DEVELOPMENT = y
+
+TAR_DIRS += /home/mga83/Desktop

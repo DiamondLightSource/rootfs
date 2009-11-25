@@ -35,7 +35,7 @@ endif
 
 ifdef DROPBEAR_KEYS
         # For development work we use a set of canned machine keys.
-	$(install) -m600 $(CURDIR)/dropbear/* /etc/dropbear
+	$(install) -m600 $(PACKAGE_PATH)/dropbear/* /etc/dropbear
 else
         # For normal operation we generate the dropbear machine keys the
         # first time the target runs.

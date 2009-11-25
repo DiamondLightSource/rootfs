@@ -18,4 +18,4 @@ build:
 
 install:
 	$(install) -s -m-w $(O)/ntpclient /usr/bin
-#	$(startup) $(CURDIR)/ntpclient S210
+#	$(startup) $(PACKAGE_PATH)/ntpclient S210

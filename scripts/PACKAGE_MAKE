@@ -1,0 +1,67 @@
+# Makefile for building a single package.  Must be called with PACKAGE
+# defined.
+
+include $(TOP)/scripts/COMMON
+include $(scripts)/TARGET_COMMON
+
+# Pick up PACKAGE_PATH from PACKAGE.
+$(eval $(call COMPUTE_PATH,PACKAGE,PACKAGE_PATH,packages))
+
+
+# If the PACKAGES file doesn't define TOOLCHAIN then it needs to define
+# BINUTILS_DIR and COMPILER_PREFIX.
+ifdef TOOLCHAIN
+    include $(TOP)/toolchains/$(TOOLCHAIN)
+endif
+
+ifdef BINUTILS_DIR
+    export PATH := $(BINUTILS_DIR)/bin:$(PATH)
+endif
+
+ifdef COMPILER_PREFIX
+    export CROSS_COMPILE = $(COMPILER_PREFIX)-
+endif
+
+
+# Definitions specific to build.
+
+# Build type needed for --build argument to many ./configure scripts
+BUILD_TYPE = $(shell $(TOOLKIT_BIN)/config.guess)
+
+# Source directory and package specification.  A little involved, as we want
+# the extracted sources to be as uniform as possible, but individual source
+# packages introduce their own variations.
+TAR_EXTENSION = .tar.bz2
+SEPARATOR = -
+TAR_SEPARATOR = $(SEPARATOR)
+SOURCE_SEPARATOR = $(SEPARATOR)
+TAR_FILE = $(PACKAGE)$(TAR_SEPARATOR)$(version)$(TAR_EXTENSION)
+SOURCE_DIR_NAME = $(PACKAGE)$(SOURCE_SEPARATOR)$(version)
+untar-extra = @:
+#
+# Perhaps the above can be somewhat simplified?  Check existing packages and
+# TOOLKIT_MAKE for ideas.
+
+version = $($(PACKAGE)_VERSION)
+
+
+# Where the sources are placed and where the package will be built.
+srcdir = $(SOURCE_ROOT)/$(SOURCE_DIR_NAME)
+O = $(OBJECT_ROOT)/$(PACKAGE)
+
+# These two are for shared libraries.  To use them export
+#   CPPFLAGS=-I$(includedir) LDFLAGS=-L$(libdir)
+includedir = $(OBJECT_ROOT)/local/include
+libdir = $(OBJECT_ROOT)/local/lib
+
+
+# Finally we can pull in the real package definitions.
+include $(PACKAGE_PATH)/CONFIG
+
+
+MD5_SUM = $(MD5_SUM_$(version))
+include $(scripts)/PACKAGE_RULES
+
+
+# default $(filter-out default,$(MAKECMDGOALS)):
+# 	@echo PACKAGE = $(PACKAGE), \$$@ = $@, TARGET = $(TARGET)

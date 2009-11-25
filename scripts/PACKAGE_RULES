@@ -1,0 +1,75 @@
+# This is the set of rules which performs the build of a particular package.
+# These rules are included at the end of PACKAGE_MAKE, just to help manage
+# the structure of the build system.
+
+
+# Allow package specific overrides of CFLAGS.
+ifdef CFLAGS_$(PACKAGE)
+CFLAGS = $(CFLAGS_$(PACKAGE))
+endif
+
+default: config build install-lib
+
+
+ifeq ($(version),local)
+# Local builds are handled a little oddly: we need to turn the make file
+# around so that it builds out of $(O), targeting sources in $(PACKAGE_PATH).
+# For local there is no srcdir, so nothing to untar.
+
+untar:
+
+build:
+	make -C $(O) -f $(PACKAGE_PATH)/Makefile build-local \
+            VPATH=$(PACKAGE_PATH)
+
+else
+# For normal builds we have to extract and possibly patch the sources.
+
+# Patch names are of the form PATCHES_<version> and should be placed in a
+# patches subdirectory of the component configuration.
+PATCHES = $(patsubst %,$(PACKAGE_PATH)/patches/%,$(PATCHES_$(version)))
+
+$(srcdir):
+	mkdir -p $(SOURCE_ROOT) 
+	$(scripts)/extract-tar \
+            '$(SOURCE_ROOT)' '$(TAR_FILE)' '$(MD5_SUM)' $(TAR_DIRS)
+        # Do any extra work required to get files into the right position.
+	$(untar-extra)
+
+	for patch in $(PATCHES); do \
+            patch -p1 -d $(srcdir) <$$patch; \
+        done
+        # Finally enforce read only source tree!
+	chmod -R -w $(srcdir)
+
+untar: $(srcdir)
+
+endif
+
+
+$(O):
+	mkdir -p $(O)
+
+$(LIB_PREFIX):
+	mkdir -p $(LIB_PREFIX)/include $(LIB_PREFIX)/lib $(LIB_PREFIX)/usr/lib
+
+
+config: $(O) untar
+
+build: $(O) 
+
+install-lib: build $(LIB_PREFIX)
+
+
+clean:
+	rm -rf $(O)
+
+clean-src: 
+	-chmod -R +w $(srcdir)
+	rm -rf $(srcdir)
+
+clean-all: clean clean-src
+
+
+.PHONY: untar config build install-lib install
+.PHONY: clean clean-src clean-all

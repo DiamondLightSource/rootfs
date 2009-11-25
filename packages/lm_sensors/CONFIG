@@ -13,8 +13,8 @@ MD5_SUM_3.1.0 = e23130eaa46c66b861729835e08bdccf
 SRCDIRS = lib prog/sensors prog/dump 
 config:
 	for dir in $(SRCDIRS); do \
-            mkdir -p $(O)$$dir; \
-            ln -sf $(srcdir)/$$dir/Module.mk $(O)$$dir; \
+            mkdir -p $(O)/$$dir; \
+            ln -sf $(srcdir)/$$dir/Module.mk $(O)/$$dir; \
         done
 
 # Building out of tree seems to need these.

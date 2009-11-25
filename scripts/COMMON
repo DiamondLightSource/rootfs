@@ -1,8 +1,16 @@
 # Core environment makefile definitions.  This is included by *all*
-# makefiles.
+# rootfs makefiles as their very first action.
+#
+# The following symbol must be defined by the calling environment:
+#
+#   TOP     This points to the root of the rootfs tree.
+#
+# The following symbols may be overridden, but have sensible defaults.
+#
+#   CONFIG_FILE
+#       This defaults to $(TOP)/CONFIG.  This file can contain overrides
+#       for other symbols.
 
-# TOP must have been defined, otherwise this script couldn't have been
-# called.
 
 # Define the default target straight away to avoid accidentally picking up
 # the wrong target.
@@ -10,14 +18,62 @@ default:
 .PHONY: default
 
 
-
 # Default paths that can be overridden by the CONFIG file.
-ROOTFS_ROOT = /scratch/tmp/rootfs-test
-TAR_DIRS = /dls_sw/prod/targetOS/tar-files /dls_sw/work/targetOS/tar-files
-
+ROOTFS_ROOT = $(TOP)/build
+SOURCE_ROOT = $(ROOTFS_ROOT)/src
 
 TOOLKIT_ROOT = $(ROOTFS_ROOT)/toolkit
 TOOLKIT_BIN = $(TOOLKIT_ROOT)/bin
-SOURCE_ROOT = $(ROOTFS_ROOT)/src
+
+CONFIG = $(TOP)/CONFIG
+
+TAR_DIRS = /dls_sw/prod/targetOS/tar-files
+
+-include $(CONFIG)
+
 
 export PATH := $(TOOLKIT_BIN):$(PATH)
+
+# Some convenience definitions.
+scripts = $(TOP)/scripts
+
+# Function for safely quoting a string before exposing it to the shell.
+# Wraps string in quotes, and escapes all internal quotes.  Invoke as
+#
+#   $(call SAFE_QUOTE,string to expand)
+#
+SAFE_QUOTE = '$(subst ','\'',$(1))'
+
+# Passing makefile exports through is a bit tiresome.  We could mark our
+# symbols with export -- but that means *every* command gets them, and I
+# don't like that.  This macro instead just exports the listed symbols into a
+# called function, designed to be called like:
+#
+#	$(call EXPORT,$(EXPORTS)) script
+#
+EXPORT = $(foreach var,$(1),$(var)=$(call SAFE_QUOTE,$($(var))))
+
+
+# Sometimes we allow a parameter to be specified either as a name which we
+# look up in a predefined directory, or as a fixed path.  This macro
+# encapsulates this, designed to be called this:
+#
+#   $(eval $(call DEF_PARAM,param_name,path_name,default_dir))
+#
+# Here param_name is the name of the parameter that may be updated, path_name
+# will be updated with the full path to the identifed component, and
+# default_dir is the default base directory (relative to $(TOP)).
+define COMPUTE_PATH
+    ifndef $1
+        $$(error Must specify $1)
+    endif
+    ifeq (,$$(findstring /,$$($1)))
+        $2 = $$(TOP)/$3/$$($1)
+    else
+        $2 := $$($1)
+        override $1 := $$(notdir $$($1))
+        ifndef $1
+            $$(error $1 cannot end in /)
+        endif
+    endif
+endef

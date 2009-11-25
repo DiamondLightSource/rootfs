@@ -1,0 +1,196 @@
+Root File System Builder
+========================
+
+Introduction to the rootfs distribution builder.  This document should be the
+first reference when using and developing Linux distributions using the rootfs
+builder; other references are listed <<References,below>>.
+
+
+Introduction
+------------
+
+The `rootfs` system is intended to provide a simple to manage mechanism for
+building a complete but minimal bootable Linux distribution, excluding the
+kernel which should be built separately.  Building a rootfs involves the
+following steps, all of which are automated by this set of scripts.
+
+1. Building packages (or ``components'') to be installed on the target
+system.   The skeleton part of the install assumes that `busybox` is one of
+the packages installed.
+
+2. Assembling a complete rootfs image, consisting of a complete system
+directory tree following (though not conforming to) the
+http://www.pathname.com/fhs/[Filesystem Hierarchy Standard].
+This involves the following steps:
++
+--
+- Create directory tree skeleton.
+- Install all selected packages in the skeleton.
+- Install the necessary libraries from glic.
+- Complete the configuration of the skeleton including startup script
+configuration.
+--
++
+Some custom configuration of the startup process is done at this stage.
+
+3. Building the bootstrap package and deploying to the selected target
+location.
+
+The rootfs scripts assume that the following have already been generated:
+
+1. Toolchain, consisting of cross-compiler and associated tools, and complete
+run-time library.  The toolchain is specified as part of target configuration
+by specifying two symbols: `BINUTILS_DIR` and `COMPILER_PREFIX`.
+
+2. Kernel.  The kernel is not managed by the rootfs builder, but depending on
+the precise bootstrap mechanism the target configuration can specify
+information about the kernel.
+
+Configuration and specification of a rootfs build requires that the following
+be specified:
+
+. File locations for rootfs, including workspace and toolkit locations.  This
+is specified in a configuration file that is either placed in the root
+directory of the rootfs builder, or is passed on the command line.
+
+. Package specifications (largely already integrated into `rootfs`).
+
+. Target configuration, including toolchain specification.  The target
+configuration specifies in turn the list of packages to be included in a built
+rootfs and the toolchain to be used to build the packages.
+
+
+
+Running the Rootfs Builder
+--------------------------
+
+The rootfs builder is run through the `rootfs` command in the top directory of
+the rootfs builder.  This command is a very thin wrapper over the makefiles in
+the `scripts` directory which do all the work.
+
+Running the rootfs builder requires the following steps.
+
+. Specify rootfs file locations.
+. Build the toolkit components.
+. Build the selected target packages.
+. Build the selected target.
+
+For the final two steps a target configuration must be specified.
+
+
+`rootfs` Command
+~~~~~~~~~~~~~~~~
+
+The `rootfs` command supports the operations listed below.  One of the most
+important actions of this command is to ensure that the symbol `TOP` is set to
+the directory containing the rootfs build system.  This allows `rootfs` to be
+invoked from outside the directory, and so allows extra packages and
+configurations to be added at build time.
+
+`rootfs help`:: 
+Shows help text.
+
+`rootfs toolkit`::
+Builds the toolkit prerequisites.  This should only need to be done once for
+any particular `ROOTFS_ROOT` configuration.  
+
+The following extra parameters can be passed on the command line to any of the
+commands above to override the default makefile definitions.
+
+`CONFIG`::
+Location of the rootfs configuration file.  This should define any further
+overrides needed.  If no `CONFIG` is specifed then configuration will be read
+from a `CONFIG` file in the root directory of the rootfs if present.
+
+`TARGET`::
+A default build target can be specified in the `CONFIG` file, but this can be
+overridden by passing a `TARGET` definition on the command line.  This can
+be given in one of two formats:
++
+--
+`TARGET=`'<target-name>';;
+If the '<target-name>' is not a path (does not contain a `/` character) it
+must name one of the configurations in the rootfs `configs` directory.
+
+`TARGET=`'<target-path>';;
+If '<target-path>' is a path it should name a directory containing a target
+description (see ??? for specification), and in this case the last component
+on the path will be used to name the build.
+--
++
+Note that `TARGET` has no meaning for `rootfs toolkit` and will be ignored.
+
+
+Configuring the Rootfs
+~~~~~~~~~~~~~~~~~~~~~~
+
+A number of directories and other make symbols must be specified for the
+rootfs builder to operate.  As noted above, these can be overridden or updated
+in a `CONFIG` file (read from `$(TOP)/CONFIG` or specified on the command
+line).  The list below documents the symbols that can be specified in this
+file and their default values.
+
+
+`ROOTFS_ROOT = $(TOP)/build`::
+This specifies the root of the workspace used by rootfs.  By default all
+rootfs files are built under this directory.  This can be overridden by an
+entry in the specified `CONFIG` file.
+
+`TOOLKIT_ROOT = $(ROOTFS_ROOT)/toolkit`::
+This contains local installations of the tools required for the operation of
+rootfs.
+
+`SOURCE_ROOT = $(ROOTFS_ROOT)/src`::
+All source files, including both package and toolkit sources, will be
+extracted to this directory and patched in-place.  All builds will treat this
+directory as read-only, and will be ``out of tree''.
+
+`TARGET_ROOT = $(ROOTFS_ROOT)/targets/$(TARGET)`::
+This is where the entire rootfs build will take place.
+
+`TAR_DIRS = /dls_sw/prod/targetOS/tar-files`::
+All sources packages will be searched for in directories specified by this
+symbol.
+
+
+Building the Toolkit
+~~~~~~~~~~~~~~~~~~~~
+
+This is simply a matter of running the command `make toolkit` in the rootfs
+top level directory.  This will populate the toolkit directory with the
+necessary tools required for a reproducible build, including the following
+components:
+
+`fakeroot`::  
+This is needed to assemble the rootfs.
+
+`autoconf`, `automake`, `libtool`, `m4`::
+These tools are needed by some packages, particularly after patching
+configuration files.
+
+
+Building Target Packages
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Building Target System
+~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+Specifying a Target Configuration
+---------------------------------
+
+
+
+
+
+[[References]]
+References
+----------
+
+. file:glibc.html[Notes on glibc files].
+. file:extras.html[Lists of packages].
+. file:build-extras.html[Notes on specifying packages].
+. file:notes.html[Other notes, work in progress].

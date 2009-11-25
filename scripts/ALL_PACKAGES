@@ -1,0 +1,19 @@
+# Makefile build building all packages.  Basically all we can do is invoke
+# PACKAGE_MAKE for every package in the system, in the order that they are
+# specified by the selected target.
+
+include $(TOP)/scripts/COMMON
+include $(scripts)/TARGET_COMMON
+
+
+define make_package
+$(MAKE) -f $(TOP)/scripts/PACKAGE_MAKE $(call EXPORT,PACKAGE) $@
+
+endef
+
+# Pass target (and command line overrides) down to each package build.
+# This is quite a nice technique for makefile command pass-through.
+default $(filter-out default,$(MAKECMDGOALS)):
+	$(foreach PACKAGE,$(PACKAGES),$(make_package))
+
+.PHONY: $(MAKECMDGOALS)

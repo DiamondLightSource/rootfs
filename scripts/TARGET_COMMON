@@ -1,0 +1,14 @@
+# Common definitions when building targets.
+
+# Compute configdir = $(TOP)/configs/$(TARGET), or take configdir from
+# $(TARGET) and update TARGET if TARGET is a path name.
+$(eval $(call COMPUTE_PATH,TARGET,configdir,configs))
+
+# # Pull in the common definitions from the target
+# include $(configdir)/CONFIG
+
+TARGET_ROOT = $(ROOTFS_ROOT)/targets/$(TARGET)
+OBJECT_ROOT = $(TARGET_ROOT)/packages
+
+# We always need the list of packages and associated toolchain definition.
+include $(configdir)/PACKAGES

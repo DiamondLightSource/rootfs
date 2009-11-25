@@ -42,7 +42,7 @@ PATCHES_1.14.3 =
 
 
 # If no config specified, use one we prepared earlier.
-busybox_CONFIG ?= $(CURDIR)/busybox-default-$(busybox_VERSION).config
+busybox_CONFIG ?= $(PACKAGE_PATH)/busybox-default-$(busybox_VERSION).config
 
 INETD_ENABLE ?= Y
 
@@ -70,6 +70,6 @@ install:
         done
 
 ifneq ($(INETD_ENABLE),)
-	$(install) $(CURDIR)/inetd /etc/init.d
-	$(startup) $(CURDIR)/inetd S200
+	$(install) $(PACKAGE_PATH)/inetd /etc/init.d
+	$(startup) $(PACKAGE_PATH)/inetd S200
 endif
