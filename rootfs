@@ -46,19 +46,27 @@ Invokes the appropriate rootfs action.  The following actions are available:
         on command line.
 
     make
+    rootfs
         Assembles the configured rootfs for the selected target.
 EOF
         ;;
+
     docs)
         make -C "$TOP"/docs ;;
-    
+
     toolkit)
         call_make TOOLKIT_MAKE "$@" ;;
+
     a|all)
         call_make ALL_PACKAGES "$@" ;;
+
     p|package)
         PACKAGE="$1"
         shift
         call_make PACKAGE_MAKE PACKAGE="$PACKAGE" "$@" ;;
+
+    m|make|rootfs)
+        call_make ROOTFS_MAKE "$@" ;;
+
     *)  Error 'Unknown action.  Try `rootfs help` for help' ;;
 esac

@@ -1,0 +1,26 @@
+# Makefile definitions shared among all the makefiles run from fakeroot.
+# These are the processes which populate sysroot.
+
+ifneq ($(shell id -u),0)
+    $(error Must be called from fakeroot)
+endif
+
+include $(scripts)/TARGET_COMMON
+
+
+# Where the build system root is assembled.  Only fakerooted scripts should
+# access this directory.
+sysroot = $(TARGET_ROOT)/rootfs
+# File used to maintain list of installed executables, searched for extra
+# library dependencies during final library population step.
+install_list = $(TARGET_ROOT)/install_list
+
+
+# Support scripts for installation.
+install    = \
+    $(call EXPORT,sysroot COMPILER_PREFIX install_list) $(scripts)/install
+install-files = $(call EXPORT,sysroot) $(scripts)/install-files
+useradd       = $(call EXPORT,sysroot) $(scripts)/useradd
+groupadd      = $(call EXPORT,sysroot) $(scripts)/groupadd
+startup       = $(call EXPORT,sysroot) $(scripts)/startup 
+first-time    = $(call EXPORT,sysroot) $(scripts)/first-time 

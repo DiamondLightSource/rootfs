@@ -1,0 +1,75 @@
+# Top level make file, run from $(TOP)/rootfs, used to coordinate all other
+# rootfs makefiles.
+
+include $(TOP)/scripts/COMMON
+include $(scripts)/TARGET_COMMON
+
+
+
+# The following symbols are passed through to the fakeroot call.
+FAKEROOT_EXPORTS = TARGET configdir
+
+
+$(TARGET_ROOT):
+	mkdir -p $(TARGET_ROOT)
+
+
+# ----------------------------------------------------------------------------
+
+$(TARGET_ROOT)/imagefile.cpio: $(TARGET_ROOT)
+	umask 22  &&  \
+        fakeroot -s $(TARGET_ROOT)/fakeroot.env \
+            $(MAKE) $@ -f $(TOP)/scripts/FAKEROOT_MAKE \
+                $(call EXPORT,$(FAKEROOT_EXPORTS))
+
+imagefile: $(TARGET_ROOT)/imagefile.cpio
+
+.PHONY: imagefile $(TARGET_ROOT)/imagefile.cpio
+
+
+default: imagefile
+
+
+# # ----------------------------------------------------------------------------
+# # Assembles the final images and uploads them into the boot directory.
+# #
+# # These are all gathered into a single target, deploy-rootfs
+# 
+# BOOT_DEPENDS ?= $(BOOT_$(BOOT)_DEPENDS)
+# 
+# BOOT_nfs_DEPENDS = $(O)/imagefile.cpio
+# BOOT_initramfs_DEPENDS = $(O)/imagefile.cpio
+# BOOT_jffs2_DEPENDS = $(sysroot)
+# BOOT__DEPENDS = $(O)/imagefile.cpio
+# 
+# deploy-rootfs: $(BOOT_DEPENDS)
+# 	make -C boot -f BOOT_$(BOOT)
+# 
+# .PHONY: deploy-rootfs
+# 
+# 
+# 
+# # ----------------------------------------------------------------------------
+# 
+# $(EXTRAS:%=build-%):
+# 	make -C $(@:build-%=extras/%)
+# 
+# build-extras: $(EXTRAS:%=build-%)
+# 
+# .PHONY: build-extras  $(EXTRAS:%=build-%)
+# 
+# 
+# default: deploy-rootfs
+# 
+# 
+# docs:
+# 	make -C docs
+# .PHONY: docs
+# 
+# 
+# 
+# 
+# 
+# $(error work in progress!)
+# 
+# 

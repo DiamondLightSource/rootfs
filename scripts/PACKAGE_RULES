@@ -68,7 +68,11 @@ clean-src:
 	-chmod -R +w $(srcdir)
 	rm -rf $(srcdir)
 
-clean-all: clean clean-src
+clean-lib:
+	-chmod -R +w $(LIB_PREFIX)
+	rm -rf $(LIB_PREFIX)
+
+clean-all: clean clean-src clean-lib
 
 
 .PHONY: untar config build install-lib install

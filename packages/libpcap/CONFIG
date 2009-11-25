@@ -23,8 +23,14 @@ install-lib:
         # install some of the man pages we don't want anyway), so we install
         # by hand in the usual way.
 	cp $(O)/libpcap.a $(LIB_PREFIX)/usr/lib
-	cp -r $(srcdir)/pcap $(LIB_PREFIX)/include
-	cp $(patsubst %,$(srcdir)/%,pcap.h pcap-bpf.h pcap-namedb.h) \
+        # Tiresomely because $(srcdir) is read-only and our cp is badly
+        # behaved, we have to work a bit harder if we want our resulting
+        # installation to be writeable -- and we do, so that re-installation
+        # is nicely behaved.
+	mkdir -p $(LIB_PREFIX)/include/pcap
+	install -m664 $(srcdir)/pcap/* $(LIB_PREFIX)/include/pcap
+	install -m664 \
+            $(patsubst %,$(srcdir)/%,pcap.h pcap-bpf.h pcap-namedb.h) \
             $(LIB_PREFIX)/include
 
 install:    # Nothing to install

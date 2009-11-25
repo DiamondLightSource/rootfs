@@ -3,30 +3,10 @@
 
 include $(TOP)/scripts/COMMON
 include $(scripts)/TARGET_COMMON
-
-# Pick up PACKAGE_PATH from PACKAGE.
-$(eval $(call COMPUTE_PATH,PACKAGE,PACKAGE_PATH,packages))
+include $(scripts)/PACKAGE_COMMON
 
 
-# If the PACKAGES file doesn't define TOOLCHAIN then it needs to define
-# BINUTILS_DIR and COMPILER_PREFIX.
-ifdef TOOLCHAIN
-    include $(TOP)/toolchains/$(TOOLCHAIN)
-endif
-
-ifdef BINUTILS_DIR
-    export PATH := $(BINUTILS_DIR)/bin:$(PATH)
-endif
-
-ifdef COMPILER_PREFIX
-    export CROSS_COMPILE = $(COMPILER_PREFIX)-
-endif
-
-
-# Definitions specific to build.
-
-# Build type needed for --build argument to many ./configure scripts
-BUILD_TYPE = $(shell $(TOOLKIT_BIN)/config.guess)
+# Definitions specific to source extraction
 
 # Source directory and package specification.  A little involved, as we want
 # the extracted sources to be as uniform as possible, but individual source
@@ -43,30 +23,19 @@ untar-extra = @:
 # TOOLKIT_MAKE for ideas.
 
 version = $($(PACKAGE)_VERSION)
+MD5_SUM = $(MD5_SUM_$(version))
 
 # Where the sources are placed and where the package will be built.
 srcdir = $(SOURCE_ROOT)/$(SOURCE_DIR_NAME)
-O = $(OBJECT_ROOT)/$(PACKAGE)
-
-# This symbol defines where shared libraries will be installed.  To use
-# installed shared libraries add the following to any relevant configuration:
-#
-#   CPPFLAGS += -I$(LIB_PREFIX)/include
-#   LDFLAGS += -L$(LIB_PREFIX)/lib
-# or
-#   LDFLAGS += -L$(LIB_PREFIX)/usr/lib
-#
-# as appropriate.
-LIB_PREFIX = $(TARGET_ROOT)/local
 
 
-# Finally we can pull in the real package definitions.
+# Definitions specific to configure.
+
+# Build type needed for --build argument to many ./configure scripts
+BUILD_TYPE = $(shell $(TOOLKIT_BIN)/config.guess)
+
+
+# Finally we can pull in the real package definitions and fire the
+# appropriate rules.
 include $(PACKAGE_PATH)/CONFIG
-
-
-MD5_SUM = $(MD5_SUM_$(version))
 include $(scripts)/PACKAGE_RULES
-
-
-# default $(filter-out default,$(MAKECMDGOALS)):
-# 	@echo PACKAGE = $(PACKAGE), \$$@ = $@, TARGET = $(TARGET)

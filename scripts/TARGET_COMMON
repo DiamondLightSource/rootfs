@@ -4,11 +4,40 @@
 # $(TARGET) and update TARGET if TARGET is a path name.
 $(eval $(call COMPUTE_PATH,TARGET,configdir,configs))
 
+
 # # Pull in the common definitions from the target
 # include $(configdir)/CONFIG
 
 TARGET_ROOT ?= $(ROOTFS_ROOT)/targets/$(TARGET)
+
+# Where packages are built
 OBJECT_ROOT = $(TARGET_ROOT)/packages
+
+# This symbol defines where shared libraries are be installed.  To use
+# installed shared libraries add the following to any relevant configuration:
+#
+#   CPPFLAGS += -I$(LIB_PREFIX)/include
+#   LDFLAGS += -L$(LIB_PREFIX)/lib
+# or
+#   LDFLAGS += -L$(LIB_PREFIX)/usr/lib
+#
+# as appropriate.
+LIB_PREFIX = $(TARGET_ROOT)/local
+
 
 # We always need the list of packages and associated toolchain definition.
 include $(configdir)/PACKAGES
+
+# If the PACKAGES file doesn't define TOOLCHAIN then it needs to define
+# BINUTILS_DIR and COMPILER_PREFIX.
+ifdef TOOLCHAIN
+    include $(TOP)/toolchains/$(TOOLCHAIN)
+endif
+
+ifdef BINUTILS_DIR
+    export PATH := $(BINUTILS_DIR)/bin:$(PATH)
+endif
+
+ifdef COMPILER_PREFIX
+    export CROSS_COMPILE = $(COMPILER_PREFIX)-
+endif

@@ -1,0 +1,49 @@
+# This is the make file invoked under fakeroot where we perform all the
+# assembly of the final rootfs directory tree.
+
+# All the work in this make file is done using fakeroot: this allows us to
+# create device nodes and manage file ownership and permissions.
+#
+# The output from this build is a file imagefile.cpio containing the complete
+# target file system.
+
+include $(TOP)/scripts/COMMON
+include $(scripts)/FAKEROOT_COMMON
+
+include $(scripts)/SKELETON
+
+
+# Dependencies of targets (all phony) to sequence build of $(sysroot): the
+# correct sequence is:
+#   clean-sysroot       Ensures we start with a clean sheet
+#   pre-install         Creates initial skeleton
+#   packages            Installs all selected packages
+#   final-install       Custom target for target config hook
+#   post-install        Populates libraries and completes installation
+
+clean-sysroot:
+	-chmod -R +w $(sysroot)
+	rm -rf $(sysroot)  &&  mkdir -p $(sysroot)
+
+pre-install: clean-sysroot
+        # Actions defined in SKELETON
+
+packages: pre-install
+	$(MAKE) install -f $(TOP)/scripts/ALL_PACKAGES
+
+final-install: packages
+        # Actions defined in TARGET CONFIG
+
+post-install: final-install
+        # Actions defined in SKELETON
+
+
+
+$(TARGET_ROOT)/imagefile.cpio: post-install
+	cd $(sysroot) && \
+        find -name . -o -print | cpio --quiet -H newc -o >$@
+
+.PHONY: clean-sysroot pre-install packages final-install post-install 
+.PHONY: $(TARGET_ROOT)/imagefile.cpio
+
+default: $(TARGET_ROOT)/imagefile.cpio

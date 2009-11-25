@@ -1,0 +1,7 @@
+# This captures the part of package definitions common to both building and
+# installing packages.
+
+# Pick up PACKAGE_PATH from PACKAGE.
+$(eval $(call COMPUTE_PATH,PACKAGE,PACKAGE_PATH,packages))
+
+O = $(OBJECT_ROOT)/$(PACKAGE)

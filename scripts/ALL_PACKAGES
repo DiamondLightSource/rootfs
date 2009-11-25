@@ -7,13 +7,16 @@ include $(scripts)/TARGET_COMMON
 
 
 define make_package
-$(MAKE) -f $(TOP)/scripts/PACKAGE_MAKE $(call EXPORT,PACKAGE) $@
+$(MAKE) -f $(TOP)/scripts/PACKAGE_$(1) $(call EXPORT,PACKAGE) $@
 
 endef
 
 # Pass target (and command line overrides) down to each package build.
 # This is quite a nice technique for makefile command pass-through.
-default $(filter-out default,$(MAKECMDGOALS)):
-	$(foreach PACKAGE,$(PACKAGES),$(make_package))
+default $(filter-out default install,$(MAKECMDGOALS)):
+	$(foreach PACKAGE,$(PACKAGES),$(call make_package,MAKE))
 
-.PHONY: $(MAKECMDGOALS)
+install:
+	$(foreach PACKAGE,$(PACKAGES),$(call make_package,INSTALL))
+
+.PHONY: $(MAKECMDGOALS) 
