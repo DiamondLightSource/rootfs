@@ -1,0 +1,24 @@
+nfs-utils_VERSION ?= 1.1.4
+
+MD5_SUM_1.1.4 = 3ed5b9cb73fd1c9b358c7bfa7a6ae150
+
+# Unfortunately rpcgen is really badly behaved when it comes to building out
+# of tree, so we have to patch the makefiles!
+PATCHES_1.1.4 = rpcgen-makefile-1.1.4.patch test-tools-1.1.4.patch
+
+
+config:
+        # We disable libwrap and libblkid in the configuration so that we
+        # don't have any external dependencies.
+	cd $(O)  &&  \
+        $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
+            --disable-gss --disable-nfsv4 --without-tcp-wrappers \
+            --disable-uuid
+
+build:
+	make -C $(O)
+
+install:
+        # Don't know which files will really be useful, as this isn't used at
+        # all yet!

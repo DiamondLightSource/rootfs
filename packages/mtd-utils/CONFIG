@@ -1,0 +1,50 @@
+mtd-utils_VERSION ?= 1.2.0
+
+MD5_SUM_1.2.0 = ca41f1fbaa056e8b8d71e8d52c0b1bad
+
+MTD_TOOLS = flash_eraseall flashcp
+
+
+build:
+	CROSS=$(CROSS_COMPILE) make -C $(srcdir) WITHOUT_XATTR=1 \
+            $(MTD_TOOLS:%=$(O)/%) BUILDDIR=$(O)
+
+install:
+	$(install) -s -m-w $(MTD_TOOLS:%=$(O)/%) /usr/sbin
+
+
+
+# The following mtd-utils tools can be built here:
+#
+# flash_erase
+#   Erase subset of blocks of a flash device.
+#
+# flash_eraseall
+#   Erases an entire partition, optionally configuring for JFFS2 format.
+#
+# nanddump
+#   Dumps content of mtd partition.
+#
+# mkfs.jffs2
+#   Builds a JFFS2 image in an external file.  Requires zlib and lzo to be
+#   available.
+#
+# flash_lock
+# flash_unlock
+#   Locks and unlocks sectors.
+#
+# flashcp
+#   Copies file into flash device.
+#
+# nandwrite
+# nandtest
+#
+# jffs2dump
+#   Dumps the contents of a binary JFFS2 image
+#
+# serve_image
+# recv_image
+#
+# sumtool
+#   Converts JFFS2 image to a summarised JFFS2 image: works on image files
+#   rather than real file systems.  Effect is to speed up mounting.

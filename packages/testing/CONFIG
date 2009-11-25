@@ -1,0 +1,12 @@
+testing_VERSION = local
+
+include EXTRAS
+
+LDLIBS += -lrt
+
+TEST_FILES = testing timestamps
+
+build-local: $(TEST_FILES)
+
+install:
+	$(install) -s -m-w $(TEST_FILES:%=$(O)/%) /usr/bin

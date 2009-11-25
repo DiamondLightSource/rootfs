@@ -1,0 +1,35 @@
+libpcap_VERSION ?= 1.0.0
+
+TAR_EXTENSION = .tar.gz
+MD5_SUM_1.0.0 = 9ad1358c5dec48456405eac197a46d3d
+
+untar-extra = rm -f $(srcdir)/bpf_filter.c
+PATCHES_1.0.0 = makefile-1.0.0.patch
+
+config:
+	cd $(O)  &&  \
+        $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            ac_cv_linux_vers=2 --with-pcap=linux \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
+
+build:
+	make -C $(O)
+
+
+install-lib:
+        # The simple solution is just to invoke libpcap's own install:
+        #	make -C $(O) install DESTDIR=$(LIB_PREFIX)
+        # Unfortunately, it rather overdoes things (and fails trying to
+        # install some of the man pages we don't want anyway), so we install
+        # by hand in the usual way.
+	cp $(O)/libpcap.a $(LIB_PREFIX)/usr/lib
+	cp -r $(srcdir)/pcap $(LIB_PREFIX)/include
+	cp $(patsubst %,$(srcdir)/%,pcap.h pcap-bpf.h pcap-namedb.h) \
+            $(LIB_PREFIX)/include
+
+install:    # Nothing to install
+
+
+# Low level packet capture interface library, needed by tcpdump.
+#
+# Downloaded from www.tcpdump.org
