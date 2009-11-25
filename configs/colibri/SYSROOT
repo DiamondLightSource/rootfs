@@ -16,9 +16,9 @@ TERMS = xterm xterm-color screen vt100 vt102
 LDCONFIG = cross
 
 
-
 # Network installation: this determines how the network is configured.
-NETWORK = mtd
+# NETWORK = mtd
+# NETWORK = nfs
 
 # The following are relevant if NETWORK != mtd above.
 NW_HOSTNAME = colibri

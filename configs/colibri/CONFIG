@@ -1,0 +1,16 @@
+# Configuration file for colibri target.
+
+BOOT = initramfs
+# BOOT = nfs
+
+include $(configdir)/PACKAGES
+include $(configdir)/SYSROOT
+include $(configdir)/ROOTFS
+
+include $(configdir)/BOOT_$(BOOT)
+
+ifeq ($(BOOT),nfs)
+    NETWORK = nfs
+else
+    NETWORK = mtd
+endif

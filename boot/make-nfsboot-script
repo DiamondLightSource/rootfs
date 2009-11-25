@@ -7,20 +7,17 @@
 : ${NFS_SERVER:?}      # Name of NFS server
 : ${NFS_ROOTFS:?}      # Path to rootfs on NFS server
 : ${BOOTARGS:?}        # Extra arguments to pass as bootargs
-: ${QUOTE_BOOTARGS:?}  # Whether to quote bootargs (depends on target u-boot!)
 
 TARGET="${1:?Target file}"
 
 NFS_NFSROOT="$(host "$NFS_SERVER" | sed 's/^.*address //'):$NFS_ROOTFS"
-NFS_IP_STRING=$NW_ADDRESS::$NW_GATEWAY:$NW_NETMASK:$NW_HOSTNAME::none
+NFS_IP_STRING='$ipaddr::$gatewayip:$netmask:$hostname::none'
 
 BOOTARGS="$BOOTARGS root=/dev/nfs nfsroot=$NFS_NFSROOT ip=$NFS_IP_STRING ro"
-(($QUOTE_BOOTARGS))  &&
-    BOOTARGS=\""$BOOTARGS"\"
 
 cat <<EOF >"$TARGET"
 echo 'Built: $(date)'
 tftpboot $KERNEL_ADDR $KERNEL_NAME
-setenv bootargs $BOOTARGS
+setenv bootargs "$BOOTARGS"
 bootm $KERNEL_ADDR
 EOF

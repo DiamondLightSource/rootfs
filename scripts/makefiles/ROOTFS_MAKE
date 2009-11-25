@@ -33,11 +33,7 @@ imagefile: $(O)/imagefile.cpio
 # taken.
 BOOT ?= none
 bootdir = $(TOP)/boot
-ifeq ($(findstring /,$(BOOT)),)
-    include $(bootdir)/$(BOOT)
-else
-    include $(BOOT)
-endif
+$(eval $(call INCLUDE_DEFS,BOOT,boot))
 
 boot: $(O)/imagefile.cpio
 

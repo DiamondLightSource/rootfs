@@ -7,7 +7,6 @@
 : ${IMAGE_NAME:?}      # Name of rootfs image to load from tftp server
 : ${IMAGE_ADDR:?}      # Where to load the rootfs image into memory
 : ${BOOTARGS:?}        # Arguments to pass as bootargs
-: ${QUOTE_BOOTARGS:?}  # Whether to quote bootargs (depends on target u-boot!)
 
 TARGET="${1:?Target file}"
 IMAGE_FILE="${2:?Image file}"
@@ -16,13 +15,11 @@ IMAGE_SIZE=$(stat -c %s "$IMAGE_FILE")
 
 BOOTARGS="$BOOTARGS rdinit=/sbin/init root=/dev/ram"
 BOOTARGS="$BOOTARGS initrd=0x$IMAGE_ADDR,$IMAGE_SIZE"
-(($QUOTE_BOOTARGS))  &&
-    BOOTARGS=\""$BOOTARGS"\"
 
 cat <<EOF >"$TARGET"
 echo 'Built: $(date)'
 tftpboot $KERNEL_ADDR $KERNEL_NAME
 tftpboot $IMAGE_ADDR $IMAGE_NAME
-setenv bootargs $BOOTARGS
+setenv bootargs "$BOOTARGS"
 bootm $KERNEL_ADDR
 EOF

@@ -41,7 +41,7 @@ endif
 # If the PACKAGES file doesn't define TOOLCHAIN then it needs to define
 # BINUTILS_DIR and COMPILER_PREFIX.
 ifdef TOOLCHAIN
-    include $(TOP)/toolchains/$(TOOLCHAIN)
+    $(eval $(call INCLUDE_DEFS,TOOLCHAIN,toolchains))
 endif
 
 ifdef BINUTILS_DIR
