@@ -1,0 +1,5 @@
+# Toolchain definitions for standard DLS ARM cross compiler
+TOOLCHAIN_VERSION = gcc-4.3.2-glibc-2.7
+COMPILER_PREFIX = arm-xscale-linux-gnueabi
+
+BINUTILS_DIR = /dls_sw/targetOS/x-tools/$(TOOLCHAIN_VERSION)/$(COMPILER_PREFIX)
