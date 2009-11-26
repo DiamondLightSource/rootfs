@@ -5,6 +5,7 @@ include $(makefiles)/TARGET_COMMON
 include $(makefiles)/SYSROOT_COMMON
 
 $(eval $(call COMPUTE_PATH,OPTION,optiondir,options))
+commondir = $(TOP)/options/COMMON
 
 include $(optiondir)/CONFIG
 

@@ -1,6 +1,6 @@
 # Network configuration using fixed IP address.
 
-RESOLV_CONF ?= $(optiondir)/resolv.conf
+include $(commondir)/COMMON
 
 NW_EXPORTS = NW_ADDRESS NW_NETMASK NW_GATEWAY
 
@@ -15,8 +15,9 @@ ifdef NW_DHCP
 	$(install) -f $(optiondir)/interfaces.dhcp /etc/network/interfaces
 	ln -s /var/run/udhcpc/resolv.conf $(sysroot)/etc/resolv.conf
 else
-	$(install) -f $(RESOLV_CONF) /etc/resolv.conf
 	echo $(NW_HOSTNAME) > $(sysroot)/etc/hostname
 	$(call EXPORT,$(NW_EXPORTS)) $(optiondir)/make-interfaces \
             >$(sysroot)/etc/network/interfaces
+
+option: network-resolv
 endif

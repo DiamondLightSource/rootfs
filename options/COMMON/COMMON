@@ -1,0 +1,9 @@
+# Some common makefile definitions and targets to share among options.
+
+RESOLV_CONF ?= $(commondir)/resolv.conf
+
+
+network-resolv:
+	$(install) -f $(RESOLV_CONF) /etc/resolv.conf
+
+.PHONY: network-resolv
