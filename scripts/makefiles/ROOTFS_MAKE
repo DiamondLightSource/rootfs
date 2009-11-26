@@ -31,9 +31,11 @@ imagefile: $(O)/imagefile.cpio
 # The boot target specifies the action to take when assembling the final
 # rootfs build.  This should define the boot target and any actions to be
 # taken.
-BOOT ?= none
-bootdir = $(TOP)/boot
-$(eval $(call INCLUDE_DEFS,BOOT,boot))
+ifdef BOOT
+$(eval $(call COMPUTE_PATH,BOOT,bootdir,boot))
+bootcommon = $(TOP)/boot/COMMON
+include $(bootdir)/CONFIG
+endif
 
 boot: $(O)/imagefile.cpio
 
