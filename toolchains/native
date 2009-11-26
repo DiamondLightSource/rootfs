@@ -1,0 +1,3 @@
+# Definitions for native tool chain build.
+COMPILER_PREFIX = 
+BINUTILS_DIR = /

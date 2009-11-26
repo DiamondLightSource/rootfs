@@ -1,0 +1,7 @@
+default 1
+timeout 10
+title linux
+kernel /boot/grub/bzImage rw rdinit=/sbin/init
+initrd /boot/grub/initramfs.cpio.gz
+savedefault
+boot

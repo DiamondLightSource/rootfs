@@ -20,7 +20,7 @@ install_list = $(TARGET_ROOT)/install_list
 
 # Support scripts for installation.
 install    = \
-    $(call EXPORT,sysroot COMPILER_PREFIX install_list) $(scripts)/install
+    $(call EXPORT,sysroot CROSS_COMPILE install_list) $(scripts)/install
 install-files = $(call EXPORT,sysroot) $(scripts)/install-files
 useradd       = $(call EXPORT,sysroot) $(scripts)/useradd
 groupadd      = $(call EXPORT,sysroot) $(scripts)/groupadd

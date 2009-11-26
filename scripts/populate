@@ -5,7 +5,6 @@
 #
 : ${sysroot:?}          # Root of rootfs being constructed
 : ${BINUTILS_DIR:?}     # Root of binutils directory
-: ${COMPILER_PREFIX:?}  # Cross-compiler prefix
 : ${install_list:?}     # File containing list of installed files
 : ${LIB_PREFIX:?}       # Directory of locally generated libraries
 
@@ -13,6 +12,7 @@
 #
 #  TERMS                  List of terminals to install
 #  EXTRA_LIBS             Extra libraries to be installed
+#  COMPILER_PREFIX        Must be set if cross compiling
 
 
 HERE="$(dirname "$0")"
@@ -24,9 +24,15 @@ set -o pipefail
 # We have two notions of sysroot here.  $sysroot is the root of the *target*
 # filesystem that we're building, while $SYSROOT defined here is the glibc
 # sysroot: in effect we're copying $SYSROOT -> $sysroot.
-SYSROOT="$BINUTILS_DIR/$COMPILER_PREFIX/sys-root"
+if [ -n "$COMPILER_PREFIX" ]; then
+    SYSROOT="$BINUTILS_DIR/$COMPILER_PREFIX/sys-root"
+    CROSS_COMPILE=$COMPILER_PREFIX-
+else
+    SYSROOT=/
+    CROSS_COMPILE=
+fi
 
-READELF="$COMPILER_PREFIX-readelf"
+READELF="$CROSS_COMPILE"readelf
 
 
 
