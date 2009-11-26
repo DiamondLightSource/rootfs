@@ -9,5 +9,5 @@ export PATH
 
 # Before anything else we must:
 /etc/init.d/makedevs            #   1. populate /dev
-mount_pass 0                    #   2. mount the initial file systems
+mount -a -t tmpfs               #   2. mount the initial file systems
 /etc/init.d/syslogd start       #   3. start logging

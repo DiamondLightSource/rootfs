@@ -39,6 +39,11 @@ install:
             ln -s /bin/busybox $(sysroot)/$$REPLY  ||  exit 1; \
         done
 
+        # Even if dhcp isn't necessarily configured, it doesn't hurt to
+        # install the helper script in case it's wanted.
+	mkdir -p $(sysroot)/usr/share/udhcpc
+	$(install) $(PACKAGE_PATH)/default.script /usr/share/udhcpc
+
 ifneq ($(INETD_ENABLE),)
 	$(install) $(PACKAGE_PATH)/inetd /etc/init.d
 	$(startup) $(PACKAGE_PATH)/inetd S200

@@ -6,8 +6,8 @@
 
 do_start()
 {
-    hostname $(cat /etc/hostname)  &&
-    ifup lo  &&
+    ifup lo 
+    [ -e /etc/hostname ] && hostname $(cat /etc/hostname) 
     ifup -a
 }
 

@@ -17,6 +17,6 @@ ln -s fd/2 /dev/stderr
 # The /dev/pts directory also isn't managed by mdev
 mkdir /dev/pts
 mount -t devpts -o gid=5,mode=0620,noexec,nosuid devpts /dev/pts
-# Finally the /dev/shm directory -- don't know if we want this.
+# Finally the /dev/shm directory -- don't know if we need this.
 mkdir /dev/shm
 mount -t tmpfs -o nosuid,nodev devshm /dev/shm

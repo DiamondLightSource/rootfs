@@ -1,15 +1,5 @@
 # Common functions to be shared among scripts.
 
-# The following environment variable should already be set before including
-# this file:
-#
-#   COMPILER_PREFIX     Compilation prefix
-
-
-STRIP="$COMPILER_PREFIX-strip"
-READELF="$COMPILER_PREFIX-readelf"
-
-
 Error()
 {
     echo >&2 "$@"
@@ -19,42 +9,5 @@ Error()
 do_strip()
 {
     chmod +w "$1"  &&
-    "$STRIP" "$1"
-}
-
-
-# From an IP address and a net mask computes the associated network as
-#   IP & mask
-compute_network()
-{
-    (
-        IFS=.
-        IP=($1)
-        MASK=($2)
-
-        for ((i = 0; i < 4; i ++)); do
-            ip=${IP[$i]}
-            mask=${MASK[$i]}
-            ((i > 0))  &&  echo -n .
-            echo -n $((ip & mask))
-        done
-    )
-}
-
-# From IP address and net mask compute broadcast address as
-#   ~mask | (mask & ip)
-compute_broadcast()
-{
-    (
-        IFS=.
-        IP=($1)
-        MASK=($2)
-
-        for ((i = 0; i < 4; i ++)); do
-            ip=${IP[$i]}
-            mask=${MASK[$i]}
-            ((i > 0))  &&  echo -n .
-            echo -n $((255 & ~(mask & ~ip)))
-        done
-    )
+    "$COMPILER_PREFIX-strip" "$1"
 }

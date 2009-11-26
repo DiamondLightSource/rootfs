@@ -7,10 +7,17 @@ include $(configdir)/PACKAGES
 include $(configdir)/SYSROOT
 include $(configdir)/ROOTFS
 
-include $(configdir)/BOOT_$(BOOT)
 
-ifeq ($(BOOT),nfs)
-    NETWORK = nfs
-else
-    NETWORK = mtd
+# Options only used for BOOT = initramfs:
+IMAGE_ADDR = a2000000
+
+# Options only used for BOOT = nfs:
+NFS_SERVER = pc0013
+NFS_ROOTFS = /scratch/mga83/rootfs/$(TARGET)
+
+
+ifeq ($(BOOT),initramfs)
+    OPTIONS += network-mtd
+#    OPTIONS += network
+#    NW_DHCP = yes
 endif

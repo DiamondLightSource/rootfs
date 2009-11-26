@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Mount and unmount nfs mount points from /etc/fstab
+. /etc/init.d/functions
+
+do_start() { mount  -a -t nfs; }
+do_stop()  { umount -a -t nfs; }
+
+do_start_stop "$1" 'NFS mounts'

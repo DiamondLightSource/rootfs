@@ -17,25 +17,15 @@ include $(makefiles)/SYSROOT_COMMON
 # Also want to install real time and C++ libraries.
 EXTRA_LIBS ?= libnss_dns libnss_files librt libstdc++
 
-# By default don't bother with ldconfig at all.
-LDCONFIG ?= none
-
-
-
-# Special commands for rootfs building.  Each command takes particular
-# parameters from the envirionment.
-_network_EXPORTS = sysroot NW_HOSTNAME NW_ADDRESS NW_NETMASK NW_GATEWAY
-configure-network = \
-    $(call EXPORT,$(_network_EXPORTS)) $(scripts)/configure-network
-
 _populate_EXPORTS = \
     sysroot BINUTILS_DIR COMPILER_PREFIX TERMS install_list EXTRA_LIBS \
     LIB_PREFIX
 populate = $(call EXPORT,$(_populate_EXPORTS)) $(scripts)/populate
 
-_ldconfig_EXPORTS = sysroot BINUTILS_DIR COMPILER_PREFIX
-ldconfig = $(call EXPORT,$(_ldconfig_EXPORTS)) $(scripts)/ldconfig
+define install-option
+$(MAKE) -f $(makefiles)/OPTION_MAKE OPTION=$(OPTION)
 
+endef
 
 
 
@@ -68,9 +58,6 @@ install-sysroot: clean-sysroot
         # Record the version string.
 	echo $(call SAFE_QUOTE,$(ROOTFS_VERSION)) >$(sysroot)/etc/version
 
-        # Configure networking according to selected mode
-	$(configure-network) $(NETWORK)
-
         # Install all the selected packages
 	rm -f $(install_list);  touch $(install_list)
 	$(MAKE) install -f $(makefiles)/ALL_PACKAGES
@@ -84,13 +71,10 @@ final-install: install-sysroot
 post-install: final-install
         # Populate the libraries: key final step!
 	$(populate)
-        # Sort out ldconfig.  Wish we had a proper cross-compiled version of
-        # this tool.
-	$(ldconfig) $(LDCONFIG)
-
-        # Ensure the first-time.sh script removes itself.
-	$(first-time) 'rm /etc/first-time.sh'
-	$(first-time) 'mount -o remount,ro /'
+        # Install the selected options.
+	$(foreach OPTION,$(OPTIONS),$(install-option))
+        # Wrap up the first-time script.
+	$(first-time) -c
 
 
 $(TARGET_ROOT)/imagefile.cpio: post-install

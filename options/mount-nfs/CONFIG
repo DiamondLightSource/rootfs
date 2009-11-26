@@ -1,0 +1,11 @@
+# Configuration to mount NFS files.  Depends on some form of networking and
+# on the portmap daemon.
+
+# Note the associated startup sequence numbers:
+#
+#   S100    Network initialisation
+#   S110    Portmap
+#   S120    NFS mounts
+
+option:
+	$(startup) $(optiondir)/mountnfs S120

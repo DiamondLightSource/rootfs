@@ -1,0 +1,5 @@
+# Configuration for mtd network setup: networking configuration is read from
+# u-boot configuration in flash.
+
+option:
+	$(startup) $(optiondir)/network.mtd S100

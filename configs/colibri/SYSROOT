@@ -13,7 +13,6 @@ DROPBEAR_KEYS = y
 
 TERMS = xterm xterm-color screen vt100 vt102
 
-LDCONFIG = cross
 
 
 # Network installation: this determines how the network is configured.
@@ -31,3 +30,6 @@ final-install:
         # Install the regular nfs mounts.
 	mkdir -p $(patsubst %,$(sysroot)/mnt/%,nfs prod work)
 	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
+
+OPTIONS = mount-nfs ldconfig
+LDCONFIG = cross

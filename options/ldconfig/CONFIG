@@ -1,0 +1,31 @@
+# Configuration options for ldconfig.  The following options are possible
+# (which must be configured in the LDCONFIG variable):
+#
+#   none    Don't install or run ldconfig.
+#   cross   Run the cross compiler ldconfig.  Note this doesn't always work.
+#   install Install ldconfig on the target system.
+#   once    Run ldconfig once on the target system.
+
+TARGET_LDCONFIG = "$(BINUTILS_DIR)/$(COMPILER_PREFIX)/sys-root/sbin/ldconfig"
+
+# The native ldconfig seems to work as a cross tool when there's a close
+# enough match between host and target, in particular when word endian modes
+# match.
+CROSS_LDCONFIG = /sbin/ldconfig
+
+
+ldconfig_install:
+	$(install) $(TARGET_LDCONFIG) /sbin
+	$(first-time) /sbin/ldconfig
+
+ldconfig_once: ldconfig_install
+	$(first-time) 'rm -f /sbin/ldconfig'
+
+ldconfig_cross:
+	/sbin/ldconfig -X -r $(sysroot)
+
+ldconfig_none:
+
+option: ldconfig_$(LDCONFIG)
+
+.PHONY: ldconfig_install ldconfig_once ldconfig_cross

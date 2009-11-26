@@ -21,10 +21,5 @@ export PATH
     for script in /etc/rc.d/S*; do
         $script start
     done
-
-    # Do any post init mounts: this is a good time for nfs mounts that aren't
-    # needed during startup.  Pass 1 mounts need to be mounted explicitly by
-    # a linked script if needed.
-    mount_pass 2
 } 2>&1 |
 logger -s -t rc 

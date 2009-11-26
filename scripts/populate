@@ -26,6 +26,8 @@ set -o pipefail
 # sysroot: in effect we're copying $SYSROOT -> $sysroot.
 SYSROOT="$BINUTILS_DIR/$COMPILER_PREFIX/sys-root"
 
+READELF="$COMPILER_PREFIX-readelf"
+
 
 
 install_terminfo()

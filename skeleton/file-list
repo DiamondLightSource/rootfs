@@ -40,7 +40,6 @@ c 600 /dev/console 5 1
 d 755 /etc/init.d
 d 755 /etc/rc.d
 
-f 755 /etc/first-time.sh
 f 644 /etc/fstab
 f 644 /etc/group
 f 644 /etc/hosts
@@ -49,7 +48,6 @@ f 644 /etc/ld.so.conf
 f 644 /etc/nsswitch.conf
 n 644 /etc/passwd
 f 644 /etc/profile
-f 644 /etc/resolv.conf
 f 644 /etc/services
 n 600 /etc/shadow
 
@@ -61,5 +59,5 @@ f 755 /etc/init.d/shutdown
 f 755 /etc/init.d/syslogd
 
 # Not sure about these ones:
-f 755 /etc/protocols
-f 755 /etc/rpc
+f 644 /etc/protocols
+f 644 /etc/rpc

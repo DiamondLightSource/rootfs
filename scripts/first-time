@@ -6,13 +6,29 @@
 #
 : ${sysroot:?}      # Target rootfs, where to install files
 
-if [ "$1" = -f ]; then
-    shift
-    for file; do
-        cat file 
-    done
+FIRST_TIME="$sysroot"/etc/first-time.sh
+
+
+if [ "$1" = -c ]; then
+    # This is called to wrap up the file.  Only do the wrap-up if it was
+    # created in the first place.
+    if [ -e "$FIRST_TIME" ]; then
+        cat <<EOF >>"$FIRST_TIME"
+rm /etc/first-time.sh
+mount -o remount,ro /
+EOF
+    fi
 else
-    for arg; do
-        echo "$arg"
-    done
-fi >>"$sysroot"/etc/first-time.sh
+    if ! [ -e "$FIRST_TIME" ]; then
+        # If this is the first call of this function then insert the first-time
+        # header.
+        cat <<EOF >"$FIRST_TIME"
+#!/bin/sh
+echo Performing first boot initialisation
+mount -o remount,rw /
+EOF
+        chmod +x
+    fi
+
+    echo "$@" >>"$FIRST_TIME"
+fi
