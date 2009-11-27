@@ -1,0 +1,6 @@
+# Common definitions shared among all BOOT targets, automatically included
+# before $(BOOT)/CONFIG.
+
+ifdef BOOT_LOADER
+    include $(bootcommon)/$(BOOT_LOADER)
+endif

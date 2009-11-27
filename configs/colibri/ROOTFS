@@ -1,11 +1,5 @@
 # Boot parameters for initramfs boot.
 
-# BOOT = initramfs
-# BOOT = nfs
-# 
-# include $(configdir)/BOOT_$(BOOT)
-
-
 MKIMAGE = /dls_sw/targetOS/u-boot/colibri/mkimage
 
 KERNEL_NAME = uImage-colibri
@@ -16,3 +10,5 @@ CONSOLE_BAUD = 9600
 CONSOLE_TTY = ttyS0
 
 TFTP_SERVER = serv3:/tftpboot
+
+BOOT_LOADER = u-boot

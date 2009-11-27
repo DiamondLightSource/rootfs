@@ -1,20 +1,20 @@
-include $(bootcommon)/u-boot
-
-
 IMAGE_NAME = imagefile-$(TARGET).cpio.gz
 
+ifeq ($(BOOT_LOADER),u-boot)
 _initramfs_EXPORTS = \
     KERNEL_NAME KERNEL_ADDR \
     BOOTARGS QUOTE_BOOTARGS \
     IMAGE_NAME IMAGE_ADDR
 
 
-$(O)/$(IMAGE_NAME): $(O)/imagefile.cpio
-	gzip -c -1 $< >$@
-
 $(O)/boot-script: $(O)/$(IMAGE_NAME)
 	$(call EXPORT,$(_initramfs_EXPORTS)) \
             $(bootdir)/make-initramfs-script $@ $<
+endif
 
-boot: $(O)/$(IMAGE_NAME) push-boot-script
+
+$(O)/$(IMAGE_NAME): $(O)/imagefile.cpio
+	gzip -c -1 $< >$@
+
+boot: $(O)/$(IMAGE_NAME)
 	scp $< $(TFTP_SERVER)

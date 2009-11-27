@@ -2,6 +2,8 @@
 
 # make fat drive from kernel image and initramfs image.
 
+set -e
+
 HERE="$(dirname "$0")"
 
 LINUX="${1:?}"
@@ -16,23 +18,20 @@ dd if=/dev/zero of="$TARGET"/core.img count=088704 bs=512
 mpartition -I c:
 mpartition -c -t 88 -h 16 -s 63 c:
 mformat c:
+
 mmd c:/boot
 mmd c:/boot/grub
 
 # install grub files
-
 mcopy /boot/grub/stage1 c:/boot/grub
 mcopy /boot/grub/stage2 c:/boot/grub
 mcopy /boot/grub/fat_stage1_5 c:/boot/grub
-
 mcopy "$RAMFS" c:/boot/grub
-
 mcopy "$LINUX" c:/boot/grub
 mcopy "$HERE"/menu.lst c:/boot/grub/grub.conf
 
 echo "(hd0) $TARGET/core.img" > "$TARGET"/bmap
 
-# printf "geometry (hd0) 88 16 63 \n root (hd0,0) \n setup (hd0)\n" |
 cat <<EOF |
 geometry (hd0) 88 16 63
 root (hd0,0)

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Script to assemble u-boot script for NFS boot target.
+
 # Expects to be called with the following environment variables set:
 #
 : ${KERNEL_NAME:?}     # Name of kernel to load from tftp server

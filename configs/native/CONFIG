@@ -31,4 +31,3 @@ OPTIONS = network
 NW_DHCP = yes
 
 DROPBEAR_KEYS = y
-SSH_AUTHORIZED_KEYS = $(configdir)/authorized_keys

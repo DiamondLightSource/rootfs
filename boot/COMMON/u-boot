@@ -9,4 +9,6 @@ $(O)/$(BOOT_SCRIPT_IMAGE): $(O)/boot-script
 push-boot-script: $(O)/$(BOOT_SCRIPT_IMAGE)
 	scp $< $(TFTP_SERVER)
 
+boot: push-boot-script
+
 .PHONY: push-boot-script $(O)/boot-script
