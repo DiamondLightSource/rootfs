@@ -7,7 +7,7 @@
 #
 # The following symbols may be overridden, but have sensible defaults.
 #
-#   CONFIG_FILE
+#   ROOTFS_CONFIG
 #       This defaults to $(TOP)/CONFIG.  This file can contain overrides
 #       for other symbols.
 
@@ -19,19 +19,19 @@ default:
 
 
 # Default paths that can be overridden by the CONFIG file.
-ROOTFS_ROOT = $(TOP)/build
+ROOTFS_ROOT = /scratch/tmp/rootfs
 SOURCE_ROOT = $(ROOTFS_ROOT)/src
 
 TOOLKIT_ROOT = $(ROOTFS_ROOT)/toolkit
 TOOLKIT_BIN = $(TOOLKIT_ROOT)/bin
 
-CONFIG = $(TOP)/CONFIG
+ROOTFS_CONFIG ?= $(TOP)/CONFIG
 
 TAR_DIRS = /dls_sw/prod/targetOS/tar-files
 
 BINUTILS_DIR = /dls_sw/targetOS/x-tools/$(TOOLCHAIN_VERSION)/$(COMPILER_PREFIX)
 
--include $(CONFIG)
+-include $(ROOTFS_CONFIG)
 
 
 export PATH := $(TOOLKIT_BIN):$(PATH)

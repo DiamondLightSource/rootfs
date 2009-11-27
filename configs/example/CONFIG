@@ -1,0 +1,64 @@
+# Configuration file for example target, based on the colibri target, but
+# simplified to act as a tutorial introduction.
+
+# Specify the toolchain used to build the target system.
+TOOLCHAIN = arm-xscale
+
+# The list of packages to build *must* include busybox
+PACKAGES += busybox
+
+# This is a little hack to dynamically pick up the network configuration at
+# boot time from the u-boot configuration.
+OPTIONS += network-mtd
+
+# This string will be used to identify the rootfs version: it is written into
+# the file /etc/version
+ROOTFS_VERSION = Example rootfs
+
+# These must match the kernel and bootloader configuration, otherwise output
+# from the console will vanish as soon as the console login tty is started!
+CONSOLE_BAUD = 9600
+CONSOLE_TTY = ttyS0
+
+# The root password for the target system.
+ROOT_PASSWORD = example
+
+# Terminal configurations supported by the target system.
+TERMS = xterm xterm-color screen vt100 vt102
+
+
+# The following settings are needed for configuring the booting of the target
+# system.  In this case we use u-boot with the following configuration:
+#
+# bootdelay=5
+# baudrate=9600
+# gatewayip=172.23.240.254
+# netmask=255.255.240.0
+# serverip=172.23.240.3
+# bootargs=console=ttyS0,9600n8
+# hostname=example
+# ipaddr=172.23.252.19
+# bootcmd=tftpboot a0000000 boot-script-example.image && autoscr a0000000
+#
+# Please choose an a sensible IP address.
+
+# The entire rootfs image will be loaded into RAM.
+BOOT = initramfs
+
+# Specifies that we're using u-boot as a boot loader.
+BOOT_LOADER = u-boot
+# Tool used to assemble boot loader images.
+MKIMAGE = /dls_sw/targetOS/u-boot/colibri/mkimage
+
+BOOTARGS = $$bootargs
+
+# Kernel image to load from tftp server
+KERNEL_NAME = uImage-colibri
+# Address to load kernel into memory
+KERNEL_ADDR = a0001000
+# Address to load initramfs into memory/
+IMAGE_ADDR = a2000000
+
+# The updated boot script and initramfs image is pushed out to this location
+# using scp.
+TFTP_SERVER = serv3:/tftpboot
