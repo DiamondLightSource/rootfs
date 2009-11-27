@@ -4,3 +4,7 @@
 ifdef BOOT_LOADER
     include $(bootcommon)/$(BOOT_LOADER)
 endif
+
+
+$(O)/imagefile.cpio.gz: $(O)/imagefile.cpio
+	gzip -c -1 $< >$@

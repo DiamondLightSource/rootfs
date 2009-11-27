@@ -24,7 +24,7 @@ $(O)/imagefile.cpio: $(O)
 imagefile: $(O)/imagefile.cpio
 
 # Force rebuild of the image file, even if it already exists.
-.PHONY: imagefile $(O)/imagefile.cpio
+.PHONY: $(O) imagefile $(O)/imagefile.cpio
 
 
 

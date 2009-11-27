@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# make syslinux drive from kernel image and initramfs image.
+
+set -e
+
+HERE="$(dirname "$0")"
+
+LINUX="${1:?}"
+RAMFS="${2:?}"
+TARGET="${3:?}"
+TARGET_SIZE="${4:?}"
+
+IMAGE="$TARGET"/syslinux.img
+
+export MTOOLSRC="$TARGET"/mtoolsrc
+echo "drive c: file=\"$IMAGE\"" >"$MTOOLSRC"
+
+dd if=/dev/zero of="$IMAGE" count="$TARGET_SIZE" bs=1024
+/sbin/mkfs.msdos "$IMAGE"
+
+syslinux "$IMAGE"
+
+mcopy "$HERE"/syslinux.cfg c:
+mcopy "$LINUX" c:linux
+mcopy "$RAMFS" c:ramdisk
+
+# Remove the intermediate files.
+rm "$MTOOLSRC"

@@ -24,7 +24,10 @@ PACKAGES += dropbear
 # # Useful debugging tools
 # PACKAGES += strace lsof
 
-BOOT = fat
+# BOOT = fat
+BOOT = syslinux
+# Target size of device to build in 1K blocks.
+TARGET_SIZE = 10240
 
 # Network configuration: use DHCP network.
 OPTIONS = network

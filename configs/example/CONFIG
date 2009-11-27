@@ -4,8 +4,10 @@
 # Specify the toolchain used to build the target system.
 TOOLCHAIN = arm-xscale
 
-# The list of packages to build *must* include busybox
+# The list of packages to build *must* include busybox.  Here, just as an
+# example, we force the version of busybox to an older version.
 PACKAGES += busybox
+busybox_VERSION = 1.14.3
 
 # This is a little hack to dynamically pick up the network configuration at
 # boot time from the u-boot configuration.

@@ -1,0 +1,4 @@
+$(O)/syslinux.img: $(O)/initramfs.cpio.gz
+	$(bootdir)/make-syslinux $(KERNEL_IMAGE) $< $(O) $(TARGET_SIZE)
+
+boot: $(O)/syslinux.img

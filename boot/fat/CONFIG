@@ -1,9 +1,4 @@
-IMAGE_NAME = initramfs.cpio.gz
+$(O)/core.img: $(O)/imagefile.cpio.gz
+	$(bootdir)/make-fat $(KERNEL_IMAGE) $< $(O) $(TARGET_SIZE)
 
-$(O)/$(IMAGE_NAME): $(O)/imagefile.cpio
-	gzip -c -1 $< >$@
-
-$(O)/core.img: $(O)/$(IMAGE_NAME)
-	$(bootdir)/make-fat $(KERNEL_IMAGE) $< $(O)
-
-boot: $(O)/core.img $(O)/$(IMAGE_NAME)
+boot: $(O)/core.img
