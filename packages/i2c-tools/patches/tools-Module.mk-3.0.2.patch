@@ -1,0 +1,92 @@
+diff -ur i2c-tools-3.0.2/tools/Module.mk i2c-tools-3.0.2.patched/tools/Module.mk
+--- i2c-tools-3.0.2/tools/Module.mk	2007-10-03 16:06:25.000000000 +0100
++++ i2c-tools-3.0.2.patched/tools/Module.mk	2009-08-19 12:09:07.000000000 +0100
+@@ -4,69 +4,59 @@
+ #
+ # Licensed under the GNU General Public License.
+ 
+-TOOLS_DIR	:= tools
+-
+ TOOLS_CFLAGS	:= -Wstrict-prototypes -Wshadow -Wpointer-arith -Wcast-qual \
+ 		   -Wcast-align -Wwrite-strings -Wnested-externs -Winline \
+ 		   -W -Wundef -Wmissing-prototypes -Iinclude
+ 
+ TOOLS_TARGETS	:= i2cdetect i2cdump i2cset i2cget
+ 
++CFLAGS += $(TOOLS_CFLAGS)
++
+ #
+ # Programs
+ #
+ 
+-$(TOOLS_DIR)/i2cdetect: $(TOOLS_DIR)/i2cdetect.o $(TOOLS_DIR)/i2cbusses.o
+-	$(CC) $(LDFLAGS) -o $@ $^
++i2cdetect: i2cdetect.o i2cbusses.o
+ 
+-$(TOOLS_DIR)/i2cdump: $(TOOLS_DIR)/i2cdump.o $(TOOLS_DIR)/i2cbusses.o $(TOOLS_DIR)/util.o
+-	$(CC) $(LDFLAGS) -o $@ $^
++i2cdump: i2cdump.o i2cbusses.o util.o
+ 
+-$(TOOLS_DIR)/i2cset: $(TOOLS_DIR)/i2cset.o $(TOOLS_DIR)/i2cbusses.o $(TOOLS_DIR)/util.o
+-	$(CC) $(LDFLAGS) -o $@ $^
++i2cset: i2cset.o i2cbusses.o util.o
+ 
+-$(TOOLS_DIR)/i2cget: $(TOOLS_DIR)/i2cget.o $(TOOLS_DIR)/i2cbusses.o $(TOOLS_DIR)/util.o
+-	$(CC) $(LDFLAGS) -o $@ $^
++i2cget: i2cget.o i2cbusses.o util.o
+ 
+ #
+ # Objects
+ #
+ 
+-$(TOOLS_DIR)/i2cdetect.o: $(TOOLS_DIR)/i2cdetect.c $(TOOLS_DIR)/i2cbusses.h
+-	$(CC) $(CFLAGS) $(TOOLS_CFLAGS) -c $< -o $@
++i2cdetect.o: i2cdetect.c i2cbusses.h
+ 
+-$(TOOLS_DIR)/i2cdump.o: $(TOOLS_DIR)/i2cdump.c $(TOOLS_DIR)/i2cbusses.h $(TOOLS_DIR)/util.h
+-	$(CC) $(CFLAGS) $(TOOLS_CFLAGS) -c $< -o $@
++i2cdump.o: i2cdump.c i2cbusses.h util.h
+ 
+-$(TOOLS_DIR)/i2cset.o: $(TOOLS_DIR)/i2cset.c $(TOOLS_DIR)/i2cbusses.h $(TOOLS_DIR)/util.h
+-	$(CC) $(CFLAGS) $(TOOLS_CFLAGS) -c $< -o $@
++i2cset.o: i2cset.c i2cbusses.h util.h
+ 
+-$(TOOLS_DIR)/i2cget.o: $(TOOLS_DIR)/i2cget.c $(TOOLS_DIR)/i2cbusses.h $(TOOLS_DIR)/util.h
+-	$(CC) $(CFLAGS) $(TOOLS_CFLAGS) -c $< -o $@
++i2cget.o: i2cget.c i2cbusses.h util.h
+ 
+-$(TOOLS_DIR)/i2cbusses.o: $(TOOLS_DIR)/i2cbusses.c $(TOOLS_DIR)/i2cbusses.h
+-	$(CC) $(CFLAGS) $(TOOLS_CFLAGS) -c $< -o $@
++i2cbusses.o: i2cbusses.c i2cbusses.h
+ 
+-$(TOOLS_DIR)/util.o: $(TOOLS_DIR)/util.c $(TOOLS_DIR)/util.h
+-	$(CC) $(CFLAGS) $(TOOLS_CFLAGS) -c $< -o $@
++util.o: util.c util.h
+ 
+ #
+ # Commands
+ #
+ 
+-all-tools: $(addprefix $(TOOLS_DIR)/,$(TOOLS_TARGETS))
++all-tools: $(addprefix ,$(TOOLS_TARGETS))
+ 
+-strip-tools: $(addprefix $(TOOLS_DIR)/,$(TOOLS_TARGETS))
+-	strip $(addprefix $(TOOLS_DIR)/,$(TOOLS_TARGETS))
++strip-tools: $(addprefix ,$(TOOLS_TARGETS))
++	strip $(addprefix ,$(TOOLS_TARGETS))
+ 
+ clean-tools:
+-	$(RM) $(addprefix $(TOOLS_DIR)/,*.o $(TOOLS_TARGETS))
++	$(RM) $(addprefix ,*.o $(TOOLS_TARGETS))
+ 
+-install-tools: $(addprefix $(TOOLS_DIR)/,$(TOOLS_TARGETS))
++install-tools: $(addprefix ,$(TOOLS_TARGETS))
+ 	$(INSTALL_DIR) $(DESTDIR)$(sbindir) $(DESTDIR)$(man8dir)
+ 	for program in $(TOOLS_TARGETS) ; do \
+-	$(INSTALL_PROGRAM) $(TOOLS_DIR)/$$program $(DESTDIR)$(sbindir) ; \
+-	$(INSTALL_DATA) $(TOOLS_DIR)/$$program.8 $(DESTDIR)$(man8dir) ; done
++	$(INSTALL_PROGRAM) $$program $(DESTDIR)$(sbindir) ; \
++	$(INSTALL_DATA) $$program.8 $(DESTDIR)$(man8dir) ; done
+ 
+ uninstall-tools:
+ 	for program in $(TOOLS_TARGETS) ; do \

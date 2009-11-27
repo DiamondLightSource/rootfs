@@ -1,0 +1,27 @@
+lshw_VERSION ?= B.02.14
+
+TAR_EXTENSION = .tar.gz
+MD5_SUM_B.02.14 = 8bed55768c5cb2ceff062b882a687e9b
+
+
+config:
+	mkdir -p $(O)/src/core
+	ln -sf $(srcdir)/src/Makefile $(O)/src
+	ln -sf $(srcdir)/src/core/Makefile $(O)/src/core
+
+build:
+	make -C $(O)/src \
+            CXX=$(CROSS_COMPILE)c++ AR=$(CROSS_COMPILE)ar \
+            STRIP=$(CROSS_COMPILE)strip \
+            VPATH='$(srcdir)/src $(srcdir)/src/core' \
+            INCLUDES=-I$(srcdir)/src/core
+
+install:
+	$(install) -s -m-w $(O)/src/lshw /usr/sbin
+
+# Simple tool to list attached hardware.
+#
+# Web site:
+#   http://ezix.org/project/wiki/HardwareLiSter
+# Download using subversion from
+#   http://dev.ezix.org/source/packages/lshw/releases

@@ -1,3 +1,5 @@
+$(error Not really working, just dumping ground for ideas)
+
 ERASE_BLOCK_SIZE = 0x40000
 JFFS2_SIZE = 0x280000
 ENDIAN = -l
@@ -6,3 +8,54 @@ mtd.out:
 	mkfs.jffs2 -r$(SYSROOT) -o $@ \
             -e$$(($(ERASE_BLOCK_SIZE)) $(ENDIAN) -p$$(($(JFFS2_SIZE)))
 
+
+
+# The stuff below shows how to make a jffs2 image.
+
+#!/bin/sh
+
+HERE="$(cd "$(dirname "$0")"; pwd)"
+
+INPUT=/scratch/tmp/rootfs/colibri/imagefile.cpio
+ROOT="$HERE"/root
+
+FAKEROOT=/scratch/tmp/rootfs/toolkit/bin/fakeroot
+MKFS="$HERE"/built/mkfs.jffs2
+
+[ $(id -u) -eq 0 ] || exec $FAKEROOT "$0" "$@"
+
+rm -rf "$ROOT"
+mkdir -p "$ROOT"
+
+( cd "$ROOT"; cpio -i < "$INPUT" ) 
+
+# SIZE=$((0x300000))
+SIZE=$((0x280000))
+$MKFS -r"$ROOT" -o mtd.out -e$((0x40000)) -l -p$SIZE
+ls -l mtd.out
+echo $SIZE
+
+
+# And here is how to build the jffs2 thing:
+
+#!/bin/sh
+
+HERE="$(cd "$(dirname "$0")"; pwd)"
+
+rm -rf "$HERE"/built
+mkdir -p "$HERE"/built
+CPPFLAGS=-I"$HERE"/local/include LDFLAGS=-L"$HERE"/local/lib \
+make -C "$HERE"/mtd-utils-1.2.0 \
+    WITHOUT_XATTR=1 BUILDDIR="$HERE"/built \
+    "$HERE"/built/mkfs.jffs2
+
+# lzo: ./configure --prefix=$HERE/local  &&  make  &&  make install
+
+# Note a couple of libraries
+# zlib
+#     Web page: http://zlib.net/
+#     Compression library, needed for mkfs.jffs2.
+# 
+# lzo
+#     Web page: http://www.oberhumer.com/opensource/lzo/
+#     Another compression library, needed for mkfs.jffs2.

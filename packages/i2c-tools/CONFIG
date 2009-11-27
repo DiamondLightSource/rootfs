@@ -1,0 +1,20 @@
+i2c-tools_VERSION ?= 3.0.2
+
+MD5_SUM_3.0.2 = b546345ac19db56719dea6b8199f11e0
+
+PATCHES_3.0.2 = tools-Module.mk-3.0.2.patch
+
+PROGRAMS = i2cdetect i2cdump i2cset i2cget
+
+build:
+	make -C $(O) -f $(srcdir)/tools/Module.mk \
+            VPATH=$(srcdir)/tools CC=$(CROSS_COMPILE)gcc \
+            CPPFLAGS=-I$(srcdir)/include $(PROGRAMS)
+
+install:
+	$(install) -s -m-w $(addprefix $(O)/,$(PROGRAMS)) /usr/bin
+
+# Web site: 
+#   http://www.lm-sensors.org/wiki/I2CTools
+# Download from:
+#   http://dl.lm-sensors.org/i2c-tools/releases/i2c-tools-3.0.2.tar.bz2

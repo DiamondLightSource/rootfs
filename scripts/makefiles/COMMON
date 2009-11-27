@@ -66,13 +66,34 @@ EXPORT = $(foreach var,$(1),$(var)=$(call SAFE_QUOTE,$($(var))))
 # Here param_name is the name of the parameter that may be updated, path_name
 # will be updated with the full path to the identifed component, and
 # default_dir is the default base directory (relative to $(TOP)).
+#
+# This supports three ways of defining param_name:
+#
+#   1. param_name=name
+#       In this case path_name is set to default_dir/name.  This is the 
+#       normal case when a default configuration can be used.
+#   2. param_name=/path/to/name
+#       In this case path_name is set to /path/to/name and param_name is
+#       forced to name.  This is the case when an external configuration is
+#       used.
+#   3. param_name=name path_name=/path/to/dir
+#       In this case the parameters are unchanged.  This is for use when an
+#       external configuration is being used, but the path name is not in the
+#       right format.
 define COMPUTE_PATH
     ifndef $1
         $$(error Must specify $1)
     endif
     ifeq (,$$(findstring /,$$($1)))
-        $2 = $$(TOP)/$3/$$($1)
+        # $1 is not a path; if $2 is not set then set to the default.
+        ifndef $2
+            $2 := $$(TOP)/$3/$$($1)
+        endif
     else
+        # $1 defines a path.  Split into two to set $1 and $2 together.
+        ifdef $2
+            $$(error Definition of $2 conflicts with $1)
+        endif
         $2 := $$($1)
         override $1 := $$(notdir $$($1))
         ifndef $1
