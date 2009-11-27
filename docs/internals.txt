@@ -122,3 +122,50 @@ Configures startup scripts.
 Adds specified user to rootfs.
 
 
+
+Include Dependencies
+--------------------
+
+COMMON:
+    -include $(CONFIG)
+
+TARGET_COMMON:
+    include $(configdir)/PACKAGES
+
+SYSROOT_COMMON:
+    include $(makefiles)/TARGET_COMMON
+
+ALL_PACKAGES:
+    include $(TOP)/scripts/makefiles/COMMON
+    include $(makefiles)/TARGET_COMMON
+
+PACKAGE_COMMON:
+
+PACKAGE_RULES:
+
+TOOLKIT_DEFS:
+
+PACKAGE_INSTALL:
+    include $(TOP)/scripts/makefiles/COMMON
+    include $(makefiles)/SYSROOT_COMMON
+    include $(makefiles)/PACKAGE_COMMON
+    include $(PACKAGE_PATH)/CONFIG
+
+PACKAGE_MAKE:
+    include $(TOP)/scripts/makefiles/COMMON
+    include $(makefiles)/TARGET_COMMON
+    include $(makefiles)/PACKAGE_COMMON
+    include $(PACKAGE_PATH)/CONFIG
+    include $(makefiles)/PACKAGE_RULES
+
+ROOTFS_MAKE:
+    include $(TOP)/scripts/makefiles/COMMON
+    include $(makefiles)/TARGET_COMMON
+
+SYSROOT_MAKE:
+    include $(TOP)/scripts/makefiles/COMMON
+    include $(makefiles)/SYSROOT_COMMON
+
+TOOLKIT_MAKE:
+    include $(TOP)/scripts/makefiles/COMMON
+    include $(makefiles)/TOOLKIT_DEFS

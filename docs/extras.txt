@@ -14,7 +14,8 @@ The standard bash shell, but rather large.
 `busybox`::
 Web page: http://www.busybox.net/[]
 +
-Collection of basic utilities.
+Collection of basic utilities.  This provides pretty well everything needed to
+build a complete system.
 
 `dropbear`::
 Web page: http://matt.ucc.asn.au/dropbear/dropbear.html[]
@@ -160,3 +161,119 @@ This is needed for rebuilding `./configure` after local patches to certain
 components.
 
 May well also need up to date versions of `automake` and `libtool`.
+
+
+
+
+Notes on Cross Compiling
+------------------------
+
+Cross compiling various components ranges from easy through tricky to damn
+near impossible, particularly as we also want to build out of tree.
+
+
+For the following the standard `configure` script is well behaved and all that
+is needed is something along these lines:
+
+----
+config:
+	cd $(O)  &&  \
+        $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
+build:
+	make -C $(O)
+----
+
+****
+bash
+dropbear
+libpcap
+nano
+nfs-utils
+ntp
+openntpd
+procinfo-ng
+screen
+strace
+sudo
+tcpdump
+****
+
+The following support cross compilation out of tree through their own
+particular mechanisms:
+
+****
+busybox
+mtd-utils
+testing
+****
+
+Haven't figured this one out yet: i2c-tools
+
+
+These ones are troublesome:
+
+****
+inotify-tools
+lm_sensors
+lshw
+lsof
+ntpclient
+portmap
+procinfo
+Python
+****
+
+
+`inotify-tools`::
+
+For this one have to make two patches before building:
++
+--
+. The test for `sys/inotify.h` needs to be defeated when cross compiling
+. The include paths need to be modified to make includes work.
+--
++ 
+After patching aclocal and autoconf need to be run, but after that the
+`./configure` script works correctly.
+
+
+`lm_sensors`::
+
+For this to work we need to construct a skeletal build directory structure
+mirroring the original source structure and create links to all the subsiduary
+make files.  The build needs `VPATH=$(srcdir)` and a number of other exports
+to be set.
+
+
+`lshw`::
+
+Similarly, this needs links to makefiles in a skeleton of the source directory
+tree and explicit specification of cross compilation programs, `VPATH` and an
+extra includes definition.
+
+`lsof`::
+
+This one is utterly excruciating.
+
+`ntpclient`::
+
+No special configuration step required, but the build requires explicit
+specification of the `VPATH` and `CC`.
+
+
+`portmap`:: 
+
+A special patch to the makefile is needed for dependency building to work.
+The build step requires a number of symbols to be defined.
+
+
+`procinfo`::
+
+Much the same as `ntpclient`.
+
+`Python`:: 
+
+Oh my God.  No, it's horrible, it doesn't work.
++
+Actually, it's not quite so bad, but certainly needs more work...

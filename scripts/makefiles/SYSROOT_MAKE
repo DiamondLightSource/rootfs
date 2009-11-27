@@ -57,6 +57,7 @@ install-sysroot: clean-sysroot
 
         # Record the version string.
 	echo $(call SAFE_QUOTE,$(ROOTFS_VERSION)) >$(sysroot)/etc/version
+	echo Rootfs built: $(shell date)         >>$(sysroot)/etc/version
 
         # Install all the selected packages
 	rm -f $(install_list);  touch $(install_list)

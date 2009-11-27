@@ -2,6 +2,8 @@
 # TFTP server.
 
 BOOT_SCRIPT_IMAGE ?= boot-script-$(TARGET).image
+BOOTARGS ?= $$bootargs
+
 
 $(O)/$(BOOT_SCRIPT_IMAGE): $(O)/boot-script
 	$(MKIMAGE) -T script -d $< $@

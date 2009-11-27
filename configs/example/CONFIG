@@ -52,8 +52,6 @@ BOOT_LOADER = u-boot
 # Tool used to assemble boot loader images.
 MKIMAGE = /dls_sw/targetOS/u-boot/colibri/mkimage
 
-BOOTARGS = $$bootargs
-
 # Kernel image to load from tftp server
 KERNEL_NAME = uImage-colibri
 # Address to load kernel into memory

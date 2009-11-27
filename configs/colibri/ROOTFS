@@ -4,7 +4,6 @@ MKIMAGE = /dls_sw/targetOS/u-boot/colibri/mkimage
 
 KERNEL_NAME = uImage-colibri
 KERNEL_ADDR = a0001000
-BOOTARGS = $$bootargs
 
 CONSOLE_BAUD = 9600
 CONSOLE_TTY = ttyS0
