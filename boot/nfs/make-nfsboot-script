@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Script to assemble u-boot script for NFS boot target.
 

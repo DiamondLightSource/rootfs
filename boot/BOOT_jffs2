@@ -12,7 +12,7 @@ mtd.out:
 
 # The stuff below shows how to make a jffs2 image.
 
-#!/bin/sh
+#!/bin/bash
 
 HERE="$(cd "$(dirname "$0")"; pwd)"
 
@@ -38,7 +38,7 @@ echo $SIZE
 
 # And here is how to build the jffs2 thing:
 
-#!/bin/sh
+#!/bin/bash
 
 HERE="$(cd "$(dirname "$0")"; pwd)"
 

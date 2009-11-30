@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Top level rootfs builder.  This calls the makefile scripts that do the real
 # work.

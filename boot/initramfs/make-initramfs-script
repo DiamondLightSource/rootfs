@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Expects to be called with the following environment variables set:
 #

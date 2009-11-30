@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Adds commands to be executed on initialisation.
 #

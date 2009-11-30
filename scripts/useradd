@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Add new user to /etc/passwd, emulating useradd(8).
 #

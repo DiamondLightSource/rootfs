@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Add new group to /etc/group, emulating groupadd(8).
 #

@@ -17,6 +17,10 @@
 default:
 .PHONY: default
 
+# On certain systems (I'm looking at you, Ubuntu), the default shell /bin/sh
+# is really a bit to strictly underpowered for some of our build scripts!
+SHELL = /bin/bash
+
 
 # Default paths that can be overridden by the CONFIG file.
 ROOTFS_ROOT = /scratch/tmp/rootfs
