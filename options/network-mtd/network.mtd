@@ -27,6 +27,9 @@ do_start()
 
     IPADDR="$(boot_config ipaddr)"
     NETMASK="$(boot_config netmask)"
+    MACADDR="$(boot_config ethaddr)"
+
+    [ -n "$MACADDR" ] && ifconfig eth0 hw ether "$MACADDR"
 
     ifconfig eth0 $IPADDR netmask $NETMASK
     route add default gw "$(boot_config gatewayip)"
