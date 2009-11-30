@@ -5,10 +5,19 @@ MD5_SUM_1.14.3 = d170bf5f97a41aec3a505eab690d5699
 MD5_SUM_1.15.2 = d5653e5b74b17dbb1eeecda8b8f22c0a
 
 # Patches downloaded from http://busybox.net/downloads/fixes-1.14.3/
-PATCHES_1.14.3 = 
+PATCHES_1.14.3 = \
+    busybox-1.14.3-ash.patch \
+    busybox-1.14.3-httpd.patch \
+    busybox-1.14.3-modprobe.patch \
+    busybox-1.14.3-trylink-gc-sections.patch
 
 # Patches downloaded from http://busybox.net/downloads/fixes-1.15.2/
-PATCHES_1.15.2 = 
+PATCHES_1.15.2 = \
+    busybox-1.15.2-ash.patch \
+    busybox-1.15.2-awk.patch \
+    busybox-1.15.2-buildsys.patch \
+    busybox-1.15.2-flash.patch \
+    busybox-1.15.2-ping.patch
 
 
 # If no config specified, use one we prepared earlier.

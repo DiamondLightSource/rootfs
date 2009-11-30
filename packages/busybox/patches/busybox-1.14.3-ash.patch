@@ -1,0 +1,12 @@
+diff -urpN busybox-1.14.3/shell/ash.c busybox-1.14.3-ash/shell/ash.c
+--- busybox-1.14.3/shell/ash.c	2009-08-02 20:16:37.000000000 +0200
++++ busybox-1.14.3-ash/shell/ash.c	2009-09-12 16:03:28.000000000 +0200
+@@ -5786,7 +5786,7 @@ argstr(char *p, int flag, struct strlist
+ 	};
+ 	const char *reject = spclchars;
+ 	int c;
+-	int quotes = flag & (EXP_FULL | EXP_CASE);      /* do CTLESC */
++	int quotes = flag & (EXP_FULL | EXP_CASE | EXP_REDIR); /* do CTLESC */
+ 	int breakall = flag & EXP_WORD;
+ 	int inquotes;
+ 	size_t length;
