@@ -1,0 +1,20 @@
+# These are the defaults for sysroot configuration, separated out here into a
+# separate file for ease of maintenance.
+#
+# This file is included into SYSROOT_MAKE before including the target
+# specific configuration files so that lists can be either added to or
+# replaced.
+
+# We define some default lists before including the configuration files so
+# that they can either be added to or reset by the selected configuration.
+
+# By default install DNS and hosts support for name lookup -- these are
+# dynamically loaded by the C library, so won't be picked up automatically.
+# Also want to install real time and C++ libraries.
+EXTRA_LIBS = libnss_dns libnss_files librt libstdc++
+
+# Installation options are defined here.
+OPTIONS = 
+
+# The initial skeleton, determines the detailed shape of the rootfs.
+SKELETON = $(TOP)/skeleton/file-list

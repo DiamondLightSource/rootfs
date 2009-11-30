@@ -1,6 +1,6 @@
 # This is the make file invoked under fakeroot where we perform all the
 # assembly of the final rootfs directory tree.
-
+#
 # All the work in this make file is done using fakeroot: this allows us to
 # create device nodes and manage file ownership and permissions.
 #
@@ -8,14 +8,10 @@
 # target file system.
 
 include $(TOP)/scripts/makefiles/COMMON
+include $(makefiles)/SYSROOT_DEFAULTS   # Included *before* TARGET_COMMON!
 include $(makefiles)/TARGET_COMMON
 include $(makefiles)/SYSROOT_COMMON
 
-
-# By default install DNS and hosts support for name lookup -- these are
-# dynamically loaded by the C library, so won't be picked up automatically.
-# Also want to install real time and C++ libraries.
-EXTRA_LIBS ?= libnss_dns libnss_files librt libstdc++
 
 _populate_EXPORTS = \
     sysroot BINUTILS_DIR COMPILER_PREFIX \
@@ -23,7 +19,7 @@ _populate_EXPORTS = \
 populate = $(call EXPORT,$(_populate_EXPORTS)) $(scripts)/populate
 
 define install-option
-$(MAKE) -f $(makefiles)/OPTION_MAKE OPTION=$(OPTION)
+$(MAKE) -f $(makefiles)/OPTION_MAKE OPTION=$(OPTION) $(1)
 
 endef
 
@@ -47,7 +43,7 @@ clean-sysroot:
 # Prepare the sysroot directory tree, populate with the template skeleton and
 # a number of other configurations, and install the packages.
 install-sysroot: clean-sysroot
-	$(install-files) '$(TOP)/skeleton/file-list'
+	$(install-files) $(SKELETON)
 	$(useradd) -c 'Root user' -d /root -g 0 -u 0  -s /bin/sh \
             -p $(call SAFE_QUOTE,$(ROOT_PASSWORD)) root
 
@@ -73,7 +69,7 @@ post-install: final-install
         # Populate the libraries: key final step!
 	$(populate)
         # Install the selected options.
-	$(foreach OPTION,$(OPTIONS),$(install-option))
+	$(foreach OPTION,$(OPTIONS),$(call install-option,option))
         # Wrap up the first-time script.
 	$(first-time) -c
 

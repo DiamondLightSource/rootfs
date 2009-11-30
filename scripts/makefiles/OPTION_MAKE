@@ -9,6 +9,6 @@ commondir = $(TOP)/options/COMMON
 
 include $(optiondir)/CONFIG
 
-default: option
+early-option:
 
-.PHONY: option
+.PHONY: option early-option
