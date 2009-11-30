@@ -23,8 +23,6 @@ PATCHES_1.15.2 = \
 # If no config specified, use one we prepared earlier.
 busybox_CONFIG ?= $(PACKAGE_PATH)/busybox-default-$(busybox_VERSION).config
 
-INETD_ENABLE ?= Y
-
 
 config:
 	cp $(busybox_CONFIG) $(O)/.config
@@ -53,7 +51,7 @@ install:
 	mkdir -p $(sysroot)/usr/share/udhcpc
 	$(install) $(PACKAGE_PATH)/default.script /usr/share/udhcpc
 
-ifneq ($(INETD_ENABLE),)
+ifdef INETD_ENABLE
 	$(install) $(PACKAGE_PATH)/inetd /etc/init.d
 	$(startup) $(PACKAGE_PATH)/inetd S200
 endif

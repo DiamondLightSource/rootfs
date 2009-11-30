@@ -2,7 +2,6 @@
 
 RESOLV_CONF ?= $(commondir)/resolv.conf
 
-
 network-resolv:
 	$(install) -f $(RESOLV_CONF) /etc/resolv.conf
 

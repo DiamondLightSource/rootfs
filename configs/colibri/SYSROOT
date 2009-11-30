@@ -11,6 +11,9 @@ ROOT_PASSWORD = Jungle
 SSH_AUTHORIZED_KEYS = $(configdir)/authorized_keys
 DROPBEAR_KEYS = y
 
+INETD_ENABLE = y
+
+
 TERMS = xterm xterm-color screen vt100 vt102
 
 
