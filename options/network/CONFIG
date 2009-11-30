@@ -8,6 +8,10 @@ option:
 	$(install-files) $(optiondir)/network.files
 	$(startup) $(optiondir)/network S100
 
+ifdef NW_HOSTNAME
+	echo $(NW_HOSTNAME) > $(sysroot)/etc/hostname
+endif
+
 ifdef NW_DHCP
         # If DHCP configured then install the DHCP interfaces file and make
         # the two managed files links into ramfs.  Note that this shares
@@ -15,9 +19,9 @@ ifdef NW_DHCP
 	$(install) -f $(optiondir)/interfaces.dhcp /etc/network/interfaces
 	ln -s /var/run/udhcpc/resolv.conf $(sysroot)/etc/resolv.conf
 else
-	echo $(NW_HOSTNAME) > $(sysroot)/etc/hostname
 	$(call EXPORT,$(NW_EXPORTS)) $(optiondir)/make-interfaces \
             >$(sysroot)/etc/network/interfaces
 
+# Configure resolv.conf, if defined.
 option: network-resolv
 endif

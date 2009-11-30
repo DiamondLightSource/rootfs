@@ -1,4 +1,4 @@
-# Definitions for Toradex Colibri board: ARM PXA-270 processor.
+# Definitions for build using native compiler.
 
 TOOLCHAIN = native
 CFLAGS = -m32 -O2 -fPIC
@@ -30,7 +30,8 @@ BOOT = syslinux
 TARGET_SIZE = 10240
 
 # Network configuration: use DHCP network.
-OPTIONS = network
+OPTIONS += network
 NW_DHCP = yes
+NW_HOSTNAME = testing
 
 DROPBEAR_KEYS = y

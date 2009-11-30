@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Script for udhcpc configuration.
+
 [ -n "$1" ] || { echo "Error: should be called from udhcpc"; exit 1; }
 
 VAR=/var/run/udhcpc
@@ -19,14 +21,14 @@ case "$1" in
         echo "Setting IP address $ip on $interface"
         ifconfig $interface $ip $NETMASK $BROADCAST
 
-        if [ -n "$router" ] ; then
+        if [ -n "$router" ]; then
             echo "Deleting routers"
-            while route del default gw 0.0.0.0 dev $interface ; do
+            while route del default gw 0.0.0.0 dev $interface; do
                 :
             done
 
             metric=0
-            for i in $router ; do
+            for i in $router; do
                 echo "Adding router $i"
                 route add default gw $i dev $interface metric $((metric++))
             done
@@ -37,12 +39,17 @@ case "$1" in
         echo "Recreating /etc/resolv.conf"
         echo -n > $VAR/resolv.conf-$$
         [ -n "$domain" ] && echo "search $domain" >> $VAR/resolv.conf-$$
-        for i in $dns ; do
+        for i in $dns; do
             echo " Adding DNS server $i"
             echo "nameserver $i" >> $VAR/resolv.conf-$$
         done
         mv $VAR/resolv.conf-$$ $VAR/resolv.conf
 
-        hostname "$hostname"
+        if [ -n "$hostname" ]; then
+            echo Hostname set to $(hostname)
+            hostname "$hostname"
+        elif [ -e /etc/hostname ]; then
+            hostname "$(cat /etc/hostname)"
+        fi
         ;;
 esac
