@@ -1,0 +1,22 @@
+# Definitions for rootfs for a chroot jail
+
+TOOLCHAIN = native
+CFLAGS = -m32 -O2 -fPIC
+
+ROOTFS_VERSION = DLS development 0.00
+
+ROOT_PASSWORD = Jungle
+
+TERMS = xterm xterm-color screen vt100 vt102 linux
+
+# This one is essential, nothing builds without it.
+PACKAGES += busybox
+busybox_CONFIG = $(configdir)/busybox.config
+
+OPTIONS = 
+
+# These libraries are needed if you want to run java in the jail
+EXTRA_LIBS += libdl libnsl
+
+final-install:
+	$(install-files) $(configdir)/file-list

@@ -1,0 +1,5 @@
+# For a chroot jail we need our local devices already in place
+c 666 /dev/null     1 3
+c 444 /dev/zero     1 5
+c 444 /dev/urandom  1 9
+c 666 /dev/tty      1 5
