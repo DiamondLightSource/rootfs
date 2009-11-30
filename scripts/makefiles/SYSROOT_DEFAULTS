@@ -14,7 +14,7 @@
 EXTRA_LIBS = libnss_dns libnss_files librt libstdc++
 
 # Installation options are defined here.
-OPTIONS = 
+OPTIONS = inittab
 
 # The initial skeleton, determines the detailed shape of the rootfs.
 SKELETON = $(TOP)/skeleton/file-list

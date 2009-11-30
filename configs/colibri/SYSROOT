@@ -31,5 +31,5 @@ final-install:
 	mkdir -p $(patsubst %,$(sysroot)/mnt/%,nfs prod work)
 	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
 
-OPTIONS = mount-nfs ldconfig
+OPTIONS += mount-nfs ldconfig
 LDCONFIG = cross

@@ -47,9 +47,9 @@ install-sysroot: clean-sysroot
 	$(useradd) -c 'Root user' -d /root -g 0 -u 0  -s /bin/sh \
             -p $(call SAFE_QUOTE,$(ROOT_PASSWORD)) root
 
-        # Add target specific getty line to inittab
-	echo '::respawn:/sbin/getty $(CONSOLE_BAUD) $(CONSOLE_TTY)' \
-            >>$(sysroot)/etc/inittab
+        # Install the early options.  Normally this will install inittab,
+        # init.d and associated files.
+	$(foreach OPTION,$(OPTIONS),$(call install-option,early-option))
 
         # Record the version string.
 	echo $(call SAFE_QUOTE,$(ROOTFS_VERSION)) >$(sysroot)/etc/version
