@@ -1,6 +1,6 @@
 # Script for building common environment needed for rootfs builder.
 
-include $(TOP)/scripts/makefiles/COMMON
+include $(ROOTFS_TOP)/scripts/makefiles/COMMON
 # At this point the following symbols define where we will operate:
 #
 #   TOOLKIT_ROOT    This is where the toolkit will be built and installed

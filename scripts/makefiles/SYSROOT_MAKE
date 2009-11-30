@@ -7,7 +7,7 @@
 # The output from this build is a file imagefile.cpio containing the complete
 # target file system.
 
-include $(TOP)/scripts/makefiles/COMMON
+include $(ROOTFS_TOP)/scripts/makefiles/COMMON
 include $(makefiles)/SYSROOT_DEFAULTS   # Included *before* TARGET_COMMON!
 include $(makefiles)/TARGET_COMMON
 include $(makefiles)/SYSROOT_COMMON

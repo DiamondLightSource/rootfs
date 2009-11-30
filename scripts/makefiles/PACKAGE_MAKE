@@ -1,7 +1,7 @@
 # Makefile for building a single package.  Must be called with PACKAGE
 # defined.
 
-include $(TOP)/scripts/makefiles/COMMON
+include $(ROOTFS_TOP)/scripts/makefiles/COMMON
 include $(makefiles)/TARGET_COMMON
 include $(makefiles)/PACKAGE_COMMON
 

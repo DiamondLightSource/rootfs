@@ -1,7 +1,7 @@
-# Top level make file, run from $(TOP)/rootfs, used to coordinate all other
-# rootfs makefiles.
+# Top level make file, run from $(ROOTFS_TOP)/rootfs, used to assemble and
+# possibly deploy the final build.
 
-include $(TOP)/scripts/makefiles/COMMON
+include $(ROOTFS_TOP)/scripts/makefiles/COMMON
 include $(makefiles)/TARGET_COMMON
 
 # Ensure we pull in the ROOTFS specific TARGET configuration.
@@ -33,7 +33,7 @@ imagefile: $(O)/imagefile.cpio
 # taken.
 ifdef BOOT
 $(eval $(call COMPUTE_PATH,BOOT,bootdir,boot))
-bootcommon = $(TOP)/boot/COMMON
+bootcommon = $(ROOTFS_TOP)/boot/COMMON
 include $(bootcommon)/COMMON
 include $(bootdir)/CONFIG
 endif

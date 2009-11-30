@@ -153,9 +153,9 @@ the symbol `TARGET`, either in the `CONFIG` file or on the command line.
 ~~~~~~~~~~~~~~~~
 
 The `rootfs` command supports the operations listed below.  One of the most
-important actions of this command is to ensure that the symbol `TOP` is set to
-the directory containing the rootfs build system.  This allows `rootfs` to be
-invoked from outside the directory, and so allows extra packages and
+important actions of this command is to ensure that the symbol `ROOTFS_TOP` is
+set to the directory containing the rootfs build system.  This allows `rootfs`
+to be invoked from outside the directory, and so allows extra packages and
 configurations to be added at build time.
 
 `rootfs help`:: 
@@ -211,9 +211,9 @@ Configuring the Rootfs
 
 A number of directories and other make symbols must be specified for the
 rootfs builder to operate.  As noted above, these can be overridden or updated
-in a `CONFIG` file (read from `$(TOP)/CONFIG` or specified on the command
-line).  The list below documents some symbols that can be specified in this
-file and their default values.
+in a `CONFIG` file (read from `$(ROOTFS_TOP)/CONFIG` or specified on the
+command line).  The list below documents some symbols that can be specified in
+this file and their default values.
 
 
 `ROOTFS_ROOT = /scratch/tmp/rootfs`::

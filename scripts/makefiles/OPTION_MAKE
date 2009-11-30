@@ -1,11 +1,11 @@
 # Makefile for including target options.  Must be called with OPTION defined.
 
-include $(TOP)/scripts/makefiles/COMMON
+include $(ROOTFS_TOP)/scripts/makefiles/COMMON
 include $(makefiles)/TARGET_COMMON
 include $(makefiles)/SYSROOT_COMMON
 
 $(eval $(call COMPUTE_PATH,OPTION,optiondir,options))
-commondir = $(TOP)/options/COMMON
+commondir = $(ROOTFS_TOP)/options/COMMON
 
 include $(optiondir)/CONFIG
 

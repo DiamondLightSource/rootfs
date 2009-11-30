@@ -3,13 +3,14 @@
 #
 # The following symbol must be defined by the calling environment:
 #
-#   TOP     This points to the root of the rootfs tree.
+#   ROOTFS_TOP
+#       This points to the root of the rootfs tree.
 #
-# The following symbols may be overridden, but have sensible defaults.
+# The following symbol may be overridden, but has a sensible default.
 #
 #   ROOTFS_CONFIG
-#       This defaults to $(TOP)/CONFIG.  This file can contain overrides
-#       for other symbols.
+#       This defaults to $(ROOTFS_TOP)/CONFIG.  This file can contain
+#       overrides for other symbols.
 
 
 # Define the default target straight away to avoid accidentally picking up
@@ -29,7 +30,7 @@ SOURCE_ROOT = $(ROOTFS_ROOT)/src
 TOOLKIT_ROOT = $(ROOTFS_ROOT)/toolkit
 TOOLKIT_BIN = $(TOOLKIT_ROOT)/bin
 
-ROOTFS_CONFIG ?= $(TOP)/CONFIG
+ROOTFS_CONFIG ?= $(ROOTFS_TOP)/CONFIG
 
 TAR_DIRS = /dls_sw/prod/targetOS/tar-files
 
@@ -41,7 +42,7 @@ BINUTILS_DIR = /dls_sw/targetOS/x-tools/$(TOOLCHAIN_VERSION)/$(COMPILER_PREFIX)
 export PATH := $(TOOLKIT_BIN):$(PATH)
 
 # Some convenience definitions.
-scripts = $(TOP)/scripts
+scripts = $(ROOTFS_TOP)/scripts
 makefiles = $(scripts)/makefiles
 
 # Function for safely quoting a string before exposing it to the shell.
@@ -69,7 +70,7 @@ EXPORT = $(foreach var,$(1),$(var)=$(call SAFE_QUOTE,$($(var))))
 #
 # Here param_name is the name of the parameter that may be updated, path_name
 # will be updated with the full path to the identifed component, and
-# default_dir is the default base directory (relative to $(TOP)).
+# default_dir is the default base directory (relative to $(ROOTFS_TOP)).
 #
 # This supports three ways of defining param_name:
 #
@@ -91,7 +92,7 @@ define COMPUTE_PATH
     ifeq (,$$(findstring /,$$($1)))
         # $1 is not a path; if $2 is not set then set to the default.
         ifndef $2
-            $2 := $$(TOP)/$3/$$($1)
+            $2 := $$(ROOTFS_TOP)/$3/$$($1)
         endif
     else
         # $1 defines a path.  Split into two to set $1 and $2 together.
@@ -118,7 +119,7 @@ define INCLUDE_DEFS
         $$(error Must specify $1)
     endif
     ifeq (,$$(findstring /,$$($1)))
-        include $(TOP)/$2/$$($1)
+        include $(ROOTFS_TOP)/$2/$$($1)
     else
         include $$($1)
     endif
