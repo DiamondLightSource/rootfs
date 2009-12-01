@@ -2,6 +2,8 @@
 
 early-option:
 	$(install-files) $(optiondir)/file-list
+
+option:
         # Add target specific getty line to inittab
 	echo '::respawn:/sbin/getty $(CONSOLE_BAUD) $(CONSOLE_TTY)' \
             >>$(sysroot)/etc/inittab

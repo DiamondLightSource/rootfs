@@ -1,21 +1,11 @@
 #!/bin/sh
 
-# System initialisation script.  
-
 export PATH
-. /etc/init.d/functions
 
-
-# Send everything that follows to logger -- can't do this until syslog
-# started.
+# System initialisation script.  We send everything to logger.
 {
     # If we're uninitialised, now's the time to run the initial script.
     [ -x /etc/first-time.sh ]  && /etc/first-time.sh
-
-    # This troublemaker needs to be run at some point if we're using it.  Need
-    # to do a bit of research: is ldconfig really useful (speeds up loading),
-    # and can we run it in advance?
-    [ -x /sbin/ldconfig ]  &&  /sbin/ldconfig
 
     # Run all the scripts linked in rc.d
     for script in /etc/rc.d/S*; do

@@ -5,9 +5,8 @@
 # logging has started.
 
 export PATH
-. /etc/init.d/functions
 
 # Before anything else we must:
 /etc/init.d/makedevs            #   1. populate /dev
-mount -a -t tmpfs               #   2. mount the initial file systems
+mount -a -t nonfs               #   2. mount what we need for logging
 /etc/init.d/syslogd start       #   3. start logging
