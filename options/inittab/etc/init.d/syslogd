@@ -1,6 +1,8 @@
 #!/bin/sh
 
+SYSLOGD_OPTIONS=
+
 . /etc/init.d/functions
 
-do_start_stop "$1" /sbin/syslogd -p /var/run/syslogd.pid
+do_start_stop "$1" /sbin/syslogd -p /var/run/syslogd.pid $SYSLOGD_OPTIONS
 do_start_stop "$1" /sbin/klogd

@@ -1,5 +1,6 @@
 # Files specific to inittab booting.
 
+d 755 /etc/default
 d 755 /etc/init.d
 d 755 /etc/rc.d
 

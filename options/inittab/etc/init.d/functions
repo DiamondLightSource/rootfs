@@ -63,3 +63,9 @@ do_start_stop()
         *)  start_stop_usage "$@" ;;
     esac
 }
+
+
+# The following trick automatically picks up any default definitions in
+# /etc/defaults/.
+NAME="$(basename "$(readlink -fn "$0")")"
+[ -r /etc/default/$NAME ]  &&  . /etc/default/$NAME
