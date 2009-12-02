@@ -8,7 +8,7 @@ include $(makefiles)/TARGET_COMMON
 $(eval $(call INCLUDE_CONFIG,ROOTFS))
 
 
-O = $(TARGET_ROOT)
+O = $(TARGET_ROOT)/image
 
 
 $(O):
@@ -16,6 +16,7 @@ $(O):
 
 # Assembling $(sysroot) has to be done entirely within fakeroot.
 $(O)/imagefile.cpio: $(O)
+	rm -rf $(O)
 	umask 22  &&  \
         fakeroot -s $(O)/fakeroot.env \
             $(MAKE) $@ -f $(makefiles)/SYSROOT_MAKE \

@@ -24,7 +24,6 @@ $(MAKE) -f $(makefiles)/OPTION_MAKE OPTION=$(OPTION) $(1)
 endef
 
 
-
 # Dependencies of targets (all phony) to sequence build of $(sysroot): the
 # correct sequence is:
 #   clean-sysroot       Ensures we start with a clean sheet
@@ -32,13 +31,11 @@ endef
 #   final-install       Hook for custom configured 
 #   post-install        Populates libraries and completes installation
 
-
 # Erase any existing sysroot directory and prepare a fresh one
 clean-sysroot:
 	-chmod -R +w $(sysroot)
 	rm -rf $(sysroot)
 	mkdir -p $(sysroot)
-
 
 # Prepare the sysroot directory tree, populate with the template skeleton and
 # a number of other configurations, and install the packages.
@@ -59,10 +56,8 @@ install-sysroot: clean-sysroot
 	rm -f $(install_list);  touch $(install_list)
 	$(MAKE) install -f $(makefiles)/ALL_PACKAGES
 
-
 final-install: install-sysroot
         # Actions defined in TARGET CONFIG
-
 
 # Final configuration: populate the libraries and sort out first-time.sh.
 post-install: final-install
@@ -74,11 +69,8 @@ post-install: final-install
 	$(first-time) -c
 
 
-$(TARGET_ROOT)/imagefile.cpio: post-install
+%.cpio: post-install
 	cd $(sysroot) && \
         find -name . -o -print | cpio --quiet -H newc -o >$@
 
 .PHONY: clean-sysroot install-sysroot final-install post-install 
-.PHONY: $(TARGET_ROOT)/imagefile.cpio
-
-default: $(TARGET_ROOT)/imagefile.cpio
