@@ -7,26 +7,34 @@ include $(makefiles)/TARGET_COMMON
 # Ensure we pull in the ROOTFS specific TARGET configuration.
 $(eval $(call INCLUDE_CONFIG,ROOTFS))
 
-
 O = $(TARGET_ROOT)/image
 
 
-$(O):
-	mkdir -p $(O)
+# System dependencies: we can force a build of the toolkit and the packages
+# if they've not already been built.  Unfortunately we don't have explicit
+# dependencies between packages anywhere, we rely on them being built in
+# order, and this ordering can be lost by this trick.
+$(TOOLKIT_BIN):
+	$(MAKE) -f $(makefiles)/TOOLKIT_MAKE
+
+$(OBJECT_ROOT)/%: $(TOOLKIT_BIN)
+	$(MAKE) -f $(makefiles)/PACKAGE_MAKE PACKAGE=$*
+
+ALL_PACKAGES = $(foreach PACKAGE,$(PACKAGES),$(OBJECT_ROOT)/$(PACKAGE))
+
 
 # Assembling $(sysroot) has to be done entirely within fakeroot.
-$(O)/imagefile.cpio: $(O)
+$(O)/imagefile.cpio: $(TOOLKIT_BIN) $(ALL_PACKAGES)
 	rm -rf $(O)
+	mkdir -p $(O)
 	umask 22  &&  \
         fakeroot -s $(O)/fakeroot.env \
             $(MAKE) $@ -f $(makefiles)/SYSROOT_MAKE \
                 $(call EXPORT,TARGET configdir)
 
 imagefile: $(O)/imagefile.cpio
-
 # Force rebuild of the image file, even if it already exists.
-.PHONY: $(O) imagefile $(O)/imagefile.cpio
-
+.PHONY: imagefile $(O)/imagefile.cpio
 
 
 # The boot target specifies the action to take when assembling the final
@@ -40,8 +48,6 @@ include $(bootdir)/CONFIG
 endif
 
 boot: $(O)/imagefile.cpio
-
 .PHONY: boot
-
 
 default: boot
