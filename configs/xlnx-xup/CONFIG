@@ -23,7 +23,7 @@ PACKAGES += strace lsof
 
 BOOT = nfs
 
-OPTIONS = mount-nfs ldconfig
+OPTIONS += mount-nfs ldconfig
 LDCONFIG = install
 
 NFS_SERVER ?= pc0013
