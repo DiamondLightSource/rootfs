@@ -1,0 +1,56 @@
+commit 266b3d2c310c71fde661ed453cbf59b7d1795ef0
+Author: Michael Abbott <michael.abbott@diamond.ac.uk>
+Date:   Fri Dec 4 11:30:47 2009 +0000
+
+    Add `set -o pipefail` to ash
+
+diff --git a/shell/ash.c b/shell/ash.c
+index 5d0fc6d..4f18a0b 100644
+--- a/shell/ash.c
++++ b/shell/ash.c
+@@ -100,7 +100,8 @@ static const char *const optletters_optnames[] = {
+ 	"a"   "allexport",
+ 	"b"   "notify",
+ 	"u"   "nounset",
+-	"\0"  "vi"
++	"\0"  "vi",
++	"\0"  "pipefail"
+ #if DEBUG
+ 	,"\0"  "nolog"
+ 	,"\0"  "debug"
+@@ -178,9 +179,10 @@ struct globals_misc {
+ #define bflag optlist[11]
+ #define uflag optlist[12]
+ #define viflag optlist[13]
++#define pipeflag optlist[14]
+ #if DEBUG
+-#define nolog optlist[14]
+-#define debug optlist[15]
++#define nolog optlist[15]
++#define debug optlist[16]
+ #endif
+ 
+ 	/* trap handler commands */
+@@ -4002,10 +4004,20 @@ jobscmd(int argc UNUSED_PARAM, char **argv)
+ static int
+ getstatus(struct job *job)
+ {
+-	int status;
++	int status = 0;
+ 	int retval;
+ 
+-	status = job->ps[job->nprocs - 1].status;
++	if (pipeflag) {
++		// When `set -o pipefail` set ensure we catch any failing process in
++		// the pipe: actually we return the last unsuccessful status.
++		int i;
++		for (i = job->nprocs - 1; i >= 0; i --) {
++			status = job->ps[i].status;
++			if (! WIFEXITED(status)  ||  WEXITSTATUS(status) != 0)
++				break;
++		}
++	} else
++		status = job->ps[job->nprocs - 1].status;
+ 	retval = WEXITSTATUS(status);
+ 	if (!WIFEXITED(status)) {
+ #if JOBS

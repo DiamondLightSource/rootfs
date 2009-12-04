@@ -12,7 +12,7 @@ PATCHES_1.14.3 = \
     busybox-1.14.3-trylink-gc-sections.patch
 
 # Patches downloaded from http://busybox.net/downloads/fixes-1.15.2/
-# Except for the mount-O patch, which is my own.
+# Except for the mount-O and ash-pipefail patches, which are my own.
 PATCHES_1.15.2 = \
     busybox-1.15.2-ash.patch \
     busybox-1.15.2-awk.patch \
@@ -21,7 +21,8 @@ PATCHES_1.15.2 = \
     busybox-1.15.2-grep.patch \
     busybox-1.15.2-ping.patch \
     busybox-1.15.2-split.patch \
-    busybox-1.15.2-mount-O.patch
+    busybox-1.15.2-mount-O.patch \
+    busybox-1.15.2-ash-pipefail.patch 
 
 
 # If no config specified, use one we prepared earlier.
