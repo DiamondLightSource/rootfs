@@ -66,7 +66,7 @@ EXPORT = $(foreach var,$(1),$(var)=$(call SAFE_QUOTE,$($(var))))
 # look up in a predefined directory, or as a fixed path.  This macro
 # encapsulates this, designed to be called thus:
 #
-#   $(eval $(call COMPUTE_PATH,param_name,path_name,default_dir))
+#   $(call COMPUTE_PATH,param_name,path_name,default_dir)
 #
 # Here param_name is the name of the parameter that may be updated, path_name
 # will be updated with the full path to the identifed component, and
@@ -85,7 +85,7 @@ EXPORT = $(foreach var,$(1),$(var)=$(call SAFE_QUOTE,$($(var))))
 #       In this case the parameters are unchanged.  This is for use when an
 #       external configuration is being used, but the path name is not in the
 #       right format.
-define COMPUTE_PATH
+define _COMPUTE_PATH
     ifndef $1
         $$(error Must specify $1)
     endif
@@ -106,15 +106,16 @@ define COMPUTE_PATH
         endif
     endif
 endef
+COMPUTE_PATH = $(eval $(_COMPUTE_PATH))
 
 
 # This is similar in intention to COMPUTE_PATH, but applies in this case to a
 # parameter which either names a file to be included from a predifined
 # directory, or else is a fixed path.  To be called thus:
 #
-#   $(eval $(call INCLUDE_DEFS,parameter,default_dir))
+#   $(call INCLUDE_DEFS,parameter,default_dir)
 #
-define INCLUDE_DEFS
+define _INCLUDE_DEFS
     ifndef $1
         $$(error Must specify $1)
     endif
@@ -124,3 +125,4 @@ define INCLUDE_DEFS
         include $$($1)
     endif
 endef
+INCLUDE_DEFS = $(eval $(_INCLUDE_DEFS))

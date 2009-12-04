@@ -4,7 +4,7 @@ include $(ROOTFS_TOP)/scripts/makefiles/COMMON
 include $(makefiles)/TARGET_COMMON
 include $(makefiles)/SYSROOT_COMMON
 
-$(eval $(call COMPUTE_PATH,OPTION,optiondir,options))
+$(call COMPUTE_PATH,OPTION,optiondir,options)
 commondir = $(ROOTFS_TOP)/options/COMMON
 
 include $(optiondir)/CONFIG

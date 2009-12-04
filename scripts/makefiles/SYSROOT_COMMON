@@ -7,7 +7,7 @@ endif
 
 
 #include $(configdir)/SYSROOT
-$(eval $(call INCLUDE_CONFIG,SYSROOT))
+$(call INCLUDE_CONFIG,SYSROOT)
 
 
 # Where the build system root is assembled.  Only fakerooted scripts should

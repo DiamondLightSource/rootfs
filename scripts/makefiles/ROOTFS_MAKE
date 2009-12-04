@@ -5,7 +5,7 @@ include $(ROOTFS_TOP)/scripts/makefiles/COMMON
 include $(makefiles)/TARGET_COMMON
 
 # Ensure we pull in the ROOTFS specific TARGET configuration.
-$(eval $(call INCLUDE_CONFIG,ROOTFS))
+$(call INCLUDE_CONFIG,ROOTFS)
 
 O = $(TARGET_ROOT)/image
 
@@ -41,7 +41,7 @@ imagefile: $(O)/imagefile.cpio
 # rootfs build.  This should define the boot target and any actions to be
 # taken.
 ifdef BOOT
-$(eval $(call COMPUTE_PATH,BOOT,bootdir,boot))
+$(call COMPUTE_PATH,BOOT,bootdir,boot)
 bootcommon = $(ROOTFS_TOP)/boot/COMMON
 include $(bootcommon)/COMMON
 include $(bootdir)/CONFIG

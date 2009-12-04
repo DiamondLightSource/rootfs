@@ -2,6 +2,6 @@
 # installing packages.
 
 # Pick up PACKAGE_PATH from PACKAGE.
-$(eval $(call COMPUTE_PATH,PACKAGE,PACKAGE_PATH,packages))
+$(call COMPUTE_PATH,PACKAGE,PACKAGE_PATH,packages)
 
 O = $(OBJECT_ROOT)/$(PACKAGE)
