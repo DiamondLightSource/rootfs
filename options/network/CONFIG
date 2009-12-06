@@ -2,7 +2,10 @@
 
 include $(commondir)/COMMON
 
-NW_EXPORTS = NW_ADDRESS NW_NETMASK NW_GATEWAY
+NW_PORT ?= eth0
+
+NW_EXPORTS = NW_PORT NW_ADDRESS NW_NETMASK NW_GATEWAY
+
 
 option:
 	$(install-files) $(optiondir)/network.files

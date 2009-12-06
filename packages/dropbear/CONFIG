@@ -5,9 +5,13 @@ MD5_SUM_0.51 = 95d900913bee4b27d7e9ce55f8a55427
 PROGRAMS = dbclient dropbearkey dropbearconvert scp
 INETD_CONF = ssh stream tcp nowait root /usr/sbin/dropbearmulti dropbear -i
 
+ifeq ($(DROPBEAR_KEYS),y)
+# For development work we use a set of canned machine keys.
+DROPBEAR_KEYS := \
+    $(foreach key,dss rsa,$(PACKAGE_PATH)/host_keys/dropbear_$(key)_host_key)
+endif
 
-# May want to automatically use this
-# EXTRA_LIBS = libcrypt libutil libnss_compat libnsl libnss_nis libnss_files
+
 
 config:
 	cd $(O)  &&  \
@@ -34,12 +38,12 @@ ifdef SSH_AUTHORIZED_KEYS
 endif
 
 ifdef DROPBEAR_KEYS
-        # For development work we use a set of canned machine keys.
-	$(install) -m600 $(PACKAGE_PATH)/dropbear/* /etc/dropbear
+	$(install) -m600 $(DROPBEAR_KEYS) /etc/dropbear
 else
         # For normal operation we generate the dropbear machine keys the
         # first time the target runs.
 	$(first-time) \
-            'dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key' \
-            'dropbearkey -t dss -f /etc/dropbear/dropbear_dss_host_key'
+            dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key
+	$(first-time) \
+            dropbearkey -t dss -f /etc/dropbear/dropbear_dss_host_key
 endif

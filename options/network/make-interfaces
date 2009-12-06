@@ -3,9 +3,12 @@
 # Simple helper script to create the /etc/network/interfaces file from a
 # static configuration, passed as the following parameters:
 
-: ${NW_ADDRESS:?}       # IP address of device
-: ${NW_NETMASK:?}       # Associated net mask
-: ${NW_GATEWAY:?}       # Gateway
+: ${NW_PORT:?}          # Port to use
+if [ "$NW_PORT" != none ]; then
+    : ${NW_ADDRESS:?}   # IP address of device
+    : ${NW_NETMASK:?}   # Associated net mask
+    : ${NW_GATEWAY:?}   # Gateway
+fi
 
 
 # Helper function for the two functions below, called thus:
@@ -36,9 +39,11 @@ compute_broadcast() { compute_elements $1 $2 '255 & ~(mask & ~ip)'; }
 cat <<EOF
 auto lo
 iface lo inet loopback
+EOF
 
-auto eth0
-iface eth0 inet static
+[ "$NW_PORT" = none ]  ||  cat <<EOF
+auto $NW_PORT
+iface $NW_PORT inet static
     address $NW_ADDRESS
     network $(compute_network $NW_ADDRESS $NW_NETMASK)
     netmask $NW_NETMASK

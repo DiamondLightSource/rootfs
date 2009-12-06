@@ -5,8 +5,6 @@ ifneq ($(shell id -u),0)
     $(error Must be called from fakeroot)
 endif
 
-
-#include $(configdir)/SYSROOT
 $(call INCLUDE_CONFIG,SYSROOT)
 
 
