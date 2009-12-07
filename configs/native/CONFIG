@@ -8,7 +8,7 @@ ROOTFS_VERSION = DLS development 0.00
 KERNEL_IMAGE = /scratch/fatimage/bzImage
 
 CONSOLE_BAUD = 115200
-CONSOLE_TTY = console
+CONSOLE_TTY = $(patsubst %,/dev/tty%,1 2 3 4)
 
 ROOT_PASSWORD = Jungle
 

@@ -3,7 +3,11 @@
 early-option:
 	$(install-files) $(optiondir)/file-list
 
+define ADD_TTY
+echo '::respawn:/sbin/getty $(CONSOLE_BAUD) $(tty)' >>$(sysroot)/etc/inittab
+
+endef
+
 option:
-        # Add target specific getty line to inittab
-	echo '::respawn:/sbin/getty $(CONSOLE_BAUD) $(CONSOLE_TTY)' \
-            >>$(sysroot)/etc/inittab
+        # Add target specific getty lines to inittab
+	$(foreach tty,$(CONSOLE_TTY),$(ADD_TTY))
