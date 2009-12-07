@@ -14,4 +14,6 @@ endif
 
 
 boot: $(O)/imagefile.cpio.gz
+ifdef TFTP_SERVER
 	scp $< $(TFTP_SERVER)/$(IMAGE_NAME)
+endif

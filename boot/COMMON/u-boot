@@ -9,7 +9,9 @@ $(O)/$(BOOT_SCRIPT_IMAGE): $(O)/boot-script
 	$(MKIMAGE) -T script -d $< $@
 
 push-boot-script: $(O)/$(BOOT_SCRIPT_IMAGE)
+ifdef TFTP_SERVER
 	scp $< $(TFTP_SERVER)
+endif
 
 boot: push-boot-script
 
