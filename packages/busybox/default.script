@@ -46,8 +46,8 @@ case "$1" in
         mv $VAR/resolv.conf-$$ $VAR/resolv.conf
 
         if [ -n "$hostname" ]; then
-            echo Hostname set to $(hostname)
             hostname "$hostname"
+            echo Hostname set to $(hostname)
         elif [ -e /etc/hostname ]; then
             hostname "$(cat /etc/hostname)"
         fi
