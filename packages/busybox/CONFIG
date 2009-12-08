@@ -58,5 +58,5 @@ install:
 
 ifdef INETD_ENABLE
 	$(install) $(PACKAGE_PATH)/inetd /etc/init.d
-	$(startup) $(PACKAGE_PATH)/inetd S200
+	$(startup) $(PACKAGE_PATH)/inetd S200 K800
 endif

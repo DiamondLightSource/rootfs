@@ -7,9 +7,9 @@ export PATH
     # If we're uninitialised, now's the time to run the initial script.
     [ -x /etc/first-time.sh ]  && /etc/first-time.sh
 
-    # Run all the scripts linked in rc.d
+    # Run all the startup scripts linked in rc.d
     for script in /etc/rc.d/S*; do
-        $script start
+        [ -x $script ]  &&  $script start
     done
 } 2>&1 |
 logger -s -t rc 

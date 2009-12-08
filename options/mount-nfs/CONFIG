@@ -8,4 +8,4 @@
 #   S120    NFS mounts
 
 option:
-	$(startup) $(optiondir)/mountnfs S120
+	$(startup) $(optiondir)/mountnfs S120 K880

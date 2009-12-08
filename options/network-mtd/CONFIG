@@ -4,4 +4,4 @@
 include $(commondir)/COMMON
 
 option: network-resolv
-	$(startup) $(optiondir)/network.mtd S100
+	$(startup) $(optiondir)/network.mtd S100 K900

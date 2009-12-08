@@ -4,6 +4,14 @@
 
 export PATH
 
-# Try to make the shutdown process as orderly as possible.
+# Try to make the shutdown process as orderly as possible.  We unwind the
+# actions of rcS and rc.
+{
+    for script in /etc/rc.d/K*; do
+        [ -x $script ]  &&  $script stop
+    done
+} 2>&1 |
+logger -s -t shutdown
+
 /etc/init.d/syslogd stop
 umount -arf

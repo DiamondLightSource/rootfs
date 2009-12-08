@@ -2,7 +2,7 @@
 
 # Install a startup script.
 #
-# Usage: startup <sysroot> [-S] <script> [<start-prefix>]
+# Usage: startup <sysroot> [-S] <script> [<start-prefix> [<stop-prefix>]]
 #
 # The following environment variable must be set:
 #
@@ -25,10 +25,14 @@ shift $((OPTIND-1))
 
 SCRIPT="${1:?}"
 AUTO="$2"
+STOP="$3"
 
 FILENAME="$(basename "$SCRIPT")"
 
 install -m "$MODE" "$SCRIPT" "$sysroot/etc/init.d"  &&
 if [ -n "$AUTO" ]; then
     ln -s ../init.d/"$FILENAME" "$sysroot/$START/$AUTO$FILENAME"
+fi
+if [ -n "$STOP" ]; then
+    ln -s ../init.d/"$FILENAME" "$sysroot/$START/$STOP$FILENAME"
 fi
