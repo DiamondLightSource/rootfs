@@ -10,8 +10,9 @@
 
 # By default install DNS and hosts support for name lookup -- these are
 # dynamically loaded by the C library, so won't be picked up automatically.
-# Also want to install real time and C++ libraries.
-EXTRA_LIBS = libnss_dns libnss_files librt libstdc++
+# Also want to install real time and C++ libraries and generic dynamic
+# library loading support.
+EXTRA_LIBS = libnss_dns libnss_files librt libstdc++ libdl
 
 # Installation options are defined here.
 OPTIONS = inittab
