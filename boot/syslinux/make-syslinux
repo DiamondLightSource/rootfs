@@ -24,6 +24,3 @@ syslinux "$IMAGE"
 mcopy "$HERE"/syslinux.cfg c:
 mcopy "$LINUX" c:linux
 mcopy "$RAMFS" c:ramdisk
-
-# Remove the intermediate files.
-rm "$MTOOLSRC"
