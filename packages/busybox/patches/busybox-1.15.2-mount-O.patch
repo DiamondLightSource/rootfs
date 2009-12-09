@@ -1,30 +1,43 @@
-diff -ur busybox-1.15.2/util-linux/mount.c busybox-1.15.2-patched/util-linux/mount.c
---- busybox-1.15.2/util-linux/mount.c	2009-10-08 01:59:09.000000000 +0100
-+++ busybox-1.15.2-patched/util-linux/mount.c	2009-12-03 06:46:32.000000000 +0000
-@@ -1775,42 +1775,60 @@
+commit b1c59684a279ac5cfe4e72112a219a588e4fecf1
+Author: Michael Abbott <michael@araneidae.co.uk>
+Date:   Fri Dec 4 03:33:07 2009 +0100
+
+    mount: add support for -O list. +44 bytes
+    
+    Signed-off-by: Michael Abbott <michael@araneidae.co.uk>
+    Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>
+
+diff --git a/util-linux/mount.c b/util-linux/mount.c
+index 56c32e1..c5be467 100644
+--- a/util-linux/mount.c
++++ b/util-linux/mount.c
+@@ -1774,43 +1774,61 @@ static int singlemount(struct mntent *mp, int ignore_busy)
+ 	return rc;
  }
  
- /* -O support
+-/* -O support
 - * Unlike -t, -O should interpret "no" prefix differently:
 - * -t noa,b,c = -t no(a,b,c) = mount all except fs'es with types a,b, and c
 - * -O noa,b,c = -O noa,b,c = mount all with without option a,
 - * or with option b or c.
 - * But for now we do not support -O a,b,c at all (only -O a).
-+ *    -O interprets a list of filter options which select whether a mount
-+ * point will be mounted: only mounts with options matching *all* filtering
-+ * options will be selected. 
-+ *    By default each -O filter option must be present in the list of mount
-+ * options, but if it is prefixed by "no" then it must be absent.  For
-+ * example,
-+ *  -O a,nob,c  matches  -o a,c  but  fails to match  -o a,b,c
-+ *              (and also fails to match  -o a  because  -o c  is absent).
-  *
+- *
 - * Another difference from -t support (match_fstype) is that
 - * we need to examine the _list_ of options in fsopt, not just a string.
-+ * It is different from -t in that each option is matched exactly; a leading
-+ * no at the beginning of one option does not negate the rest.
-  */
+- */
 -static int match_opt(const char *fs_opt, const char *O_opt)
++// -O support
++//    -O interprets a list of filter options which select whether a mount
++// point will be mounted: only mounts with options matching *all* filtering
++// options will be selected.
++//    By default each -O filter option must be present in the list of mount
++// options, but if it is prefixed by "no" then it must be absent.
++// For example,
++//  -O a,nob,c  matches  -o a,c  but fails to match  -o a,b,c
++//              (and also fails to match  -o a  because  -o c  is absent).
++//
++// It is different from -t in that each option is matched exactly; a leading
++// "no" at the beginning of one option does not negate the rest.
 +static int match_opt(const char *fs_opt_in, const char *O_opt)
  {
 -	int match = 1;
@@ -45,48 +58,49 @@ diff -ur busybox-1.15.2/util-linux/mount.c busybox-1.15.2-patched/util-linux/mou
 -		) {
 -			return match;
 +		return 1;
++
 +	while (*O_opt) {
-+		const char *O_comma;
-+		int O_len;
 +		const char *fs_opt = fs_opt_in;
-+		int match = 0;
-+		/* If option begins with "no" then treat as an inverted match:
-+		 * matching is a failure. */
++		int O_len;
++		int match;
++
++		// If option begins with "no" then treat as an inverted match:
++		// matching is a failure
++		match = 0;
 +		if (O_opt[0] == 'n' && O_opt[1] == 'o') {
 +			match = 1;
 +			O_opt += 2;
- 		}
--		fs_opt = strchr(fs_opt, ',');
--		if (!fs_opt)
-+		/* Isolate the current O option (after processing any "no" prefix). */
-+		O_comma = strchr(O_opt, ',');
-+		O_len = O_comma ? O_comma - O_opt : strlen(O_opt);
-+		/* Check for a match against existing options. */
++		}
++		// Isolate the current O option
++		O_len = strchrnul(O_opt, ',') - O_opt;
++		// Check for a match against existing options
 +		while (1) {
 +			if (strncmp(fs_opt, O_opt, O_len) == 0
 +			 && (fs_opt[O_len] == '\0' || fs_opt[O_len] == ',')
 +			) {
 +				if (match)
-+					return 0;	// no match selected, but option found
-+				match = 1;		// option found, so try for next O option
++					return 0;  // "no" prefix, but option found
++				match = 1;  // current O option found, go check next one
 +				break;
 +			}
 +			fs_opt = strchr(fs_opt, ',');
 +			if (!fs_opt)
 +				break;
-+			fs_opt += 1;
-+		}
++			fs_opt++;
+ 		}
+-		fs_opt = strchr(fs_opt, ',');
+-		if (!fs_opt)
 +		if (match == 0)
-+			return 0;			// match wanted but not found
-+		/* Step to the next O option. */
-+		if (!O_comma)
++			return 0;     // match wanted but not found
++		if (O_opt[O_len] == '\0') // end?
  			break;
 -		fs_opt++;
-+		O_opt = O_comma + 1;
++		// Step to the next O option
++		O_opt += O_len + 1;
  	}
 -
 -	return !match;
-+	/* If we get here then everything matched. */
++	// If we get here then everything matched
 +	return 1;
  }
  
