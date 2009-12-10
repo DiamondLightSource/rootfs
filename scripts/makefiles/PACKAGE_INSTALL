@@ -5,4 +5,4 @@ include $(makefiles)/TARGET_COMMON
 include $(makefiles)/SYSROOT_COMMON
 include $(makefiles)/PACKAGE_COMMON
 
-include $(PACKAGE_PATH)/CONFIG
+include $(packagedir)/CONFIG

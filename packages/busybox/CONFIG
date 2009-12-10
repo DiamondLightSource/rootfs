@@ -27,7 +27,7 @@ PATCHES_1.15.2 = \
 
 
 # If no config specified, use one we prepared earlier.
-busybox_CONFIG ?= $(PACKAGE_PATH)/busybox-default-$(busybox_VERSION).config
+busybox_CONFIG ?= $(packagedir)/busybox-default-$(busybox_VERSION).config
 
 
 config:
@@ -55,9 +55,9 @@ install:
         # Even if dhcp isn't necessarily configured, it doesn't hurt to
         # install the helper script in case it's wanted.
 	mkdir -p $(sysroot)/usr/share/udhcpc
-	$(install) $(PACKAGE_PATH)/default.script /usr/share/udhcpc
+	$(install) $(packagedir)/default.script /usr/share/udhcpc
 
 ifdef INETD_ENABLE
-	$(install) $(PACKAGE_PATH)/inetd /etc/init.d
-	$(startup) $(PACKAGE_PATH)/inetd S200 K800
+	$(install) $(packagedir)/inetd /etc/init.d
+	$(startup) $(packagedir)/inetd S200 K800
 endif

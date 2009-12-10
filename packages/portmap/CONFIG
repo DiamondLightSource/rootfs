@@ -18,5 +18,5 @@ build:
 
 install:
 	$(install) -s -m-w $(PORTMAP_PROGRAMS:%=$(O)/%) /sbin
-	$(startup) $(PACKAGE_PATH)/portmap S110
+	$(startup) $(packagedir)/portmap S110
 	$(useradd) -c 'Portmap daemon' -d /usr/sbin -g 1 -u 1 -s /bin/sh daemon

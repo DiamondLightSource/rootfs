@@ -37,5 +37,5 @@ BUILD_TYPE = $(shell $(TOOLKIT_BIN)/config.guess)
 
 # Finally we can pull in the real package definitions and fire the
 # appropriate rules.
-include $(PACKAGE_PATH)/CONFIG
+include $(packagedir)/CONFIG
 include $(makefiles)/PACKAGE_RULES

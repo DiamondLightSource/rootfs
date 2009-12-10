@@ -149,13 +149,13 @@ PACKAGE_INSTALL:
     include $(TOP)/scripts/makefiles/COMMON
     include $(makefiles)/SYSROOT_COMMON
     include $(makefiles)/PACKAGE_COMMON
-    include $(PACKAGE_PATH)/CONFIG
+    include $(packagedir)/CONFIG
 
 PACKAGE_MAKE:
     include $(TOP)/scripts/makefiles/COMMON
     include $(makefiles)/TARGET_COMMON
     include $(makefiles)/PACKAGE_COMMON
-    include $(PACKAGE_PATH)/CONFIG
+    include $(packagedir)/CONFIG
     include $(makefiles)/PACKAGE_RULES
 
 ROOTFS_MAKE:

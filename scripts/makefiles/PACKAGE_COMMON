@@ -1,7 +1,7 @@
 # This captures the part of package definitions common to both building and
 # installing packages.
 
-# Pick up PACKAGE_PATH from PACKAGE.
-$(call COMPUTE_PATH,PACKAGE,PACKAGE_PATH,packages)
+# Pick up packagedir from PACKAGE.
+$(call COMPUTE_PATH,PACKAGE,packagedir,packages)
 
 O = $(OBJECT_ROOT)/$(PACKAGE)

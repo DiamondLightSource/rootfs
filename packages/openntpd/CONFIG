@@ -6,7 +6,7 @@ MD5_SUM_3.9p1 = afc34175f38d08867c1403d9008600b3
 OPENNTPD_UID ?= 101
 OPENNTPD_GID ?= 101
 
-NTPD_CONF ?= $(PACKAGE_PATH)/ntpd.conf
+NTPD_CONF ?= $(packagedir)/ntpd.conf
 
 
 config:
@@ -27,4 +27,4 @@ install:
 	$(install) -s -m-w $(O)/ntpd /sbin
 	$(install) $(NTPD_CONF) /etc
 
-	$(startup) $(PACKAGE_PATH)/openntpd S210
+	$(startup) $(packagedir)/openntpd S210
