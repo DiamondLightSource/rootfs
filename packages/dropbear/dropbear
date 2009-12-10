@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# This script ensures that ssh connections are closed when rebooting.
+
+. /etc/init.d/functions
+
+do_start() { :; }
+do_stop()  { pkill dropbear; }
+
+do_start_stop "$1" dropbear
