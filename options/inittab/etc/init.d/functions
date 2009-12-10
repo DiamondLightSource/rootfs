@@ -49,12 +49,12 @@ do_start_stop()
     
     case "$action" in
         start)
-            echo -n "Starting $(basename $program): "
+            echo -n "Starting $(basename "$program"): "
             do_start "$@"
             evaluate_retval
             ;;
         stop)
-            echo -n "Stopping $(basename $program): "
+            echo -n "Stopping $(basename "$program"): "
             do_stop "$@" 
             evaluate_retval
             ;;

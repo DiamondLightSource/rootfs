@@ -3,6 +3,8 @@
 RESOLV_CONF ?= $(commondir)/resolv.conf
 
 network-resolv:
+ifneq ($(RESOLV_CONF),none)
 	$(install) -f $(RESOLV_CONF) /etc/resolv.conf
+endif
 
 .PHONY: network-resolv
