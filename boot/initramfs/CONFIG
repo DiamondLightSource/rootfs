@@ -1,10 +1,11 @@
-IMAGE_NAME = imagefile-$(TARGET).cpio.gz
+IMAGE_NAME ?= imagefile-$(TARGET).cpio.gz
 
 ifeq ($(BOOT_LOADER),u-boot)
 _initramfs_EXPORTS = \
     KERNEL_NAME KERNEL_ADDR \
     BOOTARGS QUOTE_BOOTARGS \
-    IMAGE_NAME IMAGE_ADDR
+    IMAGE_NAME IMAGE_ADDR \
+    TFTP_PREFIX
 
 
 $(O)/boot-script: $(O)/imagefile.cpio.gz

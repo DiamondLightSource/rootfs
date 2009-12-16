@@ -18,8 +18,8 @@ BOOTARGS="$BOOTARGS initrd=0x$IMAGE_ADDR,$IMAGE_SIZE"
 
 cat <<EOF >"$TARGET"
 echo 'Built: $(date)'
-tftpboot $KERNEL_ADDR $KERNEL_NAME
-tftpboot $IMAGE_ADDR $IMAGE_NAME
+tftpboot $KERNEL_ADDR $TFTP_PREFIX$KERNEL_NAME
+tftpboot $IMAGE_ADDR $TFTP_PREFIX$IMAGE_NAME
 setenv bootargs "$BOOTARGS"
 bootm $KERNEL_ADDR
 EOF
