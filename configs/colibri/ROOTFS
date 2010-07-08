@@ -8,6 +8,6 @@ KERNEL_ADDR = a0001000
 CONSOLE_BAUD = 9600
 CONSOLE_TTY = ttyS0
 
-TFTP_SERVER = serv3:/tftpboot
+TFTP_SERVER = serv2:/tftpboot
 
 BOOT_LOADER = u-boot

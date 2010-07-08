@@ -12,7 +12,7 @@ include $(configdir)/ROOTFS
 IMAGE_ADDR = a2000000
 
 # Options only used for BOOT = nfs:
-NFS_SERVER = pc0013
+NFS_SERVER = pc0003
 NFS_ROOTFS = /scratch/mga83/rootfs/$(TARGET)
 
 
