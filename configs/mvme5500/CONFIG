@@ -1,0 +1,50 @@
+# Configuration file for colibri target.
+
+# Package definitions for colibri
+
+TOOLCHAIN = powerpc-5500
+
+# This one is essential, nothing builds without it.
+PACKAGES += busybox
+# Components required for normal operation.
+PACKAGES += ntp dropbear portmap
+# Useful debugging tools
+PACKAGES += strace lsof
+# Useful
+# PACKAGES += nano mtd-utils libpcap tcpdump
+# PACKAGES += screen
+
+# Miscellaneous extra components of variable utility.
+# PACKAGES += bash sudo
+# PACKAGES += procinfo procinfo-ng
+# PACKAGES += testing
+
+# Alternative lightweight NTP clients, not actually recommended.
+# PACKAGES += openntpd
+# PACKAGES += ntpclient
+
+
+# The following definitiions are required for assembling the final rootfs.
+
+ROOTFS_VERSION = MVME 5500 Rootfs Testing
+
+CONSOLE_BAUD = 9600
+CONSOLE_TTY = ttyS0
+
+ROOT_PASSWORD = Jungle
+
+# Authorised keys to be installed when installing dropbear.
+SSH_AUTHORIZED_KEYS = $(configdir)/authorized_keys
+DROPBEAR_KEYS = y
+INETD_ENABLE = y
+
+# TERMS = xterm xterm-color screen vt100 vt102
+
+
+final-install:
+        # Install the regular nfs mounts.
+	mkdir -p $(patsubst %,$(sysroot)/mnt/%,prod work)
+	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
+
+OPTIONS += mount-nfs ldconfig network-nvram
+LDCONFIG = cross

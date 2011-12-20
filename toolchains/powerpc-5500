@@ -1,0 +1,4 @@
+# Toolchain definitions for standard DLS PowerPC cross compiler
+BINUTILS_DIR = /dls_sw/targetOS/x-tools/$(COMPILER_PREFIX)
+COMPILER_PREFIX = powerpc-angstrom-linux
+SYSROOT = $(BINUTILS_DIR)/$(COMPILER_PREFIX)
