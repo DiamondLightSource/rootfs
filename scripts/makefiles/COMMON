@@ -35,6 +35,7 @@ ROOTFS_CONFIG ?= $(ROOTFS_TOP)/CONFIG
 TAR_DIRS = /dls_sw/prod/targetOS/tar-files
 
 BINUTILS_DIR = /dls_sw/targetOS/x-tools/$(TOOLCHAIN_VERSION)/$(COMPILER_PREFIX)
+SYSROOT = $(BINUTILS_DIR)/$(COMPILER_PREFIX)/sys-root
 
 -include $(ROOTFS_CONFIG)
 

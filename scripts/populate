@@ -25,10 +25,8 @@ set -o pipefail
 # filesystem that we're building, while $SYSROOT defined here is the glibc
 # sysroot: in effect we're copying $SYSROOT -> $sysroot.
 if [ -n "$COMPILER_PREFIX" ]; then
-    SYSROOT="$BINUTILS_DIR/$COMPILER_PREFIX/sys-root"
     CROSS_COMPILE=$COMPILER_PREFIX-
 else
-    SYSROOT=/
     CROSS_COMPILE=
 fi
 
