@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# Rather hacky network startup: pick up our configuration from the MOTLoad
+# configuration settings.
+
+. /etc/init.d/functions
+
+
+# Pick up all the configuration from the MOTLoad configuration block in
+# /dev/nvram.
+BOOT_CONFIG="$(strings /dev/nvram)"
+
+boot_config()
+{
+    echo "$BOOT_CONFIG" |
+    sed -n "/^$1=/{s///;p;q;}"
+}
+
+do_start()
+{
+    # Quick network hack
+    ifconfig lo 127.0.0.1 netmask 255.0.0.0
+
+    IPADDR="$(boot_config mot-boot-cipa)"
+    NETMASK="$(boot_config mot-boot-snma)"
+
+    [ -n "$MACADDR" ] && ifconfig eth0 hw ether "$MACADDR"
+
+    ifconfig eth0 $IPADDR netmask $NETMASK
+    route add default gw "$(boot_config mot-boot-gipa)"
+
+    hostname "$(boot_config hostname)"
+}
+
+do_stop()
+{
+    ifconfig eth0 down
+}
+
+do_start_stop "$@" networking

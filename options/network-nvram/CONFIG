@@ -1,0 +1,7 @@
+# Configuration for nvram network setup: networking configuration is read from
+# MOTLoad configuration in nvram.
+
+include $(commondir)/COMMON
+
+option: network-resolv
+	$(startup) $(optiondir)/network.nvram S100 K900
