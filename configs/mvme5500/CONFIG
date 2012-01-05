@@ -11,8 +11,8 @@ PACKAGES += ntp dropbear portmap
 # Useful debugging tools
 PACKAGES += strace lsof
 # Useful
-# PACKAGES += nano mtd-utils libpcap tcpdump
-# PACKAGES += screen
+PACKAGES += nano mtd-utils libpcap tcpdump
+PACKAGES += screen
 
 # Miscellaneous extra components of variable utility.
 # PACKAGES += bash sudo
@@ -38,7 +38,7 @@ SSH_AUTHORIZED_KEYS = $(configdir)/authorized_keys
 DROPBEAR_KEYS = y
 INETD_ENABLE = y
 
-# TERMS = xterm xterm-color screen vt100 vt102
+TERMS = xterm xterm-color screen vt100 vt102
 
 
 final-install:
