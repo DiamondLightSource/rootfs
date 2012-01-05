@@ -1,12 +1,59 @@
 # Configuration file for colibri target.
 
+# -----------------------------------------------------------------------------
+# Package definitions for colibri
+
+TOOLCHAIN = arm-xscale
+
+# By default we build all packages with thumb.
+CFLAGS = -O2 -mthumb
+
+# This one is essential, nothing builds without it.
+PACKAGES += busybox
+# Components required for normal operation.
+PACKAGES += ntp dropbear portmap
+# Useful debugging tools
+PACKAGES += strace lsof
+# Useful
+PACKAGES += nano mtd-utils libpcap tcpdump
+PACKAGES += screen
+
+# Miscellaneous extra components of variable utility.
+# PACKAGES += bash sudo
+# PACKAGES += procinfo procinfo-ng
+# PACKAGES += testing
+
+# Alternative lightweight NTP clients, not actually recommended.
+# PACKAGES += openntpd
+# PACKAGES += ntpclient
+
+
+# We need a number of extra settings for dropbear: thumb is a bit too slow for
+# dropbear (it's probably all that encryption), we need to enable inetd, we
+# install canned server identification keys (doesn't matter that all servers end
+# up looking the same!) and we install a set of authorised users.
+CFLAGS_dropbear = -O2
+INETD_ENABLE = y
+DROPBEAR_KEYS = y
+SSH_AUTHORIZED_KEYS = $(configdir)/authorized_keys
+
+TERMS = xterm xterm-color screen vt100 vt102
+
+
+# -----------------------------------------------------------------------------
+# Rootfs bootstrap configuration.  All of these parameters control settings in
+# the rootfs/boot directory.
+
 BOOT = initramfs
 # BOOT = nfs
+BOOT_LOADER = u-boot
 
-include $(configdir)/PACKAGES
-include $(configdir)/SYSROOT
-include $(configdir)/ROOTFS
+MKIMAGE = /dls_sw/targetOS/u-boot/colibri/mkimage
 
+KERNEL_NAME = uImage-colibri
+KERNEL_ADDR = a0001000
+
+TFTP_SERVER = serv2:/tftpboot
 
 # Options only used for BOOT = initramfs:
 IMAGE_ADDR = a2000000
@@ -16,8 +63,30 @@ NFS_SERVER = pc0003
 NFS_ROOTFS = /scratch/mga83/rootfs/$(TARGET)
 
 
-ifeq ($(BOOT),initramfs)
+# -----------------------------------------------------------------------------
+# Rootfs options and configuration
+
+ROOTFS_VERSION = DLS Colibri version 0.1
+
+CONSOLE_BAUD = 9600
+CONSOLE_TTY = ttyS0
+
+ROOT_PASSWORD = Jungle
+
+
+LDCONFIG = cross
+OPTIONS += mount-nfs ldconfig
+
+ifeq ($(BOOT),)
+    OPTIONS += network
+else ifeq ($(BOOT),initramfs)
     OPTIONS += network-mtd
-#    OPTIONS += network
-#    NW_DHCP = yes
 endif
+
+
+final-install:
+        # Install the regular nfs mounts.
+	mkdir -p $(patsubst %,$(sysroot)/mnt/%,nfs prod work)
+	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
+        # Fudge required to ensure the Colibri MAC address is configured
+	$(startup) $(configdir)/network.mac S001

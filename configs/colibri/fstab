@@ -1,5 +1,5 @@
 
 # Diamond specific mounts
-serv0005:/home2/libera/nfs /mnt/nfs nfs rw,intr                         0   2
-172.23.100.32:/exports/dls_sw/work /mnt/work nfs ro,intr                0   2
-172.23.100.32:/exports/dls_sw/prod /mnt/prod nfs ro,intr                0   2
+serv0005:/exports/libera/nfs /mnt/nfs nfs rw,intr,rsize=4096,wsize=4096    0   2
+172.23.100.32:/exports/dls_sw/work /mnt/work nfs ro,intr,rsize=4096,wsize=4096 0   2
+172.23.100.32:/exports/dls_sw/prod /mnt/prod nfs ro,intr,rsize=4096,wsize=4096 0   2
