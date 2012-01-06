@@ -1,0 +1,2 @@
+echo Starting Init for `hostname`
+/mnt/prod/etc/init/`hostname`/ppcinit

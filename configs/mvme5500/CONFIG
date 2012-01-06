@@ -45,6 +45,7 @@ final-install:
         # Install the regular nfs mounts.
 	mkdir -p $(patsubst %,$(sysroot)/mnt/%,prod work)
 	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
+	$(startup) $(configdir)/ppcinit S900
 
 OPTIONS += mount-nfs ldconfig network-nvram
 LDCONFIG = cross
