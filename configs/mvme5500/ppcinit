@@ -1,2 +1,35 @@
-echo Starting Init for `hostname`
-/mnt/prod/etc/init/`hostname`/ppcinit
+#!/bin/sh
+
+# Stop and start IOC
+. /etc/init.d/functions
+
+REDIRECT_TABLE=/dls_sw/prod/etc/redirector/redirect_table
+IOC=$(hostname)
+
+# Runs command after changing to its base directory
+launch()
+{
+    COMMAND="$1"
+    shift
+    cd "$(dirname "$1")"  &&
+    "$COMMAND" "$@" &
+    echo $! >/var/run/ioc.pid
+}
+
+do_start()
+{
+    COMMAND="$(sed -n "/^$IOC /"'{s///; p;}' $REDIRECT_TABLE)"
+    if [[ -n "$COMMAND" ]]; then
+        launch $COMMAND
+    else
+        echo No IOC defined for $IOC
+    fi
+}
+
+do_stop()
+{
+    kill $(cat /var/run/ioc.pid)
+    rm -f /var/run/ioc.pid
+}
+
+do_start_stop "$1" IOC
