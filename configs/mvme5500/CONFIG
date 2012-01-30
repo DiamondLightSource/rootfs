@@ -43,7 +43,7 @@ TERMS = xterm xterm-color screen vt100 vt102
 
 final-install:
         # Install the regular nfs mounts.
-	mkdir -p $(patsubst %,$(sysroot)/dls_sw/%,prod work)
+	mkdir -p $(patsubst %,$(sysroot)/dls_sw/%,prod work epics)
 	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
 	$(startup) $(configdir)/ppcinit S900
 
