@@ -19,4 +19,4 @@ default $(filter-out default install,$(MAKECMDGOALS)):
 install:
 	$(foreach PACKAGE,$(PACKAGES),$(call make_package,INSTALL))
 
-.PHONY: $(MAKECMDGOALS) 
+.PHONY: $(MAKECMDGOALS)

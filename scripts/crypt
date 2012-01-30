@@ -34,8 +34,8 @@ def create_salt(length):
     '''Creates the random part of a salt string.'''
     return ''.join([charset[random.randint(0, len(charset) - 1)]
         for n in range(length)])
-    
-    
+
+
 if options.salt is None:
     # Need to create our own salt
     if options.md5:

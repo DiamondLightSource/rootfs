@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     while (true)
     {
         TEST_(nanosleep, &sleep, NULL);
-        
+
         struct timespec now;
         if (TEST_(clock_gettime, CLOCK_REALTIME, &now))
         {

@@ -88,6 +88,6 @@ for source in "${args[@]}"; do
         fi  &&
         if [ -n "$OWNER" -o -n "$GROUP" ]; then
             chown "$OWNER:$GROUP" "$target"
-        fi  
+        fi
     fi || exit
 done

@@ -58,7 +58,7 @@ SAFE_QUOTE = '$(subst ','\'',$(1))'
 # don't like that.  This macro instead just exports the listed symbols into a
 # called function, designed to be called like:
 #
-#	$(call EXPORT,$(EXPORTS)) script
+#       $(call EXPORT,$(EXPORTS)) script
 #
 EXPORT = $(foreach var,$(1),$(var)=$(call SAFE_QUOTE,$($(var))))
 
@@ -76,7 +76,7 @@ EXPORT = $(foreach var,$(1),$(var)=$(call SAFE_QUOTE,$($(var))))
 # This supports three ways of defining param_name:
 #
 #   1. param_name=name
-#       In this case path_name is set to default_dir/name.  This is the 
+#       In this case path_name is set to default_dir/name.  This is the
 #       normal case when a default configuration can be used.
 #   2. param_name=/path/to/name
 #       In this case path_name is set to /path/to/name and param_name is

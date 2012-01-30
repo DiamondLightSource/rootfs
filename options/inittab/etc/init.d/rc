@@ -12,4 +12,4 @@ export PATH
         [ -x $script ]  &&  $script start
     done
 } 2>&1 |
-logger -s -t rc 
+logger -s -t rc

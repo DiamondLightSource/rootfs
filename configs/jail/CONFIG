@@ -13,7 +13,7 @@ TERMS = xterm xterm-color screen vt100 vt102 linux
 PACKAGES += busybox
 busybox_CONFIG = $(configdir)/busybox.config
 
-OPTIONS = 
+OPTIONS =
 
 # These libraries are needed if you want to run java in the jail
 EXTRA_LIBS += libdl libnsl

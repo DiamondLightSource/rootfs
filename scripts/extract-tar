@@ -23,9 +23,9 @@ find_and_extract()
 {
     for dir; do
         tar_path="$dir/$TAR_FILE"
-        [ -e "$tar_path" ]  && 
-        echo "$MD5_SUM  $tar_path" | md5sum -c  && 
-        do_extract "$tar_path" "$TARGET_DIR"  && 
+        [ -e "$tar_path" ]  &&
+        echo "$MD5_SUM  $tar_path" | md5sum -c  &&
+        do_extract "$tar_path" "$TARGET_DIR"  &&
         return
     done
     echo "Unable to find tar file $TAR_FILE"

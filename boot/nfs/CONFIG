@@ -1,4 +1,4 @@
-nfs_EXPORTS = KERNEL_NAME KERNEL_ADDR NFS_SERVER NFS_ROOTFS BOOTARGS 
+nfs_EXPORTS = KERNEL_NAME KERNEL_ADDR NFS_SERVER NFS_ROOTFS BOOTARGS
 
 
 ifeq ($(BOOT_LOADER),u-boot)
@@ -11,7 +11,7 @@ CLEAN_COMMAND = \
     cd $(NFS_ROOTFS)  && \
     sudo find -maxdepth 1 -name . -o -exec rm -rf {} \;
 
-boot: $(O)/imagefile.cpio 
+boot: $(O)/imagefile.cpio
 	ssh -t $(NFS_SERVER)  '$(CLEAN_COMMAND)'
 	scp $(O)/imagefile.cpio $(NFS_SERVER):/tmp
 	ssh -t $(NFS_SERVER) \

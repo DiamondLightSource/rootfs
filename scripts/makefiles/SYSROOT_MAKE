@@ -28,7 +28,7 @@ endef
 # correct sequence is:
 #   clean-sysroot       Ensures we start with a clean sheet
 #   install-sysroot     Does the main work of building the sysroot
-#   final-install       Hook for custom configured 
+#   final-install       Hook for custom configured
 #   post-install        Populates libraries and completes installation
 
 # Erase any existing sysroot directory and prepare a fresh one
@@ -73,4 +73,4 @@ post-install: final-install
 	cd $(sysroot) && \
         find -name . -o -print | cpio --quiet -H newc -o >$@
 
-.PHONY: clean-sysroot install-sysroot final-install post-install 
+.PHONY: clean-sysroot install-sysroot final-install post-install

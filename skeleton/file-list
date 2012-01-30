@@ -7,7 +7,7 @@
 # Where <type> is one of:
 #
 #   d   Create new directory
-#   f   Copy file 
+#   f   Copy file
 #   l   Create link to specified location
 #   n   Create empty file
 #   c   Create character device node

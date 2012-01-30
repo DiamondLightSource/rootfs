@@ -37,7 +37,7 @@ READELF="$CROSS_COMPILE"readelf
 install_terminfo()
 {
     for term; do
-        local dir=/usr/share/terminfo/${term::1}  
+        local dir=/usr/share/terminfo/${term::1}
         mkdir -p "$sysroot/$dir"  &&
         cp "$SYSROOT/$dir/$term" "$sysroot/$dir"  ||  return 1
     done
@@ -144,7 +144,7 @@ LIBS="$(
 # This is the tricky bit.   ND is "new dependencies", we start with the
 # entire library as dependencies, and only inspect genuinely new dependencies
 # on each fresh round.
-ND="$LIBS" 
+ND="$LIBS"
 while :; do
     # Resolve all the dependencies from our new list
     ND="$(list_dependencies "$SYSROOT" $ND | sort | uniq)"

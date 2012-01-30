@@ -27,7 +27,7 @@ MKFS="$HERE"/built/mkfs.jffs2
 rm -rf "$ROOT"
 mkdir -p "$ROOT"
 
-( cd "$ROOT"; cpio -i < "$INPUT" ) 
+( cd "$ROOT"; cpio -i < "$INPUT" )
 
 # SIZE=$((0x300000))
 SIZE=$((0x280000))
@@ -55,7 +55,7 @@ make -C "$HERE"/mtd-utils-1.2.0 \
 # zlib
 #     Web page: http://zlib.net/
 #     Compression library, needed for mkfs.jffs2.
-# 
+#
 # lzo
 #     Web page: http://www.oberhumer.com/opensource/lzo/
 #     Another compression library, needed for mkfs.jffs2.

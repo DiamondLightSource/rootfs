@@ -28,7 +28,7 @@ else
 PATCHES = $(patsubst %,$(packagedir)/patches/%,$(PATCHES_$(version)))
 
 $(srcdir):
-	mkdir -p $(SOURCE_ROOT) 
+	mkdir -p $(SOURCE_ROOT)
 	$(scripts)/extract-tar \
             '$(SOURCE_ROOT)' '$(TAR_FILE)' '$(MD5_SUM)' $(TAR_DIRS)
         # Do any extra work required to get files into the right position.
@@ -59,7 +59,7 @@ install-lib: build $(LIB_PREFIX)
 clean:
 	rm -rf $(O)
 
-clean-src: 
+clean-src:
 	-chmod -R +w $(srcdir)
 	rm -rf $(srcdir)
 

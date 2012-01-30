@@ -49,7 +49,7 @@ define force_rm
 if [ -e $(srcdir) ]; then chmod -R +w $(srcdir) && rm -rf $(srcdir); fi
 
 endef
-clean-src: 
+clean-src:
 	$(foreach @,$(TOOLKIT_COMPONENTS), $(force_rm))
 
 

@@ -35,7 +35,7 @@ case "$1" in
         fi
 
         mkdir -p $VAR
-        
+
         echo "Recreating /etc/resolv.conf"
         echo -n > $VAR/resolv.conf-$$
         [ -n "$domain" ] && echo "search $domain" >> $VAR/resolv.conf-$$

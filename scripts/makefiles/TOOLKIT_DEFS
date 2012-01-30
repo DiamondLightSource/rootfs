@@ -24,10 +24,10 @@ autoconf_VERSION ?= 2.63
 MD5_SUM_autoconf_2.63 = 7565809ed801bb5726da0631ceab3699
 
 # M4 (macro processor)
-# Homepage: 
+# Homepage:
 #   http://www.gnu.org/software/m4/
 # Download from:
-#   http://ftp.gnu.org/gnu/m4/m4-1.4.12.tar.bz2 
+#   http://ftp.gnu.org/gnu/m4/m4-1.4.12.tar.bz2
 #   ftp://ftp.gnu.org/gnu/m4/m4-1.4.12.tar.bz2
 m4_VERSION ?= 1.4.12
 MD5_SUM_m4_1.4.12 = b3587c993523dd320c318ec456876839
