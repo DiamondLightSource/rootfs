@@ -53,6 +53,8 @@ makefiles = $(scripts)/makefiles
 #
 SAFE_QUOTE = '$(subst ','\'',$(1))'
 
+# )' (Gets vim back in sync)
+
 # Passing makefile exports through is a bit tiresome.  We could mark our
 # symbols with export -- but that means *every* command gets them, and I
 # don't like that.  This macro instead just exports the listed symbols into a
@@ -88,7 +90,7 @@ EXPORT = $(foreach var,$(1),$(var)=$(call SAFE_QUOTE,$($(var))))
 #       right format.
 define _COMPUTE_PATH
     ifndef $1
-        $$(error Must specify $1)
+        $$(error Must specify first parameter)
     endif
     ifeq (,$$(findstring /,$$($1)))
         # $1 is not a path; if $2 is not set then set to the default.

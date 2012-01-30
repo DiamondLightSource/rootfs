@@ -17,8 +17,7 @@ ifeq ($(version),local)
 untar:
 
 build:
-	make -C $(O) -f $(packagedir)/Makefile build-local \
-            VPATH=$(packagedir)
+	make -C $(O) -f $(packagedir)/CONFIG build-local VPATH=$(packagedir)
 
 else
 # For normal builds we have to extract and possibly patch the sources.

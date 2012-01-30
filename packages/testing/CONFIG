@@ -1,7 +1,5 @@
 testing_VERSION = local
 
-include EXTRAS
-
 LDLIBS += -lrt
 
 TEST_FILES = testing timestamps

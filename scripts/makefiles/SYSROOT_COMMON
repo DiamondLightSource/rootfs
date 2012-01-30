@@ -5,8 +5,6 @@ ifneq ($(shell id -u),0)
     $(error Must be called from fakeroot)
 endif
 
-$(call INCLUDE_CONFIG,SYSROOT)
-
 
 # Where the build system root is assembled.  Only fakerooted scripts should
 # access this directory.

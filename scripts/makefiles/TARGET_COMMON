@@ -27,15 +27,8 @@ OBJECT_ROOT = $(TARGET_ROOT)/packages
 LIB_PREFIX = $(TARGET_ROOT)/local
 
 
-ifeq ($(wildcard $(configdir)/CONFIG),)
-    # No CONFIG file, must be a separated configuration instead.
-    SEPARATED_CONFIG = yes
-    # We always need the list of packages and associated toolchain definition.
-    include $(configdir)/PACKAGES
-else
-    # TARGET CONFIG file exists, pull this in.
-    include $(configdir)/CONFIG
-endif
+# This is the target configuration
+include $(configdir)/CONFIG
 
 
 # If the PACKAGES file doesn't define TOOLCHAIN then it needs to define
@@ -49,20 +42,5 @@ ifdef BINUTILS_DIR
 endif
 
 ifdef COMPILER_PREFIX
-    export CROSS_COMPILE = $(COMPILER_PREFIX)-
+    CROSS_COMPILE = $(COMPILER_PREFIX)-
 endif
-
-
-# The target configuration can be specified in one of two ways, either as a
-# unified configuration included as $(configdir)/CONFIG, or as separate
-# configuration $(configdir)/ PACKAGES, SYSROOT, ROOTFS, each included at the
-# appropriate point.  Call this as
-#
-#   $(call INCLUDE_CONFIG,config_name)
-#
-define _INCLUDE_CONFIG
-    ifeq ($$(SEPARATED_CONFIG),yes)
-        include $$(configdir)/$1
-    endif
-endef
-INCLUDE_CONFIG = $(eval $(_INCLUDE_CONFIG))

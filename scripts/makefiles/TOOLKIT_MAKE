@@ -24,8 +24,7 @@ O      = $(TOOLKIT_ROOT)/build/$@
 # All the components have a completely uniform build: basically untar,
 # configure with local prefix, build and install.
 $(TOOLKIT_COMPONENTS):  $(TOOLKIT_ROOT)
-	$(scripts)/extract-tar \
-            $(SOURCE_ROOT) $(TAR_FILE) $(MD5_SUM) $(TAR_DIRS)
+	$(scripts)/extract-tar $(SOURCE_ROOT) $(TAR_FILE) $(MD5_SUM) $(TAR_DIRS)
 	chmod -R -w $(srcdir)
 
 	mkdir -p $(O)

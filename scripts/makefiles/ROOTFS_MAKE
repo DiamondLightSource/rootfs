@@ -4,9 +4,6 @@
 include $(ROOTFS_TOP)/scripts/makefiles/COMMON
 include $(makefiles)/TARGET_COMMON
 
-# Ensure we pull in the ROOTFS specific TARGET configuration.
-$(call INCLUDE_CONFIG,ROOTFS)
-
 O = $(TARGET_ROOT)/image
 
 

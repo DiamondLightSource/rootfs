@@ -7,8 +7,9 @@
 # with the following environment variable set:
 #
 : ${sysroot:?}          # Path to rootfs being built
+: ${install_list:?}     # Used to record list of installed executables
 #
-# The CROSS_COMPILER envrionment variable should also be set, but it can be
+# The CROSS_COMPILE envrionment variable should also be set, but it can be
 # empty for a native build.
 #
 # Here <target-dir> is relative to <sysroot> and the given permissions are
@@ -60,7 +61,7 @@ fi
 # Some bash trickery to get at the list of arguments.  Want to iterate over
 # all of the files -- except for the last one!
 args=("$@")
-target_dir="$sysroot${args[$#-1]}"
+target_dir="$sysroot/${args[$#-1]}"
 unset args[$#-1]
 
 for source in "${args[@]}"; do

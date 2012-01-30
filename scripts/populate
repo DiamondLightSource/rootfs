@@ -3,6 +3,7 @@
 #
 # Should be called with the following environment variables set:
 #
+: ${SYSROOT:?}          # Glibc sysroot from cross compiler
 : ${sysroot:?}          # Root of rootfs being constructed
 : ${BINUTILS_DIR:?}     # Root of binutils directory
 : ${install_list:?}     # File containing list of installed files
@@ -14,21 +15,16 @@
 #  EXTRA_LIBS             Extra libraries to be installed
 #  COMPILER_PREFIX        Must be set if cross compiling
 
+# We have two notions of sysroot here.  $sysroot is the root of the *target*
+# filesystem that we're building, while $SYSROOT defined here is the glibc
+# sysroot: in effect we're copying $SYSROOT -> $sysroot.
+
 
 HERE="$(dirname "$0")"
 set -o pipefail
 
 
 . "$HERE"/functions
-
-# We have two notions of sysroot here.  $sysroot is the root of the *target*
-# filesystem that we're building, while $SYSROOT defined here is the glibc
-# sysroot: in effect we're copying $SYSROOT -> $sysroot.
-if [ -n "$COMPILER_PREFIX" ]; then
-    CROSS_COMPILE=$COMPILER_PREFIX-
-else
-    CROSS_COMPILE=
-fi
 
 READELF="$CROSS_COMPILE"readelf
 
