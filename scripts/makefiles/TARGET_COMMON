@@ -7,9 +7,6 @@
 $(call COMPUTE_PATH,TARGET,configdir,configs)
 
 
-# # Pull in the common definitions from the target
-# include $(configdir)/CONFIG
-
 TARGET_ROOT ?= $(ROOTFS_ROOT)/targets/$(TARGET)
 
 # Where packages are built
@@ -42,5 +39,5 @@ ifdef BINUTILS_DIR
 endif
 
 ifdef COMPILER_PREFIX
-    CROSS_COMPILE = $(COMPILER_PREFIX)-
+    export CROSS_COMPILE = $(COMPILER_PREFIX)-
 endif

@@ -13,8 +13,10 @@ $(O)/boot-script: $(O)/imagefile.cpio.gz
             $(bootdir)/make-initramfs-script $@ $<
 endif
 
+$(O)/$(IMAGE_NAME): $(O)/imagefile.cpio.gz
+	ln $^ $@
 
-boot: $(O)/imagefile.cpio.gz
+boot: $(O)/imagefile.cpio.gz $(O)/$(IMAGE_NAME)
 ifdef TFTP_SERVER
 	scp $< $(TFTP_SERVER)/$(IMAGE_NAME)
 endif
