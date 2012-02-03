@@ -51,3 +51,5 @@ default: boot
 
 imagename:
 	echo $(O)/imagefile.cpio
+
+# vim: set filetype=make:

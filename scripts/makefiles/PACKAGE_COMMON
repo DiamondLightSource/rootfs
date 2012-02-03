@@ -5,3 +5,5 @@
 $(call COMPUTE_PATH,PACKAGE,packagedir,packages)
 
 O = $(OBJECT_ROOT)/$(PACKAGE)
+
+# vim: set filetype=make:

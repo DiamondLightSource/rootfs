@@ -60,3 +60,5 @@ fakeroot_POST_INSTALL = cp $(srcdir)/config.guess $(TOOLKIT_BIN)
 autoconf: m4
 automake: autoconf
 libtool: autoconf
+
+# vim: set filetype=make:

@@ -74,3 +74,5 @@ post-install: final-install
         find -name . -o -print | cpio --quiet -H newc -o >$@
 
 .PHONY: clean-sysroot install-sysroot final-install post-install
+
+# vim: set filetype=make:

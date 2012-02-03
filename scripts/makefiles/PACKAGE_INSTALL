@@ -6,3 +6,5 @@ include $(makefiles)/SYSROOT_COMMON
 include $(makefiles)/PACKAGE_COMMON
 
 include $(packagedir)/CONFIG
+
+# vim: set filetype=make:

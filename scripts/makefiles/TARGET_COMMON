@@ -41,3 +41,5 @@ endif
 ifdef COMPILER_PREFIX
     export CROSS_COMPILE = $(COMPILER_PREFIX)-
 endif
+
+# vim: set filetype=make:

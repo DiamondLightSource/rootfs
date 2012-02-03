@@ -57,3 +57,5 @@ else:
 sys.stdout.write(crypt.crypt(args[0], salt))
 if options.newline:
     sys.stdout.write('\n')
+
+# vim: set filetype=python:

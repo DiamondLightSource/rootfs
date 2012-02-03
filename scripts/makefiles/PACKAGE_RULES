@@ -71,3 +71,5 @@ clean-all: clean clean-src clean-lib
 
 .PHONY: untar config build install-lib install
 .PHONY: clean clean-src clean-all clean-lib
+
+# vim: set filetype=make:

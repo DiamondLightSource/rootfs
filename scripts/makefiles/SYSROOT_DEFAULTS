@@ -19,3 +19,5 @@ OPTIONS = inittab
 
 # The initial skeleton, determines the detailed shape of the rootfs.
 SKELETON = $(ROOTFS_TOP)/skeleton/file-list
+
+# vim: set filetype=make:

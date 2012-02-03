@@ -39,3 +39,5 @@ BUILD_TYPE = $(shell $(TOOLKIT_BIN)/config.guess)
 # appropriate rules.
 include $(packagedir)/CONFIG
 include $(makefiles)/PACKAGE_RULES
+
+# vim: set filetype=make:

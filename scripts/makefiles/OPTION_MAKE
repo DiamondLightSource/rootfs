@@ -12,3 +12,5 @@ include $(optiondir)/CONFIG
 early-option:
 
 .PHONY: option early-option
+
+# vim: set filetype=make:

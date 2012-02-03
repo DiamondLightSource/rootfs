@@ -11,3 +11,5 @@ do_strip()
     chmod +w "$1"  &&
     "$CROSS_COMPILE"strip "$1"
 }
+
+# vim: set filetype=sh:

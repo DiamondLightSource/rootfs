@@ -22,3 +22,5 @@ useradd       = $(call EXPORT,sysroot) $(scripts)/useradd
 groupadd      = $(call EXPORT,sysroot) $(scripts)/groupadd
 startup       = $(call EXPORT,sysroot) $(scripts)/startup
 first-time    = $(call EXPORT,sysroot) $(scripts)/first-time
+
+# vim: set filetype=make:

@@ -129,3 +129,5 @@ define _INCLUDE_DEFS
     endif
 endef
 INCLUDE_DEFS = $(eval $(_INCLUDE_DEFS))
+
+# vim: set filetype=make:

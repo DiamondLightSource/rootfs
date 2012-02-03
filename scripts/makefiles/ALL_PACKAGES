@@ -20,3 +20,5 @@ install:
 	$(foreach PACKAGE,$(PACKAGES),$(call make_package,INSTALL))
 
 .PHONY: $(MAKECMDGOALS)
+
+# vim: set filetype=make:
