@@ -48,3 +48,6 @@ boot: $(O)/imagefile.cpio
 .PHONY: boot
 
 default: boot
+
+imagename:
+	echo $(O)/imagefile.cpio

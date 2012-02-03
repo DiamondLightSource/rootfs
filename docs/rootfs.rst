@@ -177,6 +177,9 @@ configurations to be added at build time.
 `rootfs make`
     Assembles the configured rootfs for the selected target.
 
+`rootfs imagename`
+    Prints the full path to the generated rootfs .cpio image file.
+
 
 The following extra parameters can be passed on the command line to many of
 the commands above to override the default makefile definitions.
@@ -362,7 +365,8 @@ The individual settings here are discussed in detail below.
     An option can be any entry in the `options` directory.
 
 `ROOTFS_VERSION`
-    This is set to a string used to identify the build version.
+    This is set to a string used to identify the build version.  This string is
+    written to `/etc/version` in the target rootfs.
 
 `CONSOLE_BAUD`, `CONSOLE_TTY`
     These are used to configure the console tty, and must be set to values
