@@ -23,4 +23,6 @@ build:
 install:
 	$(install) -s -m-w $(NTP_PROGRAMS:%=$(O)/%) /usr/sbin
 	$(install) $(NTP_CONF) /etc
-	$(startup) $(packagedir)/ntpd S800
+	$(startup) $(packagedir)/ntpd
+
+# vim: set filetype=make:

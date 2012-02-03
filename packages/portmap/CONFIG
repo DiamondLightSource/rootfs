@@ -18,5 +18,7 @@ build:
 
 install:
 	$(install) -s -m-w $(PORTMAP_PROGRAMS:%=$(O)/%) /sbin
-	$(startup) $(packagedir)/portmap S110
+	$(startup) $(packagedir)/portmap
 	$(useradd) -c 'Portmap daemon' -d /usr/sbin -g 1 -u 1 -s /bin/sh daemon
+
+# vim: set filetype=make:

@@ -13,6 +13,9 @@ sysroot = $(TARGET_ROOT)/rootfs
 # library dependencies during final library population step.
 install_list = $(TARGET_ROOT)/install_list
 
+# List of startup targets.  This can be overridden by a TARGET configuration.
+STARTUP_LIST ?= $(ROOTFS_TOP)/skeleton/startup_list
+
 
 # Support scripts for installation.
 install    = \
@@ -20,7 +23,7 @@ install    = \
 install-files = $(call EXPORT,sysroot) $(scripts)/install-files
 useradd       = $(call EXPORT,sysroot) $(scripts)/useradd
 groupadd      = $(call EXPORT,sysroot) $(scripts)/groupadd
-startup       = $(call EXPORT,sysroot) $(scripts)/startup
+startup       = $(call EXPORT,sysroot STARTUP_LIST) $(scripts)/startup
 first-time    = $(call EXPORT,sysroot) $(scripts)/first-time
 
 # vim: set filetype=make:

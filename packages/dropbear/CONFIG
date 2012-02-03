@@ -26,7 +26,7 @@ build:
 install:
         # Normal installation (6555 = rx,u+s,g+s)
 	$(install) -s -m 6555 $(O)/dropbearmulti /usr/sbin
-	$(startup) $(packagedir)/dropbear K890
+	$(startup) $(packagedir)/dropbear
 	$(install) -lf dropbearmulti /usr/sbin/dropbear
 	for program in $(PROGRAMS) ssh; do \
             $(install) -lf /usr/sbin/dropbearmulti /usr/bin/$$program; \

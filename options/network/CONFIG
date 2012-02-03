@@ -9,7 +9,7 @@ NW_EXPORTS = NW_PORT NW_ADDRESS NW_NETMASK NW_GATEWAY
 
 option:
 	$(install-files) $(optiondir)/network.files
-	$(startup) $(optiondir)/network S100
+	$(startup) $(optiondir)/network
 
 ifdef NW_HOSTNAME
 	echo $(NW_HOSTNAME) > $(sysroot)/etc/hostname
@@ -28,3 +28,5 @@ else
 # Configure resolv.conf, if defined.
 option: network-resolv
 endif
+
+# vim: set filetype=make:

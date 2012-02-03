@@ -7,8 +7,11 @@
 # The following environment variable must be set:
 #
 : ${sysroot:?}      # Target rootfs, where to install files
+: ${STARTUP_LIST:?} # List of start and stop prefix assignments
+
 
 HERE="$(dirname "$0")"
+. "$HERE"/functions
 
 START=/etc/rc.d
 MODE=555
@@ -24,10 +27,21 @@ shift $((OPTIND-1))
 
 
 SCRIPT="${1:?}"
-AUTO="$2"
-STOP="$3"
-
 FILENAME="$(basename "$SCRIPT")"
+
+# First read AUTO and STOP lines from the given startup list before allowing
+# them to be overwritten by arguments.
+STARTUP_LINE="$(grep "^$FILENAME\>" "$STARTUP_LIST")"
+[ -n "$STARTUP_LINE" ]  &&  read <<<"$STARTUP_LINE" _ AUTO STOP
+
+[ -n "$2" ]  &&  AUTO="$2"
+[ -n "$3" ]  &&  STOP="$3"
+[ "$AUTO" = - ]  &&  AUTO=
+
+# Sanity check the two arguments
+[ -z "$AUTO" -o "${AUTO:0:1}" = S ]  ||  Error Invalid start parameter
+[ -z "$STOP" -o "${STOP:0:1}" = K ]  ||  Error Invalid stop parameter
+
 
 install -m "$MODE" "$SCRIPT" "$sysroot/etc/init.d"  &&
 if [ -n "$AUTO" ]; then

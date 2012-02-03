@@ -4,4 +4,6 @@
 include $(commondir)/COMMON
 
 option: network-resolv
-	$(startup) $(optiondir)/network.nvram S100 K900
+	$(startup) $(optiondir)/network.nvram
+
+# vim: set filetype=make:

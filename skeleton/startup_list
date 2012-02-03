@@ -1,0 +1,11 @@
+# List of startup packages and assigned actions.  This is read by the $(startup)
+# command and can be overridden in the TARGET configuration.
+
+network         S100
+network.mtd     S100
+network.nvram   S100
+portmap         S110
+inetd           S200
+mountnfs        S220    K880
+ntpd            S800
+dropbear        -       K890

@@ -70,7 +70,7 @@ install:
 
 ifdef INETD_ENABLE
 	$(install) $(packagedir)/inetd /etc/init.d
-	$(startup) $(packagedir)/inetd S200
+	$(startup) $(packagedir)/inetd
 endif
 
 # vim: set filetype=make:
