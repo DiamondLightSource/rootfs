@@ -43,9 +43,11 @@ TERMS = xterm xterm-color screen vt100 vt102
 
 final-install:
         # Install the regular nfs mounts.
-	mkdir -p $(patsubst %,$(sysroot)/dls_sw/%,prod work epics)
+	$(install) -d /dls_sw/prod /dls_sw/work /dls_sw/epics
 	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
 	$(startup) $(configdir)/ppcinit S900
 
 OPTIONS += mount-nfs ldconfig network-nvram
 LDCONFIG = cross
+
+# vim: set filetype=make:

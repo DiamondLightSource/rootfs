@@ -49,8 +49,10 @@ NW_HOSTNAME = FE21B-DI-PBPM-01
 
 final-install:
         # Install the regular nfs mounts.
-	mkdir -p $(patsubst %,$(sysroot)/mnt/%,nfs prod work)
+	$(install) -d /mnt/nfs /mnt/prod /mnt/work
 	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
 
 DROPBEAR_KEYS = y
 INETD_ENABLE = y
+
+# vim: set filetype=make:

@@ -24,11 +24,23 @@
 #   -g:     Set group
 #   -f      Destination is file name, not directory: only one file can be
 #           copied in this case.
+#   -l      Create soft links to arguments instead of copying files.
+#   -d      Treat arguments as directories to be created
 
 
 HERE="$(dirname "$0")"
 
 . "$HERE"/functions
+
+maybe_set_mode()
+{
+    if [ -n "$MODE" ]; then
+        chmod "$MODE" "$1";
+    fi  &&
+    if [ -n "$OWNER" -o -n "$GROUP" ]; then
+        chown "$OWNER:$GROUP" "$1"
+    fi
+}
 
 
 DO_STRIP=0
@@ -37,8 +49,10 @@ MODE=
 OWNER=
 GROUP=
 FILENAME=0
+SOFT_LINKS=0
+MKDIR=0
 
-while getopts 'sxm:o:g:f' option; do
+while getopts 'sxm:o:g:fld' option; do
     case "$option" in
         s)  DO_STRIP=1
             EXECUTABLE=1 ;;
@@ -47,16 +61,30 @@ while getopts 'sxm:o:g:f' option; do
         o)  OWNER="$OPTARG" ;;
         g)  GROUP="$OPTARG" ;;
         f)  FILENAME=1 ;;
+        l)  SOFT_LINKS=1 ;;
+        d)  MKDIR=1 ;;
         *)  Error Invalid switch ;;
     esac
 done
 shift $((OPTIND-1))
+
+# The MKDIR option behaves differently from all the other options.
+if ((MKDIR)); then
+    ((!FILENAME  &&  !SOFT_LINKS  &&  !DO_STRIP  &&  !EXECUTABLE))  ||
+        Error Inconsistent options for -d
+    for dir; do
+        mkdir -p "$sysroot/$dir"  &&
+        maybe_set_mode "$sysroot/$dir"  ||  exit
+    done
+    exit
+fi
+
+# Argument checking for normal case
 if (($# < 2)); then
     Error Missing arguments
 elif ((FILENAME && $# != 2)); then
     Error Cannot specify multiple files with filename target
 fi
-
 
 # Some bash trickery to get at the list of arguments.  Want to iterate over
 # all of the files -- except for the last one!
@@ -71,7 +99,9 @@ for source in "${args[@]}"; do
         target="$target_dir/$(basename "$source")"
     fi
 
-    if [ -d "$source" ]; then
+    if ((SOFT_LINKS)); then
+        ln -s "$source" "$target"
+    elif [ -d "$source" ]; then
         Error Cannot install directory "$source"
     elif link="$(readlink "$source")"; then
         ln -s "$link" "$target"
@@ -84,11 +114,6 @@ for source in "${args[@]}"; do
                 do_strip "$target"
             fi
         fi  &&
-        if [ -n "$MODE" ]; then
-            chmod "$MODE" "$target";
-        fi  &&
-        if [ -n "$OWNER" -o -n "$GROUP" ]; then
-            chown "$OWNER:$GROUP" "$target"
-        fi
+        maybe_set_mode "$target"
     fi || exit
 done

@@ -52,3 +52,5 @@ build:
 
 install:
 	$(install) -s -m a-w,u+s $(O)/lsof /usr/bin
+
+# vim: set filetype=make:

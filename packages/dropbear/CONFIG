@@ -27,13 +27,13 @@ install:
         # Normal installation (6555 = rx,u+s,g+s)
 	$(install) -s -m 6555 $(O)/dropbearmulti /usr/sbin
 	$(startup) $(packagedir)/dropbear K890
-	ln -s /usr/sbin/dropbearmulti $(sysroot)/usr/sbin/dropbear
+	$(install) -lf dropbearmulti /usr/sbin/dropbear
 	for program in $(PROGRAMS) ssh; do \
-            ln -s /usr/sbin/dropbearmulti $(sysroot)/usr/bin/$$program; \
+            $(install) -lf /usr/sbin/dropbearmulti /usr/bin/$$program; \
         done
 
 	echo '$(INETD_CONF)' >>$(sysroot)/etc/inetd.conf
-	mkdir -m 700 $(sysroot)/root/.ssh $(sysroot)/etc/dropbear
+	$(install) -d -m 700 /root/.ssh /etc/dropbear
 ifdef SSH_AUTHORIZED_KEYS
 	$(install) -m 644 $(SSH_AUTHORIZED_KEYS) /root/.ssh
 endif
@@ -48,3 +48,5 @@ else
 	$(first-time) \
             dropbearkey -t dss -f /etc/dropbear/dropbear_dss_host_key
 endif
+
+# vim: set filetype=make:

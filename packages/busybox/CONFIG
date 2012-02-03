@@ -60,15 +60,17 @@ install:
 	$(install) -s -m 4555 $(O)/busybox /bin
 	cat $(O)/busybox.links | \
         while read -r; do \
-            ln -s /bin/busybox $(sysroot)/$$REPLY  ||  exit 1; \
+            $(install) -lf /bin/busybox /$$REPLY  ||  exit 1; \
         done
 
         # Even if dhcp isn't necessarily configured, it doesn't hurt to
         # install the helper script in case it's wanted.
-	mkdir -p $(sysroot)/usr/share/udhcpc
+	$(install) -d /usr/share/udhcpc
 	$(install) $(packagedir)/default.script /usr/share/udhcpc
 
 ifdef INETD_ENABLE
 	$(install) $(packagedir)/inetd /etc/init.d
 	$(startup) $(packagedir)/inetd S200
 endif
+
+# vim: set filetype=make:
