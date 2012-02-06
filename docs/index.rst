@@ -19,6 +19,7 @@ Contents:
     rootfs
     extras
     build-extras
+    options
     notes
     internals
     glibc

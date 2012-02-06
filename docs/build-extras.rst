@@ -103,8 +103,10 @@ makefile and can be used.
 
 `O`
     This is the path to the directory where the build should take place.
-    `srcdir`:: This is the path to the extracted sources.  This directory should
-    be treated as pristine and not modified.
+
+`srcdir`
+    This is the path to the extracted sources.  This directory should be treated
+    as pristine and not modified.
 
 `COMPILER_PREFIX`
     If the package is being configured for cross-compilation this defines the
@@ -195,9 +197,9 @@ Building Packages
 
 To build packages the following symbols must be defined.
 
-`PACKAGES`::
-List of packages to be built.  Normally defined in the target configuration,
-but can also be defined on the command line.
+`PACKAGES`
+    List of packages to be built.  Normally defined in the target configuration,
+    but can also be defined on the command line.
 
 
 
@@ -205,14 +207,14 @@ but can also be defined on the command line.
 Makefile Symbols
 ~~~~~~~~~~~~~~~~
 
-`OBJECT_ROOT`::
-Path to directory where packages are built
+`OBJECT_ROOT`
+    Path to directory where packages are built
 
-`O`::
-Path to particular package directory, `O` = `$(OBJECT_ROOT)/$(COMPONENT)`
+`O`
+    Path to particular package directory, `O` = `$(OBJECT_ROOT)/$(COMPONENT)`
 
-`COMPONENT`::
-Name of package being built
+`COMPONENT`
+    Name of package being built
 
 
 Symbols Defined During Build
@@ -241,19 +243,17 @@ Cross-Compilation Toolchain
 
 As a minimum this is specified by two definitions:
 
-`COMPILER_PREFIX`::
-Compiler tuple to be prefixed before compiler commands, used as the tuple to
-pass to `--host=` on `configure` commands.
+`COMPILER_PREFIX`
+    Compiler tuple to be prefixed before compiler commands, used as the tuple to
+    pass to `--host=` on `configure` commands.
 
-`BINUTILS_DIR`::
-Path to the complete toolchain directory.  This defaults to
-+
-----
-BINUTILS_DIR = /dls_sw/targetOS/x-tools/$(TOOLCHAIN_VERSION)/$(COMPILER_PREFIX)
-----
-+
-and so it can be sufficient to specify `TOOLCHAIN_VERSION` if a standard
-toolchain is being used.
+`BINUTILS_DIR`
+    Path to the complete toolchain directory.  This defaults to ::
+
+        BINUTILS_DIR = /dls_sw/targetOS/x-tools/$(TOOLCHAIN_VERSION)/$(COMPILER_PREFIX)
+
+    and so it can be sufficient to specify `TOOLCHAIN_VERSION` if a standard
+    toolchain is being used.
 
 
 File Locations
@@ -276,16 +276,16 @@ Parameters to Package Build
 The following are specified where?
 
 
-`COMPONENT`::
-Name of package to build.
+`COMPONENT`
+    Name of package to build.
 
-`version = $(COMPONENT)_VERSION`::
-Version of package to build.  This determines both the name of the compressed
-sources and the source directory.  Typically a default value is specified in
-the package description.
+`version = $(COMPONENT)_VERSION`
+    Version of package to build.  This determines both the name of the
+    compressed sources and the source directory.  Typically a default value is
+    specified in the package description.
 
-`COMPONENT_PATH = $(ROOTFS_TOP)/packages/$(COMPONENT)`::
-Absolute path to package description directory.
+`COMPONENT_PATH = $(ROOTFS_TOP)/packages/$(COMPONENT)`
+    Absolute path to package description directory.
 
 
 Symbols Define in Package Definition
@@ -299,53 +299,49 @@ and the corresponding md5 sum.  A package should define a default version,
 which can then be overridden by the target configuration.
 
 
-`$(PACKAGE)_VERSION`::
-Typically a package should define a default version which can be overridden by
-a target configuration, for example `nano` defines
-+
-----
-nano_VERSION ?= 2.0.9
-----
+`$(PACKAGE)_VERSION`
+    Typically a package should define a default version which can be overridden
+    by a target configuration, for example `nano` defines ::
+
+        nano_VERSION ?= 2.0.9
 
 
-`MD5_SUM_$($(PACKAGE)_VERSION)`::
-For each supported version the md5 sum of the corresponding source package
-must be given, for example the `nano` package defines
-+
-----
-MD5_SUM_2.0.9 = 2be94dc43fb60fff4626a2401a977220
-----
-+
-Compute this by running `md5sum` on the corresponding source file.
+`MD5_SUM_$($(PACKAGE)_VERSION)`
+    For each supported version the md5 sum of the corresponding source package
+    must be given, for example the `nano` package defines ::
+
+        MD5_SUM_2.0.9 = 2be94dc43fb60fff4626a2401a977220
+
+    Compute this by running `md5sum` on the corresponding source file.
 
 
 Symbols that can optionally be defined
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-`TAR_EXTENSION = .tar.bz2`::
-Needs to be overridden if the source file is of a different format.
+`TAR_EXTENSION = .tar.bz2`
+    Needs to be overridden if the source file is of a different format.
 
-`untar-extra = @:`::
-Commands to be executed after extracting source files but before patching.
-Use this rename directories or perform extra extraction operations.
+`untar-extra = @:`
+    Commands to be executed after extracting source files but before patching.
+    Use this rename directories or perform extra extraction operations.
 
 
 
 Global Symbols from Rootfs System
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`ROOTFS_TOP`::
-Absolute path to top of rootfs tree.
+`ROOTFS_TOP`
+    Absolute path to top of rootfs tree.
 
-`BUILD_ROOT`::
-Absolute path to where all rootfs files are stored, sets defaults for
-following.
+`BUILD_ROOT`
+    Absolute path to where all rootfs files are stored, sets defaults for
+    following.
 
-`SOURCE_ROOT = $(BUILD_ROOT)/src`::
-Path to extracted and patched sources.
+`SOURCE_ROOT = $(BUILD_ROOT)/src`
+    Path to extracted and patched sources.
 
-`TOOLKIT_ROOT = $(BUILD_ROOT)/toolkit`::
-Path to local prefix for installed toolkit.
+`TOOLKIT_ROOT = $(BUILD_ROOT)/toolkit`
+    Path to local prefix for installed toolkit.
 
 
 Symbols Used in Package Definitions
@@ -354,21 +350,21 @@ Symbols Used in Package Definitions
 Target Specific Definitions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`TARGET`::
-Name of target to build.
+`TARGET`
+    Name of target to build.
 
-`TARGET_PATH = $(ROOTFS_TOP)/configs/$(TARGET)`::
-Path to target description directory.
+`TARGET_PATH = $(ROOTFS_TOP)/configs/$(TARGET)`
+    Path to target description directory.
 
-`BUILD_TARGET = $(BUILD_ROOT)/$(TARGET)`::
-Path to location where the entire target system is built.  !!!This is a poor
-name, not very consistent with other names!!!
+`BUILD_TARGET = $(BUILD_ROOT)/$(TARGET)`
+    Path to location where the entire target system is built.  !!!This is a poor
+    name, not very consistent with other names!!!
 
-`OBJECT_ROOT = $(BUILD_TARGET)/packages`::
-Path to location where all packages are built.
+`OBJECT_ROOT = $(BUILD_TARGET)/packages`
+    Path to location where all packages are built.
 
-`LIB_ROOT = $(BUILD_TARGET)/local`::
-Path to location where libraries are installed.
+`LIB_ROOT = $(BUILD_TARGET)/local`
+    Path to location where libraries are installed.
 
 
 Other Symbol Definitions
@@ -376,12 +372,10 @@ Other Symbol Definitions
 
 These symbol definitions are not meant to be overridden, but are important.
 
-`O = $(OBJECT_ROOT)/$(COMPONENT)`::
-Individual package build.
+`O = $(OBJECT_ROOT)/$(COMPONENT)`
+    Individual package build.
 
-`srcdir = $(SOURCE_ROOT)/$(COMPONENT)-$(version)`::
-Package sources.  Probably want to enforce consistent naming here, forcing the
-package description to place the sources in the right place if necessary.
-
-
-
+`srcdir = $(SOURCE_ROOT)/$(COMPONENT)-$(version)`
+    Package sources.  Probably want to enforce consistent naming here, forcing
+    the package description to place the sources in the right place if
+    necessary.

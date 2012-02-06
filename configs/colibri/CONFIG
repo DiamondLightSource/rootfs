@@ -80,8 +80,8 @@ OPTIONS += ldconfig mount-extra
 ifeq ($(BOOT),)
     OPTIONS += network
 else ifeq ($(BOOT),initramfs)
-    OPTIONS += network-mtd
-#     OPTIONS += configure-network
+#     OPTIONS += network-mtd
+    OPTIONS += configure-network
 endif
 
 ifneq ($(filter configure-network,$(OPTIONS)),)

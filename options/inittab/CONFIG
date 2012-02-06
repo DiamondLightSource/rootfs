@@ -11,3 +11,5 @@ endef
 option:
         # Add target specific getty lines to inittab
 	$(foreach tty,$(CONSOLE_TTY),$(ADD_TTY))
+
+# vim: set filetype=make:
