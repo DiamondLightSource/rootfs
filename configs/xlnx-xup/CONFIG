@@ -22,7 +22,7 @@ PACKAGES += strace lsof
 
 BOOT = nfs
 
-OPTIONS += mount-nfs ldconfig
+OPTIONS += mount-extra ldconfig
 LDCONFIG = install
 
 
@@ -46,12 +46,13 @@ NW_NETMASK = 255.255.240.0
 NW_BROADCAST = 172.23.255.255
 NW_GATEWAY = 172.23.240.254
 NW_HOSTNAME = TS-DI-PBPM-01
+NW_HWADDRESS = 00:14:2d:48:60:ff
 # << CF-END
 
+MOUNT_EXTRA = /mnt/nfs /mnt/prod /mnt/work
+EXTRA_FSTAB = $(configdir)/fstab
+
 final-install:
-        # Install the regular nfs mounts.
-	$(install) -d /mnt/nfs /mnt/prod /mnt/work
-	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
 
 DROPBEAR_KEYS = y
 INETD_ENABLE = y

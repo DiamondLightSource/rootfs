@@ -41,7 +41,8 @@ auto lo
 iface lo inet loopback
 EOF
 
-[ "$NW_PORT" = none ]  ||  cat <<EOF
+if [ "$NW_PORT" != none ]; then
+    cat <<EOF
 auto $NW_PORT
 iface $NW_PORT inet static
     address $NW_ADDRESS
@@ -50,3 +51,6 @@ iface $NW_PORT inet static
     broadcast $(compute_broadcast $NW_ADDRESS $NW_NETMASK)
     gateway $NW_GATEWAY
 EOF
+    [ -n "$NW_HWADDRESS" ]  &&
+    echo "    hwaddress ether $NW_HWADDRESS"
+fi
