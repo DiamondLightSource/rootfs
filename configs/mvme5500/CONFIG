@@ -45,6 +45,9 @@ EXTRA_FSTAB = $(configdir)/fstab
 
 final-install:
 	$(startup) $(configdir)/ppcinit S900
+	$(groupadd) -g 500 dcs
+	$(useradd) -p '' -u 800 -g 500 epics
+	$(install) $(configdir)/mdev.conf /etc
 
 OPTIONS += mount-extra ldconfig network-nvram
 LDCONFIG = once

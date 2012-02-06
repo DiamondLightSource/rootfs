@@ -12,7 +12,7 @@ launch()
     COMMAND="$1"
     shift
     cd "$(dirname "$1")"  &&
-    "$COMMAND" "$@" &
+    su -c "$COMMAND $*" epics &
     echo $! >/var/run/ioc.pid
 }
 

@@ -1,5 +1,5 @@
 
 # Diamond specific mounts
-172.23.100.32:/exports/dls_sw/work /dls_sw/work nfs ro,intr,rsize=4096,wsize=4096 0   2
-172.23.100.32:/exports/dls_sw/prod /dls_sw/prod nfs ro,intr,rsize=4096,wsize=4096 0   2
-172.23.100.32:/exports/dls_sw/epics /dls_sw/epics nfs ro,intr,rsize=4096,wsize=4096 0   2
+172.23.100.32:/exports/dls_sw/work /dls_sw/work nfs intr
+172.23.100.32:/exports/dls_sw/prod /dls_sw/prod nfs ro,intr
+172.23.100.32:/exports/dls_sw/epics /dls_sw/epics nfs ro,intr
