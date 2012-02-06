@@ -40,14 +40,13 @@ INETD_ENABLE = y
 
 TERMS = xterm xterm-color screen vt100 vt102
 
+MOUNT_EXTRA = /dls_sw/prod /dls_sw/work /dls_sw/epics
+EXTRA_FSTAB = $(configdir)/fstab
 
 final-install:
-        # Install the regular nfs mounts.
-	$(install) -d /dls_sw/prod /dls_sw/work /dls_sw/epics
-	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
 	$(startup) $(configdir)/ppcinit S900
 
-OPTIONS += mount-nfs ldconfig network-nvram
-LDCONFIG = cross
+OPTIONS += mount-extra ldconfig network-nvram
+LDCONFIG = once
 
 # vim: set filetype=make:

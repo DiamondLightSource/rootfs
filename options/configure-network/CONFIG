@@ -17,17 +17,11 @@
 #       For each network name a list of machine names and associated IP
 #       addresses for that network.
 #
-# Optionally extra network specific mounts can be configured with the following
-# definitions:
-#
-#   MOUNT_EXTRA
-#       List of mount points to be created.  If this is not set then mount-extra
-#       is not installed.
-#
 #   FSTAB.<network-name>
-#       For each network name the appropiate fstab for extra mounts.
+#       For each network name the appropiate fstab for extra mounts.  These are
+#       only useful if the mount-extra option has been selected.
 #
-# Also, if HOSTNAME is specified then it will be selected on startup.
+# Also, if NW_HOSTNAME is specified then it will be configured on startup.
 
 RESOLV_CONF = none
 include $(commondir)/COMMON
@@ -47,23 +41,18 @@ install_files = \
             $(install) -f $(resolv) $2.$(network);))
 
 option: network-interface
-# 	$(install) $(optiondir)/configure-network /usr/sbin
 	sed 's/@@NW_PORT@@/$(NW_PORT)/' <$(optiondir)/configure-network \
             >$(sysroot)/usr/sbin/configure-network
 	chmod +x $(sysroot)/usr/sbin/configure-network
+
 	$(install) -d /etc/configure-network
 	$(install) $(NETWORKS_LIST) /etc/configure-network
 	$(call install_files,RESOLV_CONF,/etc/resolv.conf)
 	$(call install_files,IP_LIST,/etc/configure-network/ip-list)
-
-ifneq ($(MOUNT_EXTRA),)
-	$(install) -d $(MOUNT_EXTRA)
 	$(call install_files,FSTAB,/etc/fstab)
-	$(startup) $(optiondir)/mount-extra
-endif
 
-ifneq ($(HOSTNAME),)
-	$(first-time) configure-network -w $(HOSTNAME)
+ifdef NW_HOSTNAME
+	$(first-time) configure-network -w $(NW_HOSTNAME)
 endif
 
 # vim: set filetype=make:

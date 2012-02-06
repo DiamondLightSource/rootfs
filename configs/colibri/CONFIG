@@ -50,7 +50,7 @@ BOOT_LOADER = u-boot
 
 MKIMAGE = /dls_sw/targetOS/u-boot/colibri/mkimage
 
-KERNEL_NAME = uImage-colibri
+KERNEL_NAME = colibri/uImage-colibri-3.2.1-colibri
 KERNEL_ADDR = a0001000
 
 TFTP_SERVER = serv2:/tftpboot
@@ -75,23 +75,32 @@ ROOT_PASSWORD = Jungle
 
 
 LDCONFIG = cross
-OPTIONS += mount-nfs ldconfig
+OPTIONS += ldconfig mount-extra
 
 ifeq ($(BOOT),)
     OPTIONS += network
 else ifeq ($(BOOT),initramfs)
-#     OPTIONS += network-mtd
+    OPTIONS += network-mtd
+#     OPTIONS += configure-network
 endif
 
-OPTIONS += configure-network
-IP_LIST.lab = $(configdir)/ip-list.lab
-HOSTNAME = colibri2
+ifneq ($(filter configure-network,$(OPTIONS)),)
+    # Using configure-network
+    IP_LIST.lab = $(configdir)/ip-list.lab
+    FSTAB.lab = $(configdir)/fstab.lab
+    NW_HOSTNAME = colibri2
+endif
+
+ifneq ($(filter network-mtd,$(OPTIONS)),)
+    # Picking up network config from flash
+    EXTRA_FSTAB = $(configdir)/fstab.lab
+endif
+
+
+MOUNT_EXTRA = /mnt/nfs /mnt/prod /mnt/work
 
 
 final-install:
-        # Install the regular nfs mounts.
-	$(install) -d /mnt/nfs /mnt/prod /mnt/work
-	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
         # Fudge required to ensure the Colibri MAC address is configured
 	$(startup) $(configdir)/network.mac S001
 
