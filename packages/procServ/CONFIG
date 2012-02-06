@@ -1,0 +1,22 @@
+procServ_VERSION ?= 2.5.1
+
+TAR_EXTENSION = .tar.gz
+MD5_SUM_2.5.1 = a6d3131361189458fc276ca4323efe46
+
+PATCHES_2.5.1 = 2.5.1.patch
+
+
+PACKAGE_STRING = "procServ Process Server $(procServ_VERSION)"
+CPPFLAGS += -DPACKAGE_STRING='$(PACKAGE_STRING)'
+LDFLAGS += -lutil
+
+config:
+	cp $(packagedir)/Makefile $(O)
+
+build:
+	$(call EXPORT,CFLAGS CPPFLAGS LDFLAGS) make -C $(O) VPATH=$(srcdir)
+
+install:
+	$(install) -s -m-w $(O)/procServ /usr/bin
+
+# vim: set filetype=make:
