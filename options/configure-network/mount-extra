@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# Configuration to mount extra fstab like files.  Takes its configuration
+# from environment variable FSTABS in /etc/defaults/mount-local.
+
+. /etc/init.d/functions
+[ -r /etc/mount-extra ]  &&  . /etc/mount-extra
+
+STRIP='/^#/d; /^[ \t]*$/d'
+
+do_start()
+{
+    for fstab in $FSTABS; do
+        sed "$STRIP" $fstab |
+        while read spec file type opts rest; do
+            mount -t $type -o $opts $spec $file
+        done
+    done
+}
+
+do_stop()
+{
+    for fstab in $FSTABS; do
+        sed "$STRIP" $fstab |
+        while read spec file type opts rest; do
+            umount -fl $file
+        done
+    done
+}
+
+do_start_stop "$1" 'local mounts'

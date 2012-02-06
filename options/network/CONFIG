@@ -2,14 +2,10 @@
 
 include $(commondir)/COMMON
 
-NW_PORT ?= eth0
-
 NW_EXPORTS = NW_PORT NW_ADDRESS NW_NETMASK NW_GATEWAY
 
 
-option:
-	$(install-files) $(optiondir)/network.files
-	$(startup) $(optiondir)/network
+option: network-interface
 
 ifdef NW_HOSTNAME
 	echo $(NW_HOSTNAME) > $(sysroot)/etc/hostname

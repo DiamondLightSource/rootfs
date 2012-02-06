@@ -1,0 +1,164 @@
+#!/bin/sh
+
+# Configuration tool for reconfiguring network settings.
+
+# Configuration files stored in this directory
+CONFIG_DIR=/etc/configure-network
+NW_PORT='@@NW_PORT@@'
+
+
+Error()
+{
+    echo >&2 "$@"
+    exit 1
+}
+
+Usage() { Error 'Network reconfiguration tool.  Try -h for help.'; }
+
+Warning()
+{
+    echo >&2 Warning: "$@"
+}
+
+
+# Looks up the specified host name in our table of predefined addresses.
+lookup_hostname()
+{
+    while read network NETMASK GATEWAY; do
+        if [[ -n "$network" -a "$network" != '#' -a \
+              -r "$CONFIG_DIR/ip-list.$network" ]]; then
+            local hostname
+            while read hostname IPADDR; do
+                [[ "$hostname" = "$1" -a -n "$IPADDR" ]]  &&
+                    return
+            done <"$CONFIG_DIR/ip-list.$network"
+        fi
+    done <"$CONFIG_DIR/networks"
+
+    # No good, nothing found
+    return 1
+}
+
+
+network=
+
+USE_DHCP=false
+WRITE_CONFIG=false
+RESTART_NETWORK=false
+while getopts 'hm:g:n:dwr' option; do
+    case "$option" in
+        h)  cat <<EOF
+Usage: $0 [options] <new host name> [<new IP address>]
+
+Reconfigure network configuration to use the new host name.  If possible the
+host name will be looked up or computed, otherwise a new IP address can also
+be specified.
+
+Options:
+    -m: Specify new net mask
+    -g: Specify new gateway
+    -n: Specify network, typically either lab or pri: used for resolv.conf
+        and extra mounts.
+    -d  Configure network by DHCP.  In this case an IP address cannot be
+        given and -n probably should be specified explicitly.
+    -w  Write new configuration; otherwise the new configuration is displayed
+    -r  Restart network after reconfiguration.
+EOF
+            exit 0 ;;
+        m)  NETMASK="$OPTARG" ;;
+        g)  GATEWAY="$OPTARG" ;;
+        n)  network="$OPTARG" ;;
+        d)  USE_DHCP=true ;;
+        w)  WRITE_CONFIG=true ;;
+        r)  RESTART_NETWORK=true ;;
+        *)  Usage ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# Parse one or two arguments: host name and address.
+if $USE_DHCP; then
+    [ $# -ge 0 -a $# -le 1 ]  ||  Usage
+    HOSTNAME="$1"
+else
+    [ $# -gt 0 -a $# -le 2 ]  ||  Usage
+    HOSTNAME="$1"
+    if [ $# = 2 ]; then
+        IPADDR="$2"
+        [ -n "$NETMASK" ]  ||  Error Need to specify netmask
+    else
+        # Compute IP address from host name
+        lookup_hostname "$HOSTNAME"  ||
+            Error Unable to find IP address for host "$HOSTNAME"
+    fi
+fi
+
+
+# Compute BROADCAST and NETWORK from IPADDR and NETMASK.
+eval $(ipcalc -nb $IPADDR $NETMASK)
+
+
+NEW_CONFIG="auto lo
+iface lo inet loopback
+
+auto $NW_PORT
+iface $NW_PORT inet"
+if $USE_DHCP; then
+    NEW_CONFIG="$NEW_CONFIG dhcp"
+else
+    NEW_CONFIG="$NEW_CONFIG static
+    address $IPADDR
+    network $NETWORK
+    netmask $NETMASK
+    broadcast $BROADCAST"
+    [ -n "$GATEWAY" ]  &&
+        NEW_CONFIG="$NEW_CONFIG"$'\n'"    gateway $GATEWAY"
+fi
+
+
+if $WRITE_CONFIG; then
+    # Now do the requested reconfiguration
+
+    # If root is mounted read only then remount rw and restore when done.
+    if mount | grep -q ' / .*[(,]ro[,)]'; then
+        mount -o remount,rw /
+        trap 'mount -o remount,ro /' EXIT
+    fi
+
+    if $RESTART_NETWORK; then
+        /etc/init.d/mount-extra stop
+        /etc/init.d/network stop
+    fi
+
+    echo "$NEW_CONFIG" >/etc/network/interfaces
+    if [ -n "$HOSTNAME" ]; then
+        echo "$HOSTNAME" >/etc/hostname
+    else
+        rm /etc/hostname
+    fi
+    if [ -n "$network" ]; then
+        [ -r /etc/fstab.$network ]  ||
+            Warning "file /etc/fstab.$network not found"
+        echo "FSTABS=/etc/fstab.$network" >/etc/mount-extra
+    else
+        rm /etc/mount-extra
+    fi
+    if $USE_DHCP; then
+        ln -sf /var/run/udhcpc/resolv.conf /etc/resolv.conf
+    elif [ -n "$network" ]; then
+        [ -r /etc/resolv.conf.$network ]  ||
+            Warning "file /etc/resolv.conf.$network not found"
+        ln -sf resolv.conf.$network /etc/resolv.conf
+    else
+        rm /etc/resolv.conf
+    fi
+
+    if $RESTART_NETWORK; then
+        /etc/init.d/network start
+        /etc/init.d/mount-extra start
+    fi
+else
+    echo "$NEW_CONFIG"
+    echo "hostname = $HOSTNAME"
+    echo "network = $network"
+fi

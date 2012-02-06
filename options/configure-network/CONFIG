@@ -1,0 +1,69 @@
+# Network configuration from canned files with management script.
+#
+# This provides one (optional) startup script, mount-extra, for mounting NFS
+# mounts, and a network configuration script, configure-network, for switching
+# between networks.
+#
+# The basic network configuration consists of the following definitions:
+#
+#   NETWORKS_LIST
+#       A list of networks, each line of the form:
+#           <network-name> <netmask> [<gateway>]
+#
+#   RESOLV_CONF.<network-name>
+#       For each network name the appropriate resolv.conf file to use.
+#
+#   IP_LIST.<network-name>
+#       For each network name a list of machine names and associated IP
+#       addresses for that network.
+#
+# Optionally extra network specific mounts can be configured with the following
+# definitions:
+#
+#   MOUNT_EXTRA
+#       List of mount points to be created.  If this is not set then mount-extra
+#       is not installed.
+#
+#   FSTAB.<network-name>
+#       For each network name the appropiate fstab for extra mounts.
+#
+# Also, if HOSTNAME is specified then it will be selected on startup.
+
+RESOLV_CONF = none
+include $(commondir)/COMMON
+
+
+NETWORKS_LIST ?= $(optiondir)/networks
+RESOLV_CONF.pri ?= $(optiondir)/resolv.conf.pri
+RESOLV_CONF.lab ?= $(optiondir)/resolv.conf.lab
+
+networks := $(shell $(optiondir)/read-networks $(NETWORKS_LIST))
+
+# Tricky code to install each configured file, but not any others.
+# The second foreach is a clumsy way to check for existence.
+install_files = \
+    $(foreach network,$(networks), \
+        $(foreach resolv,$($1.$(network)), \
+            $(install) -f $(resolv) $2.$(network);))
+
+option: network-interface
+# 	$(install) $(optiondir)/configure-network /usr/sbin
+	sed 's/@@NW_PORT@@/$(NW_PORT)/' <$(optiondir)/configure-network \
+            >$(sysroot)/usr/sbin/configure-network
+	chmod +x $(sysroot)/usr/sbin/configure-network
+	$(install) -d /etc/configure-network
+	$(install) $(NETWORKS_LIST) /etc/configure-network
+	$(call install_files,RESOLV_CONF,/etc/resolv.conf)
+	$(call install_files,IP_LIST,/etc/configure-network/ip-list)
+
+ifneq ($(MOUNT_EXTRA),)
+	$(install) -d $(MOUNT_EXTRA)
+	$(call install_files,FSTAB,/etc/fstab)
+	$(startup) $(optiondir)/mount-extra
+endif
+
+ifneq ($(HOSTNAME),)
+	$(first-time) configure-network -w $(HOSTNAME)
+endif
+
+# vim: set filetype=make:

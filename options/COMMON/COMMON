@@ -1,5 +1,6 @@
 # Some common makefile definitions and targets to share among options.
 
+NW_PORT ?= eth0
 RESOLV_CONF ?= $(commondir)/resolv.conf
 
 network-resolv:
@@ -7,4 +8,10 @@ ifneq ($(RESOLV_CONF),none)
 	$(install) -f $(RESOLV_CONF) /etc/resolv.conf
 endif
 
-.PHONY: network-resolv
+network-interface:
+	$(install-files) $(commondir)/network.files
+	$(startup) $(commondir)/network
+
+.PHONY: network-resolv network-interface
+
+# vim: set filetype=make:

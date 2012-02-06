@@ -80,8 +80,12 @@ OPTIONS += mount-nfs ldconfig
 ifeq ($(BOOT),)
     OPTIONS += network
 else ifeq ($(BOOT),initramfs)
-    OPTIONS += network-mtd
+#     OPTIONS += network-mtd
 endif
+
+OPTIONS += configure-network
+IP_LIST.lab = $(configdir)/ip-list.lab
+HOSTNAME = colibri2
 
 
 final-install:

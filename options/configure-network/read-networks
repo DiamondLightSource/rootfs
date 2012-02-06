@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Simple helper script to extract list of networks from networks list file
+
+while read network args; do
+    if [ -n "$network" -a "$network" != '#' ]; then
+        echo $network
+    fi
+done <"$1"

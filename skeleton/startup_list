@@ -7,5 +7,6 @@ network.nvram   S100
 portmap         S110
 inetd           S200
 mountnfs        S220    K880
+mount-extra     S220
 ntpd            S800
 dropbear        -       K890
