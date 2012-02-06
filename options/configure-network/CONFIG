@@ -38,7 +38,7 @@ networks := $(shell $(optiondir)/read-networks $(NETWORKS_LIST))
 install_files = \
     $(foreach network,$(networks), \
         $(foreach resolv,$($1.$(network)), \
-            $(install) -f $(resolv) $2.$(network);))
+            $(install) -f $(resolv) $2.$(network) && )) true
 
 option: network-interface
 	sed 's/@@NW_PORT@@/$(NW_PORT)/' <$(optiondir)/configure-network \

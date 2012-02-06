@@ -23,7 +23,7 @@ values:
     This specifies the line speen for the console TTYs.
 
 Option `ldconfig`
-=================
+-----------------
 
 This option configures how /etc/ld.so.cache is initialised using one
 configuration value:
@@ -47,7 +47,7 @@ the loading of dynamic libraries.
 
 
 Option `network`
-================
+----------------
 
 This is used to configure a fixed IP address for the target system.  The
 `network` startup script is installed and `/etc/network/interfaces` is
@@ -68,19 +68,19 @@ constructed from the following settings:
 
 
 Option `network-mtd`
-====================
+--------------------
 
 Installs script for configuring the network from u-boot settings stored in
 `/dev/mtd0`.
 
 Option `network-nvram`
-======================
+----------------------
 
 Installs script for configuring the network from MOT load configuration settings
 stored in `/dev/nvram`.
 
 Option `configure-network`
-==========================
+--------------------------
 
 Installs network management script using predefined lists of available machine
 names and IP addresses.  Designed to be used to facilitate moving machines
@@ -109,12 +109,12 @@ network on first boot.
 
 
 Option `mount-nfs`
-==================
+------------------
 
 Adds startup script to load NFS entries from `/etc/fstab`.
 
 Option `mount-extra`
-====================
+--------------------
 
 Adds startup script to mount extra entries from a specified file.  Two
 parameters control this option:
