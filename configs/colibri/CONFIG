@@ -17,6 +17,7 @@ PACKAGES += strace lsof
 # Useful
 PACKAGES += nano mtd-utils libpcap tcpdump
 PACKAGES += screen
+PACKAGES += procServ
 
 # Miscellaneous extra components of variable utility.
 # PACKAGES += bash sudo

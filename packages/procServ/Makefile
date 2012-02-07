@@ -1,7 +1,17 @@
-# Make file for procServ.  It's too hard to configure, but actually the build
-# ought to be really easy.
+# Turns out to be *much* easier to rewrite the makefile from scratch than to
+# persuade configure and automake to work properly for an out of tree build.
 
-CC := $(CROSS_COMPILE)$(CC)
+PACKAGE_STRING = "procServ Process Server $(procServ_VERSION)"
+CPPFLAGS += -DPACKAGE_STRING='$(PACKAGE_STRING)'
+
+# Configuration settings actually needed.
+CPPFLAGS += -DHAVE_PTY_H
+CPPFLAGS += -DHAVE_FORKPTY
+CPPFLAGS += -DALLOW_FROM_ANYWHERE
+
+CXXFLAGS += $(CFLAGS)
+LDFLAGS += -lutil
+
 CXX := $(CROSS_COMPILE)$(CXX)
 
 SOURCES = \
