@@ -13,6 +13,7 @@ PACKAGES += strace lsof
 # Useful
 PACKAGES += nano mtd-utils libpcap tcpdump
 PACKAGES += screen
+PACKAGES += procServ
 
 # Miscellaneous extra components of variable utility.
 # PACKAGES += bash sudo
@@ -47,7 +48,7 @@ final-install:
 	$(startup) $(configdir)/ppcinit S900
 	$(groupadd) -g 500 dcs
 	$(useradd) -p '' -u 800 -g 500 epics
-	$(install) $(configdir)/mdev.conf /etc
+	cat $(configdir)/mdev.conf >>$(sysroot)/etc/mdev.conf
 
 OPTIONS += mount-extra ldconfig network-nvram
 LDCONFIG = once

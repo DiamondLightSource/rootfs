@@ -40,6 +40,7 @@ c 600 /dev/console 5 1
 f 644 /etc/group
 f 644 /etc/hosts
 f 644 /etc/ld.so.conf
+f 644 /etc/mdev.conf
 f 644 /etc/nsswitch.conf
 n 644 /etc/passwd
 f 644 /etc/profile
