@@ -77,12 +77,14 @@ by the following makefile definitions::
     TAR_FILE = $(COMPONENT)$(TAR_SEPARATOR)$(version)$(TAR_EXTENSION)
     SOURCE_DIR_NAME = $(COMPONENT)$(SOURCE_SEPARATOR)$(version)
     untar-extra = @:
+    patch-extra = @:
 
 A package description should overwrite the minimum possible: typically only
 `TAR_EXTENSION` needs to be overwritten.  The command `untar-extra` is invoked
 immediately after extracting the sources, and can be used to repair source
 directories with improper names, for example if the version number is not part
 of the source tree name.  See `ntpclient` package for an example of this.
+Similarly, `patch-extra` is invoked immediately after applying patches.
 
 Package sources should be properly identified by version, in particular for each
 version to be supported there needs to be a definition of the symbol
@@ -325,6 +327,9 @@ Symbols that can optionally be defined
     Commands to be executed after extracting source files but before patching.
     Use this rename directories or perform extra extraction operations.
 
+`patch-extra = @:`
+    Commands to be executed after patching.  This can be used to rebuild
+    configuration files if necessary.
 
 
 Global Symbols from Rootfs System
@@ -343,9 +348,6 @@ Global Symbols from Rootfs System
 `TOOLKIT_ROOT = $(BUILD_ROOT)/toolkit`
     Path to local prefix for installed toolkit.
 
-
-Symbols Used in Package Definitions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Target Specific Definitions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

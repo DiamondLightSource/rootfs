@@ -18,6 +18,7 @@ SOURCE_SEPARATOR = $(SEPARATOR)
 TAR_FILE = $(PACKAGE)$(TAR_SEPARATOR)$(version)$(TAR_EXTENSION)
 SOURCE_DIR_NAME = $(PACKAGE)$(SOURCE_SEPARATOR)$(version)
 untar-extra = @:
+patch-extra = @:
 #
 # Perhaps the above can be somewhat simplified?  Check existing packages and
 # TOOLKIT_MAKE for ideas.
