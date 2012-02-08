@@ -13,6 +13,8 @@ rm_root()
 
 trap rm_root EXIT
 
+PATH=$PATH:/dls_sw/prod/tools/RHEL5/bin
+
 make -C docs  &&
 ./rootfs toolkit \
     ROOTFS_ROOT="$ROOTFS_ROOT" ROOTFS_CONFIG=/dev/null \
