@@ -1,0 +1,30 @@
+inotify-tools_VERSION ?= 3.14
+
+TAR_EXTENSION = .tar.gz
+MD5_SUM_3.14 = b43d95a0fa8c45f8bab3aec9672cf30c
+
+# PATCHES_3.14 = configure-3.14.patch
+
+
+# Seems there's a date mismatch in the release (3.14, anyway), so to avoid grief
+# ensure we don't try to rebuild the offending file.
+untar-extra = touch $(srcdir)/libinotifytools/src/inotifytools/inotify.h.in
+# patch-extra = cd $(srcdir)/src  &&  automake
+# patch-extra = cd $(srcdir)  &&  autoreconf
+
+config:
+# 	cd $(O)  &&  \
+#         autoconf -o configure --include=$(srcdir) $(srcdir)/configure.ac
+	cd $(O)  &&  \
+        $(srcdir)/configure --srcdir=$(srcdir) CFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
+            --disable-doxygen
+
+build:
+	make -C $(O)
+
+# This fails to build.  The problem appears to be an incorrect use of relative
+# paths in src/Makefile.am, which I've attempted to patch, but I've not yet
+# succeeded in rebuilding the corresponding Makefile.in.
+
+# vim: set filetype=make:
