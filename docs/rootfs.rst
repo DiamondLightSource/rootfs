@@ -33,8 +33,8 @@ building a complete but minimal bootable Linux distribution, excluding the
 kernel which must be built separately.  Building a rootfs involves the
 following steps, all of which are automated by this set of scripts.
 
-1.  Building packages (or "components") to be installed on the target system.
-    The process assumes that `busybox` is one of the packages installed.
+1.  Building packages to be installed on the target system.  The process assumes
+    that `busybox` is one of the packages installed.
 
 2.  Assembling a complete rootfs image, consisting of a complete system
     directory tree following (though not conforming to) the `Filesystem

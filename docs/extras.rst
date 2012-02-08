@@ -1,34 +1,75 @@
 .. _extras:
 .. default-role:: literal
 
-Extra Components
-================
+Selectable Packages
+===================
 
-Rootfs Components
------------------
+A number of existing projects have been configured to be cross-compiled for
+rootfs.  Packages are selected for inclusion in a build by adding their names to
+the `PACKAGES` symbol.  Any rootfs build should normally include the following
+packages:
 
-The following "extra" components can be included in any rootfs build.
+`busybox`
+    This is required for all rootfs operation, there's no point in trying to
+    build without this without significant rework.
+
+`dropbear`
+    Provides ssh access.
+
+`ntp`
+    Time synchronisation.
+
+`portmap`
+    Needed for NTP file locking to work properly.
+
+
+List of Available Packages
+--------------------------
+
+The following packages can be included in any rootfs build.
 
 `bash`
     Web page: http://www.gnu.org/software/bash
 
-    The standard bash shell, but rather large.
+    The standard bash shell, but rather large.  Don't recommend using this,
+    instead work within the reasonable limitations of the busybox shell.
 
 `busybox`
     Web page: http://www.busybox.net/
 
     Collection of basic utilities.  This provides pretty well everything needed
-    to build a complete system.
+    to build a complete system and is mandatory for rootfs.
 
 `dropbear`
     Web page: http://matt.ucc.asn.au/dropbear/dropbear.html
 
-    Small ssh server and client.
+    Small ssh server and client, highly recommended.
+
+`i2c-tools`
+    Web page: http://www.lm-sensors.org/wiki/I2CTools
+
+    Simple suite of tools for probing devices on the I2C bus.
+
+`libpcap`
+    Web page: http://www.tcpdump.org/
+
+    Low level package capture interface library needed by `tcpdump`.
+
+`lm_sensors`
+    Web page: http://www.lm-sensors.org
+
+    Not sure that this tool is terribly useful.  Provides `sensors` tool for
+    displaying information about some sensor devices.
+
+`lshw`
+    Web page: http://ezix.org/project/wiki/HardwareLiSter
+
+    Lists available hardware, but not a greate match for embedded systems.
 
 `lsof`
     Web page: http://people.freebsd.org/~abe/
 
-    Lists all open files.  Rather horrible to configure!
+    Lists all open files.  Can be very useful, worth including in the build.
 
 `mtd-utils`
     Web page: http://www.linux-mtd.infradead.org/source.html
@@ -42,7 +83,7 @@ The following "extra" components can be included in any rootfs build.
 `nano`
     Web page: http://www.nano-editor.org/
 
-    Small editor
+    Small editor.  It's probably best to stick with `vi` from busybox.
 
 `nfs-utils`
     Web page: http://linux-nfs.org and http://nfs.sourceforge.net
@@ -57,7 +98,7 @@ The following "extra" components can be included in any rootfs build.
     Web page: http://www.ntp.org/
 
     The definitive NTP clock synchronisation reference implementation.
-    Rather large, but very functional.
+    Rather large, but very functional.  Use this package.
 
 `ntpclient`
     Web page: http://doolittle.icarus.com/ntpclient/
@@ -89,6 +130,12 @@ The following "extra" components can be included in any rootfs build.
     Updated proc monitoring program, updated recently, but doesn't look all
     that great.
 
+`procServ`
+    Web page: http://procserv.sourceforge.net/
+
+    Tool for running programs in background with its own private terminal
+    connected to an open Telnet port.
+
 `Python`
     Web page: http://python.org
 
@@ -97,49 +144,31 @@ The following "extra" components can be included in any rootfs build.
 `screen`
     Web page: http://www.gnu.org/software/screen/
 
-    Needs an awkward patch to cross compile properly.
+    Runs programs in the background with their own private terminal which can be
+    reconnected at any time.
 
 `strace`
     Web page: http://sourceforge.net/projects/strace/
 
-    Invaluable debugging tool.
+    Invaluable debugging tool.  Install this!
 
 `sudo`
     Web page: http://www.gratisoft.us/sudo/
 
     Controled delegation of authority.
 
+`tcpdump`
+    Web page: http://www.tcpdump.org/
+
+    Powerful command line network packet analyser.  Depends on `libpcap`.
+
 `testing`
     Example for components with local sources.
 
+`zlib`
+    Web page: http://zlib.net/
 
-These components may be implemented at a later date:
-
-`epics`
-    This should probably be built separately.
-
-`systemtap`
-    Web page: http://sourceware.org/systemtap/
-
-    Alternative to strace?  Not yet investigated.
-
-`tcp_wrappers`
-    Web page: ftp://ftp.porcupine.org/pub/security/index.html
-
-    Provides libwrap, possibly wanted by nfs-utils.
-
-
-
-The components below are appropriate for a basic system:
-
-`busybox`
-    Not optional, unless replaced by something equivalent.
-`dropbear`
-    Ssh server.
-`ntp` or `openntpd`
-    One of these is needed to provide NTP synchronisation.
-`portmap`
-    Required for NFS locking.
+    Compression library.  Not sure why this is included.
 
 
 Toolkit Components
@@ -173,8 +202,25 @@ May well also need up to date versions of `automake` and `libtool`.
 Notes on Cross Compiling
 ------------------------
 
-Cross compiling various components ranges from easy through tricky to damn
-near impossible, particularly as we also want to build out of tree.
+Preparing packages for building with rootfs presents three challenges:
+
+1.  Not all projects support cross compilation.  The biggest obstacle tends to
+    be `./configure` tests which rely on running the built target fragment,
+    which is not practical -- such configurations need to be patched or worked
+    around.
+
+2.  Rootfs has followed a policy of making all builds "out of tree" so that a
+    single source directory can be shared among a number of target builds, and
+    this is enforced by making the source directory read-only after extraction.
+
+    Unfortunately a number of tools and projects generate many headaches when
+    trying to build out of tree.  Solutions range from configuration patches
+    through linking or copying selected files to building the package more
+    directly.
+
+3.  Most packages install far too many files for a rootfs build, so typically
+    the install step needs to be worked out and redone.
+
 
 For many the standard `configure` script is well behaved and all that
 is needed is something along these lines::
@@ -208,14 +254,9 @@ particular mechanisms:
     mtd-utils
     testing
 
-Haven't figured this one out yet:
-
-    i2c-tools
-
-
 These ones are troublesome:
 
-    inotify-tools
+    i2c-tools
     lm_sensors
     lshw
     lsof
@@ -226,13 +267,8 @@ These ones are troublesome:
 
 
 `inotify-tools`
-    For this one have to make two patches before building:
-
-    * The test for `sys/inotify.h` needs to be defeated when cross compiling
-    * The include paths need to be modified to make includes work.
-
-    After patching aclocal and autoconf need to be run, but after that the
-    `./configure` script works correctly.
+    This one doesn't build properly yet, it's still work in progress.  There are
+    problems with relative paths and rebuilding the make files.
 
 `lm_sensors`
     For this to work we need to construct a skeletal build directory structure
@@ -260,6 +296,4 @@ These ones are troublesome:
     Much the same as `ntpclient`.
 
 `Python`
-    Oh my God.  No, it's horrible, it doesn't work.
-
-    Actually, it's not quite so bad, but certainly needs more work...
+    This one is hard, and doesn't work properly yet.
