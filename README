@@ -1,0 +1,18 @@
+Rootfs Builder Framework
+
+See docs/html/index.html (after running `make -C docs` if necessary for
+details).
+
+This is a framework for building a minimal busybox based root file system.
+
+This can be used in one of two ways:
+
+1.  Check out a local copy and copy or modify an existing configs entry.
+
+2.  Use a publicly installed copy.  The official location is under
+        /dls_sw/prod/targetOS/rootfs
+
+When using a fixed copy of rootfs an external configuration can be used by
+setting TARGET in the invocation of rootfs thus:
+
+        /dls_sw/prod/targetOS/rootfs/1-0/rootfs make TARGET=$(pwd)/myconfig

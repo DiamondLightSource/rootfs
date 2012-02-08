@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# This script should only be run to create a production release of rootfs.
+
+Error() { echo >&2 "$@"; exit 1; }
+
+RELEASE="${1:?Specify release number}"
+
+SVN_TRUNK="$SVN_ROOT/diamond/trunk/targetOS/rootfs"
+SVN_RELEASE="/diamond/release/targetOS/rootfs/$RELEASE"
+SVN_MESSAGE="Roofs: Create release $RELEASE"
+
+PROD_DIR=/dls_sw/prod/targetOS/rootfs
+
+# Prevent accidents.  If you get past this it's all your own fault!
+[[ "$2" = confirm ]]  ||  Error Must confirm release
+
+
+# Create svn release.
+svn copy -m "$SVN_MESSAGE" "$SVN_TRUNK" "$SVN_ROOT$SVN_RELEASE"  ||
+    Error Error making svn release
+
+RELEASE_JOB="
+    svn co \$SVN_ROOT$SVN_RELEASE  &&
+    cd $RELEASE  &&
+    scripts/release/build-release"
+queue-job -C "$PROD_DIR" -N "$RELEASE_JOB"
