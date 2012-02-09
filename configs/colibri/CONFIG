@@ -15,9 +15,11 @@ PACKAGES += ntp dropbear portmap
 # Useful debugging tools
 PACKAGES += strace lsof
 # Useful
-PACKAGES += nano mtd-utils libpcap tcpdump
+PACKAGES += nano mtd-utils
+PACKAGES += libpcap tcpdump
 PACKAGES += screen
 PACKAGES += procServ
+# PACKAGES += libnet arping
 
 # Miscellaneous extra components of variable utility.
 # PACKAGES += bash sudo
@@ -81,8 +83,8 @@ OPTIONS += ldconfig mount-extra
 ifeq ($(BOOT),)
     OPTIONS += network
 else ifeq ($(BOOT),initramfs)
-#     OPTIONS += network-mtd
-    OPTIONS += configure-network
+    OPTIONS += network-mtd
+#     OPTIONS += configure-network
 endif
 
 ifneq ($(filter configure-network,$(OPTIONS)),)
