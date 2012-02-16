@@ -34,7 +34,8 @@ PATCHES_1.15.3 =
 PATCHES_1.19.3 = \
     busybox-1.19.3-getty.patch \
     busybox-1.19.3-wget.patch \
-    busybox-1.19.3-modinfo.patch
+    busybox-1.19.3-modinfo.patch \
+    busybox-1.19.3-mdev.patch
 
 
 # If no config specified, use one we prepared earlier.
