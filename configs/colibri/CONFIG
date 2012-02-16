@@ -19,6 +19,7 @@ PACKAGES += nano mtd-utils
 PACKAGES += libpcap tcpdump
 PACKAGES += screen
 PACKAGES += procServ
+PACKAGES += i2c-tools
 # PACKAGES += libnet arping
 
 # Miscellaneous extra components of variable utility.
@@ -53,7 +54,7 @@ BOOT_LOADER = u-boot
 
 MKIMAGE = /dls_sw/targetOS/u-boot/colibri/mkimage
 
-KERNEL_NAME = colibri/uImage-colibri-3.2.1-colibri
+KERNEL_NAME = colibri/uImage-colibri-3.2.5-colibri
 KERNEL_ADDR = a0001000
 
 TFTP_SERVER = serv2:/tftpboot
