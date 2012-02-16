@@ -31,6 +31,9 @@ PACKAGES += i2c-tools
 # PACKAGES += openntpd
 # PACKAGES += ntpclient
 
+# Lua
+PACKAGES += readline lua
+
 
 # We need a number of extra settings for dropbear: thumb is a bit too slow for
 # dropbear (it's probably all that encryption), we need to enable inetd, we

@@ -1,0 +1,20 @@
+lua_VERSION ?= 5.2.0
+
+TAR_EXTENSION = .tar.gz
+MD5_SUM_5.2.0 = f1ea831f397214bae8a265995ab1a93e
+
+
+config:
+	mkdir $(O)/src
+	ln -sf $(srcdir)/Makefile $(O)
+	ln -sf $(srcdir)/src/Makefile $(O)/src
+
+build:
+	make -C $(O) CC=$(CROSS_COMPILE)gcc linux VPATH=$(srcdir)/src \
+            MYLDFLAGS=-L$(LIB_PREFIX)/usr/lib \
+            MYCFLAGS=-I$(LIB_PREFIX)/usr/include
+
+install:
+	$(install) -s $(O)/src/lua $(O)/src/luac /usr/bin
+
+# vim: set filetype=make:
