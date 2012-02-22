@@ -1,0 +1,20 @@
+conserver_VERSION ?= 8.1.18
+
+TAR_EXTENSION = .tar.gz
+MD5_SUM_8.1.18 = 93d1c38df71b4e3fd5d8f7ad6fc186bb
+
+PATCHES_8.1.18 = 8.1.18.makefile.patch
+
+config:
+	cp $(packagedir)/config.cache $(O)
+	cd $(O)  &&  \
+        $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) -C
+
+build:
+	make -C $(O)
+
+install:
+	$(install) -x $(O)/conserver/conserver /usr/bin
+
+# vim: set filetype=make:

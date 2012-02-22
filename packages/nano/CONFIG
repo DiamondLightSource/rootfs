@@ -13,3 +13,5 @@ build:
 
 install:
 	$(install) -s -m-w $(O)/src/nano /usr/bin
+
+# vim: set filetype=make:

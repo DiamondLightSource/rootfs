@@ -18,7 +18,7 @@ PACKAGES += strace lsof
 PACKAGES += nano mtd-utils
 PACKAGES += libpcap tcpdump
 PACKAGES += screen
-PACKAGES += procServ
+PACKAGES += procServ conserver
 PACKAGES += i2c-tools
 # PACKAGES += libnet arping
 

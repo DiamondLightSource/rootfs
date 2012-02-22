@@ -1,0 +1,71 @@
+diff -ur conserver-8.1.18.original/autologin/Makefile.in conserver-8.1.18/autologin/Makefile.in
+--- conserver-8.1.18.original/autologin/Makefile.in	2004-10-27 22:49:57.000000000 +0100
++++ conserver-8.1.18/autologin/Makefile.in	2012-02-22 14:32:29.000000000 +0000
+@@ -1,4 +1,5 @@
+ ### Path settings
++VPATH = @srcdir@
+ srcdir = @srcdir@
+ top_srcdir = @top_srcdir@
+ prefix = @prefix@
+diff -ur conserver-8.1.18.original/conserver/Makefile.in conserver-8.1.18/conserver/Makefile.in
+--- conserver-8.1.18.original/conserver/Makefile.in	2009-10-08 00:00:04.000000000 +0100
++++ conserver-8.1.18/conserver/Makefile.in	2012-02-22 14:32:29.000000000 +0000
+@@ -1,7 +1,9 @@
+ ### Path settings
++VPATH = @srcdir@
+ srcdir = @srcdir@
+ top_srcdir = @top_srcdir@
+ prefix = @prefix@
++datarootdir = @datarootdir@
+ exec_prefix = @exec_prefix@
+ sbindir = @sbindir@
+ sysconfdir = @sysconfdir@
+diff -ur conserver-8.1.18.original/conserver.cf/Makefile.in conserver-8.1.18/conserver.cf/Makefile.in
+--- conserver-8.1.18.original/conserver.cf/Makefile.in	2009-10-08 00:00:04.000000000 +0100
++++ conserver-8.1.18/conserver.cf/Makefile.in	2012-02-22 14:32:29.000000000 +0000
+@@ -1,6 +1,8 @@
+ ### Path settings
++VPATH = @srcdir@
+ srcdir = @srcdir@
+ prefix = @prefix@
++datarootdir = @datarootdir@
+ mandir = @mandir@
+ sysconfdir = @sysconfdir@
+ datadir = @datadir@
+diff -ur conserver-8.1.18.original/console/Makefile.in conserver-8.1.18/console/Makefile.in
+--- conserver-8.1.18.original/console/Makefile.in	2009-10-08 00:00:04.000000000 +0100
++++ conserver-8.1.18/console/Makefile.in	2012-02-22 14:32:29.000000000 +0000
+@@ -1,7 +1,9 @@
+ ### Path settings
++VPATH = @srcdir@
+ srcdir = @srcdir@
+ top_srcdir = @top_srcdir@
+ prefix = @prefix@
++datarootdir = @datarootdir@
+ exec_prefix = @exec_prefix@
+ bindir = @bindir@
+ sysconfdir = @sysconfdir@
+diff -ur conserver-8.1.18.original/contrib/chat/Makefile.in conserver-8.1.18/contrib/chat/Makefile.in
+--- conserver-8.1.18.original/contrib/chat/Makefile.in	2003-11-04 02:36:26.000000000 +0000
++++ conserver-8.1.18/contrib/chat/Makefile.in	2012-02-22 14:32:29.000000000 +0000
+@@ -1,7 +1,9 @@
+ ### Path settings
++VPATH = @srcdir@
+ srcdir = @srcdir@
+ top_srcdir = @top_srcdir@
+ prefix = @prefix@
++datarootdir = @datarootdir@
+ exec_prefix = @exec_prefix@
+ bindir = @bindir@
+ sysconfdir = @sysconfdir@
+diff -ur conserver-8.1.18.original/Makefile.in conserver-8.1.18/Makefile.in
+--- conserver-8.1.18.original/Makefile.in	2003-09-29 15:35:21.000000000 +0100
++++ conserver-8.1.18/Makefile.in	2012-02-22 14:32:29.000000000 +0000
+@@ -1,5 +1,7 @@
+ ### Path settings
++VPATH = @srcdir@
+ prefix = @prefix@
++datarootdir = @datarootdir@
+ exec_prefix = @exec_prefix@
+ bindir = @bindir@
+ mandir = @mandir@
