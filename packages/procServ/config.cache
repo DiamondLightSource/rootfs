@@ -1,0 +1,4 @@
+# Initial cache to bypass troublesome test for setpgrp
+
+ac_cv_func_setpgrp_set=
+ac_cv_func_setpgrp_void=yes

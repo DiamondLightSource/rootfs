@@ -6,10 +6,14 @@ MD5_SUM_2.5.1 = a6d3131361189458fc276ca4323efe46
 PATCHES_2.5.1 = 2.5.1.patch
 
 config:
-	cp $(packagedir)/Makefile $(O)
+	cp $(packagedir)/config.cache $(O)
+	cd $(O)  &&  \
+        $(srcdir)/configure CFLAGS='$(CFLAGS)' CXXFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) -C \
+            --disable-doc --enable-access-from-anywhere
 
 build:
-	$(call EXPORT,CFLAGS procServ_VERSION) $(MAKE) -C $(O) VPATH=$(srcdir)
+	make -C $(O)
 
 install:
 	$(install) -s -m-w $(O)/procServ /usr/bin
