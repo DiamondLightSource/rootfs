@@ -24,4 +24,4 @@ RELEASE_JOB="
     svn co \$SVN_ROOT$SVN_RELEASE  &&
     cd $RELEASE  &&
     scripts/release/build-release"
-queue-job -C "$PROD_DIR" -N "$RELEASE_JOB"
+queue-job -b -C "$PROD_DIR" -N "$RELEASE_JOB"
