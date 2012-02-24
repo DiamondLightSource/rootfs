@@ -19,3 +19,5 @@ build:
 install:
 	$(install) -s -m-w $(O)/ntpclient /usr/bin
 #	$(startup) $(packagedir)/ntpclient S210
+
+# vim: set filetype=make:

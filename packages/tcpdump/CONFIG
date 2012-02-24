@@ -26,3 +26,5 @@ install:
 # Network interface monitoring application.  Needs libpcap.
 #
 # Downloaded from www.tcpdump.org
+
+# vim: set filetype=make:

@@ -48,3 +48,5 @@ install:
 # sumtool
 #   Converts JFFS2 image to a summarised JFFS2 image: works on image files
 #   rather than real file systems.  Effect is to speed up mounting.
+
+# vim: set filetype=make:

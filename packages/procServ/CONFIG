@@ -6,10 +6,10 @@ MD5_SUM_2.5.1 = a6d3131361189458fc276ca4323efe46
 PATCHES_2.5.1 = 2.5.1.patch
 
 config:
-	cp $(packagedir)/config.cache $(O)
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' CXXFLAGS='$(CFLAGS)' \
-            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) -C \
+            ac_cv_func_setpgrp_void=yes \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --disable-doc --enable-access-from-anywhere
 
 build:

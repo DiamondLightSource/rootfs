@@ -15,3 +15,5 @@ build:
 
 install:
 	$(install) -f -s -m-w $(O)/procinfo /usr/bin/procinfo-ng
+
+# vim: set filetype=make:

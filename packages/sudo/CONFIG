@@ -24,3 +24,5 @@ ifeq ($(SUDOERS_FILE),)
 else
 	$(install) -f -m ug=r $(SUDOERS_FILE) /etc/sudoers
 endif
+
+# vim: set filetype=make:

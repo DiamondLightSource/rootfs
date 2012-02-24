@@ -18,3 +18,5 @@ install:
 #   http://www.lm-sensors.org/wiki/I2CTools
 # Download from:
 #   http://dl.lm-sensors.org/i2c-tools/releases/i2c-tools-3.0.2.tar.bz2
+
+# vim: set filetype=make:

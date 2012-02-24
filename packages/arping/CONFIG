@@ -22,7 +22,7 @@ install:
 #
 # http://www.habets.pp.se/synscan/programs.php?prog=arping
 #
-# Depends on both libnet and lippcap
+# Depends on both libnet and libpcap
 #
 # Actually, this tool is already present in busybox, so this is a fuller
 # featured version.

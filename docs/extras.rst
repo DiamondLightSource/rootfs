@@ -28,6 +28,14 @@ List of Available Packages
 
 The following packages can be included in any rootfs build.
 
+`arping`
+    Web page: http://www.habets.pp.se/synscan/programs.php?prog=arping
+
+    ARP ping tool, but actually not so useful, as already built into `busybox`.
+
+    Depends on both `libnet` and `libpcap` to build, simple example of building
+    a package with library dependencies.
+
 `bash`
     Web page: http://www.gnu.org/software/bash
 
@@ -40,6 +48,12 @@ The following packages can be included in any rootfs build.
     Collection of basic utilities.  This provides pretty well everything needed
     to build a complete system and is mandatory for rootfs.
 
+`conserver`
+    Web page: http://www.conserver.com/
+
+    Tool for logging console output.  Probably much simpler to use `procServ`
+    and an external logging mechanism for most applications.
+
 `dropbear`
     Web page: http://matt.ucc.asn.au/dropbear/dropbear.html
 
@@ -48,12 +62,27 @@ The following packages can be included in any rootfs build.
 `i2c-tools`
     Web page: http://www.lm-sensors.org/wiki/I2CTools
 
-    Simple suite of tools for probing devices on the I2C bus.
+    Simple suite of tools for probing devices on the I2C bus.  An example of
+    highly invasive patching for building.
+
+`inotify-tools`
+    Web page: https://github.com/rvoicilas/inotify-tools/wiki/
+
+    Simple command line interface to inotify(7).  Alas the build is currently
+    thoroughly broken, looks quite difficult to fix for out of tree build.
+
+`libnet`
+    Web page: http://packetfactory.openwall.net/projects/libnet/
+
+    Packet construction library, used by `arping`.  Rather confusingly, there
+    seem to be two completely different versions of this library, it looks as if
+    the version at http://libnet.sourceforge.net/ is out of date.
 
 `libpcap`
     Web page: http://www.tcpdump.org/
 
-    Low level package capture interface library needed by `tcpdump`.
+    Low level package capture interface library needed by `tcpdump` and
+    `arping`.
 
 `lm_sensors`
     Web page: http://www.lm-sensors.org
@@ -71,6 +100,20 @@ The following packages can be included in any rootfs build.
 
     Lists all open files.  Can be very useful, worth including in the build.
 
+    This is an instructive example of a particularly horrible build.  This build
+    takes a lot of modification to build out of tree.
+
+`ltrace`
+    Web page: http://ltrace.alioth.debian.org/
+
+    Trace library calls.  Unfortunately broken for ARM, at least on recent
+    kernels.
+
+`lua`
+    Web page: http://www.lua.org/
+
+    Lua the language.  A very small embeddable language.  Depends on `readline`.
+
 `mtd-utils`
     Web page: http://www.linux-mtd.infradead.org/source.html
 
@@ -83,7 +126,8 @@ The following packages can be included in any rootfs build.
 `nano`
     Web page: http://www.nano-editor.org/
 
-    Small editor.  It's probably best to stick with `vi` from busybox.
+    Small editor.  It's probably best to stick with `vi` from busybox.  A
+    canonical example of a simple build that just works.
 
 `nfs-utils`
     Web page: http://linux-nfs.org and http://nfs.sourceforge.net
@@ -140,6 +184,11 @@ The following packages can be included in any rootfs build.
     Web page: http://python.org
 
     Python.  Unfortunately not yet successfully fully cross built.
+
+`readline`
+    Web page: http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html
+
+    Readline library, needed by `lua`.
 
 `screen`
     Web page: http://www.gnu.org/software/screen/

@@ -40,3 +40,5 @@ install:
 
 # prog/sensord requires RRD, apparently available from
 #   http://people.ee.ethz.ch/~oetiker/webtools/rrdtool/
+
+# vim: set filetype=make:

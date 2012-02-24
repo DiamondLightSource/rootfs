@@ -1,8 +1,8 @@
 #!/bin/bash
 
-TARGET_DIR="${1:?}"
-TAR_FILE="${2:?}"
-MD5_SUM="${3:?}"
+TARGET_DIR="${1:?Target directory missing}"
+TAR_FILE="${2:?No tar file specified}"
+MD5_SUM="${3:?No MD5 sum specified}"
 shift 3
 
 

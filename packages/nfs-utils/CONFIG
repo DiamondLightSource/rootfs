@@ -22,3 +22,5 @@ build:
 install:
         # Don't know which files will really be useful, as this isn't used at
         # all yet!
+
+# vim: set filetype=make:

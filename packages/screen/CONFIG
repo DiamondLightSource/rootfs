@@ -17,3 +17,5 @@ build:
 
 install:
 	$(install) -s -m-w $(O)/screen /usr/bin
+
+# vim: set filetype=make:

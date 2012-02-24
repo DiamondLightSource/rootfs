@@ -8,3 +8,5 @@ build-local: $(TEST_FILES)
 
 install:
 	$(install) -s -m-w $(TEST_FILES:%=$(O)/%) /usr/bin
+
+# vim: set filetype=make:

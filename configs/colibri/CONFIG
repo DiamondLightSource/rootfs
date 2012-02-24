@@ -13,7 +13,7 @@ PACKAGES += busybox
 # Components required for normal operation.
 PACKAGES += ntp dropbear portmap
 # Useful debugging tools
-PACKAGES += strace lsof
+PACKAGES += strace lsof ltrace
 # Useful
 PACKAGES += nano mtd-utils
 PACKAGES += libpcap tcpdump

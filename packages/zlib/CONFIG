@@ -22,3 +22,5 @@ install-lib:
 	cp $(O)/libz.a $(O)/libz.so* $(LIB_PREFIX)/usr/lib
 
 install:    # Nothing to install
+
+# vim: set filetype=make:

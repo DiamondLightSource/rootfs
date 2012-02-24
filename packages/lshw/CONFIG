@@ -25,3 +25,5 @@ install:
 #   http://ezix.org/project/wiki/HardwareLiSter
 # Download using subversion from
 #   http://dev.ezix.org/source/packages/lshw/releases
+
+# vim: set filetype=make:

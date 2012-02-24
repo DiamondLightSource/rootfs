@@ -54,3 +54,5 @@ install:
 # overridden from outside.
 
 # The current build works okish, but we don't know how to install it.
+
+# vim: set filetype=make:
