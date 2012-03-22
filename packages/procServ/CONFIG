@@ -1,14 +1,14 @@
-procServ_VERSION ?= 2.5.1
+procServ_VERSION ?= 2.6.0.rc1
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_2.5.1 = a6d3131361189458fc276ca4323efe46
+MD5_SUM_2.6.0.rc1 = 24d13ec413996ef202c8e31fb4552073
 
 PATCHES_2.5.1 = 2.5.1.patch
 
 config:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' CXXFLAGS='$(CFLAGS)' \
-            ac_cv_func_setpgrp_void=yes \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --disable-doc --enable-access-from-anywhere
 

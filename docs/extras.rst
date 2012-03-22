@@ -346,3 +346,18 @@ These ones are troublesome:
 
 `Python`
     This one is hard, and doesn't work properly yet.
+
+
+For problems where the `configure` script needs to be rebuilt it can be helpful
+to force post patching by defining the symbol `patch-extra`, for example::
+
+    patch-extra = cd $(srcdir)  &&  autoreconf --force --install --symlink
+
+Alternatively it may be possible to bypass some configuration problems by
+defining certain symbols when calling `configure` to bypass troublesome tests.
+For example this configure command bypasses a troublesome SETPGRP test::
+
+    $(srcdir)/configure CFLAGS='$(CFLAGS)' CXXFLAGS='$(CFLAGS)' \
+        ac_cv_func_setpgrp_void=yes \
+        --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
+        --disable-doc --enable-access-from-anywhere
