@@ -1,5 +1,8 @@
 # Configuration file for colibri target.
 
+# Set this line to yes to enable the normal console
+ENABLE_CONSOLE = no
+
 # Package definitions for colibri
 
 TOOLCHAIN = powerpc-5500
@@ -29,8 +32,10 @@ PACKAGES += procServ
 
 ROOTFS_VERSION = MVME 5500 Rootfs Testing
 
+ifeq ($(ENABLE_CONSOLE),yes)
 CONSOLE_BAUD = 9600
 CONSOLE_TTY = ttyS0
+endif
 
 ROOT_PASSWORD = Jungle
 
@@ -41,14 +46,24 @@ INETD_ENABLE = y
 
 TERMS = xterm xterm-color screen vt100 vt102
 
-MOUNT_EXTRA = /dls_sw/prod /dls_sw/work /dls_sw/epics
-EXTRA_FSTAB = $(configdir)/fstab
+MOUNT_EXTRA = /dls_sw/prod /dls_sw/work /dls_sw/epics \
+    /exports/home/ops-iocs/prod
 
 final-install:
+ifeq ($(ENABLE_CONSOLE),yes)
 	$(startup) $(configdir)/ppcinit S900
+else
+	$(install) $(configdir)/runppcioc /
+	echo '::respawn:/runppcioc' >>$(sysroot)/etc/inittab
+endif
 	$(groupadd) -g 500 dcs
 	$(useradd) -p '' -u 800 -g 500 epics
+	echo 'SYSLOGD_OPTIONS=-O/dev/console' >$(sysroot)/etc/syslogd
 	cat $(configdir)/mdev.conf >>$(sysroot)/etc/mdev.conf
+
+	$(install) $(configdir)/fstab.lab $(configdir)/fstab.pri /etc
+	$(startup) $(configdir)/configextra S110
+
 
 OPTIONS += mount-extra ldconfig network-nvram
 LDCONFIG = once

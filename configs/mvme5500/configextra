@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# From our IP address determine whether we're on the primary or development
+# network
+
+# Extract third field from IP address
+SUBIP="$(
+    ifconfig eth0 |
+    sed -n '/.*inet addr:/{s///; s/ .*//; p}' |
+    cut -d. -f3)"
+
+if [ $((SUBIP & 0xf0)) -eq 192 ]; then
+    # Primary network
+    echo 'FSTABS=/etc/fstab.pri' >/etc/mount-extra
+else
+    # Development network
+    echo 'FSTABS=/etc/fstab.lab' >/etc/mount-extra
+fi

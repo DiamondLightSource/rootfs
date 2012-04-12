@@ -6,14 +6,18 @@
 REDIRECT_TABLE=/dls_sw/prod/etc/redirector/redirect_table
 IOC=$(hostname)
 
+IOC_PORT=7001
+
+
 # Runs command after changing to its base directory
 launch()
 {
     COMMAND="$1"
     shift
-    cd "$(dirname "$1")"  &&
-    su -c "$COMMAND $*" epics &
-    echo $! >/var/run/ioc.pid
+
+    procServ -c "$(dirname "$COMMAND")" --allow  \
+        -p /var/run/ioc.pid -L/dev/console \
+        $IOC_PORT /bin/su -c "$COMMAND $*" epics
 }
 
 do_start()
@@ -23,6 +27,7 @@ do_start()
         launch $COMMAND
     else
         echo No IOC defined for $IOC
+        return 1
     fi
 }
 
