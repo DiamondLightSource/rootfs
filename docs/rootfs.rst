@@ -419,3 +419,16 @@ The individual settings here are discussed in detail below.
 
 `TFTP_SERVER`
     TFTP server to which the generated files will be written.
+
+
+Creating a Release
+------------------
+
+Released snapshots of rootfs are installed under `/dls_sw/prod/targetOS/rootfs`
+and include prebuilt copies of the toolkit in a hidden `.toolkit` subdirectory.
+To create a release run the command::
+
+    scripts/release/release $VERSION
+
+where `$VERSION` is the release number to be created.  Note that the release
+process uses the `queue-job` command.
