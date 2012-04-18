@@ -9,7 +9,7 @@
 # The following symbol may be overridden, but has a sensible default.
 #
 #   ROOTFS_CONFIG
-#       This defaults to $(ROOTFS_TOP)/CONFIG.  This file can contain
+#       This defaults to $(ROOTFS_TOP)/CONFIG.local.  This file can contain
 #       overrides for other symbols.
 
 
@@ -30,7 +30,7 @@ SOURCE_ROOT = $(ROOTFS_ROOT)/src
 TOOLKIT_ROOT = $(ROOTFS_ROOT)/toolkit
 TOOLKIT_BIN = $(TOOLKIT_ROOT)/bin
 
-ROOTFS_CONFIG ?= $(ROOTFS_TOP)/CONFIG
+ROOTFS_CONFIG ?= $(ROOTFS_TOP)/CONFIG.local
 
 TAR_DIRS = /dls_sw/prod/targetOS/tar-files
 

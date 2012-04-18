@@ -66,8 +66,8 @@ Configuration and specification of a rootfs build requires that the following
 be specified:
 
 * File locations for rootfs, including workspace and toolkit locations.  This is
-  specified in a configuration file (`CONFIG`) that is either placed in the root
-  directory of the rootfs builder, or is specified (as the symbol
+  specified in a configuration file (`CONFIG.local`) that is either placed in
+  the root directory of the rootfs builder, or is specified (as the symbol
   `ROOTFS_CONFIG`) on the command line or as an environment variable.
 
 * Package specifications (largely already integrated into `rootfs`).
@@ -88,7 +88,7 @@ and execute the following commands::
 
     svn co $SVN_ROOT/diamond/trunk/targetOS/rootfs
     cd rootfs
-    cp CONFIG.example CONFIG
+    cp CONFIG.example CONFIG.local
     ./rootfs toolkit
     ./rootfs all
     ./rootfs make
@@ -96,20 +96,20 @@ and execute the following commands::
 `svn co $SVN_ROOT/diamond/trunk/targetOS/rootfs`
     Note that the rootfs is designed to be run without modifying any local
     files, so that if a "production" release of rootfs exists this can be used
-    instead of checking out a local copy.  See the note on `CONFIG` first,
+    instead of checking out a local copy.  See the note on `CONFIG.local` first,
     though.
 
-`cp CONFIG.example CONFIG`
-    The `CONFIG` file can be used to override some of the default behaviour of
-    the `rootfs` command, in particular here we want to specify where `rootfs`
-    will place its working files (configured by the `ROOTFS_ROOT` symbol
-    definition) and the default `TARGET`.
+`cp CONFIG.example CONFIG.local`
+    The `CONFIG.local` file can be used to override some of the default
+    behaviour of the `rootfs` command, in particular here we want to specify
+    where `rootfs` will place its working files (configured by the `ROOTFS_ROOT`
+    symbol definition) and the default `TARGET`.
 
     If running `rootfs` out of a read only directory then a local copy of
-    `CONFIG` can be created and used by running the commands below before
+    `CONFIG.local` can be created and used by running the commands below before
     running `rootfs`::
 
-        export ROOTFS_ROOT=~/local/path/CONFIG
+        export ROOTFS_ROOT=~/local/path/CONFIG.local
         cp /path/to/rootfs/CONFIG.example $ROOTFS_ROOT
 
 `./rootfs toolkit`
@@ -149,7 +149,7 @@ Running the rootfs builder requires the following steps.
 * Build the selected target.
 
 For the final two steps a target configuration must be specified by setting
-the symbol `TARGET`, either in the `CONFIG` file or on the command line.
+the symbol `TARGET`, either in the `CONFIG.local` file or on the command line.
 
 
 `rootfs` Command
@@ -190,12 +190,13 @@ the commands above to override the default makefile definitions.
 `ROOTFS_CONFIG`
     Location of the rootfs configuration file.  This should define any further
     overrides needed.  If no `ROOTFS_CONFIG` is specifed then configuration will
-    be read from a `CONFIG` file in the root directory of the rootfs if present.
+    be read from a `CONFIG.local` file in the root directory of the rootfs if
+    present.
 
 `TARGET`
-    A default build target can be specified in the `CONFIG` file, but this can
-    be overridden by passing a `TARGET` definition on the command line.  This
-    can be given in one of two formats:
+    A default build target can be specified in the `CONFIG.local` file, but this
+    can be overridden by passing a `TARGET` definition on the command line.
+    This can be given in one of two formats:
 
     `TARGET=`\ *<target-name>*
         If the *<target-name>* is not a path (does not contain a `/` character)
@@ -216,9 +217,9 @@ Configuring the Rootfs
 
 A number of directories and other make symbols must be specified for the
 rootfs builder to operate.  As noted above, these can be overridden or updated
-in a `CONFIG` file (read from `$(ROOTFS_TOP)/CONFIG` or specified on the
-command line).  The list below documents some symbols that can be specified in
-this file and their default values.
+in a `CONFIG.local` file (read from `$(ROOTFS_TOP)/CONFIG.local` or specified on
+the command line).  The list below documents some symbols that can be specified
+in this file and their default values.
 
 
 `ROOTFS_ROOT = /scratch/tmp/rootfs`

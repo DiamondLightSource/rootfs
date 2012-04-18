@@ -1,7 +1,6 @@
-# Local definitinos and overrides.
+# Local definitinos and overrides.  Copy this to CONFIG.local if required and
+# edit accordingly.
 
 TARGET = example
 
-TAR_DIRS += /dls_sw/work/targetOS/tar-files
-
-ROOTFS_ROOT = /scratch/tmp/rootfs
+# vim: set filetype=make:
