@@ -1,7 +1,7 @@
 # Configuration file for colibri target.
 
 # Set this line to yes to enable the normal console
-ENABLE_CONSOLE = no
+ENABLE_CONSOLE = yes
 
 # Package definitions for colibri
 
@@ -32,10 +32,8 @@ PACKAGES += procServ
 
 ROOTFS_VERSION = MVME 5500 Rootfs Testing
 
-ifeq ($(ENABLE_CONSOLE),yes)
 CONSOLE_BAUD = 9600
 CONSOLE_TTY = ttyS0
-endif
 
 ROOT_PASSWORD = Jungle
 
@@ -50,12 +48,7 @@ MOUNT_EXTRA = /dls_sw/prod /dls_sw/work /dls_sw/epics \
     /exports/home/ops-iocs/prod
 
 final-install:
-ifeq ($(ENABLE_CONSOLE),yes)
-	$(startup) $(configdir)/ppcinit S900
-else
-	$(install) $(configdir)/runppcioc /
-	echo '::respawn:/runppcioc' >>$(sysroot)/etc/inittab
-endif
+	$(startup) $(configdir)/epics S900
 	$(groupadd) -g 500 dcs
 	$(useradd) -p '' -u 800 -g 500 epics
 	echo 'SYSLOGD_OPTIONS=-O/dev/console' >$(sysroot)/etc/syslogd
@@ -63,6 +56,7 @@ endif
 
 	$(install) $(configdir)/fstab.lab $(configdir)/fstab.pri /etc
 	$(startup) $(configdir)/configextra S110
+	$(install) $(configdir)/console-ioc /usr/bin
 
 
 OPTIONS += mount-extra ldconfig network-nvram

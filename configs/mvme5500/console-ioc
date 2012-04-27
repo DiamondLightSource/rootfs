@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Run the IOC directly from the console
+
+# Make sure it's not already running
+/etc/init.d/epics stop
+
+REDIRECT_TABLE=/dls_sw/prod/etc/redirector/redirect_table
+COMMAND="$(sed -n "/^$(hostname) /"'{s///; p;}' $REDIRECT_TABLE)"
+
+cd "$(dirname "$COMMAND")"
+/bin/su -c "$COMMAND $*" epics
