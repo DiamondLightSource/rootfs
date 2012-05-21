@@ -59,6 +59,11 @@ The following packages can be included in any rootfs build.
 
     Small ssh server and client, highly recommended.
 
+`ethtool`
+    Web page: http://sourceforge.net/projects/gkernel/
+
+    Utility for direct control of ethernet device settings.
+
 `i2c-tools`
     Web page: http://www.lm-sensors.org/wiki/I2CTools
 
