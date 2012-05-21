@@ -1,8 +1,5 @@
 # Configuration file for colibri target.
 
-# Set this line to yes to enable the normal console
-ENABLE_CONSOLE = yes
-
 # Package definitions for colibri
 
 TOOLCHAIN = powerpc-5500
