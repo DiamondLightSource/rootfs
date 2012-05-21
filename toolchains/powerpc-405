@@ -1,3 +1,5 @@
 # Toolchain definitions for standard DLS PowerPC cross compiler
 TOOLCHAIN_VERSION = gcc-4.3.2-glibc-2.6.1
 COMPILER_PREFIX = powerpc-405-linux-gnu
+
+# vim: set filetype=make:

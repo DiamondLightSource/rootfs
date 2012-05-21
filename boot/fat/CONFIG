@@ -2,3 +2,5 @@ $(O)/core.img: $(O)/imagefile.cpio.gz
 	$(bootdir)/make-fat $(KERNEL_IMAGE) $< $(O) $(TARGET_SIZE)
 
 boot: $(O)/core.img
+
+# vim: set filetype=make:

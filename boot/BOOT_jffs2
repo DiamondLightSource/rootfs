@@ -59,3 +59,5 @@ make -C "$HERE"/mtd-utils-1.2.0 \
 # lzo
 #     Web page: http://www.oberhumer.com/opensource/lzo/
 #     Another compression library, needed for mkfs.jffs2.
+
+# vim: set filetype=make:

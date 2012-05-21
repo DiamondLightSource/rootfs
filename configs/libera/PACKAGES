@@ -29,3 +29,5 @@ CFLAGS = -O2 -mthumb
 CFLAGS_dropbear = -O2
 # Authorised keys to be installed when installing dropbear.
 SSH_AUTHORIZED_KEYS = $(configdir)/authorized_keys
+
+# vim: filetype=make:

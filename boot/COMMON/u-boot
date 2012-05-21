@@ -16,3 +16,5 @@ endif
 boot: push-boot-script
 
 .PHONY: push-boot-script $(O)/boot-script
+
+# vim: set filetype=make:

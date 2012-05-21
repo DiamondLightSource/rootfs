@@ -2,3 +2,5 @@ $(O)/syslinux.img: $(O)/imagefile.cpio.gz
 	$(bootdir)/make-syslinux $(KERNEL_IMAGE) $< $(O) $(TARGET_SIZE)
 
 boot: $(O)/syslinux.img
+
+# vim: set filetype=make:

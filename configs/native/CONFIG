@@ -35,3 +35,5 @@ NW_DHCP = yes
 NW_HOSTNAME = testing
 
 DROPBEAR_KEYS = y
+
+# vim: filetype=make:

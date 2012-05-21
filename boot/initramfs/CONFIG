@@ -20,3 +20,5 @@ boot: $(O)/imagefile.cpio.gz $(O)/$(IMAGE_NAME)
 ifdef TFTP_SERVER
 	scp $< $(TFTP_SERVER)/$(IMAGE_NAME)
 endif
+
+# vim: set filetype=make:

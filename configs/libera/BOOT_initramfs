@@ -1,1 +1,3 @@
 IMAGE_ADDR = a2000000
+
+# vim: filetype=make:

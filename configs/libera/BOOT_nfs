@@ -2,3 +2,5 @@ NFS_SERVER = pc0013
 NFS_ROOTFS = /scratch/mga83/rootfs/$(TARGET)
 
 NETWORK = nfs
+
+# vim: filetype=make:

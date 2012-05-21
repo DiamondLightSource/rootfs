@@ -8,3 +8,5 @@ endif
 
 $(O)/imagefile.cpio.gz: $(O)/imagefile.cpio
 	gzip -c -1 $< >$@
+
+# vim: set filetype=make:

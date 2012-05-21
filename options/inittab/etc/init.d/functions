@@ -63,3 +63,5 @@ do_start_stop()
         *)  start_stop_usage "$@" ;;
     esac
 }
+
+# vim: filetype=sh:

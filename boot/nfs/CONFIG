@@ -18,3 +18,5 @@ boot: $(O)/imagefile.cpio
             'cd $(NFS_ROOTFS) && \
              sudo cpio -i </tmp/imagefile.cpio && \
              rm /tmp/imagefile.cpio'
+
+# vim: set filetype=make:

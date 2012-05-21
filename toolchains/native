@@ -2,3 +2,5 @@
 COMPILER_PREFIX =
 BINUTILS_DIR = /
 SYSROOT = /
+
+# vim: set filetype=make:

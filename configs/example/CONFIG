@@ -62,3 +62,5 @@ IMAGE_ADDR = a2000000
 # The updated boot script and initramfs image is pushed out to this location
 # using scp.
 TFTP_SERVER = serv3:/tftpboot
+
+# vim: filetype=make:

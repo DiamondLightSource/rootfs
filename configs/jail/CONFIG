@@ -20,3 +20,5 @@ EXTRA_LIBS += libdl libnsl
 
 final-install:
 	$(install-files) $(configdir)/file-list
+
+# vim: filetype=make:
