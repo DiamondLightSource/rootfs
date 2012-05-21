@@ -65,6 +65,11 @@ The following packages can be included in any rootfs build.
     Simple suite of tools for probing devices on the I2C bus.  An example of
     highly invasive patching for building.
 
+`iftop`
+    Web page: http://www.ex-parrot.com/pdw/iftop/
+
+    Displays network usage.
+
 `inotify-tools`
     Web page: https://github.com/rvoicilas/inotify-tools/wiki/
 

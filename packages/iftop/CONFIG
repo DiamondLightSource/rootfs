@@ -1,0 +1,22 @@
+iftop_VERSION ?= 1.0pre2
+
+TAR_EXTENSION = .tar.gz
+MD5_SUM_1.0pre2 = fef521a49ec0122458d02c64212af3c5
+
+export LDFLAGS  += -L$(LIB_PREFIX)/usr/lib
+export CPPFLAGS += -I$(LIB_PREFIX)/include
+
+config:
+	mkdir -p $(O)/config
+	for f in $(srcdir)/config/*; do ln -sf $$f $(O)/config; done
+	cd $(O)  &&  \
+        $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
+
+build:
+	make -C $(O)
+
+install:
+	$(install) -s -m-w $(O)/iftop /usr/bin
+
+# vim: set filetype=make:
