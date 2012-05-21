@@ -9,14 +9,14 @@ first reference when using and developing Linux distributions using the rootfs
 builder.  See the following further references, or jump straight to
 :ref:`quick-start` if you are impatient.
 
-* :doc:`extras`.  This is a list of all the available packages currently
+* :doc:`packages`.  This is a list of all the available packages currently
   available in the rootfs.
 
 * :doc:`options`.  The detailed configuration of the rootfs is managed through
   "options".
 
-* :doc:`build-extras`.  This describes in some detail how the build process for
-  packages works and what needs to be done to add a new package to the list.
+* :doc:`build-packages`.  This describes in some detail how the build process
+  for packages works and what needs to be done to add a new package to the list.
 
 * :doc:`notes`.
 
@@ -262,7 +262,7 @@ Building Target Packages
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 The `rootfs` sub-commands `all` and `package` support the building of packages,
-see :doc:`build-extras` for details.  The simplest usage is to invoke `rootfs
+see :doc:`build-packages` for details.  The simplest usage is to invoke `rootfs
 all` which will ensure that all packages are built.
 
 Note that the target package building process is not particularly intelligent
@@ -352,7 +352,7 @@ The individual settings here are discussed in detail below.
     This is set to a list of all the packages to be included in the rootfs
     build.  The `busybox` package **must** be included.  A package specification
     can be any directory name in the `packages` directory, or a path to a
-    directory containing a package specification.  See :doc:`build-extras` for
+    directory containing a package specification.  See :doc:`build-packages` for
     details on configuring packages.
 
     Installing `dropbear` as well is normally a good idea.

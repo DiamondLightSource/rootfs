@@ -40,8 +40,7 @@ The following appear to be core dependencies:
 `libnsl-2.7.so`:
     NIS (Network Information Service) or YP support.
 
-`libnss_compat-2.7.so`, `libnss_dns-2.7.so`, `libnss_files-2.7.so`,
-`libnss_hesiod-2.7.so`:
+`libnss_compat-2.7.so`, `libnss_dns-2.7.so`, `libnss_files-2.7.so`, `libnss_hesiod-2.7.so`:
     These all appear to be part of DNS, and are dynamically loaded.
 
 `libnss_nis-2.7.so`, `libnss_nisplus-2.7.so`:

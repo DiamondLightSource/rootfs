@@ -1,4 +1,4 @@
-.. _extras:
+.. _packages:
 .. default-role:: literal
 
 Selectable Packages

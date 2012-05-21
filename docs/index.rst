@@ -17,8 +17,8 @@ Contents:
     :maxdepth: 2
 
     rootfs
-    extras
-    build-extras
+    packages
+    build-packages
     options
     notes
     internals

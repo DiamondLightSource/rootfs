@@ -1,4 +1,4 @@
-.. _build-extras:
+.. _build-packages:
 .. default-role:: literal
 
 Building and Specifying Packages
