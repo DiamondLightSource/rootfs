@@ -39,7 +39,7 @@ $(srcdir):
         done
 	$(patch-extra)
         # Finally enforce read only source tree!
-	chmod -R -w $(srcdir)
+	chmod -R a-w $(srcdir)
 
 untar: $(srcdir)
 

@@ -25,7 +25,7 @@ O      = $(TOOLKIT_ROOT)/build/$@
 # configure with local prefix, build and install.
 $(TOOLKIT_COMPONENTS):  $(TOOLKIT_ROOT)
 	$(scripts)/extract-tar $(SOURCE_ROOT) $(TAR_FILE) $(MD5_SUM) $(TAR_DIRS)
-	chmod -R -w $(srcdir)
+	chmod -R a-w $(srcdir)
 
 	mkdir -p $(O)
 	cd $(O)  &&  $(srcdir)/configure --prefix=$(TOOLKIT_ROOT)

@@ -21,9 +21,11 @@ PACKAGES += screen
 PACKAGES += procServ conserver
 PACKAGES += i2c-tools
 # PACKAGES += libnet arping
+PACKAGES += ethtool
 
 # Miscellaneous extra components of variable utility.
-# PACKAGES += bash sudo
+PACKAGES += bash
+PACKAGES += sudo
 # PACKAGES += procinfo procinfo-ng
 # PACKAGES += testing
 
@@ -81,7 +83,7 @@ CONSOLE_TTY = ttyS0
 ROOT_PASSWORD = Jungle
 
 
-LDCONFIG = cross
+LDCONFIG = once
 OPTIONS += ldconfig mount-extra
 
 ifeq ($(BOOT),)

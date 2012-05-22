@@ -2,7 +2,7 @@
 
 # Install a file in target root filesystem.  Called as:
 #
-#   ./install [options] <file> <target-dir> [<permissions>]
+#   ./install [options] <file> <target-dir>
 #
 # with the following environment variable set:
 #
@@ -99,6 +99,7 @@ for source in "${args[@]}"; do
     else
         target="$target_dir/$(basename "$source")"
     fi
+    [ -e "$target" -o -L "$target" ]  &&  Error File "$target" already exists
 
     if ((SOFT_LINKS)); then
         ln -s "$source" "$target"

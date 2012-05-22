@@ -5,7 +5,7 @@ MD5_SUM_5.2.0 = f1ea831f397214bae8a265995ab1a93e
 
 
 config:
-	mkdir $(O)/src
+	mkdir -p $(O)/src
 	ln -sf $(srcdir)/Makefile $(O)
 	ln -sf $(srcdir)/src/Makefile $(O)/src
 
