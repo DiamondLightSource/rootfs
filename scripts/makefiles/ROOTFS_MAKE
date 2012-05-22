@@ -20,14 +20,11 @@ $(OBJECT_ROOT)/%: $(TOOLKIT_BIN)
 ALL_PACKAGES = $(foreach PACKAGE,$(PACKAGES),$(OBJECT_ROOT)/$(PACKAGE))
 
 
-# Assembling $(sysroot) has to be done entirely within fakeroot.
 $(O)/imagefile.cpio: $(TOOLKIT_BIN) $(ALL_PACKAGES)
 	rm -rf $(O)
 	mkdir -p $(O)
 	umask 22  &&  \
-        fakeroot -s $(O)/fakeroot.env \
-            $(MAKE) $@ -f $(makefiles)/SYSROOT_MAKE \
-                $(call EXPORT,TARGET configdir)
+        $(MAKE) $@ -f $(makefiles)/SYSROOT_MAKE $(call EXPORT,TARGET configdir)
 
 imagefile: $(O)/imagefile.cpio
 # Force rebuild of the image file, even if it already exists.

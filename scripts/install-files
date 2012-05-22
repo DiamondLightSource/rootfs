@@ -4,7 +4,12 @@
 #
 # The following environment variable must be set:
 #
-: ${sysroot:?}      # Target rootfs, where to install files
+: ${sysroot:?}          # Target rootfs, where to install files
+: ${fakeroot_list:?}    # Where to place fakeroot commands
+
+
+HERE="$(dirname "$0")"
+. "$HERE"/functions
 
 FILE_LIST="${1:?}"
 
@@ -18,8 +23,8 @@ while read type mode name value; do
         d)  mkdir -m $mode "$sysroot/$name" ;;
         l)  ln -s "$value" "$sysroot/$name" ;;
         n)  install -m $mode /dev/null "$sysroot/$name" ;;
-        c)  mknod -m $mode "$sysroot/$name" c $value ;;
-        b)  mknod -m $mode "$sysroot/$name" b $value ;;
+        c)  do_root mknod -m $mode "$sysroot/$name" c $value ;;
+        b)  do_root mknod -m $mode "$sysroot/$name" b $value ;;
         p)  mkfifo -m $mode "$sysroot/$name" ;;
         *)  false ;;
     esac  ||  exit 1

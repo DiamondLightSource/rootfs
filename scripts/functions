@@ -12,4 +12,9 @@ do_strip()
     "$CROSS_COMPILE"strip "$1"
 }
 
+do_root()
+{
+    echo "$* &&" >>"$fakeroot_list"
+}
+
 # vim: set filetype=sh:

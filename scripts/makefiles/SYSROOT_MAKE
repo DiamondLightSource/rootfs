@@ -1,8 +1,5 @@
-# This is the make file invoked under fakeroot where we perform all the
-# assembly of the final rootfs directory tree.
-#
-# All the work in this make file is done using fakeroot: this allows us to
-# create device nodes and manage file ownership and permissions.
+# This is the make file where we perform all the assembly of the final rootfs
+# directory tree.
 #
 # The output from this build is a file imagefile.cpio containing the complete
 # target file system.
@@ -40,6 +37,9 @@ clean-sysroot:
 # Prepare the sysroot directory tree, populate with the template skeleton and
 # a number of other configurations, and install the packages.
 install-sysroot: clean-sysroot
+	rm -f $(install_list) $(fakeroot_list)
+	touch $(install_list) $(fakeroot_list)
+
 	$(install-files) $(SKELETON)
 	$(useradd) -c 'Root user' -d /root -g 0 -u 0  -s /bin/sh \
             -p $(call SAFE_QUOTE,$(ROOT_PASSWORD)) root
@@ -53,7 +53,6 @@ install-sysroot: clean-sysroot
 	echo Rootfs built: $(shell date)         >>$(sysroot)/etc/version
 
         # Install all the selected packages
-	rm -f $(install_list);  touch $(install_list)
 	$(MAKE) install -f $(makefiles)/ALL_PACKAGES
 
 final-install: install-sysroot
@@ -69,9 +68,16 @@ post-install: final-install
 	$(first-time) -c
 
 
+# The final assembly of the .cpio file is done using fakeroot so that all the
+# files are marked with the correct ownership and we can create device nodes.
+# There will a number of deferred commands which can only be done in this
+# context in $(fakeroot_list), which we execute first.
 %.cpio: post-install
+	echo true >>$(fakeroot_list)
+	fakeroot -s $(fakeroot_env) sh $(fakeroot_list)
 	cd $(sysroot) && \
-        find -name . -o -print | cpio --quiet -H newc -o >$@
+        find -name . -o -print | \
+        fakeroot -i $(fakeroot_env) cpio --quiet -H newc -o >$@
 
 .PHONY: clean-sysroot install-sysroot final-install post-install
 

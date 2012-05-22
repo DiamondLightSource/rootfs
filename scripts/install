@@ -8,6 +8,7 @@
 #
 : ${sysroot:?}          # Path to rootfs being built
 : ${install_list:?}     # Used to record list of installed executables
+: ${fakeroot_list:?}    # Used to record list of fakeroot commands
 #
 # The CROSS_COMPILE envrionment variable should also be set, but it can be
 # empty for a native build.
@@ -38,7 +39,7 @@ maybe_set_mode()
         chmod "$MODE" "$1";
     fi  &&
     if [ -n "$OWNER" -o -n "$GROUP" ]; then
-        chown "$OWNER:$GROUP" "$1"
+        do_root chown "$OWNER:$GROUP" "$1"
     fi
 }
 
