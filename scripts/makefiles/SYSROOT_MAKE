@@ -38,7 +38,8 @@ clean-sysroot:
 # a number of other configurations, and install the packages.
 install-sysroot: clean-sysroot
 	rm -f $(install_list) $(fakeroot_list)
-	touch $(install_list) $(fakeroot_list)
+	touch $(install_list)
+	echo 'set -ex' >$(fakeroot_list)
 
 	$(install-files) $(SKELETON)
 	$(useradd) -c 'Root user' -d /root -g 0 -u 0  -s /bin/sh \
@@ -73,7 +74,6 @@ post-install: final-install
 # There will a number of deferred commands which can only be done in this
 # context in $(fakeroot_list), which we execute first.
 %.cpio: post-install
-	echo true >>$(fakeroot_list)
 	fakeroot -s $(fakeroot_env) sh $(fakeroot_list)
 	cd $(sysroot) && \
         find -name . -o -print | \

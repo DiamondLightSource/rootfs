@@ -14,7 +14,7 @@ do_strip()
 
 do_root()
 {
-    echo "$* &&" >>"$fakeroot_list"
+    echo "$*" >>"$fakeroot_list"
 }
 
 # vim: set filetype=sh:
