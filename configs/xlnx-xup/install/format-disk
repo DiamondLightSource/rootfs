@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# This tool formats the given device for use as an Isa Photon system.  This
+# needs to be called as root to work.
+
+TARGET="${1:?Specify target destination device}"
+ACE_FILE="$2"
+
+
+Error() { echo "$@" >& 2; exit 1; }
+
+# First validate that the given target is indeed a sensible looking device.
+# Unfortunately the precise numbers for cylinders and tracks seem a trifle
+# unpredictable.
+set -o pipefail
+SIG="$(/sbin/sfdisk -g $TARGET)"  &&
+read _ cylinders _ heads _ sectors _  <<<"$SIG"  &&
+echo $cylinders $heads $sectors  &&
+all_sectors=$((cylinders * sectors))  &&
+((heads == 16  &&  62647 <= all_sectors  &&  all_sectors <= 62682))  ||
+    Error Unexpected device signature: "$SIG"
+
+# Partition the target into three partitions
+cat <<EOF |
+unit: sectors
+
+${TARGET}1 : start=       61, size=    63379, Id= 6
+${TARGET}2 : start=    63440, size=   500688, Id=83
+${TARGET}3 : start=   564128, size=   420656, Id=83
+${TARGET}4 : start=        0, size=        0, Id= 0
+EOF
+/sbin/sfdisk --force $TARGET  ||
+    Error Unable to partition device
+
+# Create file systems on all three partitions.  It seems that both the sleeps
+# in the code below are necessary, as is the dd (as recommended by sfdisk
+# itself!)
+sleep 1  &&
+dd if=/dev/zero of=${TARGET}1 bs=512 count=1  &&
+sleep 1  &&
+/sbin/mkdosfs -v -F 16 -R 1 -s 16 -n XLNX_ACE ${TARGET}1  ||
+    Error Error creating bootable partition
+
+/sbin/mkfs.ext2 -L WRITEABLE ${TARGET}2  &&
+/sbin/mkfs.ext2 -L ROOTFS ${TARGET}3  ||
+    Error Error creating file system
+
+# Install the ACE file if specified.
+if [ -n "$ACE_FILE" ]; then
+    MOUNT="$(mktemp -td)"
+    mount ${TARGET}1 $MOUNT
+    trap "umount $MOUNT; rmdir $MOUNT" EXIT
+    cp "$ACE_FILE" $MOUNT
+else
+    echo No ACE file specified, system will not boot.
+fi

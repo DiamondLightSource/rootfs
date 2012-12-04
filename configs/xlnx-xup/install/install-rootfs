@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# Script used to install rootfs cpio file on given target device.  Validates
+# target before installation to try and avoid accidents.
+
+TARGET="${1:?Specify target destination device}"
+IMAGE="${2:?Specify image to install}"
+
+Error() { echo "$@" >& 2; exit 1; }
+
+# First validate the target device.
+[[ "$(/sbin/e2label ${TARGET}2)" = WRITEABLE  &&
+   "$(/sbin/e2label ${TARGET}3)" = ROOTFS ]]  ||
+    Error Invalid device for rootfs
+
+# Temporary mount point
+MOUNT="$(mktemp -td)"
+trap "cd /; umount $MOUNT; rmdir $MOUNT" EXIT
+
+# Mount, erase any existing files, install new image.
+mount ${TARGET}3 $MOUNT  &&
+cd $MOUNT  &&
+find $MOUNT -mindepth 1 -maxdepth 1 -exec rm -rf {} \;  &&
+cpio -i <"$IMAGE"  ||
+    Error  Error extracting rootfs image

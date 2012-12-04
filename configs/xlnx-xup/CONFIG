@@ -45,6 +45,12 @@ MOUNT_EXTRA = /mnt/nfs /mnt/prod /mnt/work
 
 BOOT = $(configdir)/install
 INSTALL_SERVER = pc0035
-INSTALL_DEVICE = /dev/sdb3
+INSTALL_DEVICE = /dev/sdb
+
+
+final-install:
+        # Mount /dev/xsa2 as /var/opt for a writeable partition.
+	mkdir -p $(sysroot)/var/opt
+	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
 
 # vim: set filetype=make:

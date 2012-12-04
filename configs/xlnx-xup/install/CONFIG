@@ -3,21 +3,10 @@
 # Depends on the following symbols:
 #   INSTALL_SERVER      Machine to copy files to
 #   INSTALL_DEVICE      Device on which to install rootfs
-#   INSTALL_MOUNT       Optional mount point to use for install
 
-INSTALL_MOUNT ?= /mnt
-
-define INSTALL_COMMANDS
-set -ex; \
-sudo /sbin/mkfs.ext3 $(INSTALL_DEVICE);  \
-sudo mount $(INSTALL_DEVICE) $(INSTALL_MOUNT);  \
-trap 'cd /; sudo umount $(INSTALL_MOUNT)' EXIT;  \
-cd $(INSTALL_MOUNT);  \
-sudo cpio -i </tmp/imagefile.cpio
-endef
-
-boot: $(O)/imagefile.cpio
-	scp $(O)/imagefile.cpio $(INSTALL_SERVER):/tmp
-	ssh -t $(INSTALL_SERVER) $(call SAFE_QUOTE,$(INSTALL_COMMANDS))
+boot: $(O)/imagefile.cpio $(bootdir)/install-rootfs
+	scp $^ $(INSTALL_SERVER):/tmp
+	ssh -t $(INSTALL_SERVER) \
+            sudo /tmp/install-rootfs $(INSTALL_DEVICE) /tmp/imagefile.cpio
 
 # vim: set filetype=make:
