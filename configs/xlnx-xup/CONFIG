@@ -1,15 +1,11 @@
 # Definitions for embedded FPGA processor core
 
 TOOLCHAIN = powerpc-405
+CFLAGS = -O2
 
 CONSOLE_BAUD = 9600
 CONSOLE_TTY = ttyS0
-
 ROOT_PASSWORD = Jungle
-
-SSH_AUTHORIZED_KEYS = $(configdir)/authorized_keys
-
-CFLAGS = -O2
 
 TERMS = xterm xterm-color screen vt100 vt102
 
@@ -17,44 +13,38 @@ TERMS = xterm xterm-color screen vt100 vt102
 PACKAGES += busybox
 # Components required for normal operation.
 PACKAGES += ntp dropbear portmap
+# Might want this for the IOC at some point
+PACKAGES += procServ
 # Useful debugging tools
 PACKAGES += strace lsof
+# Useful miscellaneous tools
+PACKAGES += nano mtd-utils libpcap tcpdump
+PACKAGES += screen
 
-BOOT = nfs
-
-OPTIONS += mount-extra ldconfig
-LDCONFIG = install
-
-
-#
-# Based on how RFS will be loaded, comment lines below accordingly
-#
-# >> NFS-BEGIN
-#NFS_SERVER ?= pc0035
-#NFS_ROOTFS ?= /scratch/rootfs/$(TARGET)
-# << NFS-END
-
-# >> CF-BEGIN
-# This locaation is used where to copy RFS
-NFS_SERVER ?= pc0035
-NFS_ROOTFS ?= /media/XLNX_RFS
-#
-OPTIONS += network
-NW_ADDRESS = 172.23.252.116
-NW_NETWORK = 172.23.240.0
-NW_NETMASK = 255.255.240.0
-NW_BROADCAST = 172.23.255.255
-NW_GATEWAY = 172.23.240.254
-NW_HOSTNAME = TS-DI-PBPM-01
-NW_HWADDRESS = 00:14:2d:48:60:ff
-# << CF-END
-
-MOUNT_EXTRA = /mnt/nfs /mnt/prod /mnt/work
-EXTRA_FSTAB = $(configdir)/fstab
-
-final-install:
-
+# Dropbear configuration
 DROPBEAR_KEYS = y
 INETD_ENABLE = y
+SSH_AUTHORIZED_KEYS = $(configdir)/authorized_keys
+
+
+OPTIONS += ldconfig
+LDCONFIG = install
+
+# Network configuration
+OPTIONS += configure-network
+IP_LIST.lab = $(configdir)/ip-list.lab
+IP_LIST.pri = $(configdir)/ip-list.pri
+FSTAB.lab = $(configdir)/fstab.lab
+FSTAB.pri = $(configdir)/fstab.pri
+NW_HOSTNAME = TS-DI-PBPM-01
+
+# Extra mount management (note that configure-network manages mount lists)
+OPTIONS += mount-extra
+MOUNT_EXTRA = /mnt/nfs /mnt/prod /mnt/work
+
+
+BOOT = $(configdir)/install
+INSTALL_SERVER = pc0035
+INSTALL_DEVICE = /dev/sdb3
 
 # vim: set filetype=make:
