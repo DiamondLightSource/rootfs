@@ -28,7 +28,7 @@ lookup_hostname()
         if [[ -n "$network" -a "$network" != '#' -a \
               -r "$CONFIG_DIR/ip-list.$network" ]]; then
             local hostname
-            while read hostname IPADDR; do
+            while read hostname IPADDR MAC_ADDRESS; do
                 [[ "$hostname" = "$1" -a -n "$IPADDR" ]]  &&
                     return
             done <"$CONFIG_DIR/ip-list.$network"
@@ -41,11 +41,12 @@ lookup_hostname()
 
 
 network=
+MAC_ADDRESS=
 
 USE_DHCP=false
 WRITE_CONFIG=false
 RESTART_NETWORK=false
-while getopts 'hm:g:n:dwr' option; do
+while getopts 'hm:g:n:M:dwr' option; do
     case "$option" in
         h)  cat <<EOF
 Usage: $0 [options] <new host name> [<new IP address>]
@@ -59,6 +60,7 @@ Options:
     -g: Specify new gateway
     -n: Specify network, typically either lab or pri: used for resolv.conf
         and extra mounts.
+    -M: Specify MAC address for network
     -d  Configure network by DHCP.  In this case an IP address cannot be
         given and -n probably should be specified explicitly.
     -w  Write new configuration; otherwise the new configuration is displayed
@@ -68,6 +70,7 @@ EOF
         m)  NETMASK="$OPTARG" ;;
         g)  GATEWAY="$OPTARG" ;;
         n)  network="$OPTARG" ;;
+        M)  MAC_ADDRESS="$OPTARG" ;;
         d)  USE_DHCP=true ;;
         w)  WRITE_CONFIG=true ;;
         r)  RESTART_NETWORK=true ;;
@@ -113,6 +116,8 @@ else
     broadcast $BROADCAST"
     [ -n "$GATEWAY" ]  &&
         NEW_CONFIG="$NEW_CONFIG"$'\n'"    gateway $GATEWAY"
+    [ -n "$MAC_ADDRESS" ]  &&
+        NEW_CONFIG="$NEW_CONFIG"$'\n'"    hwaddress ether $MAC_ADDRESS"
 fi
 
 
