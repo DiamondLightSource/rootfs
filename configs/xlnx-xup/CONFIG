@@ -49,8 +49,9 @@ INSTALL_DEVICE = /dev/sdb
 
 
 final-install:
-        # Mount /dev/xsa2 as /var/opt for a writeable partition.
-	mkdir -p $(sysroot)/var/opt
+	# Mount /dev/xsa2 as /var/opt for a writeable partition and /dev/xsa1
+	# as the boot directory.
+	mkdir -p $(sysroot)/var/opt $(sysroot)/boot
 	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
 
 # vim: set filetype=make:
