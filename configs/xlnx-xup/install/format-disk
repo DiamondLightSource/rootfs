@@ -17,7 +17,7 @@ SIG="$(/sbin/sfdisk -g $TARGET)"  &&
 read _ cylinders _ heads _ sectors _  <<<"$SIG"  &&
 echo $cylinders $heads $sectors  &&
 all_sectors=$((cylinders * sectors))  &&
-((heads == 16  &&  62647 <= all_sectors  &&  all_sectors <= 62682))  ||
+((heads == 16  &&  62647 <= all_sectors  &&  all_sectors <= 62685))  ||
     Error Unexpected device signature: "$SIG"
 
 # Partition the target into three partitions

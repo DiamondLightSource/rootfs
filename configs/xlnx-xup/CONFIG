@@ -53,5 +53,7 @@ final-install:
 	# as the boot directory.
 	mkdir -p $(sysroot)/var/opt $(sysroot)/boot
 	cat $(configdir)/fstab >>$(sysroot)/etc/fstab
+	# Redirect all output to the console
+	echo SYSLOGD_OPTIONS=-O/dev/console >$(sysroot)/etc/syslogd
 
 # vim: set filetype=make:
