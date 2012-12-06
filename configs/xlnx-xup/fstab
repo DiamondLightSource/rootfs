@@ -1,2 +1,2 @@
 /dev/xsa1   /boot           msdos   noatime,ro                          0   0
-/dev/xsa2   /var/opt        ext2    noatime                             0   0
+/dev/xsa2   /var/opt        ext3    noatime                             0   0

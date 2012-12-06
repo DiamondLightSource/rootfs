@@ -41,8 +41,8 @@ sleep 1  &&
 /sbin/mkdosfs -v -F 16 -R 1 -s 16 -n XLNX_ACE ${TARGET}1  ||
     Error Error creating bootable partition
 
-/sbin/mkfs.ext2 -L WRITEABLE ${TARGET}2  &&
-/sbin/mkfs.ext2 -L ROOTFS ${TARGET}3  ||
+/sbin/mkfs.ext3 -L WRITEABLE ${TARGET}2  &&
+/sbin/mkfs.ext3 -L ROOTFS ${TARGET}3  ||
     Error Error creating file system
 
 # Install the ACE file if specified.
