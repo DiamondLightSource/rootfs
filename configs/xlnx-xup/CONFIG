@@ -56,4 +56,7 @@ final-install:
 	# Redirect all output to the console
 	echo SYSLOGD_OPTIONS=-O/dev/console >$(sysroot)/etc/syslogd
 
+	# To safely reboot the FPGA embedded kernel we need this trick:
+	echo '::shutdown:/sbin/devmem 0x7C200010 32 1' >>$(sysroot)/etc/inittab
+
 # vim: set filetype=make:
