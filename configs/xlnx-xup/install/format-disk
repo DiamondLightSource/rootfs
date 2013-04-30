@@ -9,16 +9,16 @@ ACE_FILE="${2:-/dls_sw/prod/hardware/IsaPBPM/v3.00.7/out/system.ace}"
 
 Error() { echo "$@" >& 2; exit 1; }
 
-# First validate that the given target is indeed a sensible looking device.
-# Unfortunately the precise numbers for cylinders and tracks seem a trifle
-# unpredictable.
-set -o pipefail
-SIG="$(/sbin/sfdisk -g $TARGET)"  &&
-read _ cylinders _ heads _ sectors _  <<<"$SIG"  &&
-echo $cylinders $heads $sectors  &&
-all_sectors=$((cylinders * sectors))  &&
-((heads == 16  &&  62647 <= all_sectors  &&  all_sectors <= 62685))  ||
-    Error Unexpected device signature: "$SIG"
+## First validate that the given target is indeed a sensible looking device.
+## Unfortunately the precise numbers for cylinders and tracks seem a trifle
+## unpredictable.
+#set -o pipefail
+#SIG="$(/sbin/sfdisk -g $TARGET)"  &&
+#read _ cylinders _ heads _ sectors _  <<<"$SIG"  &&
+#echo $cylinders $heads $sectors  &&
+#all_sectors=$((cylinders * sectors))  &&
+#((heads == 16  &&  62647 <= all_sectors  &&  all_sectors <= 62685))  ||
+#    Error Unexpected device signature: "$SIG"
 
 # Partition the target into three partitions
 cat <<EOF |

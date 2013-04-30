@@ -2,7 +2,7 @@
 
 # -----------------------------------------------------------------------------
 # Package definitions for colibri 
-TOOLCHAIN = xilinx-zynq
+TOOLCHAIN = xlnx-zynq
 
 
 # This one is essential, nothing builds without it.
@@ -55,13 +55,13 @@ BOOT = nfs
 
 # Options only used for BOOT = nfs:
 NFS_SERVER = pc0035
-NFS_ROOTFS = /scratch/rootfs/zynq
+NFS_ROOTFS = /scratch/rootfs/$(TARGET)
 
 
 # -----------------------------------------------------------------------------
 # Rootfs options and configuration
 
-ROOTFS_VERSION = DLS Zynq Rootfs 0.1
+ROOTFS_VERSION = DLS Xilinx Zynq Rootfs 0.1
 
 CONSOLE_BAUD = 115200
 CONSOLE_TTY = ttyPS0
@@ -80,7 +80,7 @@ OPTIONS += configure-network
 # IP_LIST.pri = $(configdir)/ip-list.pri
 FSTAB.lab = $(configdir)/fstab.lab
 # FSTAB.pri = $(configdir)/fstab.pri
-NW_HOSTNAME = zynq-iu42
+NW_HOSTNAME = TS-DI-ZYNQ-01
 
 
 final-install:
