@@ -1,0 +1,14 @@
+# Figure out whether to load fstab.lab or fstab.pri
+
+BROADCAST="$(
+    ifconfig eth0 |
+    sed -nr '/^ *inet.*Bcast:([^ ]*) .*$/{s//\1/;p;q}')"
+
+case "$BROADCAST" in
+    172.23.255.255)     FSTABS=/etc/fstab.lab ;;
+    172.23.207.255)     FSTABS=/etc/fstab.pri ;;
+    *)  echo >&2 'Unknown network:' "$BROADCAST"
+        exit 1 ;;
+esac
+
+# vim: set filetype=sh:

@@ -1,0 +1,15 @@
+# Files to allow tmbf to run from testing
+
+# Simulate testing install
+d 755 /opt
+d 755 /opt/bin
+l 1777 /opt/state /mnt/nfs/testing/state
+l 1777 /opt/bin/fp /mnt/nfs/testing/tmbf/bin/linux-arm_el/fp
+l 1777 /opt/bin/ddrInit /mnt/nfs/testing/tmbf/bin/linux-arm_el/ddrInit
+l 1777 /opt/bin/fpga_init /mnt/nfs/testing/tmbf/base/fpga_init
+l 1777 /opt/bin/load-fpga /mnt/nfs/testing/tmbf/base/load-fpga
+
+# Startup script
+f 644 /etc/tmbf_ioc tmbf_ioc
+l 1777 /etc/init.d/epics /mnt/nfs/testing/tmbf/install_d/epics
+l 1777 /etc/rc.d/S810epics ../init.d/epics

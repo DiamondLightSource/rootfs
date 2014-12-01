@@ -1,0 +1,3 @@
+TMBF_IOC=/mnt/nfs/testing/tmbf/runioc
+DESIGN=/mnt/nfs/testing/neutrino_hbpp_top.bin
+DESIGN_CONFIG_FILE=/mnt/nfs/testing/tmbf/base/tmbf.delays
