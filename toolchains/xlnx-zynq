@@ -1,6 +1,6 @@
 # Toolchain definitions for Xilinx Zynq processor
 
-BINUTILS_DIR = /dls_sw/apps/FPGA/Xilinx/14.4/ISE_DS/EDK/gnu/arm/lin
+BINUTILS_DIR = /dls_sw/FPGA/Xilinx/SDK/2014.2/gnu/arm/lin
 COMPILER_PREFIX = arm-xilinx-linux-gnueabi
 SYSROOT = $(BINUTILS_DIR)/$(COMPILER_PREFIX)/libc
 
