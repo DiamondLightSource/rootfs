@@ -51,7 +51,9 @@ Invokes the appropriate rootfs action.  The following actions are available:
         Assembles the configured rootfs for the selected target.
 
     imagename
-        Prints the full path to the generated rootfs .cpio image.
+    imagedir
+        Prints the full path to the generated rootfs .cpio image or the image
+        directory.
 EOF
         ;;
 
@@ -74,6 +76,9 @@ EOF
 
     imagename)
         call_make ROOTFS_MAKE -s --no-print-directory imagename "$@" ;;
+
+    imagedir)
+        call_make ROOTFS_MAKE -s --no-print-directory imagedir "$@" ;;
 
     *)  Error 'Unknown action.  Try `rootfs help` for help' ;;
 esac
