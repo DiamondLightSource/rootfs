@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# install-files <file-list>
+# install-files <file-list> [<source-dir>]
+#
+# If source-dir is specified it is used as the location to find each file in
+# file-list, otherwise the root directory of file-list is used.
 #
 # The following environment variable must be set:
 #
@@ -13,7 +16,7 @@ HERE="$(dirname "$0")"
 
 FILE_LIST="${1:?}"
 
-SOURCE_DIR="$(dirname "$FILE_LIST")"
+SOURCE_DIR="${2:-$(dirname "$FILE_LIST")}"
 
 cat "$FILE_LIST" |
 sed '/^[ \t]*#/d; /^[ \t]*$/d' |
