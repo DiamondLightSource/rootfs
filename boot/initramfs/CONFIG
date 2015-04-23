@@ -1,4 +1,5 @@
 IMAGE_NAME ?= imagefile-$(TARGET).cpio.gz
+QUOTE_BOOTARGS ?= 1
 
 ifeq ($(BOOT_LOADER),u-boot)
 _initramfs_EXPORTS = \

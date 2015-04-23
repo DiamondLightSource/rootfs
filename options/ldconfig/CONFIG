@@ -15,12 +15,14 @@ CROSS_LDCONFIG = /sbin/ldconfig
 
 
 ldconfig_install:
+	$(install) -d /var/cache/ldconfig
 	$(install) $(TARGET_LDCONFIG) /sbin
 
 ldconfig_once: ldconfig_install
 	$(first-time) /sbin/ldconfig
 
 ldconfig_cross:
+	$(install) -d /var/cache/ldconfig
 	/sbin/ldconfig -X -r $(sysroot)
 
 
