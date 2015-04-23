@@ -230,34 +230,6 @@ The following packages can be included in any rootfs build.
     Compression library.  Not sure why this is included.
 
 
-Toolkit Components
-------------------
-
-The following toolkit component is needed for building the root filesystem.
-
-`fakeroot`
-    Web page: http://fakeroot.alioth.debian.org/
-
-    Unfortunately, finding the right place to download `fakeroot` is remarkably
-    difficult.  It's part of Debian and Ubuntu, but the two distributions are
-    very different!
-
-    OpenEmbedded download from ftp://ftp.debian.org/debian/pool/main/f/fakeroot/
-    which seems the best reference.
-
-The following toolkit components are needed for reproducible rootfs builds.
-
-`autoconf`, `m4`
-    Web pages:  http://www.gnu.org/software/autoconf/,
-    http://www.gnu.org/software/m4/
-
-    This is needed for rebuilding `./configure` after local patches to certain
-    components.
-
-May well also need up to date versions of `automake` and `libtool`.
-
-
-
 Notes on Cross Compiling
 ------------------------
 

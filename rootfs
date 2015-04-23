@@ -33,9 +33,6 @@ Invokes the appropriate rootfs action.  The following actions are available:
     help
         Shows this help message
 
-    toolkit
-        Builds the toolkit.  Only needs to be done once.
-
     docs
         Builds the documentation
 
@@ -59,9 +56,6 @@ EOF
 
     docs)
         make -C "$ROOTFS_TOP"/docs ;;
-
-    toolkit)
-        call_make TOOLKIT_MAKE "$@" ;;
 
     a|all)
         call_make ALL_PACKAGES "$@" ;;

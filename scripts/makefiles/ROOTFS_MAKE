@@ -7,20 +7,17 @@ include $(makefiles)/TARGET_COMMON
 O = $(TARGET_ROOT)/image
 
 
-# System dependencies: we can force a build of the toolkit and the packages
-# if they've not already been built.  Unfortunately we don't have explicit
-# dependencies between packages anywhere, we rely on them being built in
-# order, and this ordering can be lost by this trick.
-$(TOOLKIT_BIN):
-	$(MAKE) -f $(makefiles)/TOOLKIT_MAKE
-
-$(OBJECT_ROOT)/%: $(TOOLKIT_BIN)
+# System dependencies: we can force a build of the packages if they've not
+# already been built.  Unfortunately we don't have explicit dependencies between
+# packages anywhere, we rely on them being built in order, and this ordering can
+# be lost by this trick.
+$(OBJECT_ROOT)/%:
 	$(MAKE) -f $(makefiles)/PACKAGE_MAKE PACKAGE=$*
 
 ALL_PACKAGES = $(foreach PACKAGE,$(PACKAGES),$(OBJECT_ROOT)/$(PACKAGE))
 
 
-$(O)/imagefile.cpio: $(TOOLKIT_BIN) $(ALL_PACKAGES)
+$(O)/imagefile.cpio: $(ALL_PACKAGES)
 	rm -rf $(O)
 	mkdir -p $(O)
 	umask 22  &&  \

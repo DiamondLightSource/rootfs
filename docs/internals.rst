@@ -20,9 +20,8 @@ Files in make format are named in upper case.
 
 `COMMON`
     Make definitions common to all rootfs make files.  Sets up core rootfs path
-    definitions: `ROOTFS_ROOT`, `SOURCE_ROOT`, `TAR_DIRS` and toolkit
-    definitions and includes the selected `CONFIG` file.  Also defines a number
-    of helpful make "functions":
+    definitions: `ROOTFS_ROOT`, `SOURCE_ROOT`, `TAR_DIRS`, and includes the
+    selected `CONFIG` file.  Also defines a number of helpful make "functions":
 
     `SAFE_QUOTE`
         Invoked as `$(call SAFE_QUOTE,string to expand)`, this puts shell quotes
@@ -66,13 +65,9 @@ Files in make format are named in upper case.
     Coordinates building of rootfs.
 
 `TARGET_COMMON`
-    Make definitions common to all rootfs make files except for those involved
-    in building the toolkit: requires a `TARGET` symbol to be defined.  Defines
-    `TARGET_ROOT` and `OBJECT_ROOT` and pulls in target specific definitions.
-
-`TOOLKIT_DEFS`, `TOOLKIT_MAKE`
-    `TOOLKIT_MAKE` is invoked to build the rootfs toolkit dependencies, and
-    `TOOLKIT_DEFS` contains the individual toolkit component definitions.
+    Make definitions common to all rootfs make files: requires a `TARGET` symbol
+    to be defined.  Defines `TARGET_ROOT` and `OBJECT_ROOT` and pulls in target
+    specific definitions.
 
 
 Supporting Scripts
@@ -144,8 +139,6 @@ Include Dependencies
 
     PACKAGE_RULES:
 
-    TOOLKIT_DEFS:
-
     PACKAGE_INSTALL:
         include $(TOP)/scripts/makefiles/COMMON
         include $(makefiles)/SYSROOT_COMMON
@@ -166,7 +159,3 @@ Include Dependencies
     SYSROOT_MAKE:
         include $(TOP)/scripts/makefiles/COMMON
         include $(makefiles)/SYSROOT_COMMON
-
-    TOOLKIT_MAKE:
-        include $(TOP)/scripts/makefiles/COMMON
-        include $(makefiles)/TOOLKIT_DEFS

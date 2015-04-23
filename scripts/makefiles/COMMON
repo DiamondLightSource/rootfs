@@ -27,9 +27,6 @@ SHELL = /bin/bash
 ROOTFS_ROOT = /scratch/tmp/rootfs
 SOURCE_ROOT = $(ROOTFS_ROOT)/src
 
-TOOLKIT_ROOT = $(ROOTFS_ROOT)/toolkit
-TOOLKIT_BIN = $(TOOLKIT_ROOT)/bin
-
 ROOTFS_CONFIG ?= $(ROOTFS_TOP)/CONFIG.local
 
 TAR_DIRS = /dls_sw/prod/targetOS/tar-files
@@ -38,12 +35,9 @@ BINUTILS_DIR = /dls_sw/targetOS/x-tools/$(TOOLCHAIN_VERSION)/$(COMPILER_PREFIX)
 SYSROOT = $(BINUTILS_DIR)/$(COMPILER_PREFIX)/sys-root
 
 -include $(ROOTFS_CONFIG)
-# This file should only ever exist for a fixed install.  Typically only
-# TOOLKIT_BIN is defined here
+# This file should only ever exist for a fixed install.
 -include $(ROOTFS_TOP)/INSTALL
 
-
-export PATH := $(TOOLKIT_BIN):$(PATH)
 
 # Some convenience definitions.
 scripts = $(ROOTFS_TOP)/scripts

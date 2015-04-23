@@ -4,20 +4,4 @@
 
 cd "$(dirname "$0")"/../..
 
-ROOTFS_ROOT="$(mktemp -d /tmp/rootfs.XXXXXX)"
-rm_root()
-{
-    chmod -R +w "$ROOTFS_ROOT"
-    rm -rf "$ROOTFS_ROOT"
-}
-
-trap rm_root EXIT
-
-make -C docs  &&
-./rootfs toolkit \
-    ROOTFS_ROOT="$ROOTFS_ROOT" ROOTFS_CONFIG=/dev/null \
-    TOOLKIT_ROOT="$(pwd)/.toolkit"  &&
-rm -rf .toolkit/build  &&
-cat <<'EOF' >INSTALL
-TOOLKIT_BIN = $(ROOTFS_TOP)/.toolkit/bin
-EOF
+make -C docs
