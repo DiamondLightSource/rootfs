@@ -1,4 +1,5 @@
-# Common definitions when building targets.  Included by all make files.
+# Common definitions when building targets.  Included by all make files
+# except for TOOLKIT_MAKE, which is the only target independent build.
 
 
 # Compute configdir = $(ROOTFS_TOP)/configs/$(TARGET), or take configdir from

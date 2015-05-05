@@ -345,6 +345,9 @@ Global Symbols from Rootfs System
 `SOURCE_ROOT = $(BUILD_ROOT)/src`
     Path to extracted and patched sources.
 
+`TOOLKIT_ROOT = $(BUILD_ROOT)/toolkit`
+    Path to local prefix for installed toolkit.
+
 
 Target Specific Definitions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

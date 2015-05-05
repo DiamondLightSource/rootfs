@@ -19,9 +19,10 @@ HERE="$(cd "$(dirname "$0")"; pwd)"
 INPUT=/scratch/tmp/rootfs/colibri/imagefile.cpio
 ROOT="$HERE"/root
 
+FAKEROOT=/scratch/tmp/rootfs/toolkit/bin/fakeroot
 MKFS="$HERE"/built/mkfs.jffs2
 
-[ $(id -u) -eq 0 ] || exec fakeroot "$0" "$@"
+[ $(id -u) -eq 0 ] || exec $FAKEROOT "$0" "$@"
 
 rm -rf "$ROOT"
 mkdir -p "$ROOT"

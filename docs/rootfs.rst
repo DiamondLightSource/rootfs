@@ -55,7 +55,8 @@ The rootfs scripts assume that the following have already been generated:
 1.  Toolchain, consisting of cross-compiler and associated tools, and complete
     run-time library.  The toolchain is specified as part of target
     configuration by specifying two symbols: `BINUTILS_DIR` and
-    `COMPILER_PREFIX`.
+    `COMPILER_PREFIX`, or a predefined toolkit can be selected from the
+    `toolchain` directory.
 
 2.  Kernel.  The kernel is not managed by the rootfs builder, but depending on
     the precise bootstrap mechanism the target configuration can specify
@@ -64,9 +65,9 @@ The rootfs scripts assume that the following have already been generated:
 Configuration and specification of a rootfs build requires that the following
 be specified:
 
-* File locations for rootfs, including workspace location.  This is specified in
-  a configuration file (`CONFIG.local`) that is either placed in the root
-  directory of the rootfs builder, or is specified (as the symbol
+* File locations for rootfs, including workspace and toolkit locations.  This is
+  specified in a configuration file (`CONFIG.local`) that is either placed in
+  the root directory of the rootfs builder, or is specified (as the symbol
   `ROOTFS_CONFIG`) on the command line or as an environment variable.
 
 * Package specifications (largely already integrated into `rootfs`).
@@ -88,6 +89,7 @@ and execute the following commands::
     svn co $SVN_ROOT/diamond/trunk/targetOS/rootfs
     cd rootfs
     cp CONFIG.example CONFIG.local
+    ./rootfs toolkit
     ./rootfs all
     ./rootfs make
 
@@ -109,6 +111,10 @@ and execute the following commands::
 
         export ROOTFS_ROOT=~/local/path/CONFIG.local
         cp /path/to/rootfs/CONFIG.example $ROOTFS_ROOT
+
+`./rootfs toolkit`
+    The rootfs needs a "toolkit" of useful utilities.  This only needs to be
+    built once for any given `ROOTFS_ROOT`.
 
 `./rootfs all`
     This executes the first step of assembling the rootfs: all the packages
@@ -138,6 +144,7 @@ the `scripts` directory which do all the work.
 Running the rootfs builder requires the following steps.
 
 * Specify rootfs file locations.
+* Build the toolkit components.
 * Build the selected target packages.
 * Build the selected target.
 
@@ -156,6 +163,10 @@ configurations to be added at build time.
 
 `rootfs help`
     Shows help text.
+
+`rootfs toolkit`
+    Builds the toolkit prerequisites.  This should only need to be done once for
+    any particular `ROOTFS_ROOT` configuration.
 
 `rootfs docs`
     Builds the documentation (runs `make` in the `docs` directory).
@@ -197,6 +208,9 @@ the commands above to override the default makefile definitions.
         target description, and in this case the last component on the path will
         be used to name the build.
 
+    Note that `TARGET` has no meaning for the `rootfs toolkit` command and will
+    be ignored in this case.
+
 
 Configuring the Rootfs
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -212,10 +226,14 @@ in this file and their default values.
     This specifies the root of the workspace used by rootfs.  By default all
     rootfs files are built under this directory.
 
+`TOOLKIT_ROOT = $(ROOTFS_ROOT)/toolkit`
+    This contains local installations of the tools required for the operation of
+    rootfs.
+
 `SOURCE_ROOT = $(ROOTFS_ROOT)/src`
-    All source files, including package, will be extracted to this directory and
-    patched in-place.  All builds will treat this directory as read-only, and
-    will be "out of tree".
+    All source files, including both package and toolkit sources, will be
+    extracted to this directory and patched in-place.  All builds will treat
+    this directory as read-only, and will be "out of tree".
 
 `TARGET_ROOT = $(ROOTFS_ROOT)/targets/$(TARGET)`
     This is where the entire target specific rootfs build will take place.
@@ -223,6 +241,21 @@ in this file and their default values.
 `TAR_DIRS = /dls_sw/prod/targetOS/tar-files`
     All source packages will be searched for in directories specified by this
     symbol.
+
+
+Building the Toolkit
+~~~~~~~~~~~~~~~~~~~~
+
+This is simply a matter of running the command `rootfs toolkit` in the rootfs
+top level directory.  This will populate the configured toolkit directory with
+the necessary tools required for a reproducible build, including the following
+components:
+
+`fakeroot`
+    This is needed to assemble the target filesystem (the "rootfs").
+
+`autoconf`, `automake`, `libtool`, `m4`
+    These tools are needed by some packages after patching configuration files.
 
 
 Building Target Packages
@@ -391,7 +424,8 @@ The individual settings here are discussed in detail below.
 Creating a Release
 ------------------
 
-Released snapshots of rootfs are installed under `/dls_sw/prod/targetOS/rootfs`.
+Released snapshots of rootfs are installed under `/dls_sw/prod/targetOS/rootfs`
+and include prebuilt copies of the toolkit in a hidden `.toolkit` subdirectory.
 To create a release run the command::
 
     scripts/release/release $VERSION
