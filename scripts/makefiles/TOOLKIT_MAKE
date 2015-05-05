@@ -12,10 +12,7 @@ include $(ROOTFS_TOP)/scripts/makefiles/COMMON
 include $(makefiles)/TOOLKIT_DEFS
 
 
-# The following trick is so that we can have default TAR_EXTENSION and
-# SEPARATOR definitions, but override them for fakeroot.
 SOURCE_NAME = $@-$($@_VERSION)
-TAR_FILE    = $(if $($@_TAR_FILE),$($@_TAR_FILE),$(SOURCE_NAME).tar.bz2)
 MD5_SUM     = $(MD5_SUM_$@_$($@_VERSION))
 
 srcdir = $(SOURCE_ROOT)/$(SOURCE_NAME)
