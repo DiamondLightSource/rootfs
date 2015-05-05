@@ -23,6 +23,10 @@ OBJECT_ROOT = $(TARGET_ROOT)/packages
 # as appropriate.
 LIB_PREFIX = $(TARGET_ROOT)/local
 
+# Hosted tools that need to be built for specific targets are installed here.
+TARGET_TOOLKIT = $(TARGET_ROOT)/toolkit
+PATH := $(TARGET_TOOLKIT)/bin:$(PATH)
+
 
 # This is the target configuration
 include $(configdir)/CONFIG
