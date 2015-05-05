@@ -33,7 +33,7 @@ srcdir = $(SOURCE_ROOT)/$(SOURCE_DIR_NAME)
 # Definitions specific to configure.
 
 # Build type needed for --build argument to many ./configure scripts
-BUILD_TYPE = $(shell $(TOOLKIT_BIN)/config.guess)
+BUILD_TYPE = $(shell $(scripts)/config.guess)
 
 
 # Finally we can pull in the real package definitions and fire the
