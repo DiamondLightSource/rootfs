@@ -6,31 +6,26 @@ include $(makefiles)/TARGET_COMMON
 include $(makefiles)/PACKAGE_COMMON
 
 
-# Definitions specific to source extraction
-
-# Source directory and package specification.  A little involved, as we want
-# the extracted sources to be as uniform as possible, but individual source
-# packages introduce their own variations.
-TAR_EXTENSION = .tar.bz2
-SEPARATOR = -
-TAR_SEPARATOR = $(SEPARATOR)
-SOURCE_SEPARATOR = $(SEPARATOR)
-TAR_FILE = $(PACKAGE)$(TAR_SEPARATOR)$(version)$(TAR_EXTENSION)
-SOURCE_DIR_NAME = $(PACKAGE)$(SOURCE_SEPARATOR)$(version)
-untar-extra = @:
-patch-extra = @:
+# Sets name to $name_$version if define or uses the default value.  Call thus:
 #
-# Perhaps the above can be somewhat simplified?  Check existing packages and
-# TOOLKIT_MAKE for ideas.
+#   $(call SET_VERSION,name,default)
+#
+define _SET_VERSION
+    ifdef $1_$(version)
+        $1 := $($1_$(version))
+    else ifdef $1
+        # $1 is set and there is no override
+    else
+        $1 := $2
+    endif
+endef
+SET_VERSION = $(eval $(_SET_VERSION))
 
 version = $($(PACKAGE)_VERSION)
-MD5_SUM = $(MD5_SUM_$(version))
+
 
 # Where the sources are placed and where the package will be built.
 srcdir = $(SOURCE_ROOT)/$(SOURCE_DIR_NAME)
-
-
-# Definitions specific to configure.
 
 # Build type needed for --build argument to many ./configure scripts
 BUILD_TYPE = $(shell $(scripts)/config.guess)
@@ -39,6 +34,32 @@ BUILD_TYPE = $(shell $(scripts)/config.guess)
 # Finally we can pull in the real package definitions and fire the
 # appropriate rules.
 include $(packagedir)/CONFIG
+
+
+# All the following can be overridden in the CONFIG file we've just loaded, so
+# now determine their values.
+
+# Definitions specific to source extraction.  These can all be set in the
+# package CONFIG file, either in general or for a specific package version.
+
+# Source directory and package specification.  A little involved, as we want
+# the extracted sources to be as uniform as possible, but individual source
+# packages introduce their own variations.
+$(call SET_VERSION,TAR_EXTENSION,.tar.bz2)
+$(call SET_VERSION,SEPARATOR,-)
+$(call SET_VERSION,TAR_SEPARATOR,$(SEPARATOR))
+$(call SET_VERSION,SOURCE_SEPARATOR,$(SEPARATOR))
+$(call SET_VERSION,TAR_FILE,\
+    $(PACKAGE)$(TAR_SEPARATOR)$(version)$(TAR_EXTENSION))
+$(call SET_VERSION,SOURCE_DIR_NAME,$(PACKAGE)$(SOURCE_SEPARATOR)$(version))
+$(call SET_VERSION,untar-extra,@:)
+$(call SET_VERSION,patch-extra,@:)
+
+# Configuration of source file
+$(call SET_VERSION,MD5_SUM)
+$(call SET_VERSION,PATCHES)
+
+
 include $(makefiles)/PACKAGE_RULES
 
 # vim: set filetype=make:

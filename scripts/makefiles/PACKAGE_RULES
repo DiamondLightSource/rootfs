@@ -23,9 +23,8 @@ build:
 else
 # For normal builds we have to extract and possibly patch the sources.
 
-# Patch names are of the form PATCHES_<version> and should be placed in a
-# patches subdirectory of the component configuration.
-PATCHES = $(patsubst %,$(packagedir)/patches/%,$(PATCHES_$(version)))
+# Patches are found in a patches subdirectory of the component configuration.
+PATCHES := $(patsubst %,$(packagedir)/patches/%,$(PATCHES))
 
 $(srcdir):
 	mkdir -p $(SOURCE_ROOT)
