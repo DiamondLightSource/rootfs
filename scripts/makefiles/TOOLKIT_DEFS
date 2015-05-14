@@ -2,7 +2,7 @@
 # the toolkit for rootfs.  This is invoked from TOOLKIT_MAKE.
 
 # This is the list of tools to be installed.
-TOOLKIT_COMPONENTS = m4 autoconf automake libtool fakeroot
+TOOLKIT_COMPONENTS = m4 autoconf automake libtool
 
 
 # Automake (builds Makefile.in files)

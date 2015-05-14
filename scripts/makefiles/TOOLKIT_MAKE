@@ -13,6 +13,7 @@ include $(makefiles)/TOOLKIT_DEFS
 
 
 SOURCE_NAME = $@-$($@_VERSION)
+TAR_FILE    = $(SOURCE_NAME).tar.gz
 MD5_SUM     = $(MD5_SUM_$@_$($@_VERSION))
 
 srcdir = $(SOURCE_ROOT)/$(SOURCE_NAME)
