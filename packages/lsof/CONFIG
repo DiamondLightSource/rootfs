@@ -40,14 +40,12 @@ BUILD_LIB_ENV = \
     CFLAGS='$$(CDEFS) $$(INCL) $$(DEBUG)'
 
 
-config:
+build:
 	mkdir -p $(O)/lib
 	ln -sf $(lsof_srcdir)/dialects/linux/*.c $(O)
 	ln -sf $(lsof_srcdir)/dialects/linux/*.h $(O)
 	ln -sf $(lsof_srcdir)/lib/Makefile.skel $(O)/lib/Makefile
 	echo ".ds VN $(version)" >$(O)/version
-
-build:
 	$(BUILD_ENV) $(BUILD_LIB_ENV) \
         make -C $(O) -f $(lsof_srcdir)/dialects/linux/Makefile
 

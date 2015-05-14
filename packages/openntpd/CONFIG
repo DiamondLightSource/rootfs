@@ -9,13 +9,11 @@ OPENNTPD_GID ?= 101
 NTPD_CONF ?= $(packagedir)/ntpd.conf
 
 
-config:
+build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --prefix=/
-
-build:
 	make -C $(O)
 
 install:

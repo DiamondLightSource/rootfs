@@ -4,12 +4,10 @@ TAR_EXTENSION = .tar.gz
 MD5_SUM_1.1.5   = a9bc1d75a610efcfee200d3e28d8eb8f
 
 
-config:
+build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' --prefix=/usr \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
-
-build:
 	make -C $(O)
 
 install-lib:

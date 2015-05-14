@@ -6,13 +6,11 @@ MD5_SUM_1.6.9p17 = 60daf18f28e2c1eb7641c4408e244110
 PATCHES_1.6.9p17 = cross-compile-1.6.9p17.patch
 
 
-config:
+build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --without-pam --with-editor=/bin/vi
-
-build:
 	make -C $(O)
 
 install:

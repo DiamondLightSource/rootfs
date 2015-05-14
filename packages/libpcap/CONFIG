@@ -8,13 +8,11 @@ MD5_SUM_1.0.0 = 9ad1358c5dec48456405eac197a46d3d
 untar-extra = rm -f $(srcdir)/bpf_filter.c
 PATCHES_1.0.0 = makefile-1.0.0.patch
 
-config:
+build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             ac_cv_linux_vers=2 --with-pcap=linux \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
-
-build:
 	make -C $(O)
 
 

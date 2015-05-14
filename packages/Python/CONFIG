@@ -106,7 +106,7 @@ TARGET_PYTHON_CONF_OPTS = \
 CPPFLAGS += -I$(LIB_PREFIX)/usr/include
 LDFLAGS  += -L$(LIB_PREFIX)/usr/lib
 
-config:
+build:
 	mkdir -p $(O-target) $(O-build)
 
         # ----------------------------------------------------------------------
@@ -139,7 +139,9 @@ config:
             CFLAGS='$(CFLAGS)' CPPFLAGS='$(CPPFLAGS)' LDFLAGS='$(LDFLAGS)' \
             $(TARGET_PYTHON_CONF_OPTS)
 
-build:
+        # ----------------------------------------------------------------------
+        # Finally complete the build and create a local install
+
 	make -C $(O-target)
 	make -C $(O-target) DESTDIR=$(O-install) install
 	rm -rf $(O-install)/usr/include $(O-install)/usr/share

@@ -12,15 +12,13 @@ untar-extra = touch $(srcdir)/libinotifytools/src/inotifytools/inotify.h.in
 # patch-extra = cd $(srcdir)/src  &&  automake
 # patch-extra = cd $(srcdir)  &&  autoreconf
 
-config:
+build:
 # 	cd $(O)  &&  \
 #         autoconf -o configure --include=$(srcdir) $(srcdir)/configure.ac
 	cd $(O)  &&  \
         $(srcdir)/configure --srcdir=$(srcdir) CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --disable-doxygen
-
-build:
 	make -C $(O)
 
 # This fails to build.  The problem appears to be an incorrect use of relative

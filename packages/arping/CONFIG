@@ -6,12 +6,10 @@ MD5_SUM_2.09 = 6f6a91c8700fcc7454b4e89480e417e3
 export LDFLAGS  += -L$(LIB_PREFIX)/usr/lib
 export CPPFLAGS += -I$(LIB_PREFIX)/include -I$(LIB_PREFIX)/usr/include
 
-config:
+build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
-
-build:
 	make -C $(O)
 
 install:

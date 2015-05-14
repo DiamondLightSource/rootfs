@@ -7,7 +7,7 @@ ifdef CFLAGS_$(PACKAGE)
 CFLAGS = $(CFLAGS_$(PACKAGE))
 endif
 
-default: config build install-lib
+default: build install-lib
 
 ifeq ($(version),local)
 # Local builds are handled a little oddly: we need to turn the make file
@@ -53,8 +53,7 @@ $(LIB_PREFIX):
 	mkdir -p $(LIB_PREFIX)/include $(LIB_PREFIX)/lib $(LIB_PREFIX)/usr/lib
 
 
-config: $(O) untar
-build: $(O) config
+build: $(O) untar
 install-lib: build $(LIB_PREFIX)
 
 clean:
@@ -70,7 +69,7 @@ clean-lib:
 
 clean-all: clean clean-src clean-lib
 
-.PHONY: untar config build install-lib install
+.PHONY: untar build install-lib install
 .PHONY: clean clean-src clean-all clean-lib
 
 # vim: set filetype=make:

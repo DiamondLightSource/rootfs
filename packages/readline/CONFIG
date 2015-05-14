@@ -3,13 +3,11 @@ readline_VERSION ?= 6.2
 TAR_EXTENSION = .tar.gz
 MD5_SUM_6.2 = 67948acb2ca081f23359d0256e9a271c
 
-config:
+build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --prefix=/usr
-
-build:
 	make -C $(O)
 
 install-lib:

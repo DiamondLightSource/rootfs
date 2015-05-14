@@ -4,12 +4,10 @@ TAR_EXTENSION = .tar.gz
 MD5_SUM_B.02.14 = 8bed55768c5cb2ceff062b882a687e9b
 
 
-config:
+build:
 	mkdir -p $(O)/src/core
 	ln -sf $(srcdir)/src/Makefile $(O)/src
 	ln -sf $(srcdir)/src/core/Makefile $(O)/src/core
-
-build:
 	make -C $(O)/src \
             CXX=$(CROSS_COMPILE)c++ AR=$(CROSS_COMPILE)ar \
             STRIP=$(CROSS_COMPILE)strip \

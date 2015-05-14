@@ -49,11 +49,10 @@ PATCHES_1.20.2 = \
 busybox_CONFIG ?= $(packagedir)/busybox-default-$(busybox_VERSION).config
 
 
-config:
+build:
 	cp $(busybox_CONFIG) $(O)/.config
 	make O=$(O) -C $(srcdir) oldconfig
 
-build:
 	CFLAGS='$(CFLAGS)' make -C $(O)
 	make -C $(O) busybox.links
 

@@ -4,13 +4,11 @@ TAR_EXTENSION = .tar.gz
 MD5_SUM_2.6.0 = bbf052e7fcc6fa403d2514219346da04
 
 
-config:
+build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' CXXFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --disable-doc --enable-access-from-anywhere
-
-build:
 	make -C $(O)
 
 install:

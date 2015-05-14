@@ -7,13 +7,11 @@ MD5_SUM_1.2.5 = c735eab2d659a96e5a594c9e8541ad63
 # For out of tree configuration we need these files in $(O)
 LINK_FILES = zlib.h Makefile.in zlib.pc.in zlib.map example.c minigzip.c
 
-config:
+build:
 	install $(srcdir)/zconf.h.in $(O)
 	ln -s $(LINK_FILES:%=$(srcdir)/%) $(O)
 	cd $(O)  &&  \
         CFLAGS='$(CFLAGS)' CC=$(CROSS_COMPILE)gcc $(srcdir)/configure
-
-build:
 	make -C $(O) VPATH='$(srcdir)'
 
 

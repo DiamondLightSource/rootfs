@@ -3,12 +3,10 @@ ethtool_VERSION ?= 2.6.36
 TAR_EXTENSION = .tar.gz
 MD5_SUM_2.6.36 = 3b2322695e9ee7bf447ebcdb85f93e83
 
-config:
+build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
-
-build:
 	make -C $(O)
 
 install:

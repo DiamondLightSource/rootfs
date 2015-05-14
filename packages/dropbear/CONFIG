@@ -13,13 +13,11 @@ endif
 
 
 
-config:
+build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --disable-zlib --disable-lastlog --disable-largefile
-
-build:
 	make -C $(O) PROGRAMS="dropbear $(PROGRAMS)" \
             MULTI=1 SCPPROGRESS=1
 

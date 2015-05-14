@@ -9,14 +9,12 @@ PATCHES_4.0.0 = tcpdump-4.0.0.patch
 export LDFLAGS += -L$(LIB_PREFIX)/usr/lib
 export CPPFLAGS += -I$(LIB_PREFIX)/include
 
-config:
+build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             ac_cv_linux_vers=2 --with-crypto=no \
             --disable-ipv6 --disable-smb
-
-build:
 	make -C $(O)
 
 install:

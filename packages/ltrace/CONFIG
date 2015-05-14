@@ -7,11 +7,9 @@ MD5_SUM_0.6.0 = 9a7ef956441c8bcba7c306ab4d6240a0
 # copy of ./configure, so the following command will build this.
 patch-extra = cd $(srcdir)  &&  ./autogen.sh
 
-config:
+build:
 	$(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
-
-build:
 	make -C $(O)
 
 install:
