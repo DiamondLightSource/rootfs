@@ -1,0 +1,27 @@
+This patch ensures that numpy does not attempt to update its source tree
+when building.
+
+
+diff -ur numpy-1.9.2-unpatched/numpy/distutils/ccompiler.py numpy-1.9.2/numpy/distutils/ccompiler.py
+--- numpy-1.9.2-unpatched/numpy/distutils/ccompiler.py	2015-02-01 16:38:21.000000000 +0000
++++ numpy-1.9.2/numpy/distutils/ccompiler.py	2015-05-05 13:05:08.753524157 +0100
+@@ -102,7 +102,6 @@
+     for src_name in source_filenames:
+         base, ext = os.path.splitext(os.path.normpath(src_name))
+         base = os.path.splitdrive(base)[1] # Chop off the drive
+-        base = base[os.path.isabs(base):]  # If abs, chop off leading /
+         if base.startswith('..'):
+             # Resolve starting relative path components, middle ones
+             # (if any) have been handled by os.path.normpath above.
+diff -ur numpy-1.9.2-unpatched/setup.py numpy-1.9.2/setup.py
+--- numpy-1.9.2-unpatched/setup.py	2015-03-01 13:39:45.000000000 +0000
++++ numpy-1.9.2/setup.py	2015-04-30 11:19:03.661608886 +0100
+@@ -197,7 +197,7 @@
+     sys.path.insert(0, src_path)
+ 
+     # Rewrite the version file everytime
+-    write_version_py()
++#     write_version_py()
+ 
+     metadata = dict(
+         name = 'numpy',

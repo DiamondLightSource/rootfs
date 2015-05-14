@@ -1,0 +1,39 @@
+This patch ensures that searches for executables, libraries and include
+files can be overwritten.  This is needed for cross-building, particularly
+to ensure that /usr/lib etc is not searched!
+
+
+diff -ur numpy-1.9.2-unpatched/numpy/distutils/fcompiler/__init__.py numpy-1.9.2/numpy/distutils/fcompiler/__init__.py
+--- numpy-1.9.2-unpatched/numpy/distutils/fcompiler/__init__.py	2014-10-26 14:36:14.000000000 +0000
++++ numpy-1.9.2/numpy/distutils/fcompiler/__init__.py	2015-05-05 11:16:18.978939421 +0100
+@@ -322,7 +322,7 @@
+             if not exe_from_environ:
+                 possibles = [f90, f77] + self.possible_executables
+             else:
+-                possibles = [exe_from_environ] + self.possible_executables
++                possibles = [exe_from_environ]
+ 
+             seen = set()
+             unique_possibles = []
+diff -ur numpy-1.9.2-unpatched/numpy/distutils/system_info.py numpy-1.9.2/numpy/distutils/system_info.py
+--- numpy-1.9.2-unpatched/numpy/distutils/system_info.py	2015-02-01 16:38:25.000000000 +0000
++++ numpy-1.9.2/numpy/distutils/system_info.py	2015-05-05 11:15:16.179788794 +0100
+@@ -468,9 +468,16 @@
+         self.__class__.info = {}
+         self.local_prefixes = []
+         defaults = {}
+-        defaults['library_dirs'] = os.pathsep.join(default_lib_dirs)
+-        defaults['include_dirs'] = os.pathsep.join(default_include_dirs)
++        if 'library_dirs' in os.environ:
++            defaults['library_dirs'] = os.environ['library_dirs']
++        else:
++            defaults['library_dirs'] = os.pathsep.join(default_lib_dirs)
++        if 'include_dirs' in os.environ:
++            defaults['include_dirs'] = os.environ['include_dirs']
++        else:
++            defaults['include_dirs'] = os.pathsep.join(default_include_dirs)
+         defaults['src_dirs'] = os.pathsep.join(default_src_dirs)
++
+         defaults['search_static_first'] = str(self.search_static_first)
+         self.cp = ConfigParser(defaults)
+         self.files = []
