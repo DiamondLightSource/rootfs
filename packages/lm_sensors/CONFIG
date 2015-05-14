@@ -2,9 +2,10 @@
 #
 # Download from http://www.lm-sensors.org
 
-lm_sensors_VERSION ?= 3.1.0
+lm_sensors_VERSION ?= 3.3.5
 
 MD5_SUM_3.1.0 = e23130eaa46c66b861729835e08bdccf
+MD5_SUM_3.3.5 = da506dedceb41822e64865f6ba34828a
 
 
 # Building out of tree seems to need these.
@@ -20,6 +21,7 @@ build:
             mkdir -p $(O)/$$dir; \
             ln -sf $(srcdir)/$$dir/Module.mk $(O)/$$dir; \
         done
+	ln -s $(srcdir)/lib/libsensors.map $(O)/lib
 
 	make -C $(O) -f $(srcdir)/Makefile \
             $(call EXPORT,SRCDIRS srcdir CFLAGS CPPFLAGS) \

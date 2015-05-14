@@ -1,7 +1,8 @@
-arping_VERSION ?= 2.09
+arping_VERSION ?= 2.15
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_2.09 = 6f6a91c8700fcc7454b4e89480e417e3
+MD5_SUM_2.15 = 676584f6eb4ccc8c70fc6b2c702df75d
 
 export LDFLAGS  += -L$(LIB_PREFIX)/usr/lib
 export CPPFLAGS += -I$(LIB_PREFIX)/include -I$(LIB_PREFIX)/usr/include
@@ -9,6 +10,7 @@ export CPPFLAGS += -I$(LIB_PREFIX)/include -I$(LIB_PREFIX)/usr/include
 build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            ac_cv_have_clock_monotonic=yes \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
 	make -C $(O)
 

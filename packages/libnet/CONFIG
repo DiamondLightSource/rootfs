@@ -1,7 +1,8 @@
-libnet_VERSION ?= 1.1.5
+libnet_VERSION ?= 1.1.6
 
 TAR_EXTENSION = .tar.gz
-MD5_SUM_1.1.5   = a9bc1d75a610efcfee200d3e28d8eb8f
+MD5_SUM_1.1.5 = a9bc1d75a610efcfee200d3e28d8eb8f
+MD5_SUM_1.1.6 = 710296fe424a49344e5fcc0d09e53317
 
 
 build:

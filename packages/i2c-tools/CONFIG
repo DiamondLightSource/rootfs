@@ -1,15 +1,18 @@
-i2c-tools_VERSION ?= 3.0.2
+i2c-tools_VERSION ?= 3.1.1
 
 MD5_SUM_3.0.2 = b546345ac19db56719dea6b8199f11e0
+MD5_SUM_3.1.1 = 0fdbff53ebd0b8d9249256d6c56480b1
 
 PATCHES_3.0.2 = tools-Module.mk-3.0.2.patch
+PATCHES_3.1.1 = tools-Module.mk-3.1.1.patch
 
 PROGRAMS = i2cdetect i2cdump i2cset i2cget
 
 build:
 	make -C $(O) -f $(srcdir)/tools/Module.mk \
-            VPATH=$(srcdir)/tools CC=$(CROSS_COMPILE)gcc \
-            CPPFLAGS=-I$(srcdir)/include $(PROGRAMS)
+            VPATH=$(srcdir)/tools:$(srcdir) CC=$(CROSS_COMPILE)gcc \
+            INCLUDE_DIR=$(srcdir)/include \
+            CFLAGS='-I$(srcdir)/include $(CFLAGS)' $(PROGRAMS)
 
 install:
 	$(install) -s -m-w $(addprefix $(O)/,$(PROGRAMS)) /usr/bin

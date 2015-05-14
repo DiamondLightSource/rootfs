@@ -1,6 +1,7 @@
-nfs-utils_VERSION ?= 1.1.4
+nfs-utils_VERSION ?= 1.3.2
 
 MD5_SUM_1.1.4 = 3ed5b9cb73fd1c9b358c7bfa7a6ae150
+MD5_SUM_1.3.2 = 1e2f3c1ed468dee02d00c534c002ea10
 
 # Unfortunately rpcgen is really badly behaved when it comes to building out
 # of tree, so we have to patch the makefiles!
@@ -14,8 +15,9 @@ build:
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --disable-gss --disable-nfsv4 --without-tcp-wrappers \
-            --disable-uuid
-	make -C $(O)
+            --disable-uuid --disable-tirpc --disable-ipv6
+	make -C $(O) CC=$(CROSS_COMPILE)gcc \
+            CPPFLAGS='-I$(srcdir)/support/include -I$(O)/support/include'
 
         # Don't know which files will really be useful, as this isn't used at
         # all yet!

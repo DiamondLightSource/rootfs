@@ -1,0 +1,17 @@
+The macro READ_SAMPLE_BUF can end up setting sample_len to -1, and
+it seems that the arm cross-compiler can detect this ... and fails
+with a cryptic internal error!
+
+diff -ur bash-4.3-original/execute_cmd.c bash-4.3/execute_cmd.c
+--- bash-4.3-original/execute_cmd.c	2014-01-31 15:54:52.000000000 +0000
++++ bash-4.3/execute_cmd.c	2015-05-06 11:55:33.334486498 +0100
+@@ -5224,7 +5224,8 @@
+ 	     run it for some reason.  See why. */
+ #if defined (HAVE_HASH_BANG_EXEC)
+ 	  READ_SAMPLE_BUF (command, sample, sample_len);
+-	  sample[sample_len - 1] = '\0';
++          if (sample_len > 0)
++              sample[sample_len - 1] = '\0';
+ 	  if (sample_len > 2 && sample[0] == '#' && sample[1] == '!')
+ 	    {
+ 	      char *interp;

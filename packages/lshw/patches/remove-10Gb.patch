@@ -1,0 +1,21 @@
+We can't detect 10Gb on an embedded system ... on a 32-bit word we can't
+even represent this in an integer!
+
+diff -ur lshw-B.02.17-original/src/core/network.cc lshw-B.02.17/src/core/network.cc
+--- lshw-B.02.17-original/src/core/network.cc	2013-02-03 16:43:25.000000000 +0000
++++ lshw-B.02.17/src/core/network.cc	2015-05-07 07:10:38.326467045 +0100
+@@ -464,10 +464,10 @@
+             interface.setConfig("speed", "1Gbit/s");
+             interface.setSize(1000000000L);
+             break;
+-          case SPEED_10000:
+-            interface.setConfig("speed", "10Gbit/s");
+-            interface.setSize(10000000000L);
+-            break;
++//           case SPEED_10000:
++//             interface.setConfig("speed", "10Gbit/s");
++//             interface.setSize(10000000000L);
++//             break;
+         }
+         switch(ecmd.duplex)
+         {

@@ -1,9 +1,15 @@
-screen_VERSION ?= 4.0.3
+screen_VERSION ?= 4.2.1
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_4.0.3 = 8506fd205028a96c741e4037de6e3c42
+MD5_SUM_4.2.1 = 419a0594e2b25039239af8b90eda7d92
 
 PATCHES_4.0.3 = configure-4.0.3.patch
+PATCHES_4.2.1 = configure-4.2.1.patch
+
+# Alas there seems to be a misplaced config.h file, we need to get rid of
+# this!
+untar-extra = rm -f $(srcdir)/config.h
 
 
 build:

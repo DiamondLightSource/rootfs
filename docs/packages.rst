@@ -82,11 +82,14 @@ The following packages can be included in any rootfs build.
     thoroughly broken, looks quite difficult to fix for out of tree build.
 
 `libnet`
-    Web page: http://packetfactory.openwall.net/projects/libnet/
+    Web pages: https://github.com/sam-github/libnet and
+    http://sourceforge.net/projects/libnet-dev
 
-    Packet construction library, used by `arping`.  Rather confusingly, there
-    seem to be two completely different versions of this library, it looks as if
-    the version at http://libnet.sourceforge.net/ is out of date.
+    Packet construction library, used by `arping`.
+
+    The old web page at http://packetfactory.openwall.net/projects/libnet/ seems
+    to have been abandoned, and there's another page at
+    http://libnet.sourceforge.net/ which is also out of date.
 
 `libpcap`
     Web page: http://www.tcpdump.org/

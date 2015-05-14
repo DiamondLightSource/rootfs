@@ -1,8 +1,11 @@
-strace_VERSION ?= 4.6
+strace_VERSION ?= 4.10
+
+TAR_EXTENSION = .tar.xz
 
 MD5_SUM_4.5.17 = 60f50358eeb19cadabef53b548df2732
 MD5_SUM_4.5.18 = e9449fcee97e6a8ed73934c883c870e0
 MD5_SUM_4.6    = 49cc7a2a1924ca2ab73400e88b50c31b
+MD5_SUM_4.10   = 107a5be455493861189e9b57a3a51912
 
 PATCHES_4.5.17 = strace-4.5.17-arm.patch
 

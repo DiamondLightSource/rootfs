@@ -1,4 +1,4 @@
-busybox_VERSION ?= 1.20.2
+busybox_VERSION ?= 1.23.2
 
 MD5_SUM_1.13.4 = 8a5eb7f15d4077d18fa97bda7a4e5412
 MD5_SUM_1.14.3 = d170bf5f97a41aec3a505eab690d5699
@@ -6,6 +6,7 @@ MD5_SUM_1.15.2 = d5653e5b74b17dbb1eeecda8b8f22c0a
 MD5_SUM_1.15.3 = 6059ac9456de6fb18dc8ee4cd0ec9240
 MD5_SUM_1.19.3 = c3938e1ac59602387009bbf1dd1af7f6
 MD5_SUM_1.20.2 = e025414bc6cd79579cc7a32a45d3ae1c
+MD5_SUM_1.23.2 = 7925683d7dd105aabe9b6b618d48cc73
 
 # Patches downloaded from http://busybox.net/downloads/fixes-1.14.3/
 PATCHES_1.14.3 = \

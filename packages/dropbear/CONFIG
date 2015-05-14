@@ -1,6 +1,7 @@
-dropbear_VERSION ?= 0.51
+dropbear_VERSION ?= 2015.67
 
 MD5_SUM_0.51 = 95d900913bee4b27d7e9ce55f8a55427
+MD5_SUM_2015.67 = e967e320344cd4bfebe321e3ab8514d6
 
 PROGRAMS = dbclient dropbearkey dropbearconvert scp
 INETD_CONF = ssh stream tcp nowait root /usr/sbin/dropbearmulti dropbear -i

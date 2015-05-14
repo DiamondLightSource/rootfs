@@ -1,0 +1,12 @@
+diff -ur libpcap-1.7.3-unpatched/Makefile.in libpcap-1.7.3/Makefile.in
+--- libpcap-1.7.3-unpatched/Makefile.in	2015-03-09 19:22:07.000000000 +0000
++++ libpcap-1.7.3/Makefile.in	2015-05-06 08:13:18.226640296 +0100
+@@ -447,7 +447,7 @@
+ 	@rm -f $@ $@.bottom
+ 	$(srcdir)/runlex.sh $(LEX) -o$@ $<
+ 	mv $@ $@.bottom
+-	cat $@.top $@.bottom > $@
++	cat $(srcdir)/$@.top $@.bottom > $@
+ 	@rm $@.bottom
+ 
+ scanner.o: scanner.c tokdefs.h

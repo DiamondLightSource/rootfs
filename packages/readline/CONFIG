@@ -1,11 +1,13 @@
-readline_VERSION ?= 6.2
+readline_VERSION ?= 6.3
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_6.2 = 67948acb2ca081f23359d0256e9a271c
+MD5_SUM_6.3 = 33c8fb279e981274f485fd91da77e94a
 
 build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            bash_cv_func_sigsetjmp=yes bash_cv_wcwidth_broken=no \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --prefix=/usr
 	make -C $(O)

@@ -1,9 +1,10 @@
-ntp_VERSION ?= 4.2.6p5
+ntp_VERSION ?= 4.2.8p2
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_4.2.2p3 = 45cee6d1ebf8fe46e412fd818b8e7b74
 MD5_SUM_4.2.4p5 = eb647e07ecbd6e9e07bf8d3dc555490e
 MD5_SUM_4.2.6p5 = 00df80a84ec9528fcfb09498075525bc
+MD5_SUM_4.2.8p2 = fa37049383316322d060ec9061ac23a9
 
 
 NTP_CONF ?= $(packagedir)/ntp.conf
@@ -15,6 +16,7 @@ build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
+            --with-yielding-select=yes --without-crypto \
             --disable-all-clocks --disable-parse-clocks
 	make -C $(O)
 

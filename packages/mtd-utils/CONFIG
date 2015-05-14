@@ -1,8 +1,14 @@
-mtd-utils_VERSION ?= 1.2.0
+mtd-utils_VERSION ?= 1.5.1
 
 MD5_SUM_1.2.0 = ca41f1fbaa056e8b8d71e8d52c0b1bad
+MD5_SUM_1.5.1 = 4ad1f758d49615efe14edb107eddac5c
 
-MTD_TOOLS = flash_eraseall flashcp
+MTD_TOOLS = flashcp
+ifeq ($(VERSION),1.2.0)
+MTD_TOOLS += flash_eraseall
+else
+MTD_TOOLS += flash_erase
+endif
 
 
 build:
@@ -21,6 +27,8 @@ install:
 #
 # flash_eraseall
 #   Erases an entire partition, optionally configuring for JFFS2 format.
+#   In version 1.5.1 this has been replaced by calling:
+#       flash_erase <device> 0 0
 #
 # nanddump
 #   Dumps content of mtd partition.

@@ -1,7 +1,8 @@
-tcpdump_VERSION ?= 4.0.0
+tcpdump_VERSION ?= 4.7.4
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_4.0.0 = b22ca72890df2301d922c9f2d17867f9
+MD5_SUM_4.7.4 = 58af728de36f499341918fc4b8e827c3
 
 PATCHES_4.0.0 = tcpdump-4.0.0.patch
 

@@ -1,8 +1,9 @@
-ntpclient_VERSION ?= 2007_365
+ntpclient_VERSION ?= 2010_365
 
 TAR_FILE = ntpclient_$(version).tar.gz
 
 MD5_SUM_2007_365 = cb98711f11769cdd22fc592844cef414
+MD5_SUM_2010_365 = a64689398f2df8933ee0d8da246e9eaa
 
 
 # The extracted source file only includes part of the version number.  We

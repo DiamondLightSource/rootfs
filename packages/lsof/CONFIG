@@ -1,8 +1,9 @@
-lsof_VERSION ?= 4.81
+lsof_VERSION ?= 4.88
 
 SEPARATOR = _
 MD5_SUM_4.81 = c482bda0764a8e618f87682347b22a87
 MD5_SUM_4.85 = 102ee2081172bbe76dccaa6cceda8573
+MD5_SUM_4.88 = 1b29c10db4aa88afcaeeaabeef6790db
 
 lsof_srcdir = $(srcdir)/lsof_$(version)_src
 

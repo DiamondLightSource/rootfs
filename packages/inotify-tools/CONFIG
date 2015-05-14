@@ -8,21 +8,23 @@ MD5_SUM_3.14 = b43d95a0fa8c45f8bab3aec9672cf30c
 
 # Seems there's a date mismatch in the release (3.14, anyway), so to avoid grief
 # ensure we don't try to rebuild the offending file.
-untar-extra = touch $(srcdir)/libinotifytools/src/inotifytools/inotify.h.in
-# patch-extra = cd $(srcdir)/src  &&  automake
-# patch-extra = cd $(srcdir)  &&  autoreconf
+define patch-extra
+touch $(srcdir)/libinotifytools/src/inotifytools/inotify.h.in
+cd $(srcdir)  &&  autoreconf -fi
+endef
 
 build:
-# 	cd $(O)  &&  \
-#         autoconf -o configure --include=$(srcdir) $(srcdir)/configure.ac
 	cd $(O)  &&  \
         $(srcdir)/configure --srcdir=$(srcdir) CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --disable-doxygen
-	make -C $(O)
+	make -C $(O) CPPFLAGS=-I$(srcdir)/libinotifytools/src
 
-# This fails to build.  The problem appears to be an incorrect use of relative
-# paths in src/Makefile.am, which I've attempted to patch, but I've not yet
-# succeeded in rebuilding the corresponding Makefile.in.
+install-lib:
+	install $(O)/libinotifytools/src/.libs/*.so* $(LIB_PREFIX)/usr/lib
+
+install:
+	$(install) -x $(O)/src/.libs/* /usr/bin
+# 	$(install) $(O)/libinotifytools/src/.libs/*.so* /usr/lib
 
 # vim: set filetype=make:

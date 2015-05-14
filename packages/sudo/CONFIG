@@ -1,7 +1,8 @@
-sudo_VERSION ?= 1.6.9p17
+sudo_VERSION ?= 1.8.13
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_1.6.9p17 = 60daf18f28e2c1eb7641c4408e244110
+MD5_SUM_1.8.13   = f61577ec330ad1bd504c0e2eec6ea2d8
 
 PATCHES_1.6.9p17 = cross-compile-1.6.9p17.patch
 

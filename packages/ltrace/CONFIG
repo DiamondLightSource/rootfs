@@ -1,14 +1,16 @@
-ltrace_VERSION ?= 0.6.0
+ltrace_VERSION ?= 0.7.3
 
 MD5_SUM_0.6.0 = 9a7ef956441c8bcba7c306ab4d6240a0
+MD5_SUM_0.7.3 = b3dd199af8f18637f7d4ef97fdfb9d14
 
 
 # If we are building from sources generated directly from git we won't have a
 # copy of ./configure, so the following command will build this.
+patch-extra_0.6.3 = cd $(srcdir)  &&  ./autogen.sh
 patch-extra = cd $(srcdir)  &&  ./autogen.sh
 
 build:
-	$(srcdir)/configure CFLAGS='$(CFLAGS)' \
+	cd $(O)  &&  $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
 	make -C $(O)
 

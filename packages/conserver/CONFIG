@@ -1,7 +1,8 @@
-conserver_VERSION ?= 8.1.18
+conserver_VERSION ?= 8.2.0
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_8.1.18 = 93d1c38df71b4e3fd5d8f7ad6fc186bb
+MD5_SUM_8.2.0  = bb13834970c468f73415618437f3feac
 
 PATCHES_8.1.18 = 8.1.18.makefile.patch
 
@@ -10,7 +11,7 @@ build:
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             ac_cv_func_setpgrp_void=yes \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
-	make -C $(O)
+	make -C $(O) VPATH='$$(srcdir)'
 
 install:
 	$(install) -x $(O)/conserver/conserver /usr/bin
