@@ -47,6 +47,9 @@ f 644 /etc/profile
 f 644 /etc/services
 n 600 /etc/shadow
 
+# Give root the appropriate path setting
+f 644 /root/.profile
+
 # Not sure about these ones:
 f 644 /etc/protocols
 f 644 /etc/rpc
