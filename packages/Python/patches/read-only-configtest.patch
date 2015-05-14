@@ -1,0 +1,43 @@
+This patch ensures that running the configuration tests doesn't
+attempt to write files into the source tree.
+
+diff -ur Python-2.7.9/Lib/distutils/command/config.py  Python-2.7.9/Lib/distutils/command/config.py 
+--- Python-2.7.9/Lib/distutils/command/config.py	2014-12-10 15:59:34.000000000 +0000
++++ Python-2.7.9/Lib/distutils/command/config.py	2014-12-10 15:59:34.000000000 +0000
+@@ -13,6 +13,7 @@
+ 
+ import os
+ import re
++import tempfile
+ 
+ from distutils.core import Command
+ from distutils.errors import DistutilsExecError
+@@ -110,8 +111,8 @@
+ 
+ 
+     def _gen_temp_sourcefile(self, body, headers, lang):
+-        filename = "_configtest" + LANG_EXT[lang]
+-        file = open(filename, "w")
++        (file, filename) = tempfile.mkstemp(LANG_EXT[lang], 'configtest_')
++        file = os.fdopen(file, 'w')
+         if headers:
+             for header in headers:
+                 file.write("#include <%s>\n" % header)
+@@ -124,7 +125,7 @@
+ 
+     def _preprocess(self, body, headers, include_dirs, lang):
+         src = self._gen_temp_sourcefile(body, headers, lang)
+-        out = "_configtest.i"
++        out = src + '.i'
+         self.temp_files.extend([src, out])
+         self.compiler.preprocess(src, out, include_dirs=include_dirs)
+         return (src, out)
+@@ -141,7 +142,7 @@
+     def _link(self, body, headers, include_dirs, libraries, library_dirs,
+               lang):
+         (src, obj) = self._compile(body, headers, include_dirs, lang)
+-        prog = os.path.splitext(os.path.basename(src))[0]
++        prog = os.path.splitext(src)[0]
+         self.compiler.link_executable([obj], prog,
+                                       libraries=libraries,
+                                       library_dirs=library_dirs,

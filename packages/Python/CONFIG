@@ -39,7 +39,8 @@ PATCHES_2.7.9 = \
     112-optional-bzip2.patch \
     113-optional-zlib.patch \
     114-remove-idle-editor.patch \
-    115-optional-ossaudiodev.patch
+    115-optional-ossaudiodev.patch \
+    read-only-configtest.patch
 
 # This is needed to make sure the Python build process doesn't try to regenerate
 # those files with the pgen program. Otherwise, it builds pgen for the target,
