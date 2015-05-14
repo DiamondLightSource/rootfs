@@ -6,8 +6,7 @@ MD5_SUM_0.7.3 = b3dd199af8f18637f7d4ef97fdfb9d14
 
 # If we are building from sources generated directly from git we won't have a
 # copy of ./configure, so the following command will build this.
-patch-extra_0.6.3 = cd $(srcdir)  &&  ./autogen.sh
-patch-extra = cd $(srcdir)  &&  ./autogen.sh
+patch-extra_0.6.0 = cd $(srcdir)  &&  ./autogen.sh
 
 build:
 	cd $(O)  &&  $(srcdir)/configure CFLAGS='$(CFLAGS)' \
@@ -16,6 +15,7 @@ build:
 
 install:
 	$(install) -s -m-w $(O)/ltrace /usr/bin
+	false   # It's broken anyway, sorry.
 
 
 # Web site at http://ltrace.alioth.debian.org/ but there doesn't appear to be a

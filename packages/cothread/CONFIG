@@ -25,15 +25,18 @@ ifeq ($(PYTHON_PYC_ONLY),1)
 endif
 
         # Strictly this belongs elsewhere, but if requested install EPICS libs
-ifdef LIBCA_PATH
-	cp -a $(LIBCA_PATH)/*.so* $(LIB_PREFIX)/usr/lib
+ifdef EPICS_BASE
+	cp -a $(EPICS_BASE)/lib/$(EPICS_ARCH)/*.so* $(LIB_PREFIX)/usr/lib
 endif
 
 
 install:
 	tar c -C $(O-install) . | tar x -C $(sysroot)
-ifdef LIBCA_PATH
-	$(install) -x $(LIB_PREFIX)/usr/lib/libca.so* /usr/lib
+
+        # Catools needs libca.so, and it will help to have caRepeater available.
+        # It so happens that caRepeater pulls in libca.so
+ifdef EPICS_BASE
+	$(install) -x $(EPICS_BASE)/bin/$(EPICS_ARCH)/caRepeater /usr/bin
 endif
 
 

@@ -25,6 +25,5 @@ install-lib:
 
 install:
 	$(install) -x $(O)/src/.libs/* /usr/bin
-# 	$(install) $(O)/libinotifytools/src/.libs/*.so* /usr/lib
 
 # vim: set filetype=make:

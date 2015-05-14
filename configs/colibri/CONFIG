@@ -41,8 +41,10 @@ PACKAGES += readline lua
 # Python
 # PACKAGES += Python
 # PYTHON_PYC_ONLY = 1
+# PACKAGES += numpy
 # PACKAGES += cothread
-# LIBCA_PATH = /dls_sw/epics/R3.14.12.3/base/lib/linux-arm_el/
+# EPICS_BASE = /dls_sw/epics/R3.14.12.3/base
+# EPICS_ARCH = linux-arm_el
 
 
 # We need a number of extra settings for dropbear: thumb is a bit too slow for

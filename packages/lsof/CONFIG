@@ -7,9 +7,8 @@ MD5_SUM_4.88 = 1b29c10db4aa88afcaeeaabeef6790db
 
 lsof_srcdir = $(srcdir)/lsof_$(version)_src
 
-define untar-extra
-tar xf $(lsof_srcdir).tar -C $(srcdir)
-endef
+# Strangely, the lsof source comes nested and needs a second expansion
+untar-extra = tar xf $(lsof_srcdir).tar -C $(srcdir)
 
 
 # Using the proper ./Configure script is rather excruciating, and it just
