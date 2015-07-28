@@ -8,25 +8,10 @@ ROOTFS_TOP="$(cd "$(dirname "$0")"; pwd)"
 . "$ROOTFS_TOP"/scripts/functions
 
 
-call_make()
+usage()
 {
-    MAKEFILE="$1"
-    shift
-    make -f "$ROOTFS_TOP"/scripts/makefiles/"$MAKEFILE" \
-        ROOTFS_TOP="$ROOTFS_TOP" "$@"
-}
-
-
-
-action="$1"
-shift
-
-
-MAKEFILE=
-case "$action" in
-    h|help)
-        cat <<EOF
-Usage: rootfs <action> [<arguments>]
+    cat <<EOF
+Usage: rootfs [<options>] <action> [<arguments>]
 
 Invokes the appropriate rootfs action.  The following actions are available:
 
@@ -54,7 +39,48 @@ Invokes the appropriate rootfs action.  The following actions are available:
     imagedir
         Prints the full path to the generated rootfs .cpio image or the image
         directory.
+
+The following options can be passed before any action:
+
+    -t<target>
+        This overrides the TARGET option set in CONFIG.local.
+
+    -r<build-root>
+        This overrides the default definition of ROOTFS_ROOT and the value set
+        in CONFIG.local.
 EOF
+}
+
+
+EXTRA_OPTIONS=()
+
+call_make()
+{
+    MAKEFILE="$1"
+    shift
+    make -f "$ROOTFS_TOP"/scripts/makefiles/"$MAKEFILE" \
+        ROOTFS_TOP="$ROOTFS_TOP" "$@" "${EXTRA_OPTIONS[@]}"
+}
+
+
+while getopts 't:r:h' option; do
+    case "$option" in
+    t)  EXTRA_OPTIONS=("${EXTRA_OPTIONS[@]}" TARGET="$OPTARG") ;;
+    r)  EXTRA_OPTIONS=("${EXTRA_OPTIONS[@]}" ROOTFS_ROOT="$OPTARG") ;;
+    h)  usage
+        exit 0 ;;
+    *)  Error 'Invalid option: try -h for help' ;;
+    esac
+done
+shift $((OPTIND-1))
+
+action="$1"
+shift
+
+MAKEFILE=
+case "$action" in
+    h|help)
+        usage
         ;;
 
     docs)
