@@ -30,7 +30,7 @@ $(srcdir):
 	mkdir -p $(SOURCE_ROOT)
 	$(scripts)/extract-tar \
             '$(SOURCE_ROOT)' '$(TAR_FILE)' '$(MD5_SUM)' $(TAR_DIRS)
-        # Do any extra work required to get files into the right position.
+	# Do any extra work required to get files into the right position.
 	$(untar-extra)
 
 	for patch in $(PATCHES); do \
@@ -52,7 +52,7 @@ $(LIB_PREFIX):
 	mkdir -p $(LIB_PREFIX)/include $(LIB_PREFIX)/lib $(LIB_PREFIX)/usr/lib
 
 
-build: $(O) untar
+build: untar $(O)
 install-lib: build $(LIB_PREFIX)
 
 clean:
