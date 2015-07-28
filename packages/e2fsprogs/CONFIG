@@ -1,0 +1,23 @@
+e2fsprogs_VERSION ?= 1.42.13
+
+TAR_EXTENSION = .tar.gz
+MD5_SUM_1.42.13 = bc759fc62666786f5436e2075beb3265
+
+e2fsprogs_INSTALL_FILES = /sbin/fsck.ext4 /sbin/mkfs.ext4
+
+build:
+	cd $(O)  &&  \
+	$(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
+            --enable-elf-shlibs
+	make -C $(O)
+
+	make -C $(O) install DESTDIR=$(LIB_PREFIX)
+
+install:
+	$(install) $(LIB_PREFIX)/etc/mke2fs.conf /etc
+	for f in $(e2fsprogs_INSTALL_FILES); do \
+            $(install) -sf -m-w $(LIB_PREFIX)/$$f $$f; \
+        done
+
+# vim: set filetype=make:
