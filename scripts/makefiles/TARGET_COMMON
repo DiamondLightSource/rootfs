@@ -13,18 +13,6 @@ TARGET_ROOT ?= $(ROOTFS_ROOT)/targets/$(TARGET)
 OBJECT_ROOT = $(TARGET_ROOT)/build
 STAGING_ROOT = $(TARGET_ROOT)/staging
 
-# This symbol defines where shared libraries are be installed.  To use
-# installed shared libraries add the following to any relevant configuration:
-#
-#   CPPFLAGS += -I$(LIB_PREFIX)/include
-#   LDFLAGS += -L$(LIB_PREFIX)/lib
-# or
-#   LDFLAGS += -L$(LIB_PREFIX)/usr/lib
-#
-# as appropriate.
-LIB_PREFIX = $(TARGET_ROOT)/local
-LIB_PREFIX = $(error LIB_PREFIX now unused)
-
 # Hosted tools that need to be built for specific targets are installed here.
 TARGET_TOOLKIT = $(TARGET_ROOT)/toolkit
 PATH := $(TARGET_TOOLKIT)/bin:$(PATH)
@@ -47,5 +35,8 @@ endif
 ifdef COMPILER_PREFIX
     export CROSS_COMPILE = $(COMPILER_PREFIX)-
 endif
+
+# Here is where library details are stored.
+export PKG_CONFIG_PATH = $(TARGET_ROOT)/pkgconfig
 
 # vim: set filetype=make:

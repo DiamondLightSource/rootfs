@@ -12,7 +12,7 @@ include $(makefiles)/SYSROOT_COMMON
 
 _populate_EXPORTS = \
     sysroot BINUTILS_DIR COMPILER_PREFIX SYSROOT \
-    TERMS install_list EXTRA_LIBS LIB_PREFIX CROSS_COMPILE
+    TERMS install_list EXTRA_LIBS CROSS_COMPILE STAGING_ROOT
 populate = $(call EXPORT,$(_populate_EXPORTS)) $(scripts)/populate
 
 define install-option

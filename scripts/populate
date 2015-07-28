@@ -7,7 +7,7 @@
 : ${sysroot:?}          # Root of rootfs being constructed
 : ${BINUTILS_DIR:?}     # Root of binutils directory
 : ${install_list:?}     # File containing list of installed files
-: ${LIB_PREFIX:?}       # Directory of locally generated libraries
+: ${STAGING_ROOT:?}     # Location of pre-installed packages
 
 # The following environment variables are optional
 #
@@ -28,6 +28,7 @@ set -o pipefail
 
 READELF="$CROSS_COMPILE"readelf
 
+LIB_SEARCH_PATH=("$STAGING_ROOT"/*)
 
 
 install_terminfo()
@@ -38,7 +39,6 @@ install_terminfo()
         cp "$SYSROOT/$dir/$term" "$sysroot/$dir"  ||  return 1
     done
 }
-
 
 
 # Searches for given library in lib and usr/lib, optionally searching for
@@ -52,7 +52,7 @@ locate_library()
     shift
 
     local lib_dir lib_prefix
-    for lib_prefix in "$SYSROOT" "$LIB_PREFIX"; do
+    for lib_prefix in "$SYSROOT" "${LIB_SEARCH_PATH[@]}"; do
         for lib_dir in lib usr/lib; do
             if (($#)); then
                 for suffix; do
@@ -102,7 +102,7 @@ list_dependencies()
 library_path()
 {
     local lib_prefix
-    for lib_prefix in "$SYSROOT" "$LIB_PREFIX"; do
+    for lib_prefix in "$SYSROOT" "${LIB_SEARCH_PATH[@]}"; do
         if [ -e "$lib_prefix/$1" ]; then
             echo "$lib_prefix/$1"
             return 0

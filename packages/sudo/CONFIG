@@ -26,4 +26,8 @@ else
 	$(install) -f -m ug=r $(SUDOERS_FILE) /etc/sudoers
 endif
 
+# Note that post-install currently fails because there is a dependency on
+# libsudo_util.so.0 which is resolved by an executable rpath entry pointing to
+# /usr/libexec/sudo, and populate doesn't know how to handle this.
+
 # vim: set filetype=make:
