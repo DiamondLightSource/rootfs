@@ -63,7 +63,6 @@ HOST_PYTHON_CONF_OPTS = \
     --disable-shared \
     --disable-sqlite3 \
     --disable-tk \
-    --with-expat=system \
     --disable-curses \
     --disable-codecs-cjk \
     --disable-nis \
