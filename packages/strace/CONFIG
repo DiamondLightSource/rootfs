@@ -18,6 +18,6 @@ build:
 	make -C $(O) install DESTDIR=$(I)
 
 install:
-	$(install) -s -m-w $(I)/bin/strace /usr/bin
+	$(install) -s -m-w $(I)/usr/bin/strace /usr/bin
 
 # vim: set filetype=make:

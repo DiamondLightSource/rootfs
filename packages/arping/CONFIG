@@ -16,7 +16,7 @@ build:
 	make -C $(O) install DESTDIR=$(I)
 
 install:
-	$(install) -x $(I)/sbin/arping /usr/sbin
+	$(install) -x $(I)/usr/sbin/arping /usr/sbin
 
 
 # ARP Ping tool

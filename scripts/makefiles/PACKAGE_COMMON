@@ -4,7 +4,17 @@
 # Pick up packagedir from PACKAGE.
 $(call COMPUTE_PATH,PACKAGE,packagedir,packages)
 
-O = $(error O only valid during build)
-I = $(STAGING_ROOT)/$(PACKAGE)
+
+# Some target dependent definitions
+CHECK = $(if $($1),$($1),$(error $1 not defined))
+O = $(call CHECK,$@_O)
+I = $(call CHECK,$@_I)
+
+install_I = $(STAGING_ROOT)/$(PACKAGE)
+build_I   = $(install_I)
+toolkit_I = $(TARGET_TOOLKIT)
+
+build_O = $(OBJECT_ROOT)/$(PACKAGE)
+toolkit_O = $(TARGET_TOOLKIT)/build/$(PACKAGE)
 
 # vim: set filetype=make:

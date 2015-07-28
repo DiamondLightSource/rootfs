@@ -7,7 +7,7 @@ ifdef CFLAGS_$(PACKAGE)
 CFLAGS = $(CFLAGS_$(PACKAGE))
 endif
 
-default: build
+default: do-build
 
 ifeq ($(version),local)
 # Local builds are handled a little oddly: we need to turn the make file
@@ -45,35 +45,43 @@ untar: $(srcdir)
 endif
 
 
-$(O):
-	mkdir -p $(O)
+pre-toolkit: $(srcdir)
+	rm -rf $(toolkit_O)
+	mkdir -p $(toolkit_O) $(TARGET_TOOLKIT)
 
-# $(LIB_PREFIX):
-# 	mkdir -p $(LIB_PREFIX)/include $(LIB_PREFIX)/lib $(LIB_PREFIX)/usr/lib
+toolkit: pre-toolkit
+
+$(toolkit_O): toolkit
+ifndef KEEP_BUILD
+	rm -rf $(toolkit_O)
+	touch $(toolkit_O)
+endif
+
+do-toolkit: $(toolkit_O)
 
 pre-build:
-	rm -rf $(I)
-	mkdir -p $(I) $(PKG_CONFIG_PATH)
-.PHONY: pre-build
+	rm -rf $(build_O) $(build_I)
+	mkdir -p $(build_O) $(build_I) $(PKG_CONFIG_PATH)
 
-build: untar $(O) pre-build
-# install-lib: build $(LIB_PREFIX)
+build: $(srcdir) $(toolkit_O) pre-build
+
+do-build: build
+ifndef KEEP_BUILD
+	rm -rf $(build_O)
+endif
 
 clean:
-	rm -rf $(O)
-	rm -rf $(I)
+	rm -rf $(build_O)
+	rm -rf $(install_I)
 
 clean-src:
 	-chmod -R +w $(srcdir)
 	rm -rf $(srcdir)
 
-# clean-lib:
-# 	-chmod -R +w $(LIB_PREFIX)
-# 	rm -rf $(LIB_PREFIX)
+clean-all: clean clean-src
+	rm -rf $(toolkit_O)
 
-clean-all: clean clean-src clean-lib
-
-.PHONY: untar build install
-.PHONY: clean clean-src clean-all clean-lib
+.PHONY: do-build untar pre-build build do-toolkit pre-toolkit toolkit
+.PHONY: clean clean-src clean-all
 
 # vim: set filetype=make:

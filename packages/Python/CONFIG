@@ -48,13 +48,6 @@ PATCHES_2.7.9 = \
 patch-extra = touch $(srcdir)/Include/graminit.h $(srcdir)/Python/graminit.c
 
 
-# Python needs itself to be built, so in order to cross-compile Python, we need
-# to build a host Python first. This host Python is also installed in
-# $(HOST_DIR), as it is needed when cross-compiling third-party Python modules.
-O-target = $(O)/target
-O-build = $(O)/build
-
-
 HOST_PYTHON_CONF_OPTS = \
     --disable-shared \
     --disable-sqlite3 \
@@ -71,7 +64,6 @@ HOST_PYTHON_CONF_OPTS = \
     --disable-ssl \
     --disable-ossaudiodev \
     --disable-pyo-build
-
 
 TARGET_PYTHON_CONF_OPTS = \
     ac_cv_have_long_long_format=yes \
@@ -100,35 +92,31 @@ TARGET_PYTHON_CONF_OPTS = \
 CPPFLAGS += $(call pkg-config,zlib --cflags)
 LDFLAGS  += $(call pkg-config,zlib --libs)
 
+
+# ----------------------------------------------------------------------
+# First build a hosted version of python in $(O-build)
 toolkit:
-	mkdir -p $(O-target) $(O-build)
-
-        # ----------------------------------------------------------------------
-        # First build a hosted version of python in $(O-build)
-
-        # Rebuild configure script
-	ln -s $(srcdir)/configure.ac $(O-build)
-	cd $(O-build)  &&  autoreconf -i -f
+	# Rebuild configure script
+	ln -s $(srcdir)/configure.ac $(O)
+	cd $(O)  &&  autoreconf -i -f
 
         # Configure the build so we can make a local build.  For this we
         # can use the stock configuration.
-	cd $(O-build)  &&  \
-        ./configure --srcdir=$(srcdir) --prefix=$(TARGET_TOOLKIT) \
+	cd $(O)  &&  \
+        ./configure --srcdir=$(srcdir) --prefix=$(I) \
             LDFLAGS=-Wl,--enable-new-dtags $(HOST_PYTHON_CONF_OPTS)
-	make -j1 -C $(O-build)
+	make -j1 -C $(O)
+	make -C $(O) install
 
-	make -C $(O-build) install
 
-
-build: toolkit
-        # ----------------------------------------------------------------------
-        # Now configure target python
-
-	ln -s $(srcdir)/configure.ac $(O-target)
-	cd $(O-target)  &&  autoreconf -i -f
+# ----------------------------------------------------------------------
+# Now build target python
+build:
+	ln -s $(srcdir)/configure.ac $(O)
+	cd $(O)  &&  autoreconf -i -f
 
         # Configure the target.
-	cd $(O-target)  &&  \
+	cd $(O)  &&  \
         ./configure --srcdir=$(srcdir) --prefix=/usr \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             CFLAGS='$(CFLAGS)' CPPFLAGS='$(CPPFLAGS)' LDFLAGS='$(LDFLAGS)' \
@@ -137,8 +125,8 @@ build: toolkit
         # ----------------------------------------------------------------------
         # Finally complete the build and create a local install
 
-	make -C $(O-target)
-	make -C $(O-target) DESTDIR=$(I) install
+	make -C $(O)
+	make -C $(O) DESTDIR=$(I) install
 ifeq ($(PYTHON_PYC_ONLY),1)
 	find $(I)/usr/lib/python2.7 -name '*.py' -exec rm -f {} +
 endif
@@ -147,8 +135,7 @@ endif
 
 
 install:
-	false  # This isn't the right way to install!
-	tar c -C $(I) . | tar x -C $(sysroot)
+	tar c -C $(I) usr/bin usr/lib | tar x -C $(sysroot)
 
 
 # Patches and configuration taken from buildroot python package

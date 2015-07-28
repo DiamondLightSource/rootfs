@@ -50,8 +50,7 @@ endif
 
 
 install:
-	false  # do this right
-	tar c -C $(I) . | tar x -C $(sysroot)
+	tar c -C $(I) usr/lib | tar x -C $(sysroot)
 
 
 # vim: set filetype=make:

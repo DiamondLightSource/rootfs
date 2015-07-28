@@ -15,7 +15,8 @@ build:
 	make -C $(O) install DESTDIR=$(I)
 
 install:
-	$(install) -s -m-w $(I)/bin/bash /bin
+	$(install) -s -m-w $(I)/usr/bin/bash /usr/bin
+	ln $(sysroot)/usr/bin/bash $(sysroot)/bin/bash
 
 # EXTRA_LIBS = libdl
 

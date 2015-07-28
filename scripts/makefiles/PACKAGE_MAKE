@@ -5,7 +5,6 @@ include $(ROOTFS_TOP)/scripts/makefiles/COMMON
 include $(makefiles)/TARGET_COMMON
 include $(makefiles)/PACKAGE_COMMON
 
-O = $(OBJECT_ROOT)/$(PACKAGE)
 export PKG_CONFIG_PATH = $(TARGET_ROOT)/pkgconfig
 
 install-pkg-config = \

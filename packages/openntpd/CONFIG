@@ -19,7 +19,7 @@ build:
 	make -C $(O) install DESTDIR=$(I)
 
 install:
-	$(install) -d -m 755 -p /var/empty/ntp
+	$(install) -d -m 755 /var/empty/ntp
 	$(groupadd) -g $(OPENNTPD_GID) _ntp
 	$(useradd) -u $(OPENNTPD_UID) -g $(OPENNTPD_GID) \
             -c 'OpenNTP daemon' -d /var/empty/ntp -s /bin/false _ntp
