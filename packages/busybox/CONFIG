@@ -56,6 +56,7 @@ build:
 
 	CFLAGS='$(CFLAGS)' make -C $(O)
 	make -C $(O) busybox.links
+	cp $(O)/busybox $(O)/busybox.links $(I)
 
 menuconfig: untar
 	make O=$(O) -C $(srcdir) menuconfig
@@ -63,10 +64,11 @@ menuconfig: untar
 saveconfig:
 	cp $(O)/.config $(busybox_CONFIG)
 
+
 install:
-        # 4555 = rx,u+s
-	$(install) -s -m 4555 $(O)/busybox /bin
-	cat $(O)/busybox.links | \
+	# 4555 = rx,u+s
+	$(install) -s -m 4555 $(I)/busybox /bin
+	cat $(I)/busybox.links | \
         while read -r; do \
             $(install) -lf /bin/busybox /$$REPLY  ||  exit 1; \
         done

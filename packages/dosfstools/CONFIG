@@ -6,7 +6,7 @@ MD5_SUM_3.0.26 = b72d058c4ebc7b62dba68f93da358bfa
 INSTALL_FILES = fatlabel fsck.fat mkfs.fat
 
 build:
-	make -C $(O) -f $(srcdir)/Makefile \
+	CFLAGS='$(CFLAGS)' make -C $(O) -f $(srcdir)/Makefile \
             VPATH=$(srcdir)/src CC=$(CROSS_COMPILE)gcc
 
 install:

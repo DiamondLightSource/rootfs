@@ -27,17 +27,16 @@ build:
             $(call EXPORT,SRCDIRS srcdir CFLAGS CPPFLAGS) \
             VPATH=$(srcdir) CC=$(CROSS_COMPILE)gcc
 
-
-install-lib:
-	cp -a $(O)/lib/libsensors.* $(LIB_PREFIX)/usr/lib
-	mkdir -p $(LIB_PREFIX)/include/sensors
+	mkdir -p $(I)/usr/lib $(I)/include/sensors
+	cp -a $(O)/lib/libsensors.* $(I)/usr/lib
 	for h in error.h sensors.h; do \
-            cp $(srcdir)/lib/$$h $(LIB_PREFIX)/include/sensors; \
+            cp $(srcdir)/lib/$$h $(I)/include/sensors; \
         done
+	install $(O)/prog/sensors/sensors $(I)
 
 
 install:
-	$(install) -s -m-w $(O)/prog/sensors/sensors /usr/bin
+	$(install) -s -m-w $(I)/sensors /usr/bin
 
 
 # prog/sensord requires RRD, apparently available from

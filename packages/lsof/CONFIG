@@ -48,8 +48,9 @@ build:
 	echo ".ds VN $(version)" >$(O)/version
 	$(BUILD_ENV) $(BUILD_LIB_ENV) \
         make -C $(O) -f $(lsof_srcdir)/dialects/linux/Makefile
+	install $(O)/lsof $(I)
 
 install:
-	$(install) -s -m a-w,u+s $(O)/lsof /usr/bin
+	$(install) -s -m a-w,u+s $(I)/lsof /usr/bin
 
 # vim: set filetype=make:

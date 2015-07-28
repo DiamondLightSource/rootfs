@@ -1,40 +1,18 @@
 libpcap_VERSION ?= 1.7.3
 
 TAR_EXTENSION = .tar.gz
-MD5_SUM_1.0.0 = 9ad1358c5dec48456405eac197a46d3d
 MD5_SUM_1.7.3 = 9ce284eacc02cb5491e123b875f3f63c
 
-# The file bpf_filter.c is a soft link that should be dynamically generated, so
-# it doesn't belong in the source distribution.
-untar-extra_1.0.0 = rm -f $(srcdir)/bpf_filter.c
-PATCHES_1.0.0 = makefile-1.0.0.patch
 PATCHES_1.7.3 = makefile-1.7.3.patch
 
 build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
-            ac_cv_linux_vers=2 --with-pcap=linux \
+            ac_cv_linux_vers=2 --with-pcap=linux --prefix=/usr \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
 	make -C $(O)
-
-
-install-lib:
-ifeq ($(libpcap_VERSION),1.0.0)
-	# Unfortunately libpcap's own install fails trying to install some of
-	# the man pages we don't want anyway, so we install by hand.
-	cp $(O)/libpcap.a $(LIB_PREFIX)/usr/lib
-        # Tiresomely because $(srcdir) is read-only and our cp is badly
-        # behaved, we have to work a bit harder if we want our resulting
-        # installation to be writeable -- and we do, so that re-installation
-        # is nicely behaved.
-	mkdir -p $(LIB_PREFIX)/include/pcap
-	install -m664 $(srcdir)/pcap/* $(LIB_PREFIX)/include/pcap
-	install -m664 \
-            $(patsubst %,$(srcdir)/%,pcap.h pcap-bpf.h pcap-namedb.h) \
-            $(LIB_PREFIX)/include
-else
-	make -C $(O) install DESTDIR=$(LIB_PREFIX)
-endif
+	make -C $(O) install DESTDIR=$(I)
+	$(install-pkg-config)
 
 install:    # Nothing to install
 
@@ -42,5 +20,7 @@ install:    # Nothing to install
 # Low level packet capture interface library, needed by tcpdump.
 #
 # Downloaded from www.tcpdump.org
+#
+# Needs both flex and bison to be installed
 
 # vim: set filetype=make:

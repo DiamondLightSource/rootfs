@@ -16,6 +16,7 @@ build:
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --prefix=/
 	make -C $(O)
+	make -C $(O) install DESTDIR=$(I)
 
 install:
 	$(install) -d -m 755 -p /var/empty/ntp
@@ -23,7 +24,7 @@ install:
 	$(useradd) -u $(OPENNTPD_UID) -g $(OPENNTPD_GID) \
             -c 'OpenNTP daemon' -d /var/empty/ntp -s /bin/false _ntp
 
-	$(install) -s -m-w $(O)/ntpd /sbin
+	$(install) -s -m-w $(I)/sbin/ntpd /sbin
 	$(install) $(NTPD_CONF) /etc
 
 	$(startup) $(packagedir)/openntpd S210

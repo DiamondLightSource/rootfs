@@ -9,7 +9,7 @@ MD5_SUM_4.2.8p2 = fa37049383316322d060ec9061ac23a9
 
 NTP_CONF ?= $(packagedir)/ntp.conf
 
-NTP_PROGRAMS ?= ntpd/ntpd util/ntptime ntpq/ntpq ntpdate/ntpdate
+NTP_PROGRAMS ?= ntpd ntptime ntpq ntpdate
 
 
 build:
@@ -17,11 +17,12 @@ build:
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --with-yielding-select=yes --without-crypto \
-            --disable-all-clocks --disable-parse-clocks
+            --disable-all-clocks --disable-parse-clocks --prefix=/usr
 	make -C $(O)
+	make -C $(O) install DESTDIR=$(I)
 
 install:
-	$(install) -s -m-w $(NTP_PROGRAMS:%=$(O)/%) /usr/sbin
+	$(install) -s -m-w $(NTP_PROGRAMS:%=$(I)/usr/sbin/%) /usr/sbin
 	$(install) $(NTP_CONF) /etc
 	$(startup) $(packagedir)/ntpd
 

@@ -11,9 +11,8 @@ build:
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --prefix=/usr
 	make -C $(O)
-
-install-lib:
-	make -C $(O) install DESTDIR=$(LIB_PREFIX)
+	make -C $(O) install DESTDIR=$(I)
+	$(install-pkg-config)
 
 install:
 

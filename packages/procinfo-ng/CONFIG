@@ -8,12 +8,13 @@ PATCHES_2.0.304 = makefile-2.0.217.patch
 
 
 build:
+	ln -s $(srcdir)/procinfo.8 $(O)
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
-            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
-	make -C $(O) VPATH=$(srcdir)
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) --prefix=/usr
+	make -C $(O) VPATH=$(srcdir) install DESTDIR=$(I)
 
 install:
-	$(install) -f -s -m-w $(O)/procinfo /usr/bin/procinfo-ng
+	$(install) -f -s -m-w $(I)/usr/bin/procinfo /usr/bin/procinfo-ng
 
 # vim: set filetype=make:

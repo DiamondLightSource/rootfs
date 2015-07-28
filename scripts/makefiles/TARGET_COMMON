@@ -10,7 +10,8 @@ $(call COMPUTE_PATH,TARGET,configdir,configs)
 TARGET_ROOT ?= $(ROOTFS_ROOT)/targets/$(TARGET)
 
 # Where packages are built
-OBJECT_ROOT = $(TARGET_ROOT)/packages
+OBJECT_ROOT = $(TARGET_ROOT)/build
+STAGING_ROOT = $(TARGET_ROOT)/staging
 
 # This symbol defines where shared libraries are be installed.  To use
 # installed shared libraries add the following to any relevant configuration:
@@ -22,6 +23,7 @@ OBJECT_ROOT = $(TARGET_ROOT)/packages
 #
 # as appropriate.
 LIB_PREFIX = $(TARGET_ROOT)/local
+LIB_PREFIX = $(error LIB_PREFIX now unused)
 
 # Hosted tools that need to be built for specific targets are installed here.
 TARGET_TOOLKIT = $(TARGET_ROOT)/toolkit

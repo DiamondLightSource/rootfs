@@ -4,18 +4,19 @@ TAR_EXTENSION = .tar.gz
 MD5_SUM_1.0pre2 = fef521a49ec0122458d02c64212af3c5
 MD5_SUM_1.0pre4 = 7e6decb4958e8a4890cccac335239f24
 
-export LDFLAGS  += -L$(LIB_PREFIX)/usr/lib
-export CPPFLAGS += -I$(LIB_PREFIX)/include
+export LDFLAGS  += $(call pkg-config,libpcap --libs)
+export CPPFLAGS += $(call pkg-config,libpcap --cflags)
 
 build:
 	mkdir -p $(O)/config
 	for f in $(srcdir)/config/*; do ln -sf $$f $(O)/config; done
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
-            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) --prefix=/usr
 	make -C $(O)
+	make -C $(O) install DESTDIR=$(I)
 
 install:
-	$(install) -s -m-w $(O)/iftop /usr/bin
+	$(install) -s -m-w $(I)/usr/sbin/iftop /usr/sbin
 
 # vim: set filetype=make:

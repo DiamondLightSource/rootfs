@@ -7,7 +7,9 @@ MD5_SUM_1.3.2 = 1e2f3c1ed468dee02d00c534c002ea10
 # of tree, so we have to patch the makefiles!
 PATCHES_1.1.4 = rpcgen-makefile-1.1.4.patch test-tools-1.1.4.patch
 
-LINK_FILES = support/export/mount.x support/nsm/sm_inter.x
+LINK_FILES = \
+    support/export/mount.x support/nsm/sm_inter.x \
+    tools/mountstats/mountstats.py tools/nfs-iostat/nfs-iostat.py
 
 build:
 	# The rpcgen tool is a bit badly behaved regarding generate file paths,
@@ -24,10 +26,13 @@ build:
             --disable-gss --disable-nfsv4 --without-tcp-wrappers \
             --disable-uuid --disable-tirpc --disable-ipv6
 	make -C $(O) CC=$(CROSS_COMPILE)gcc \
-            CPPFLAGS='-I$(srcdir)/support/include -I$(O)/support/include'
+            CPPFLAGS='-I$(srcdir)/support/include -I$(O)/support/include' \
+            install DESTDIR=$(I)
 
         # Don't know which files will really be useful, as this isn't used at
         # all yet!
+        #    If installed will need to change onwership of various files:
+        # sbin/mount.nfs and var/lib/nfs/{sm,sm.bak,state}
 install:
 
 # vim: set filetype=make:

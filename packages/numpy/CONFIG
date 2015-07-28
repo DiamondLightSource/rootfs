@@ -7,7 +7,7 @@ PATCHES_1.9.2 = \
     fix-paths.patch \
     fix-read-only.patch
 
-O-install = $(O)/install
+PYTHON_ROOT = $(call pkg-config,Python --variable=prefix)
 
 # Note that the variables library_dirs and include_dirs are supported via the
 # fix-paths patch applies above.
@@ -18,11 +18,11 @@ PYTHON_SETUP_ENV = \
     CC=$(COMPILER_PREFIX)-gcc \
     LD=$(COMPILER_PREFIX)-ld \
     LDSHARED='$(COMPILER_PREFIX)-gcc -shared' \
-    _python_sysroot=$(LIB_PREFIX) \
+    _python_sysroot=$(PYTHON_ROOT) \
     _python_prefix=/usr \
     _python_exec_prefix=/usr \
-    library_dirs=$(LIB_PREFIX)/usr/lib \
-    include_dirs=$(LIB_PREFIX)/usr/include
+    library_dirs=$(PYTHON_ROOT)/usr/lib \
+    include_dirs=$(PYTHON_ROOT)/usr/include
 
 # The numpy install places a really annoying amount of extra unwanted stuff in
 # the install, we delete all these patterns!
@@ -37,20 +37,21 @@ DELETE_FROM_INSTALL = \
 build:
 	cd $(srcdir)  && \
         $(PYTHON_SETUP_ENV) python2 setup.py build -b $O \
-            install --prefix=$(O-install)/usr
+            install --prefix=$(I)/usr
 
-	for dir in $(DELETE_FROM_INSTALL); do \
-            find $(O-install) -name $$dir -prune -exec rm -rf {} +; \
-        done
-	rm -rf $(O-install)/usr/bin
+# 	for dir in $(DELETE_FROM_INSTALL); do \
+#             find $(O-install) -name $$dir -prune -exec rm -rf {} +; \
+#         done
+# 	rm -rf $(O-install)/usr/bin
 
 ifeq ($(PYTHON_PYC_ONLY),1)
-	find $(O-install)/usr/lib/python2.7 -name '*.py' -exec rm -f {} +
+	find $(I)/usr/lib/python2.7 -name '*.py' -exec rm -f {} +
 endif
 
 
 install:
-	tar c -C $(O-install) . | tar x -C $(sysroot)
+	false  # do this right
+	tar c -C $(I) . | tar x -C $(sysroot)
 
 
 # vim: set filetype=make:

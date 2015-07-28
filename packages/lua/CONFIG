@@ -4,17 +4,19 @@ TAR_EXTENSION = .tar.gz
 MD5_SUM_5.2.0 = f1ea831f397214bae8a265995ab1a93e
 MD5_SUM_5.3.0 = a1b0a7e92d0c85bbff7a8d27bf29f8af
 
-
 build:
 	mkdir -p $(O)/src
-	ln -sf $(srcdir)/Makefile $(O)
+	ln -sf $(srcdir)/Makefile $(srcdir)/doc $(O)
 	ln -sf $(srcdir)/src/Makefile $(O)/src
+	ln -sf $(srcdir)/src/*.{h,hpp} $(O)/src
 	make -C $(O) CC=$(CROSS_COMPILE)gcc linux VPATH=$(srcdir)/src \
-            MYLDFLAGS=-L$(LIB_PREFIX)/usr/lib \
-            MYCFLAGS=-I$(LIB_PREFIX)/usr/include \
-            MYLIBS=-lncurses
+            MYLDFLAGS="$$(pkg-config readline --libs)" \
+            MYCFLAGS="$$(pkg-config readline --cflags)" \
+            MYLIBS=-lncurses \
+            install INSTALL_TOP=$(I)
+	$(install-pkg-config)
 
 install:
-	$(install) -s $(O)/src/lua $(O)/src/luac /usr/bin
+	$(install) -s $(I)/bin/lua $(I)/bin/luac /usr/bin
 
 # vim: set filetype=make:

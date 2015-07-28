@@ -7,7 +7,7 @@ ifdef CFLAGS_$(PACKAGE)
 CFLAGS = $(CFLAGS_$(PACKAGE))
 endif
 
-default: build install-lib
+default: build
 
 ifeq ($(version),local)
 # Local builds are handled a little oddly: we need to turn the make file
@@ -48,27 +48,32 @@ endif
 $(O):
 	mkdir -p $(O)
 
-$(LIB_PREFIX):
-	mkdir -p $(LIB_PREFIX)/include $(LIB_PREFIX)/lib $(LIB_PREFIX)/usr/lib
+# $(LIB_PREFIX):
+# 	mkdir -p $(LIB_PREFIX)/include $(LIB_PREFIX)/lib $(LIB_PREFIX)/usr/lib
 
+pre-build:
+	rm -rf $(I)
+	mkdir -p $(I) $(PKG_CONFIG_PATH)
+.PHONY: pre-build
 
-build: untar $(O)
-install-lib: build $(LIB_PREFIX)
+build: untar $(O) pre-build
+# install-lib: build $(LIB_PREFIX)
 
 clean:
 	rm -rf $(O)
+	rm -rf $(I)
 
 clean-src:
 	-chmod -R +w $(srcdir)
 	rm -rf $(srcdir)
 
-clean-lib:
-	-chmod -R +w $(LIB_PREFIX)
-	rm -rf $(LIB_PREFIX)
+# clean-lib:
+# 	-chmod -R +w $(LIB_PREFIX)
+# 	rm -rf $(LIB_PREFIX)
 
 clean-all: clean clean-src clean-lib
 
-.PHONY: untar build install-lib install
+.PHONY: untar build install
 .PHONY: clean clean-src clean-all clean-lib
 
 # vim: set filetype=make:

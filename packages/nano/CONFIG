@@ -7,11 +7,12 @@ MD5_SUM_2.4.1 = 1c612b478f976abf8ef926480c7a3684
 build:
 	cd $(O)  &&  \
 	$(srcdir)/configure CFLAGS='$(CFLAGS)' \
-            --disable-utf8 \
+            --disable-utf8 --prefix=/usr \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
 	make -C $(O)
+	make -C $(O) install DESTDIR=$(I)
 
 install:
-	$(install) -s -m-w $(O)/src/nano /usr/bin
+	$(install) -s -m-w $(I)/usr/bin/nano /usr/bin
 
 # vim: set filetype=make:

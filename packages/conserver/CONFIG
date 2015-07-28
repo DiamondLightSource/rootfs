@@ -9,11 +9,12 @@ PATCHES_8.1.18 = 8.1.18.makefile.patch
 build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
-            ac_cv_func_setpgrp_void=yes \
+            ac_cv_func_setpgrp_void=yes --prefix=/usr \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
 	make -C $(O) VPATH='$$(srcdir)'
+	install $(O)/conserver/conserver $(I)
 
 install:
-	$(install) -x $(O)/conserver/conserver /usr/bin
+	$(install) -x -s $(I)/conserver /usr/bin
 
 # vim: set filetype=make:

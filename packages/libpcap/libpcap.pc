@@ -1,0 +1,9 @@
+prefix=@prefix@/usr
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: libpcap
+Description: System-independent interface for user-level packet capture.
+Version: @version@
+Libs: -L${libdir} -lpcap
+Cflags: -I${includedir}

@@ -8,8 +8,9 @@ build:
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
 	make -C $(O)
+	install $(O)/ethtool $(I)
 
 install:
-	$(install) -s -m-w $(O)/ethtool /sbin
+	$(install) -s -m-w $(I)/ethtool /sbin
 
 # vim: set filetype=make:

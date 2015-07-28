@@ -11,12 +11,14 @@ build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
-            --without-pam --with-editor=/bin/vi
+            --without-pam --with-editor=/bin/vi --prefix=/usr
 	make -C $(O)
+	make -C $(O) install DESTDIR=$(I) \
+            install_uid=$$(id -u) install_gid=$$(id -g)
 
 install:
-	$(install) -s -m a=rx,u+s,g+s $(O)/sudo /usr/bin
-	$(install) -s -m a=rx,u+s,g+s $(O)/visudo /usr/bin
+	$(install) -s -m a=rx,u+s,g+s $(I)/usr/bin/sudo /usr/bin
+	$(install) -s -m a=rx,u+s,g+s $(I)/usr/sbin/visudo /usr/sbin
 
 ifeq ($(SUDOERS_FILE),)
 	$(install) -f -m ug=r /dev/null /etc/sudoers

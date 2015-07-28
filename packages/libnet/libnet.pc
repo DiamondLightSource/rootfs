@@ -1,0 +1,10 @@
+prefix=@prefix@
+libdir=${prefix}/usr/lib
+includedir=${prefix}/usr/include
+
+Name: libnet
+Description: Library for easy packet construction
+Requires:
+Version: @version@
+Libs: -L${libdir} -lnet
+Cflags: -I${includedir} -I${includedir}

@@ -16,9 +16,10 @@ endef
 build:
 	CFLAGS='$(CFLAGS)' CC=$(COMPILER_PREFIX)-gcc VPATH=$(srcdir) \
             make -C $(O) -f $(srcdir)/Makefile
+	cp $(O)/ntpclient $(I)
 
 install:
-	$(install) -s -m-w $(O)/ntpclient /usr/bin
+	$(install) -s -m-w $(I)/ntpclient /usr/bin
 #	$(startup) $(packagedir)/ntpclient S210
 
 # vim: set filetype=make:

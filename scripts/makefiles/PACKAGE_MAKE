@@ -5,6 +5,15 @@ include $(ROOTFS_TOP)/scripts/makefiles/COMMON
 include $(makefiles)/TARGET_COMMON
 include $(makefiles)/PACKAGE_COMMON
 
+O = $(OBJECT_ROOT)/$(PACKAGE)
+export PKG_CONFIG_PATH = $(TARGET_ROOT)/pkgconfig
+
+install-pkg-config = \
+    sed 's:@prefix@:$(I):; s:@version@:$($(PACKAGE)_VERSION):' \
+        <$(packagedir)/$(PACKAGE).pc >$(PKG_CONFIG_PATH)/$(PACKAGE).pc
+pkg-config = \
+    $(shell $(call EXPORT,PKG_CONFIG_PATH) pkg-config $1)
+
 
 # Sets name to $name_$version if define or uses the default value.  Call thus:
 #

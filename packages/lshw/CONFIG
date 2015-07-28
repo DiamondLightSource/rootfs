@@ -16,9 +16,10 @@ build:
             STRIP=$(CROSS_COMPILE)strip \
             VPATH='$(srcdir)/src $(srcdir)/src/core' \
             INCLUDES=-I$(srcdir)/src/core
+	install $(O)/src/lshw $(I)
 
 install:
-	$(install) -s -m-w $(O)/src/lshw /usr/sbin
+	$(install) -s -m-w $(I)/lshw /usr/sbin
 
 # Simple tool to list attached hardware.
 #

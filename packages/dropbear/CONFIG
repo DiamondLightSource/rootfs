@@ -21,10 +21,11 @@ build:
             --disable-zlib --disable-lastlog --disable-largefile
 	make -C $(O) PROGRAMS="dropbear $(PROGRAMS)" \
             MULTI=1 SCPPROGRESS=1
+	install $(O)/dropbearmulti $(I)
 
 install:
-        # Normal installation (6555 = rx,u+s,g+s)
-	$(install) -s -m 6555 $(O)/dropbearmulti /usr/sbin
+	# Normal installation (6555 = rx,u+s,g+s)
+	$(install) -s -m 6555 $(I)/dropbearmulti /usr/sbin
 	$(startup) $(packagedir)/dropbear
 	$(install) -lf dropbearmulti /usr/sbin/dropbear
 	for program in $(PROGRAMS) ssh; do \

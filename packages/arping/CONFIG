@@ -4,18 +4,19 @@ TAR_EXTENSION = .tar.gz
 MD5_SUM_2.09 = 6f6a91c8700fcc7454b4e89480e417e3
 MD5_SUM_2.15 = 676584f6eb4ccc8c70fc6b2c702df75d
 
-export LDFLAGS  += -L$(LIB_PREFIX)/usr/lib
-export CPPFLAGS += -I$(LIB_PREFIX)/include -I$(LIB_PREFIX)/usr/include
+export LDFLAGS  += $(call pkg-config,libnet libpcap --libs)
+export CPPFLAGS += $(call pkg-config,libnet libpcap --cflags)
 
 build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
-            ac_cv_have_clock_monotonic=yes \
+            ac_cv_have_clock_monotonic=yes --prefix=/usr \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
 	make -C $(O)
+	make -C $(O) install DESTDIR=$(I)
 
 install:
-	$(install) -x $(O)/src/arping /usr/bin
+	$(install) -x $(I)/sbin/arping /usr/sbin
 
 
 # ARP Ping tool

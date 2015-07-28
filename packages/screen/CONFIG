@@ -18,8 +18,9 @@ build:
         ./configure --srcdir=$(srcdir) CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
 	make -C $(O)
+	make -C $(O) install DESTDIR=$(I)
 
 install:
-	$(install) -s -m-w $(O)/screen /usr/bin
+	$(install) -s -m-w $(I)/usr/bin/screen /usr/bin
 
 # vim: set filetype=make:

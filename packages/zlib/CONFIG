@@ -11,11 +11,11 @@ build:
 	install $(srcdir)/zconf.h.in $(O)
 	ln -s $(LINK_FILES:%=$(srcdir)/%) $(O)
 	cd $(O)  &&  \
-        CFLAGS='$(CFLAGS)' CC=$(CROSS_COMPILE)gcc $(srcdir)/configure
+        CFLAGS='$(CFLAGS)' CC=$(CROSS_COMPILE)gcc \
+            $(srcdir)/configure --prefix=/usr
 	make -C $(O) VPATH='$(srcdir)'
-
-install-lib:
-	make -C $(O) VPATH='$(srcdir)' DESTDIR=$(LIB_PREFIX) install
+	make -C $(O) VPATH='$(srcdir)' DESTDIR=$(I) install
+	$(install-pkg-config)
 
 install:    # Nothing to install
 

@@ -8,8 +8,9 @@ build:
 	make -C $(O) -f $(srcdir)/Makefile \
             CFLAGS='$(CFLAGS)' CC=$(COMPILER_PREFIX)-gcc VPATH=$(srcdir) \
             LDLIBS=-lncurses
+	install $(O)/procinfo $(I)
 
 install:
-	$(install) -s -m-w $(O)/procinfo /usr/bin
+	$(install) -s -m-w $(I)/procinfo /usr/bin
 
 # vim: set filetype=make:

@@ -9,12 +9,13 @@ PATCHES_4.3 = fix-overwrite-4.3.patch
 
 build:
 	cd $(O)  &&  \
-        $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+        $(srcdir)/configure CFLAGS='$(CFLAGS)' --prefix=/usr \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
 	make -C $(O)
+	make -C $(O) install DESTDIR=$(I)
 
 install:
-	$(install) -s -m-w $(O)/bash /bin
+	$(install) -s -m-w $(I)/bin/bash /bin
 
 # EXTRA_LIBS = libdl
 

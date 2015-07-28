@@ -13,10 +13,11 @@ PATCHES_4.5.17 = strace-4.5.17-arm.patch
 build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
-            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) --prefix=/usr
 	make -C $(O)
+	make -C $(O) install DESTDIR=$(I)
 
 install:
-	$(install) -s -m-w $(O)/strace /usr/bin
+	$(install) -s -m-w $(I)/bin/strace /usr/bin
 
 # vim: set filetype=make:

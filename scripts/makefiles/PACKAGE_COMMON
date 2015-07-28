@@ -4,6 +4,7 @@
 # Pick up packagedir from PACKAGE.
 $(call COMPUTE_PATH,PACKAGE,packagedir,packages)
 
-O = $(OBJECT_ROOT)/$(PACKAGE)
+O = $(error O only valid during build)
+I = $(STAGING_ROOT)/$(PACKAGE)
 
 # vim: set filetype=make:

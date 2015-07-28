@@ -13,9 +13,10 @@ build:
             VPATH=$(srcdir)/tools:$(srcdir) CC=$(CROSS_COMPILE)gcc \
             INCLUDE_DIR=$(srcdir)/include \
             CFLAGS='-I$(srcdir)/include $(CFLAGS)' $(PROGRAMS)
+	install $(addprefix $(O)/,$(PROGRAMS)) $(I)
 
 install:
-	$(install) -s -m-w $(addprefix $(O)/,$(PROGRAMS)) /usr/bin
+	$(install) -s -m-w $(addprefix $(I)/,$(PROGRAMS)) /usr/bin
 
 # Web site:
 #   http://www.lm-sensors.org/wiki/I2CTools

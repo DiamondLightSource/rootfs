@@ -17,13 +17,13 @@ build:
 	cd $(O)  &&  \
         $(srcdir)/configure --srcdir=$(srcdir) CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
-            --disable-doxygen
+            --disable-doxygen  --prefix=/usr
 	make -C $(O) CPPFLAGS=-I$(srcdir)/libinotifytools/src
-
-install-lib:
-	install $(O)/libinotifytools/src/.libs/*.so* $(LIB_PREFIX)/usr/lib
+	make -C $(O) install DESTDIR=$(I)
 
 install:
-	$(install) -x $(O)/src/.libs/* /usr/bin
+# 	$(install) -x $(O)/src/.libs/* /usr/bin
+
+# Not quite sure why we're building inotify-tools to be honest...
 
 # vim: set filetype=make:

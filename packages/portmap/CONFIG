@@ -15,9 +15,10 @@ build:
 	make -C $(O) -f $(srcdir)/Makefile $(PORTMAP_PROGRAMS) \
             srcdir=$(srcdir) VPATH=$(srcdir) \
             CC=$(COMPILER_PREFIX)-gcc CFLAGS='$(CFLAGS)' NO_TCP_WRAPPER=y
+	install $(PORTMAP_PROGRAMS:%=$(O)/%) $(I)
 
 install:
-	$(install) -s -m-w $(PORTMAP_PROGRAMS:%=$(O)/%) /sbin
+	$(install) -s -m-w $(PORTMAP_PROGRAMS:%=$(I)/%) /sbin
 	$(startup) $(packagedir)/portmap
 	$(useradd) -c 'Portmap daemon' -d /usr/sbin -g 1 -u 1 -s /bin/sh daemon
 
