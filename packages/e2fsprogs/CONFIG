@@ -11,13 +11,12 @@ build:
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --enable-elf-shlibs
 	make -C $(O)
-
-	make -C $(O) install DESTDIR=$(LIB_PREFIX)
+	make -C $(O) install DESTDIR=$(I)
 
 install:
-	$(install) $(LIB_PREFIX)/etc/mke2fs.conf /etc
+	$(install) $(I)/etc/mke2fs.conf /etc
 	for f in $(e2fsprogs_INSTALL_FILES); do \
-            $(install) -sf -m-w $(LIB_PREFIX)/$$f $$f; \
+            $(install) -sf -m-w $(I)/$$f $$f; \
         done
 
 # vim: set filetype=make:

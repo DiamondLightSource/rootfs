@@ -8,10 +8,11 @@ INSTALL_FILES = fatlabel fsck.fat mkfs.fat
 build:
 	CFLAGS='$(CFLAGS)' make -C $(O) -f $(srcdir)/Makefile \
             VPATH=$(srcdir)/src CC=$(CROSS_COMPILE)gcc
+	install $(INSTALL_FILES:%=$(O)/%) $(I)
 
 install:
 	for f in $(INSTALL_FILES); do \
-            $(install) -s -m-w $(O)/$$f /sbin; \
+            $(install) -s -m-w $(I)/$$f /sbin; \
         done
 
 # vim: set filetype=make:
