@@ -26,9 +26,9 @@ $(TOOLKIT_COMPONENTS):  $(TOOLKIT_ROOT)
 	chmod -R a-w $(srcdir)
 
 	mkdir -p $(O)
-	cd $(O)  &&  $(srcdir)/configure --prefix=$(TOOLKIT_ROOT)
+	cd $(O)  &&  \
+        $(srcdir)/configure --prefix=$(TOOLKIT_ROOT) $($@_CONFIGURE)
 	$(MAKE) -C $(O) install
-	$($@_POST_INSTALL)
 
 $(TOOLKIT_ROOT):
 	mkdir -p $(SOURCE_ROOT) $(TOOLKIT_ROOT)

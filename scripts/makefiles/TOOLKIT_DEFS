@@ -2,7 +2,7 @@
 # the toolkit for rootfs.  This is invoked from TOOLKIT_MAKE.
 
 # This is the list of tools to be installed.
-TOOLKIT_COMPONENTS = m4 autoconf automake libtool
+TOOLKIT_COMPONENTS = m4 autoconf automake libtool pkg-config
 
 
 # Automake (builds Makefile.in files)
@@ -40,6 +40,19 @@ MD5_SUM_m4_1.4.17 = a5e9954b1dae036762f7b13673a2cf76
 #   ftp://ftp.gnu.org/gnu/libtool/libtool-2.2.4.tar.bz2
 libtool_VERSION ?= 2.4.6
 MD5_SUM_libtool_2.4.6 = addf44b646ddb4e3919805aa88fa7c5e
+
+# pkg-config (library configuration)
+# Homepage:
+#   http://www.freedesktop.org/wiki/Software/pkg-config/
+# Download from:
+#   http://pkgconfig.freedesktop.org/releases/pkg-config-0.28.tar.gz
+#
+# We need our own build of pkg-config so that we can ensure it doesn't pick up
+# installed system packages!
+pkg-config_VERSION ?= 0.28
+MD5_SUM_pkg-config_0.28 = aa3c86e67551adc3ac865160e34a2a0d
+pkg-config_CONFIGURE = \
+    PKG_CONFIG_PATH= PKG_CONFIG_LIBDIR= --with-internal-glib
 
 
 # Component dependencies.
