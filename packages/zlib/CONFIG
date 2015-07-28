@@ -1,11 +1,11 @@
-zlib_VERSION ?= 1.2.5
+zlib_VERSION ?= 1.2.8
 
 TAR_EXTENSION = .tar.gz
-MD5_SUM_1.2.5 = c735eab2d659a96e5a594c9e8541ad63
+MD5_SUM_1.2.8 = 44d667c142d7cda120332623eab69f40
 
 
 # For out of tree configuration we need these files in $(O)
-LINK_FILES = zlib.h Makefile.in zlib.pc.in zlib.map example.c minigzip.c
+LINK_FILES = zlib.h Makefile.in zlib.pc.in zlib.map test zlib.3
 
 build:
 	install $(srcdir)/zconf.h.in $(O)
@@ -14,10 +14,8 @@ build:
         CFLAGS='$(CFLAGS)' CC=$(CROSS_COMPILE)gcc $(srcdir)/configure
 	make -C $(O) VPATH='$(srcdir)'
 
-
 install-lib:
-	install $(srcdir)/zlib.h $(srcdir)/zconf.h $(LIB_PREFIX)/include
-	cp $(O)/libz.a $(O)/libz.so* $(LIB_PREFIX)/usr/lib
+	make -C $(O) VPATH='$(srcdir)' DESTDIR=$(LIB_PREFIX) install
 
 install:    # Nothing to install
 
