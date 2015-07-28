@@ -7,10 +7,17 @@ MD5_SUM_1.3.2 = 1e2f3c1ed468dee02d00c534c002ea10
 # of tree, so we have to patch the makefiles!
 PATCHES_1.1.4 = rpcgen-makefile-1.1.4.patch test-tools-1.1.4.patch
 
+LINK_FILES = support/export/mount.x support/nsm/sm_inter.x
+
+build:
+	# The rpcgen tool is a bit badly behaved regarding generate file paths,
+	# so the following links help it out.
+	$(foreach file,$(LINK_FILES), \
+            mkdir -p $(O)/$(dir $(file)) && \
+            ln -s $(srcdir)/$(file) $(O)/$(dir $(file)) &&) true
 
         # We disable libwrap and libblkid in the configuration so that we
         # don't have any external dependencies.
-build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
