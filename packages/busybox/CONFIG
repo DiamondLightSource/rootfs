@@ -59,10 +59,8 @@ build:
 	cp $(O)/busybox $(O)/busybox.links $(I)
 
 menuconfig: untar
-	make O=$(O) -C $(srcdir) menuconfig
-
-saveconfig:
-	cp $(O)/.config $(busybox_CONFIG)
+	make O=$(build_O) -C $(srcdir) menuconfig
+	cp $(build_O)/.config $(busybox_CONFIG)
 
 
 install:
