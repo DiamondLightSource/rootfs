@@ -3,7 +3,7 @@ e2fsprogs_VERSION ?= 1.42.13
 TAR_EXTENSION = .tar.gz
 MD5_SUM_1.42.13 = bc759fc62666786f5436e2075beb3265
 
-e2fsprogs_INSTALL_FILES = /sbin/fsck.ext4 /sbin/mkfs.ext4
+e2fsprogs_INSTALL_FILES ?= /sbin/fsck.ext4 /sbin/mkfs.ext4
 
 build:
 	cd $(O)  &&  \

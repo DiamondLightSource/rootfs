@@ -3,16 +3,18 @@ dosfstools_VERSION ?= 3.0.26
 TAR_EXTENSION = .tar.gz
 MD5_SUM_3.0.26 = b72d058c4ebc7b62dba68f93da358bfa
 
-INSTALL_FILES = fatlabel fsck.fat mkfs.fat
+dosfstools_INSTALL_FILES ?= fatlabel fsck.fat mkfs.fat
+
+# We link these files and directories so that `make install` will work.
+LINK_FILES = ChangeLog doc manpages
 
 build:
-	CFLAGS='$(CFLAGS)' make -C $(O) -f $(srcdir)/Makefile \
-            VPATH=$(srcdir)/src CC=$(CROSS_COMPILE)gcc
-	install $(INSTALL_FILES:%=$(O)/%) $(I)
+	ln -s $(LINK_FILES:%=$(srcdir)/%) $(O)
+	$(call EXPORT,CFLAGS) make -C $(O) -f $(srcdir)/Makefile \
+            VPATH=$(srcdir)/src CC=$(CROSS_COMPILE)gcc PREFIX=/ \
+            install DESTDIR=$(I)
 
 install:
-	for f in $(INSTALL_FILES); do \
-            $(install) -s -m-w $(I)/$$f /sbin; \
-        done
+	$(install) -s -m-w $(dosfstools_INSTALL_FILES:%=$(I)/sbin/%) /sbin
 
 # vim: set filetype=make:

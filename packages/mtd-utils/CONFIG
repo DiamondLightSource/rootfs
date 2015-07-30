@@ -2,16 +2,16 @@ mtd-utils_VERSION ?= 1.5.1
 
 MD5_SUM_1.5.1 = 4ad1f758d49615efe14edb107eddac5c
 
-MTD_TOOLS = flashcp flash_erase
+mtd-utils_INSTALL_FILES ?= flashcp flash_erase
 
 
 build:
 	CROSS=$(CROSS_COMPILE) make -C $(srcdir) WITHOUT_XATTR=1 \
-            $(MTD_TOOLS:%=$(O)/%) BUILDDIR=$(O)
-	cp $(MTD_TOOLS:%=$(O)/%) $(I)
+            $(mtd-utils_INSTALL_FILES:%=$(O)/%) BUILDDIR=$(O)
+	cp $(mtd-utils_INSTALL_FILES:%=$(O)/%) $(I)
 
 install:
-	$(install) -s -m-w $(MTD_TOOLS:%=$(I)/%) /usr/sbin
+	$(install) -s -m-w $(mtd-utils_INSTALL_FILES:%=$(I)/%) /usr/sbin
 
 
 
