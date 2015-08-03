@@ -124,9 +124,10 @@ build:
 
         # ----------------------------------------------------------------------
         # Finally complete the build and create a local install
-
 	make -C $(O)
 	make -C $(O) DESTDIR=$(I) install
+	ln -s python2 $(I)/usr/bin/python
+
 ifeq ($(PYTHON_PYC_ONLY),1)
 	find $(I)/usr/lib/python2.7 -name '*.py' -exec rm -f {} +
 endif

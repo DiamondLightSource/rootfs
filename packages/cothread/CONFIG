@@ -25,18 +25,21 @@ endif
 
         # Strictly this belongs elsewhere, but if requested install EPICS libs
 ifdef EPICS_BASE
+ifdef EPICS_ARCH
+	mkdir -p $(I)/usr/bin $(I)/usr/lib
 	cp -a $(EPICS_BASE)/lib/$(EPICS_ARCH)/*.so* $(I)/usr/lib
+	cp $(EPICS_BASE)/bin/$(EPICS_ARCH)/caRepeater $(I)/usr/bin
+endif
 endif
 
 
 install:
-	tar c -C $(I) . | tar x -C $(sysroot)
+	tar c -C $(I) usr/lib/python2.7 | tar x -C $(sysroot)
 
         # Catools needs libca.so, and it will help to have caRepeater available.
         # It so happens that caRepeater pulls in libca.so
-ifdef EPICS_BASE
-	$(install) -x $(EPICS_BASE)/bin/$(EPICS_ARCH)/caRepeater /usr/bin
-endif
+	[ -e $(I)/usr/bin/caRepeater ]  && \
+        $(install) -x $(I)/usr/bin/caRepeater /usr/bin
 
 
 # vim: set filetype=make:

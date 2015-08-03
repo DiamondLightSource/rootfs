@@ -23,7 +23,9 @@ build:
 
 install:
 	$(install) -s -m-w $(NTP_PROGRAMS:%=$(I)/usr/sbin/%) /usr/sbin
-	$(install) $(NTP_CONF) /etc
 	$(startup) $(packagedir)/ntpd
+ifneq ($(NTP_CONF),n)
+	$(install) $(NTP_CONF) /etc
+endif
 
 # vim: set filetype=make:

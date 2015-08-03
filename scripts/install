@@ -28,6 +28,8 @@
 #   -l      Create soft links to arguments instead of copying files.
 #   -d      Treat arguments as directories to be created
 
+set -o pipefail
+
 
 HERE="$(dirname "$0")"
 

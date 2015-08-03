@@ -10,6 +10,7 @@
 : ${sysroot:?}          # Target rootfs, where to install files
 : ${fakeroot_list:?}    # Where to place fakeroot commands
 
+set -o pipefail
 
 HERE="$(dirname "$0")"
 . "$HERE"/functions

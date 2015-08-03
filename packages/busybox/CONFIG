@@ -73,8 +73,10 @@ install:
 
         # Even if dhcp isn't necessarily configured, it doesn't hurt to
         # install the helper script in case it's wanted.
+ifneq ($(INSTALL_UDHCPC_SCRIPT),n)
 	$(install) -d /usr/share/udhcpc
 	$(install) $(packagedir)/default.script /usr/share/udhcpc
+endif
 
 ifdef INETD_ENABLE
 	$(install) $(packagedir)/inetd /etc/init.d

@@ -26,7 +26,7 @@ ldconfig_cross:
 	/sbin/ldconfig -X -r $(sysroot)
 
 
-option: ldconfig_$(LDCONFIG)
+early-option: ldconfig_$(LDCONFIG)
 
 .PHONY: ldconfig_install ldconfig_once ldconfig_cross
 

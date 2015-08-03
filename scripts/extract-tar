@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -o pipefail
+
 TARGET_DIR="${1:?Target directory missing}"
 TAR_FILE="${2:?No tar file specified}"
 MD5_SUM="${3:?No MD5 sum specified}"
