@@ -88,9 +88,11 @@ TARGET_PYTHON_CONF_OPTS = \
     --disable-tk
 
 
+TARGET_LIBS = zlib readline
+
 # Can disable zlib by adding --disable-zlib to TARGET_PYTHON_CONF_OPTS.
-CPPFLAGS += $(call pkg-config,zlib --cflags)
-LDFLAGS  += $(call pkg-config,zlib --libs)
+CPPFLAGS += $(call pkg-config,$(TARGET_LIBS) --cflags)
+LDFLAGS  += $(call pkg-config,$(TARGET_LIBS) --libs)
 
 
 # ----------------------------------------------------------------------

@@ -1,0 +1,11 @@
+prefix=@prefix@/usr
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: ncurses
+Description: ncurses library
+Version: @version@
+
+Requires:
+Libs: -L${libdir} -lncurses
+Cflags: -I${includedir}
