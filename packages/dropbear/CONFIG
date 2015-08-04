@@ -39,7 +39,9 @@ ifdef SSH_AUTHORIZED_KEYS
 endif
 
 ifdef DROPBEAR_KEYS
+ifneq ($(DROPBEAR_KEYS),n)
 	$(install) -m600 $(DROPBEAR_KEYS) /etc/dropbear
+endif
 else
         # For normal operation we generate the dropbear machine keys the
         # first time the target runs.
