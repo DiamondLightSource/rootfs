@@ -1,0 +1,26 @@
+ws4py_VERSION ?= 0.3.4
+
+TAR_EXTENSION = .tar.gz
+MD5_SUM_0.3.4 = 6b47e33cbd13f5c134b04f2a44a480ad
+
+PYTHON_ROOT = $(call pkg-config,Python --variable=prefix)
+
+PYTHON_SETUP_ENV = \
+    _python_sysroot=$(PYTHON_ROOT) \
+    _python_prefix=/usr \
+    _python_exec_prefix=/usr
+
+build:
+	cd $(srcdir)  && \
+        $(PYTHON_SETUP_ENV) python2 setup.py build -b $O \
+            install --prefix=$(I)/usr
+
+        # Post installation cleanup
+ifeq ($(PYTHON_PYC_ONLY),1)
+	find $(I)/usr/lib/python2.7 -name '*.py' -exec rm -f {} +
+endif
+
+install:
+	tar c -C $(I) usr/lib/python2.7 | tar x -C $(sysroot)
+
+# vim: set filetype=make:
