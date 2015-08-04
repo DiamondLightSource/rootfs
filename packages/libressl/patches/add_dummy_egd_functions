@@ -1,0 +1,76 @@
+List:       openbsd-tech
+Subject:    [PATCH] libressl: add dummy egd functions
+From:       Hanno =?UTF-8?B?QsO2Y2s=?= <hanno () hboeck ! de>
+Date:       2014-07-11 23:13:12
+Message-ID: 20140712011312.2d9eb020 () pc
+
+Hi,
+
+I hope this is the right place to post libressl-related discussions.
+I'm new here.
+
+After today's release of the portable libressl version I tried to use
+it as a drop-in-replacement on a gentoo linux system. There were a
+numbre of issues popping up.
+
+A number of packages failed to compile due to calls to the RAND_egd and
+RAND_egd_bytes functions. I had a little twitter conversation here
+https://twitter.com/hanno/status/487695463379120129
+with Miod Vallat where he explained that egd isn't considered secure
+and the code was therefore removed.
+
+I didn't know what egd was up until today, but reading what it is I
+completely understand that consideration. However, this breaks a number
+of packages (wget, python, ruby).
+
+There's probably a simple solution: Just add dummy functions that
+always return -1 (which according to the docs means "egd not
+available"). This is also what openssl did on archs that had no egd.
+
+See attached patch.
+
+
+What confused me a bit was that openssl returned 0 on RAND_egd when I
+gave it a bogus parameter (according to the docs -1 should be the error
+value). Maybe this is a bug in openssl.
+
+cu,
+--=20
+Hanno B=C3=B6ck
+http://hboeck.de/
+
+mail/jabber: hanno@hboeck.de
+GPG: BBB51E42
+
+
+diff -Naur libressl-2.0.0/crypto/rand/rand_lib.c libressl-2.0.0-1/crypto/rand/rand_lib.c
+--- libressl-2.0.0/crypto/rand/rand_lib.c	2014-07-11 19:41:26.000000000 +0200
++++ libressl-2.0.0-1/crypto/rand/rand_lib.c	2014-07-12 00:16:22.583713400 +0200
+@@ -98,3 +98,15 @@
+ 		arc4random_buf(buf, num);
+ 	return 1;
+ }
++
++int
++RAND_egd(const char *path)
++{
++	return -1;
++}
++
++int
++RAND_egd_bytes(const char *path, int bytes)
++{
++	return -1;
++}
+diff -Naur libressl-2.0.0/include/openssl/rand.h libressl-2.0.0-1/include/openssl/rand.h
+--- libressl-2.0.0/include/openssl/rand.h	2014-07-11 19:41:25.000000000 +0200
++++ libressl-2.0.0-1/include/openssl/rand.h	2014-07-12 00:08:44.893435315 +0200
+@@ -96,6 +96,8 @@
+ int  RAND_write_file(const char *file);
+ const char *RAND_file_name(char *file, size_t num);
+ int RAND_status(void);
++int RAND_egd(const char *path);
++int RAND_egd_bytes(const char *path,int bytes);
+ int RAND_poll(void);
+ 
+ /* BEGIN ERROR CODES */

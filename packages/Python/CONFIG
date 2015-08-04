@@ -88,11 +88,13 @@ TARGET_PYTHON_CONF_OPTS = \
     --disable-tk
 
 
-TARGET_LIBS = zlib readline ncurses
+TARGET_LIBS = zlib readline ncurses libressl
 
 # Can disable zlib by adding --disable-zlib to TARGET_PYTHON_CONF_OPTS.
 CPPFLAGS += $(call pkg-config,$(TARGET_LIBS) --cflags)
 LDFLAGS  += $(call pkg-config,$(TARGET_LIBS) --libs)
+
+CFLAGS += -fPIC
 
 
 # ----------------------------------------------------------------------
@@ -121,7 +123,7 @@ build:
 	cd $(O)  &&  \
         ./configure --srcdir=$(srcdir) --prefix=/usr \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
-            CFLAGS='$(CFLAGS)' CPPFLAGS='$(CPPFLAGS)' LDFLAGS='$(LDFLAGS)' \
+            $(call EXPORT,CFLAGS CPPFLAGS LDFLAGS) \
             $(TARGET_PYTHON_CONF_OPTS)
 
         # ----------------------------------------------------------------------

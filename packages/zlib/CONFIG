@@ -3,6 +3,8 @@ zlib_VERSION ?= 1.2.8
 TAR_EXTENSION = .tar.gz
 MD5_SUM_1.2.8 = 44d667c142d7cda120332623eab69f40
 
+CFLAGS += -fPIC
+
 
 # For out of tree configuration we need these files in $(O)
 LINK_FILES = zlib.h Makefile.in zlib.pc.in zlib.map test zlib.3
