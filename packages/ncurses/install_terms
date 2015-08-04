@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Helper script to install terminal files.  Called with I and sysroot set to
+# source and target destination, arguments names of term files to install.
+: ${I:?}
+: ${sysroot:?}
+
+for term; do
+    dir=/usr/share/terminfo/${term::1}
+    mkdir -p "$sysroot/$dir"  &&
+    cp "$I/$dir/$term" "$sysroot/$dir"  ||  return 1
+done

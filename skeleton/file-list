@@ -28,6 +28,7 @@ d 755 /usr
 d 755 /usr/bin
 d 755 /usr/lib
 d 755 /usr/sbin
+d 755 /usr/share
 d 755 /var
 d 755 /var/lock
 d 755 /var/log

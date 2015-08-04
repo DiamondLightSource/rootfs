@@ -123,7 +123,8 @@ install_libs()
             ln -s "$filename" "$sysroot/$lib"  &&
             lib="$(dirname "$lib")/$filename"
         fi  &&
-        cp "$lib_path" "$sysroot/$lib"  &&
+        { [ -e "$sysroot/$lib" ]  ||
+          cp "$lib_path" "$sysroot/$lib"; }  &&
         do_strip "$sysroot/$lib"  &&
         chmod -w "$sysroot/$lib"  ||
             Error "Error installing libraries"

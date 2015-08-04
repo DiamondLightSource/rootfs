@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Marks the given flags for link resolution
+: ${install_list:?}
+
+for file; do
+    echo "$file" >>"$install_list"
+done

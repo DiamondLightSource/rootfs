@@ -3,6 +3,7 @@ ncurses_VERSION ?= 5.9
 TAR_EXTENSION = .tar.gz
 MD5_SUM_5.9 = 8cb9c412e5f2d96bc6f459aa8c6282a1
 
+CFLAGS += -fPIC
 
 build:
 	cd $(O)  &&  \
@@ -12,6 +13,7 @@ build:
 	make -C $(O) install DESTDIR=$(I)
 	$(install-pkg-config)
 
-install:    # Nothing to install
+install:
+	$(call EXPORT,I sysroot) $(packagedir)/install_terms $(ncurses_TERMS)
 
 # vim: set filetype=make:

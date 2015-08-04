@@ -6,5 +6,6 @@ Name: Readline
 Description: Gnu Readline library for command line editing
 URL: http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html
 Version: @version@
+Requres: ncurses
 Libs: -L${libdir} -lreadline
 Cflags: -I${includedir}

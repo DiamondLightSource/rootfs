@@ -23,6 +23,7 @@ install = \
     $(call EXPORT,sysroot CROSS_COMPILE install_list fakeroot_list) \
     $(scripts)/install
 install-files = $(call EXPORT,sysroot fakeroot_list) $(scripts)/install-files
+mark-executable = $(call EXPORT,install_list) $(scripts)/mark-executable
 useradd       = $(call EXPORT,sysroot) $(scripts)/useradd
 groupadd      = $(call EXPORT,sysroot) $(scripts)/groupadd
 startup       = $(call EXPORT,sysroot STARTUP_LIST) $(scripts)/startup
