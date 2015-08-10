@@ -54,10 +54,31 @@ The following packages can be included in any rootfs build.
     Tool for logging console output.  Probably much simpler to use `procServ`
     and an external logging mechanism for most applications.
 
+`cothread`
+    Web pages: http://controls.diamond.ac.uk/downloads/python/cothread/ and
+    https://github.com/araneidae/cothread
+
+    Python library for cooperative threading (managed coroutines) and EPICS
+    channel access bindings.
+
+`dosfstools`
+    Web pages: http://daniel-baumann.ch/software/dosfstools/
+
+    Utilities for making and checking MS-DOS FAT filesystems.
+
+    Doesn't actually seem to work terribly well in my application, seems to need
+    a bit more care and attention.
+
 `dropbear`
     Web page: http://matt.ucc.asn.au/dropbear/dropbear.html
 
     Small ssh server and client, highly recommended.
+
+`e2fsprogs`
+    Web page: http://e2fsprogs.sourceforge.net/
+
+    File system utilities for ext4 support.  For some reason busybox doesn't
+    provide mkfs.ext4.
 
 `ethtool`
     Web page: http://sourceforge.net/projects/gkernel/
@@ -96,6 +117,11 @@ The following packages can be included in any rootfs build.
 
     Low level package capture interface library needed by `tcpdump` and
     `arping`.
+
+`libressl`
+    Web page: http://www.libressl.org/
+
+    TLS/crypto SSL support.
 
 `lm_sensors`
     Web page: http://www.lm-sensors.org
@@ -142,6 +168,12 @@ The following packages can be included in any rootfs build.
     Small editor.  It's probably best to stick with `vi` from busybox.  A
     canonical example of a simple build that just works.
 
+`ncurses`
+    Web page: http://www.gnu.org/software/ncurses/
+
+    New curses library for screen support.  Is a dependency of a number of other
+    components.
+
 `nfs-utils`
     Web page: http://linux-nfs.org and http://nfs.sourceforge.net
 
@@ -163,6 +195,11 @@ The following packages can be included in any rootfs build.
     Microscopic ntp client.  The writer of this also refers to xntpd, and links
     to a detailed man page, but I can't find a download.  Probably too small to
     be useful, but here for testing.
+
+`numpy`
+    Web page: http://www.numpy.org/
+
+    Numeric python library.
 
 `openntpd`
     Web page: http://www.openntpd.org/
@@ -196,12 +233,13 @@ The following packages can be included in any rootfs build.
 `Python`
     Web page: http://python.org
 
-    Python.  Unfortunately not yet successfully fully cross built.
+    Python.  Quite large, but very functional.  Can make use of `readline` and
+    `ssl` if present when built.
 
 `readline`
     Web page: http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html
 
-    Readline library, needed by `lua`.
+    Readline library, needed by `lua`, depends on `ncurses`.
 
 `screen`
     Web page: http://www.gnu.org/software/screen/
@@ -226,6 +264,12 @@ The following packages can be included in any rootfs build.
 
 `testing`
     Example for components with local sources.
+
+`ws4py`
+    Web pages: https://ws4py.readthedocs.org/en/latest/ and
+    https://pypi.python.org/pypi/ws4py
+
+    Web sockets for Python, both client and server library.
 
 `zlib`
     Web page: http://zlib.net/
@@ -287,12 +331,11 @@ Preparing packages for building with rootfs presents three challenges:
 For many the standard `configure` script is well behaved and all that
 is needed is something along these lines::
 
-    config:
-            cd $(O)  &&  \
-            $(srcdir)/configure CFLAGS='$(CFLAGS)' \
-                --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
     build:
-            make -C $(O)
+            cd $(O)  &&  \
+            $(srcdir)/configure CFLAGS='$(CFLAGS)' --prefix=/usr \
+                --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
+            make -C $(O) install DESTDIR=$(I)
 
 These components are easy to build:
 

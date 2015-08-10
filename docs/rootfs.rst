@@ -278,22 +278,17 @@ The general form of these commands is::
 Possible values for '<target>' are:
 
 `default`
-    Default selection if no target specified: invokes `untar`, `config`, `build`
-    and `install-lib`.
+    Default selection if no target specified: invokes `untar` and `build`.
 
 `untar`
     Extracts sources for the selected package (or packages) into
     `$(SOURCE_ROOT)` and applies any configured patches.
 
-`config`
-    Runs the configured configure step, necessary preparation for building.
-
 `build`
-    Compiles the selected package.
+    Performs any necessary configuration, builds the package in a build
+    directory `$(O)` and finally installs the built package in a staging
+    directory `$(I)`.
 
-`install-lib`
-    If the package generates libraries needed by other packages, this installs
-    the libraries in `$(LIB_PREFIX)` ready to be used.
 
 The following targets are useful for tidying things up.
 

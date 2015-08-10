@@ -1,4 +1,4 @@
-html: $(wildcard *.rst)
+html: conf.py $(wildcard *.rst)
 	sphinx-build -b html . html
 
 clean:
