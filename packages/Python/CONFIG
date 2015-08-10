@@ -1,12 +1,14 @@
-PYTHON_PYC_ONLY ?= 0
+Python_VERSION ?= 2.7.10
 
+MD5_SUM_2.7.9 = 5eebcaa0030dc4061156d3429657fb83
+MD5_SUM_2.7.10 = d7547558fd673bd9d38e2108c6b42521
 
 TAR_EXTENSION = .tgz
 
-Python_VERSION ?= 2.7.9
+PYTHON_PYC_ONLY ?= 0
 
-MD5_SUM_2.7.9 = 5eebcaa0030dc4061156d3429657fb83
 
+# All the numbered patches below were taken from buildroot.
 PATCHES_2.7.9 = \
     001-remove-host-header-path.patch \
     002-fix-get-python-inc.patch \
@@ -41,6 +43,13 @@ PATCHES_2.7.9 = \
     114-remove-idle-editor.patch \
     115-optional-ossaudiodev.patch \
     read-only-configtest.patch
+
+# All the 2.7.9 patches work except for a configure.ac patch which needs a small
+# rewrite.
+PATCHES_2.7.10 := $(subst \
+    004-sysconfigdata-install-location.patch,\
+    004-sysconfigdata-install-location-2.7.10.patch,\
+    $(PATCHES_2.7.9))
 
 # This is needed to make sure the Python build process doesn't try to regenerate
 # those files with the pgen program. Otherwise, it builds pgen for the target,
