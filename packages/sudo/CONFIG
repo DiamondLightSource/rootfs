@@ -12,8 +12,8 @@ build:
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --without-pam --with-editor=/bin/vi --prefix=/usr
-	make -C $(O) install DESTDIR=$(I) \
-            install_uid=$$(id -u) install_gid=$$(id -g)
+	make -C $(O)
+	fakeroot -s $(I)/fakeroot.env make -C $(O) install DESTDIR=$(I)
 
 install:
 	$(install) -s -m a=rx,u+s,g+s $(I)/usr/bin/sudo /usr/bin

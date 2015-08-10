@@ -38,8 +38,9 @@ install:
 
         # Catools needs libca.so, and it will help to have caRepeater available.
         # It so happens that caRepeater pulls in libca.so
-	[ -e $(I)/usr/bin/caRepeater ]  && \
-        $(install) -x $(I)/usr/bin/caRepeater /usr/bin
+	if [[ -e $(I)/usr/bin/caRepeater ]]; then \
+            $(install) -x $(I)/usr/bin/caRepeater /usr/bin; \
+        fi
 
 
 # vim: set filetype=make:
