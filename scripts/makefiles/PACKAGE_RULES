@@ -34,7 +34,7 @@ $(srcdir):
 	$(untar-extra)
 
 	for patch in $(PATCHES); do \
-            patch -p1 -d $(srcdir) <$$patch; \
+            patch -p1 -d $(srcdir) <$$patch  ||  break; \
         done
 	$(patch-extra)
         # Finally enforce read only source tree!
