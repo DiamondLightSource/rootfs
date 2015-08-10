@@ -4,16 +4,16 @@ TAR_EXTENSION = .tar.gz
 MD5_SUM_1.0pre2 = fef521a49ec0122458d02c64212af3c5
 MD5_SUM_1.0pre4 = 7e6decb4958e8a4890cccac335239f24
 
-export LDFLAGS  += $(call pkg-config,libpcap --libs)
-export CPPFLAGS += $(call pkg-config,libpcap --cflags)
+LDFLAGS  += $(call pkg-config,libpcap ncurses --libs)
+CPPFLAGS += $(call pkg-config,libpcap ncurses --cflags)
 
 build:
 	mkdir -p $(O)/config
 	for f in $(srcdir)/config/*; do ln -sf $$f $(O)/config; done
 	cd $(O)  &&  \
-        $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+        $(srcdir)/configure \
+            $(call EXPORT,CFLAGS CPPFLAGS LDFLAGS) \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) --prefix=/usr
-	make -C $(O)
 	make -C $(O) install DESTDIR=$(I)
 
 install:

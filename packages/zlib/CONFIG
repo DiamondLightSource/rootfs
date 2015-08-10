@@ -15,7 +15,6 @@ build:
 	cd $(O)  &&  \
         CFLAGS='$(CFLAGS)' CC=$(CROSS_COMPILE)gcc \
             $(srcdir)/configure --prefix=/usr
-	make -C $(O) VPATH='$(srcdir)'
 	make -C $(O) VPATH='$(srcdir)' DESTDIR=$(I) install
 	$(install-pkg-config)
 

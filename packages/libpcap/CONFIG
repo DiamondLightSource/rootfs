@@ -10,7 +10,6 @@ build:
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             ac_cv_linux_vers=2 --with-pcap=linux --prefix=/usr \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
-	make -C $(O)
 	make -C $(O) install DESTDIR=$(I)
 	$(install-pkg-config)
 

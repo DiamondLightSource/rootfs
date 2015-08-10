@@ -9,7 +9,6 @@ build:
         $(srcdir)/configure CFLAGS='$(CFLAGS)' CXXFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) --prefix=/usr \
             --disable-doc --enable-access-from-anywhere
-	make -C $(O)
 	make -C $(O) install DESTDIR=$(I)
 
 install:

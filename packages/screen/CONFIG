@@ -17,7 +17,6 @@ build:
 	cd $(O)  &&  \
         ./configure --srcdir=$(srcdir) CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
-	make -C $(O)
 	make -C $(O) install DESTDIR=$(I)
 
 install:

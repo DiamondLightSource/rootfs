@@ -12,7 +12,6 @@ build:
             bash_cv_func_sigsetjmp=yes bash_cv_wcwidth_broken=no \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --prefix=/usr
-	make -C $(O)
 	make -C $(O) install DESTDIR=$(I)
 	$(install-pkg-config)
 

@@ -13,7 +13,6 @@ build:
             $(call EXPORT,CFLAGS CPPFLAGS LDFLAGS) \
             --disable-utf8 --prefix=/usr \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
-	make -C $(O)
 	make -C $(O) install DESTDIR=$(I)
 
 install:

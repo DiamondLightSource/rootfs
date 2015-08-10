@@ -10,7 +10,6 @@ build:
 	$(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --enable-elf-shlibs
-	make -C $(O)
 	make -C $(O) install DESTDIR=$(I)
 
 install:

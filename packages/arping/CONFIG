@@ -12,7 +12,6 @@ build:
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             ac_cv_have_clock_monotonic=yes --prefix=/usr \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
-	make -C $(O)
 	make -C $(O) install DESTDIR=$(I)
 
 install:

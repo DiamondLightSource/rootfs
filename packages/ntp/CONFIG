@@ -18,7 +18,6 @@ build:
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --with-yielding-select=yes --without-crypto \
             --disable-all-clocks --disable-parse-clocks --prefix=/usr
-	make -C $(O)
 	make -C $(O) install DESTDIR=$(I)
 
 install:

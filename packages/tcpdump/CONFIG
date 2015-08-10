@@ -15,7 +15,6 @@ build:
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             ac_cv_linux_vers=2 --with-crypto=no --with-system-libpcap \
             --disable-ipv6 --disable-smb --prefix=/usr
-	make -C $(O)
 	make -C $(O) install DESTDIR=$(I)
 
 install:
