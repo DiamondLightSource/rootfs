@@ -1,6 +1,15 @@
 # Local definitinos and overrides.  Copy this to CONFIG.local if required and
 # edit accordingly.
 
-TARGET = example
+TARGET = minimal
+
+# The following defaults can be overridden here.
+
+# This is the location where source and build files will be placed.
+# ROOTFS_ROOT = /scratch/tmp/rootfs
+
+# This is where all of the source tar files will be found.  This can be a
+# whitespace separated list of directories.
+# TAR_DIRS = /dls_sw/prod/targetOS/tar-files
 
 # vim: set filetype=make:

@@ -1,0 +1,10 @@
+# Minimal configuration example.
+
+TOOLCHAIN = arm-xscale
+
+PACKAGES += busybox
+
+CONSOLE_TTY = ttyS0
+CONSOLE_BAUD = 115200
+
+# vim: set filetype=make:
