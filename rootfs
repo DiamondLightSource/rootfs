@@ -48,6 +48,9 @@ The following options can be passed before any action:
     -r<build-root>
         This overrides the default definition of ROOTFS_ROOT and the value set
         in CONFIG.local.
+
+    -f<tar-files>
+        Overrides the list of tar files set in CONFIG.local
 EOF
 }
 
@@ -63,10 +66,11 @@ call_make()
 }
 
 
-while getopts 't:r:h' option; do
+while getopts 't:r:f:h' option; do
     case "$option" in
     t)  EXTRA_OPTIONS=("${EXTRA_OPTIONS[@]}" TARGET="$OPTARG") ;;
     r)  EXTRA_OPTIONS=("${EXTRA_OPTIONS[@]}" ROOTFS_ROOT="$OPTARG") ;;
+    f)  EXTRA_OPTIONS=("${EXTRA_OPTIONS[@]}" TAR_FILES="$OPTARG") ;;
     h)  usage
         exit 0 ;;
     *)  Error 'Invalid option: try -h for help' ;;
