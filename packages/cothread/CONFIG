@@ -3,6 +3,9 @@ cothread_VERSION ?= 2.12
 TAR_EXTENSION = .tar.gz
 MD5_SUM_2.12 = 4021d7bbfc459eeeb7966e3bf0a3f5ce
 
+PATCHES_2.12 = arm-vfp.patch
+
+
 PYTHON_ROOT = $(call pkg-config,Python --variable=prefix)
 
 PYTHON_SETUP_ENV = \
