@@ -1,0 +1,26 @@
+enum34_VERSION ?= 1.0.4
+
+TAR_EXTENSION = .tar.gz
+MD5_SUM_1.0.4 = ac80f432ac9373e7d162834b264034b6
+
+PYTHON_ROOT = $(call pkg-config,Python --variable=prefix)
+
+PYTHON_SETUP_ENV = \
+    _python_sysroot=$(PYTHON_ROOT) \
+    _python_prefix=/usr \
+    _python_exec_prefix=/usr
+
+build:
+	cd $(srcdir)  && \
+        $(PYTHON_SETUP_ENV) python2 setup.py build -b $O \
+            install --prefix=$(I)/usr
+
+        # Post installation cleanup
+ifeq ($(PYTHON_PYC_ONLY),1)
+	find $(I)/usr/lib/python2.7 -name '*.py' -exec rm -f {} +
+endif
+
+install:
+	tar c -C $(I) usr/lib/python2.7 | tar x -C $(sysroot)
+
+# vim: set filetype=make:
