@@ -1,0 +1,18 @@
+iperf_VERSION ?= 3.0.2
+
+TAR_EXTENSION = .tar.gz
+MD5_SUM_3.0.2 = 5154c00201d599acc00194c6c278ca23
+
+
+build:
+	cd $(O)  &&  \
+	$(srcdir)/configure \
+            $(call EXPORT,CFLAGS CPPFLAGS LDFLAGS) \
+            --prefix=/usr \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
+	make -C $(O) install DESTDIR=$(I)
+
+install:
+	$(install) -s -m-w $(I)/usr/bin/iperf3 /usr/bin
+
+# vim: set filetype=make:
