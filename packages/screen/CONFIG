@@ -7,6 +7,9 @@ MD5_SUM_4.2.1 = 419a0594e2b25039239af8b90eda7d92
 PATCHES_4.0.3 = configure-4.0.3.patch
 PATCHES_4.2.1 = configure-4.2.1.patch
 
+export LDFLAGS  += $(call pkg-config,ncurses --libs)
+export CPPFLAGS += $(call pkg-config,ncurses --cflags)
+
 # Alas there seems to be a misplaced config.h file, we need to get rid of
 # this!
 untar-extra = rm -f $(srcdir)/config.h
