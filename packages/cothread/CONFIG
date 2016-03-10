@@ -7,18 +7,8 @@ MD5_SUM_2.13 = 6af6c226638dc3ee10d6e73ed5d84cfa
 PATCHES_2.12 = arm-vfp.patch
 
 
-PYTHON_SETUP_ENV = \
-    CC=$(COMPILER_PREFIX)-gcc \
-    LDSHARED="$(COMPILER_PREFIX)-gcc -shared" \
-    _python_sysroot=$(PYTHON_ROOT) \
-    _python_prefix=/usr \
-    _python_exec_prefix=/usr
-
-
 build:
-	cd $(srcdir)  && \
-        $(PYTHON_SETUP_ENV) python2 setup.py build -b $O \
-            install --prefix=$(I)/usr
+	$(python-build)
 
         # Post installation cleanup
 ifeq ($(PYTHON_PYC_ONLY),1)

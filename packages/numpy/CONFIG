@@ -8,17 +8,11 @@ PATCHES_1.9.2 = \
     fix-read-only.patch
 
 # Note that the variables library_dirs and include_dirs are supported via the
-# fix-paths patch applies above.
+# fix-paths patch applied above.
 #
 # May also want to add -gfortran for F77 and/or F90 if building the more
 # advanced support libraries
-PYTHON_SETUP_ENV = \
-    CC=$(COMPILER_PREFIX)-gcc \
-    LD=$(COMPILER_PREFIX)-ld \
-    LDSHARED='$(COMPILER_PREFIX)-gcc -shared' \
-    _python_sysroot=$(PYTHON_ROOT) \
-    _python_prefix=/usr \
-    _python_exec_prefix=/usr \
+PYTHON_SETUP_ENV += \
     library_dirs=$(PYTHON_ROOT)/usr/lib \
     include_dirs=$(PYTHON_ROOT)/usr/include
 
@@ -33,9 +27,7 @@ DELETE_FROM_INSTALL = \
     f2py
 
 build:
-	cd $(srcdir)  && \
-        $(PYTHON_SETUP_ENV) python2 setup.py build -b $O \
-            install --prefix=$(I)/usr
+	$(python-build)
 
 # 	for dir in $(DELETE_FROM_INSTALL); do \
 #             find $(O-install) -name $$dir -prune -exec rm -rf {} +; \

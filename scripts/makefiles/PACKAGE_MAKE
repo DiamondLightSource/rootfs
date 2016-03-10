@@ -40,6 +40,20 @@ srcdir = $(SOURCE_ROOT)/$(SOURCE_DIR_NAME)
 BUILD_TYPE = $(shell $(scripts)/config.guess)
 
 
+# Special definitions for Python building
+PYTHON_ROOT = $(call pkg-config,Python --variable=prefix)
+PYTHON_SETUP_ENV = \
+    CC=$(CROSS_COMPILE)gcc \
+    LD=$(CROSS_COMPILE)ld \
+    LDSHARED="$(CROSS_COMPILE)gcc -shared" \
+    _python_sysroot=$(PYTHON_ROOT) \
+    _python_prefix=/usr \
+    _python_exec_prefix=/usr
+python-build = \
+    cd $(srcdir)  &&  \
+    $(PYTHON_SETUP_ENV) python2 setup.py build -b $O install --prefix=$(I)/usr
+
+
 # Finally we can pull in the real package definitions and fire the
 # appropriate rules.
 include $(packagedir)/CONFIG
@@ -79,10 +93,6 @@ ifdef LIB_DEPENDS
 export LDFLAGS  += $(call pkg-config,$(LIB_DEPENDS) --libs)
 export CPPFLAGS += $(call pkg-config,$(LIB_DEPENDS) --cflags)
 endif
-
-# A special definition for Python
-PYTHON_ROOT = $(call pkg-config,Python --variable=prefix)
-
 
 include $(makefiles)/PACKAGE_RULES
 

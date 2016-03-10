@@ -3,15 +3,8 @@ enum34_VERSION ?= 1.0.4
 TAR_EXTENSION = .tar.gz
 MD5_SUM_1.0.4 = ac80f432ac9373e7d162834b264034b6
 
-PYTHON_SETUP_ENV = \
-    _python_sysroot=$(PYTHON_ROOT) \
-    _python_prefix=/usr \
-    _python_exec_prefix=/usr
-
 build:
-	cd $(srcdir)  && \
-        $(PYTHON_SETUP_ENV) python2 setup.py build -b $O \
-            install --prefix=$(I)/usr
+	$(python-build)
 
         # Post installation cleanup
 ifeq ($(PYTHON_PYC_ONLY),1)
