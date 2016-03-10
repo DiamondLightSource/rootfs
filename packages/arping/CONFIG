@@ -4,8 +4,7 @@ TAR_EXTENSION = .tar.gz
 MD5_SUM_2.09 = 6f6a91c8700fcc7454b4e89480e417e3
 MD5_SUM_2.15 = 676584f6eb4ccc8c70fc6b2c702df75d
 
-export LDFLAGS  += $(call pkg-config,libnet libpcap --libs)
-export CPPFLAGS += $(call pkg-config,libnet libpcap --cflags)
+LIB_DEPENDS = libnet libpcap
 
 build:
 	cd $(O)  &&  \

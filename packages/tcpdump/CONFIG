@@ -6,8 +6,7 @@ MD5_SUM_4.7.4 = 58af728de36f499341918fc4b8e827c3
 
 PATCHES_4.0.0 = tcpdump-4.0.0.patch
 
-export LDFLAGS  += $(call pkg-config,libpcap --libs)
-export CPPFLAGS += $(call pkg-config,libpcap --cflags)
+LIB_DEPENDS = libpcap
 
 build:
 	cd $(O)  &&  \

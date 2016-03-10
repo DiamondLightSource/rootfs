@@ -4,8 +4,7 @@ TAR_EXTENSION = .tar.gz
 MD5_SUM_5.2.0 = f1ea831f397214bae8a265995ab1a93e
 MD5_SUM_5.3.0 = a1b0a7e92d0c85bbff7a8d27bf29f8af
 
-LDFLAGS  += $(call pkg-config,readline ncurses --libs)
-CPPFLAGS += $(call pkg-config,readline ncurses --cflags)
+LIB_DEPENDS = readline ncurses
 
 MYCFLAGS = $(CFLAGS) $(CPPFLAGS)
 MYLDFLAGS = $(LDFLAGS)

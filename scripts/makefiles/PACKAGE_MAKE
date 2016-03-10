@@ -69,6 +69,21 @@ $(call SET_VERSION,MD5_SUM)
 $(call SET_VERSION,PATCHES)
 
 
+# Allow package specific overrides of CFLAGS.
+ifdef CFLAGS_$(PACKAGE)
+CFLAGS = $(CFLAGS_$(PACKAGE))
+endif
+
+# Use LIB_DEPENDS to locate libraries if necessary.
+ifdef LIB_DEPENDS
+export LDFLAGS  += $(call pkg-config,$(LIB_DEPENDS) --libs)
+export CPPFLAGS += $(call pkg-config,$(LIB_DEPENDS) --cflags)
+endif
+
+# A special definition for Python
+PYTHON_ROOT = $(call pkg-config,Python --variable=prefix)
+
+
 include $(makefiles)/PACKAGE_RULES
 
 # vim: set filetype=make:

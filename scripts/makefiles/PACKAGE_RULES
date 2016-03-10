@@ -2,10 +2,6 @@
 # These rules are included at the end of PACKAGE_MAKE, just to help manage
 # the structure of the build system.
 
-# Allow package specific overrides of CFLAGS.
-ifdef CFLAGS_$(PACKAGE)
-CFLAGS = $(CFLAGS_$(PACKAGE))
-endif
 
 default: do-build
 

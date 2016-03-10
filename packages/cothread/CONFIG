@@ -7,8 +7,6 @@ MD5_SUM_2.13 = 6af6c226638dc3ee10d6e73ed5d84cfa
 PATCHES_2.12 = arm-vfp.patch
 
 
-PYTHON_ROOT = $(call pkg-config,Python --variable=prefix)
-
 PYTHON_SETUP_ENV = \
     CC=$(COMPILER_PREFIX)-gcc \
     LDSHARED="$(COMPILER_PREFIX)-gcc -shared" \

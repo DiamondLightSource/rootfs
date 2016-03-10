@@ -4,8 +4,7 @@ TAR_EXTENSION = .tar.gz
 MD5_SUM_2.0.9 = 2be94dc43fb60fff4626a2401a977220
 MD5_SUM_2.4.1 = 1c612b478f976abf8ef926480c7a3684
 
-CPPFLAGS += $(call pkg-config,ncurses --cflags)
-LDFLAGS  += $(call pkg-config,ncurses --libs)
+LIB_DEPENDS = ncurses
 
 build:
 	cd $(O)  &&  \

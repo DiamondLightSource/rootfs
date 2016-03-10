@@ -7,8 +7,6 @@ PATCHES_1.9.2 = \
     fix-paths.patch \
     fix-read-only.patch
 
-PYTHON_ROOT = $(call pkg-config,Python --variable=prefix)
-
 # Note that the variables library_dirs and include_dirs are supported via the
 # fix-paths patch applies above.
 #
