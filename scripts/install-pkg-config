@@ -1,0 +1,30 @@
+#!/bin/sh
+# This script installs a pkg-config .pc file in the appropriate location.
+# Called as:
+#
+#   ./install-pkg-config <package> <version> [<src-package>]
+#
+# with the following environment variables set:
+#
+: ${PKG_CONFIG_PATH:?}      # Path to destination pkg-config directory
+: ${I:?}                    # Staging directory for component
+: ${packagedir:?}           # Package directory
+
+PACKAGE="${1:?}"
+VERSION="${2:?}"
+I_PACKAGE="${3:-$PACKAGE}"
+
+if [[ -e "$packagedir/$PACKAGE.pc" ]]; then
+    # If packagedir contains a .pc file then use this one after fixing up the
+    # prefix and version.
+    sed "s:@prefix@:$I:; s:@version@:$VERSION:" \
+        <"$packagedir/$PACKAGE.pc" >"$PKG_CONFIG_PATH/$PACKAGE.pc"
+elif [[ -e "$I/usr/lib/pkgconfig/$I_PACKAGE.pc" ]]; then
+    # If the install contains a suitable .pc file then use this one.  Here we
+    # fix up the prefix, but assume the version is good.
+    sed "/^prefix=/{s:=:=$I:}" \
+        <"$I/usr/lib/pkgconfig/$I_PACKAGE.pc" >"$PKG_CONFIG_PATH/$PACKAGE.pc"
+else
+    echo >&2 Package file $I_PACKAGE.pc not found
+    exit 1
+fi

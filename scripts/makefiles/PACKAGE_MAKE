@@ -8,8 +8,8 @@ include $(makefiles)/PACKAGE_COMMON
 # This should be called as part of a package build recipe for a library
 # component to install the pkg-config file for the library.
 install-pkg-config = \
-    sed 's:@prefix@:$(I):; s:@version@:$($(PACKAGE)_VERSION):' \
-        <$(packagedir)/$(PACKAGE).pc >$(PKG_CONFIG_PATH)/$(PACKAGE).pc
+    $(call EXPORT,PKG_CONFIG_PATH I packagedir) \
+        $(scripts)/install-pkg-config $(PACKAGE) $($(PACKAGE)_VERSION)
 
 # Can be called with a build receipe to discover pkg-config details
 pkg-config = $(shell $(call EXPORT,PKG_CONFIG_PATH) pkg-config $1)

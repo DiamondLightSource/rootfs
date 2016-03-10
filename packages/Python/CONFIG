@@ -142,7 +142,7 @@ ifeq ($(PYTHON_PYC_ONLY),1)
 	find $(I)/usr/lib/python2.7 -name '*.py' -exec rm -f {} +
 endif
 
-	$(install-pkg-config)
+	$(install-pkg-config) python-2.7
 
 
 install:
