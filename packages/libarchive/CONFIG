@@ -1,0 +1,18 @@
+libarchive_VERSION ?= 3.1.2
+
+TAR_EXTENSION = .tar.gz
+MD5_SUM_3.1.2 = efad5a503f66329bb9d2f4308b5de98a
+
+
+build:
+	cd $(O)  &&  \
+	$(srcdir)/configure \
+            $(call EXPORT,CFLAGS CPPFLAGS LDFLAGS) \
+            --prefix=/usr \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
+            --without-xml2
+	make -C $(O) install DESTDIR=$(I)
+	$(install-pkg-config)
+
+
+# vim: set filetype=make:

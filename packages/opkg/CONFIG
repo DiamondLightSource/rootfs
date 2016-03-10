@@ -1,0 +1,22 @@
+opkg_VERSION ?= 0.3.1
+
+TAR_EXTENSION = .tar.bz2
+MD5_SUM_0.3.1 = 7c245ad434fd21ce882d04cb626e5929
+
+LIB_DEPENDS = libarchive
+
+patch-extra = $(srcdir)/autogen.sh
+
+build:
+	cd $(O)  &&  \
+	$(srcdir)/configure \
+            $(call EXPORT,CFLAGS CPPFLAGS LDFLAGS) \
+            --prefix=/usr \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
+            --disable-curl --disable-gpg
+	make -C $(O) install DESTDIR=$(I)
+
+install:
+	$(install) -s -m-w $(I)/usr/bin/opkg /usr/bin
+
+# vim: set filetype=make:
