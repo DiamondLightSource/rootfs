@@ -16,10 +16,10 @@ build:
 	ln -sf $(srcdir)/src/*.{h,hpp} $(O)/src
 	make -C $(O) CC=$(CROSS_COMPILE)gcc linux VPATH=$(srcdir)/src \
             $(call EXPORT,MYCFLAGS MYLDFLAGS) \
-            install INSTALL_TOP=$(I)
+            install INSTALL_TOP=$(I)/usr
 	$(install-pkg-config)
 
 install:
-	$(install) -s $(I)/bin/lua $(I)/bin/luac /usr/bin
+	$(install) -s $(I)/usr/bin/lua $(I)/usr/bin/luac /usr/bin
 
 # vim: set filetype=make:

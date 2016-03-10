@@ -1,4 +1,4 @@
-prefix=@prefix@
+prefix=@prefix@/usr
 libdir=${prefix}/lib
 includedir=${prefix}/include
 
