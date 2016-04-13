@@ -9,7 +9,7 @@ echo '::respawn:/sbin/getty $(CONSOLE_BAUD) $(tty)' >>$(sysroot)/etc/inittab
 endef
 
 option:
-        # Add target specific getty lines to inittab
+	# Add target specific getty lines to inittab
 	$(foreach tty,$(CONSOLE_TTY),$(ADD_TTY))
 
 # vim: set filetype=make:

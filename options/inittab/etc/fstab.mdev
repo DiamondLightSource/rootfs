@@ -1,0 +1,7 @@
+# List of mounts required before triggering mdev -s
+# In same format as fstab
+proc        /proc           proc    defaults
+sysfs       /sys            sysfs   defaults
+mdev        /dev            tmpfs   defaults
+devpts      /dev/pts        devpts  noexec,nosuid
+devshm      /dev/shm        tmpfs   nosuid,nodev

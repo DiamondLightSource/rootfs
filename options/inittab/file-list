@@ -4,6 +4,7 @@ d 755 /etc/init.d
 d 755 /etc/rc.d
 
 f 644 /etc/fstab
+f 644 /etc/fstab.mdev
 f 644 /etc/inittab
 
 f 755 /etc/init.d/rcS
