@@ -9,12 +9,13 @@ ifeq ($(version),local)
 # Local builds are handled a little oddly: we need to turn the make file
 # around so that it builds out of $(O), targeting sources in $(packagedir).
 # For local there is no srcdir, so nothing to untar.
+srcdir = $(packagedir)
 
 untar:
 
 build:
 	$(MAKE) -C $(O) -f $(packagedir)/CONFIG build-local \
-            VPATH=$(packagedir) CC=$(CROSS_COMPILE)gcc
+            I=$(I) VPATH=$(packagedir) CC=$(CROSS_COMPILE)gcc
 
 else
 # For normal builds we have to extract and possibly patch the sources.
