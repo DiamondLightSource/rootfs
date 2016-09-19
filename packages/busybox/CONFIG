@@ -7,6 +7,7 @@ MD5_SUM_1.15.3 = 6059ac9456de6fb18dc8ee4cd0ec9240
 MD5_SUM_1.19.3 = c3938e1ac59602387009bbf1dd1af7f6
 MD5_SUM_1.20.2 = e025414bc6cd79579cc7a32a45d3ae1c
 MD5_SUM_1.23.2 = 7925683d7dd105aabe9b6b618d48cc73
+MD5_SUM_1.24.2 = 2eaae519cac1143bcf583636a745381f
 
 # Patches downloaded from http://busybox.net/downloads/fixes-1.14.3/
 PATCHES_1.14.3 = \
@@ -48,6 +49,11 @@ PATCHES_1.20.2 = \
 # This patch was created from the git repository
 PATCHES_1.23.2 = \
     busybox-1.23.2-zcip.patch
+
+PATCHES_1.24.2 = \
+    busybox-1.24.2-ash-recursive-heredocs.patch \
+    busybox-1.24.2-CVE-2016-2147.patch \
+    busybox-1.24.2-CVE-2016-2148.patch
 
 
 # If no config specified, use one we prepared earlier.
