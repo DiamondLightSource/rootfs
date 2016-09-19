@@ -43,10 +43,10 @@ STARTUP_LINE="$(grep "^$FILENAME\>" "$STARTUP_LIST")"
 [ -z "$STOP" -o "${STOP:0:1}" = K ]  ||  Error Invalid stop parameter
 
 
-install -m "$MODE" "$SCRIPT" "$sysroot/etc/init.d"  &&
+install -m "$MODE" "$SCRIPT" -t "$sysroot/etc/init.d"  &&
 if [ -n "$AUTO" ]; then
     ln -s ../init.d/"$FILENAME" "$sysroot/$START/$AUTO$FILENAME"
-fi
+fi  &&
 if [ -n "$STOP" ]; then
     ln -s ../init.d/"$FILENAME" "$sysroot/$START/$STOP$FILENAME"
 fi
