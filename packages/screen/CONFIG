@@ -18,7 +18,7 @@ build:
 	cd $(O)  &&  autoconf -o configure $(srcdir)/configure.in
 	cd $(O)  &&  \
         ./configure --srcdir=$(srcdir) CFLAGS='$(CFLAGS)' \
-            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) --prefix=/usr
 	make -C $(O) install DESTDIR=$(I)
 
 install:

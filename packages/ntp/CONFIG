@@ -17,7 +17,8 @@ build:
         $(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --with-yielding-select=yes --without-crypto \
-            --disable-all-clocks --disable-parse-clocks --prefix=/usr
+            --disable-all-clocks --disable-parse-clocks \
+            --prefix=/usr --with-locfile=redhat
 	make -C $(O) install DESTDIR=$(I)
 
 install:
