@@ -1,88 +1,20 @@
-# Configuration file for colibri target.
+# Configuration file for Xilinx Zynq target.
 
 # -----------------------------------------------------------------------------
-# Package definitions for colibri 
+# Package definitions
 TOOLCHAIN = xlnx-zynq
 
 
 # This one is essential, nothing builds without it.
 PACKAGES += busybox
-# Components required for normal operation.
-PACKAGES += ntp dropbear portmap
-# Useful debugging tools
-PACKAGES += strace lsof
-# Useful
-# PACKAGES += nano
-PACKAGES += mtd-utils
-PACKAGES += libpcap tcpdump
-# PACKAGES += screen
-PACKAGES += procServ conserver
-PACKAGES += i2c-tools
-# PACKAGES += libnet arping
-PACKAGES += ethtool
-
-# Miscellaneous extra components of variable utility.
-# PACKAGES += bash
-PACKAGES += sudo
-# PACKAGES += procinfo procinfo-ng
-# PACKAGES += testing
-
-# Alternative lightweight NTP clients, not actually recommended.
-# PACKAGES += openntpd
-# PACKAGES += ntpclient
-
-# Lua
-# PACKAGES += readline lua
-
-
-# We need a number of extra settings for dropbear: thumb is a bit too slow for
-# dropbear (it's probably all that encryption), we need to enable inetd, we
-# install canned server identification keys (doesn't matter that all servers end
-# up looking the same!) and we install a set of authorised users.
-CFLAGS_dropbear = -O2
-INETD_ENABLE = y
-DROPBEAR_KEYS = y
-SSH_AUTHORIZED_KEYS = $(configdir)/authorized_keys
-
-# TERMS = xterm xterm-color screen vt100 vt102
-
-
-# -----------------------------------------------------------------------------
-# Rootfs bootstrap configuration.  All of these parameters control settings in
-# the rootfs/boot directory.
-
-BOOT = nfs
-
-# Options only used for BOOT = nfs:
-NFS_SERVER = pc0035
-NFS_ROOTFS = /scratch/rootfs/$(TARGET)
-
+PACKAGES += zlib readline ncurses libressl
+PACKAGES += Python
 
 # -----------------------------------------------------------------------------
 # Rootfs options and configuration
 
 ROOTFS_VERSION = DLS Xilinx Zynq Rootfs 0.1
-
-CONSOLE_BAUD = 115200
-CONSOLE_TTY = ttyPS0
-
 ROOT_PASSWORD = Jungle
 
-
-LDCONFIG = once
-OPTIONS += ldconfig mount-extra
-
-MOUNT_EXTRA = /mnt/nfs /mnt/prod /mnt/work
-
-# Network configuration
-OPTIONS += configure-network
-# IP_LIST.lab = $(configdir)/ip-list.lab
-# IP_LIST.pri = $(configdir)/ip-list.pri
-FSTAB.lab = $(configdir)/fstab.lab
-# FSTAB.pri = $(configdir)/fstab.pri
-NW_HOSTNAME = TS-DI-ZYNQ-01
-
-
-final-install:
 
 # vim: set filetype=make:
