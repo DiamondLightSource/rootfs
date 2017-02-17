@@ -19,8 +19,10 @@ default:
 .PHONY: default
 
 # On certain systems (I'm looking at you, Ubuntu), the default shell /bin/sh
-# is really a bit to strictly underpowered for some of our build scripts!
-SHELL = /bin/bash
+# is really a bit too strictly underpowered for some of our build scripts!
+# Note: we also want all our recipes to be run with pipefail.  Apparently for
+# Make version 3.82 we may need to set .SHELLFLAGS = -o pipefail -c instead.
+SHELL = /bin/bash -o pipefail
 
 
 # Default paths that can be overridden by the CONFIG file.
