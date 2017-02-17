@@ -1,0 +1,18 @@
+singledispatch_VERSION ?= 3.4.0.3
+
+MD5_SUM_3.4.0.3 = af2fc6a3d6cc5a02d0bf54d909785fcb
+
+TAR_EXTENSION = .tar.gz
+
+PATCHES = \
+    distutils.patch
+
+
+build:
+	$(python-build)
+
+install:
+	tar c -C $(I) usr/lib/python2.7 | tar x -C $(sysroot)
+
+
+# vim: set filetype=make:

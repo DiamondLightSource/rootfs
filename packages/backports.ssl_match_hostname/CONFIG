@@ -1,0 +1,18 @@
+backports.ssl_match_hostname_VERSION ?= 3.4.0.2
+
+MD5_SUM_3.4.0.2 = 788214f20214c64631f0859dc79f23c6
+
+TAR_EXTENSION = .tar.gz
+
+PATCHES_3.4.0.2 = \
+    use-distutils.patch
+
+
+build:
+	$(python-build)
+
+install:
+	tar c -C $(I) usr/lib/python2.7 | tar x -C $(sysroot)
+
+
+# vim: set filetype=make:

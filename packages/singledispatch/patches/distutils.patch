@@ -1,0 +1,21 @@
+diff -ur singledispatch-3.4.0.3/setup.py singledispatch-3.4.0.3.patched/setup.py
+--- singledispatch-3.4.0.3/setup.py	2014-03-18 20:21:53.000000000 +0000
++++ singledispatch-3.4.0.3.patched/setup.py	2017-02-17 10:29:13.076462495 +0000
+@@ -26,7 +26,7 @@
+ import os
+ import sys
+ import codecs
+-from setuptools import setup
++from distutils.core import setup
+ 
+ with codecs.open(
+     os.path.join(os.path.dirname(__file__), 'README.rst'), 'r', 'utf8',
+@@ -53,8 +53,6 @@
+     platforms = ['any'],
+     license = 'MIT',
+     py_modules = ('singledispatch', 'singledispatch_helpers'),
+-    zip_safe = True,
+-    install_requires = install_requires,
+     classifiers = [
+         'Development Status :: 5 - Production/Stable',
+         'Intended Audience :: Developers',

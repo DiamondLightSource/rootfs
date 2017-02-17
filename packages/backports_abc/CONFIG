@@ -1,0 +1,15 @@
+backports_abc_VERSION ?= 0.4
+
+MD5_SUM_0.4 = 0b65a216ce9dc9c1a7e20a729dd7c05b
+
+TAR_EXTENSION = .tar.gz
+
+
+build:
+	$(python-build)
+
+install:
+	tar c -C $(I) usr/lib/python2.7 | tar x -C $(sysroot)
+
+
+# vim: set filetype=make:

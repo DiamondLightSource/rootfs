@@ -9,6 +9,10 @@ TOOLCHAIN = xlnx-zynq
 PACKAGES += busybox
 PACKAGES += zlib readline ncurses libressl
 PACKAGES += Python
+PACKAGES += backports.ssl_match_hostname
+PACKAGES += backports_abc
+PACKAGES += singledispatch
+PACKAGES += tornado
 
 # -----------------------------------------------------------------------------
 # Rootfs options and configuration

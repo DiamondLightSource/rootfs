@@ -1,0 +1,21 @@
+diff -ur backports.ssl_match_hostname-3.4.0.2/setup.py backports.ssl_match_hostname-3.4.0.2.patched/setup.py
+--- backports.ssl_match_hostname-3.4.0.2/setup.py	2013-10-27 19:23:51.000000000 +0000
++++ backports.ssl_match_hostname-3.4.0.2.patched/setup.py	2017-02-17 10:13:43.631435256 +0000
+@@ -2,7 +2,7 @@
+ # This setup.py was generated automatically by Pyron.
+ # For details, see http://pypi.python.org/pypi/pyron/
+ 
+-from setuptools import setup, find_packages
++from distutils.core import setup
+ 
+ setup(
+     name = 'backports.ssl_match_hostname',
+@@ -15,7 +15,7 @@
+     classifiers = ['Development Status :: 5 - Production/Stable', 'License :: OSI Approved :: Python Software Foundation License', 'Programming Language :: Python :: 2.4', 'Programming Language :: Python :: 2.5', 'Programming Language :: Python :: 2.6', 'Programming Language :: Python :: 2.7', 'Programming Language :: Python :: 3', 'Programming Language :: Python :: 3.0', 'Programming Language :: Python :: 3.1', 'Topic :: Security :: Cryptography'],
+ 
+     package_dir = {'': 'src'},
+-    packages = find_packages('src'),
++    packages = ['backports', 'backports.ssl_match_hostname'],
+     include_package_data = True,
+     install_requires = [],
+     entry_points = '',
