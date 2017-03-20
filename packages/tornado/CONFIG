@@ -4,8 +4,6 @@ MD5_SUM_4.3 = d13a99dc0b60ba69f5f8ec1235e5b232
 
 TAR_EXTENSION = .tar.gz
 
-PATCHES = \
-    distutils.patch
 
 build:
 	$(python-build)
