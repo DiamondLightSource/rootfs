@@ -1,0 +1,11 @@
+# Configuration file for Xilinx Zynq target.
+
+# -----------------------------------------------------------------------------
+# Package definitions for Zynq
+TOOLCHAIN = xlnx-zynq
+
+PACKAGES += busybox
+busybox_VERSION = 1.23.2
+busybox_CONFIG = $(configdir)/busybox.config
+
+# vim: set filetype=make:
