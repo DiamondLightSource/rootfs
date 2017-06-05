@@ -47,8 +47,10 @@ PATCHES_1.20.2 = \
     busybox-1.20.2-pkg-config-selinux.patch
 
 # This patch was created from the git repository
+# With one udhcp tweak to get timesrv string
 PATCHES_1.23.2 = \
-    busybox-1.23.2-zcip.patch
+    busybox-1.23.2-zcip.patch \
+    busybox-1.23.2-add-udhcpc-timesrv.patch
 
 PATCHES_1.24.2 = \
     busybox-1.24.2-ash-recursive-heredocs.patch \
