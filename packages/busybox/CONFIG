@@ -70,7 +70,7 @@ build:
 	make -C $(O) busybox.links
 	cp $(O)/busybox $(O)/busybox.links $(I)
 
-menuconfig: untar
+menuconfig: untar $(build_O)
 	make O=$(build_O) -C $(srcdir) menuconfig
 	cp $(build_O)/.config $(busybox_CONFIG)
 
