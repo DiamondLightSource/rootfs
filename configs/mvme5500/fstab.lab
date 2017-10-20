@@ -1,5 +1,5 @@
 # Diamond specific mounts on development network
-172.23.100.32:/exports/dls_sw/work /dls_sw/work nfs intr
-172.23.100.32:/exports/dls_sw/prod /dls_sw/prod nfs ro,intr
-172.23.100.32:/exports/dls_sw/epics /dls_sw/epics nfs ro,intr
+172.23.100.71:/exports/dls_sw/work /dls_sw/work nfs intr
+172.23.100.71:/exports/dls_sw/prod /dls_sw/prod nfs ro,intr
+172.23.100.71:/exports/dls_sw/epics /dls_sw/epics nfs ro,intr
 172.23.240.5:/exports/iocs /exports/home/ops-iocs/prod nfs intr

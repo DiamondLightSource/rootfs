@@ -12,7 +12,14 @@ SUBIP="$(
 if [ $((SUBIP & 0xf0)) -eq 192 ]; then
     # Primary network
     echo 'FSTABS=/etc/fstab.pri' >/etc/mount-extra
+    ln -sf resolv.conf.pri /etc/resolv.conf
 else
     # Development network
     echo 'FSTABS=/etc/fstab.lab' >/etc/mount-extra
+    ln -sf resolv.conf.lab /etc/resolv.conf
 fi
+
+# Because on some machines it seems to take rather a long time for the network
+# port to start, add a delay here.
+#echo Waiting for network port to settle
+#sleep 5

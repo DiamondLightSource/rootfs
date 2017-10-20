@@ -44,6 +44,10 @@ TERMS = xterm xterm-color screen vt100 vt102
 MOUNT_EXTRA = /dls_sw/prod /dls_sw/work /dls_sw/epics \
     /exports/home/ops-iocs/prod
 
+# Suppress automatic resolv.conf
+RESOLV_CONF = none
+
+
 final-install:
 	$(startup) $(configdir)/epics S900
 	$(groupadd) -g 500 dcs
@@ -54,6 +58,9 @@ final-install:
 	$(install) $(configdir)/fstab.lab $(configdir)/fstab.pri /etc
 	$(startup) $(configdir)/configextra S110
 	$(install) $(configdir)/console-ioc /usr/bin
+
+	$(install) $(configdir)/resolv.conf.lab $(configdir)/resolv.conf.pri /etc
+	$(install) -lf resolv.conf.pri /etc/resolv.conf
 
 
 OPTIONS += mount-extra ldconfig network-nvram
