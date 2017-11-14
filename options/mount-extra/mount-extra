@@ -10,11 +10,6 @@ STRIP='/^#/d; /^[ \t]*$/d'
 
 do_start()
 {
-    # Because on some machines it seems to take rather a long time for the network
-    # port to start, add a delay here.
-    echo Waiting for network port to settle before mount.
-    sleep 5
-
     for fstab in $FSTABS; do
         sed "$STRIP" $fstab |
         while read spec file type opts rest; do
