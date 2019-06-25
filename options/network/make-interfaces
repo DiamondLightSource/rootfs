@@ -51,6 +51,7 @@ iface $NW_PORT inet static
     broadcast $(compute_broadcast $NW_ADDRESS $NW_NETMASK)
     gateway $NW_GATEWAY
 EOF
-    [ -n "$NW_HWADDRESS" ]  &&
-    echo "    hwaddress ether $NW_HWADDRESS"
+    if [ -n "$NW_HWADDRESS" ]; then
+        echo "    hwaddress ether $NW_HWADDRESS"
+    fi
 fi
