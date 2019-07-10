@@ -10,6 +10,33 @@
 : ${sysroot:?}          # Target rootfs, where to install files
 : ${fakeroot_list:?}    # Where to place fakeroot commands
 
+# Each line in <file-list> is blank, a comment (starting with #), or one of the
+# commands listed below.  The format of each command is typically:
+#
+#   <c> <mode> <target> <value>
+#
+# where <c> is the command name, <mode> the file mode of the created <target> in
+# $sysroot, and <value> is the source used to create the file.  The following
+# commands are supported:
+#
+#   f <mode> <target> [<value>]
+#       Installs <source-dir>/<value> into location /<target> with the specified
+#       <mode>.
+#   d <mode> <target>
+#       Creates directory /<target> with specified <mode>.
+#   l - <target> <value>
+#       Creates soft link to <value> in /<target>, ignores <mode>.
+#   n <mode> <target>
+#       Creates empty file in /<target> with specified <mode>.
+#   c <mode> <target> <major> <minor>
+#       Creates character device in /<target> with specified <major> and <minor>
+#       numbers and <mode>.
+#   b <mode> <target> <major> <minor>
+#       Creates block device in /<target> with specified <major> and <minor>
+#       numbers and <mode>.
+#   p <mode> <target>
+#       Creates fifo in /<target> with specified <mode>.
+
 set -o pipefail
 
 HERE="$(dirname "$0")"
@@ -30,6 +57,6 @@ while read type mode name value; do
         c)  do_root mknod -m $mode "$sysroot/$name" c $value ;;
         b)  do_root mknod -m $mode "$sysroot/$name" b $value ;;
         p)  mkfifo -m $mode "$sysroot/$name" ;;
-        *)  false ;;
+        *)  Error Invalid install-files command ;;
     esac  ||  exit 1
 done
