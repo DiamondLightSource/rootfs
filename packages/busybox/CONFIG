@@ -63,7 +63,7 @@ PATCHES_1.24.2 = \
 busybox_CONFIG ?= $(packagedir)/busybox-default-$(busybox_VERSION).config
 
 
-build:
+build: $(busybox_CONFIG)
 	cp $(busybox_CONFIG) $(O)/.config
 	make O=$(O) -C $(srcdir) oldconfig
 
