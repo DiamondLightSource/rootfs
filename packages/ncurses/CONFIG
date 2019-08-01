@@ -1,7 +1,9 @@
 ncurses_VERSION ?= 5.9
+# ncurses_VERSION ?= 6.1
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_5.9 = 8cb9c412e5f2d96bc6f459aa8c6282a1
+MD5_SUM_6.1 = 98c889aaf8d23910d2b92d65be2e737a
 
 CFLAGS += -fPIC
 # Deep in the ncurses build process a script called MKlib_gen.sh passes the
@@ -14,7 +16,7 @@ build:
 	cd $(O)  &&  \
         $(srcdir)/configure CFLAGS='$(CFLAGS)' CPPFLAGS='$(CPPFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
-            --prefix=/usr
+            --prefix=/usr --without-progs
 	make -C $(O) install DESTDIR=$(I)
 	$(install-pkg-config)
 

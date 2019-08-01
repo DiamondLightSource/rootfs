@@ -20,11 +20,16 @@ $(STAGING_ROOT)/%: $(TOOLKIT_BIN)
 ALL_PACKAGES = $(PACKAGES:%=$(STAGING_ROOT)/%)
 
 
-$(O)/imagefile.cpio: $(TOOLKIT_BIN) $(ALL_PACKAGES)
+$(O):
 	rm -rf $(O)
 	mkdir -p $(O)
+.PHONY: $(O)
+
+$(O)/imagefile.cpio: $(TOOLKIT_BIN) $(ALL_PACKAGES) $(O)
 	umask 22  &&  \
-        $(MAKE) $@ -f $(makefiles)/SYSROOT_MAKE $(call EXPORT,TARGET configdir)
+        $(MAKE) $@ -f $(makefiles)/SYSROOT_MAKE \
+            $(call EXPORT,TARGET configdir)  || \
+        rm -rf $(O)
 
 imagefile: $(O)/imagefile.cpio
 # Force rebuild of the image file, even if it already exists.

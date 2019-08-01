@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Configuration to mount extra fstab like files.  Takes its configuration
-# from environment variable FSTABS in /etc/defaults/mount-local.
+# from environment variable FSTABS in /etc/mount-extra.
 
 . /etc/init.d/functions
 [ -r /etc/mount-extra ]  &&  . /etc/mount-extra
