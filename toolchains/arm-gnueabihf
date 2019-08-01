@@ -1,0 +1,14 @@
+# Toolchain definition file
+#
+# This file must define BINUTILS_DIR, COMPILER_PREFIX, and SYSROOT.
+
+# Downloaded gcc-linaro-6.2.1-2016.11-x86_64_arm-linux-gnueabihf.tar.xz from
+#   https://releases.linaro.org/components/toolchain/binaries/
+#       6.2-2016.11/arm-linux-gnueabihf/
+BINUTILS_DIR = /dls_sw/targetOS/x-tools/arm-linux-gnueabihf
+
+COMPILER_PREFIX = arm-linux-gnueabihf
+
+SYSROOT = $(BINUTILS_DIR)/$(COMPILER_PREFIX)/libc
+
+# vim: filetype=make:
