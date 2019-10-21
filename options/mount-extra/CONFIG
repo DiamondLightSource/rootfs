@@ -1,7 +1,7 @@
 # Alternative mechanism for managing extra mounts, compatible with the
 # configure-network option.
 #
-# The following parameters must be set:
+# The following parameters may be set:
 #
 #   MOUNT_EXTRA
 #       List of mount points to be created on the target rootfs.
@@ -9,10 +9,13 @@
 #   EXTRA_FSTAB
 #       Optional extra fstab to be used (don't define with configure-network
 #       option, as this manages this separately).
+#
+#   MOUNT_EXTRA_AUTO
+#       Can be set to - to disable auto-start of mount-extra
 
 option:
 	$(install) -d $(MOUNT_EXTRA)
-	$(startup) $(optiondir)/mount-extra
+	$(startup) $(optiondir)/mount-extra $(MOUNT_EXTRA_AUTO)
 ifdef EXTRA_FSTAB
 	$(install) -f $(EXTRA_FSTAB) /etc/fstab.extra
 	echo 'FSTABS=/etc/fstab.extra' >$(sysroot)/etc/mount-extra
