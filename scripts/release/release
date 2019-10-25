@@ -18,4 +18,4 @@ RELEASE_JOB="
     git clone --depth 1 --branch $RELEASE $GIT_REPO $RELEASE  &&
     cd $RELEASE  &&
     scripts/release/build-release"
-queue-job -R$DLS_EPICS_RELEASE -b -C "$PROD_DIR" "$RELEASE_JOB"
+queue-job -R$DLS_EPICS_RELEASE -b -C "$PROD_DIR" -N "$RELEASE_JOB"
