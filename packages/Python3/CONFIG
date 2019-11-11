@@ -1,0 +1,144 @@
+Python3_VERSION ?= 3.8.0
+
+MD5_SUM_3.8.0 = 3689a67099dfaf3c9077293ef1f3e21e
+
+TAR_EXTENSION = .tar.gz
+
+PYTHON3_PYC_ONLY ?= 0
+
+
+# All the numbered patches below were taken from buildroot.
+PATCHES_3.8.0 = \
+    0001-Make-the-build-of-pyc-files-conditional.patch \
+    0002-Disable-buggy_getaddrinfo-configure-test-when-cross-.patch \
+    0003-Add-infrastructure-to-disable-the-build-of-certain-e.patch \
+    0004-Adjust-library-header-paths-for-cross-compilation.patch \
+    0005-Don-t-look-in-usr-lib-termcap-for-libraries.patch \
+    0006-Don-t-add-multiarch-paths.patch \
+    0007-Abort-on-failed-module-build.patch \
+    0008-Serial-ioctl-workaround.patch \
+    0009-Do-not-adjust-the-shebang-of-Python-scripts-for-cros.patch \
+    0010-Misc-python-config.sh.in-ensure-sed-invocations-only.patch \
+    0011-Override-system-locale-and-set-to-default-when-addin.patch \
+    0012-Add-importlib-fix-for-PEP-3147-issue.patch \
+    0013-Add-an-option-to-disable-installation-of-test-module.patch \
+    0014-Add-an-option-to-disable-pydoc.patch \
+    0015-Add-an-option-to-disable-lib2to3.patch \
+    0016-Add-option-to-disable-the-sqlite3-module.patch \
+    0017-Add-an-option-to-disable-the-tk-module.patch \
+    0018-Add-an-option-to-disable-the-curses-module.patch \
+    0019-Add-an-option-to-disable-expat.patch \
+    0020-Add-an-option-to-disable-CJK-codecs.patch \
+    0021-Add-an-option-to-disable-NIS.patch \
+    0022-Add-an-option-to-disable-unicodedata.patch \
+    0023-Add-an-option-to-disable-IDLE.patch \
+    0024-Add-an-option-to-disable-decimal.patch \
+    0025-Add-an-option-to-disable-the-ossaudiodev-module.patch \
+    0026-Add-an-option-to-disable-openssl-support.patch \
+    0027-Add-an-option-to-disable-the-readline-module.patch \
+    0028-Add-options-to-disable-zlib-bzip2-and-xz-modules.patch \
+    0029-python-config.sh-don-t-reassign-prefix.patch \
+    0030-Fix-cross-compiling-the-uuid-module.patch \
+    0031-Add-an-option-to-disable-uuid-module.patch \
+    0032-fix-building-on-older-distributions.patch \
+    0033-configure.ac-fixup-CC-print-multiarch-output-for-mus.patch \
+    1000-no-implicit-function-declaration-as-error.patch
+
+# This is needed to make sure the Python build process doesn't try to regenerate
+# those files with the pgen program. Otherwise, it builds pgen for the target,
+# and tries to run it on the host.
+patch-extra = touch $(srcdir)/Include/graminit.h $(srcdir)/Python/graminit.c
+
+
+HOST_PYTHON3_CONF_OPTS = \
+    --without-ensurepip \
+    --without-cxx-main \
+    --disable-sqlite3 \
+    --disable-tk \
+    --with-expat=system \
+    --disable-curses \
+    --disable-codecs-cjk \
+    --disable-nis \
+    --enable-unicodedata \
+    --disable-test-modules \
+    --disable-idle3 \
+    --disable-openssl \
+    --disable-ossaudiodev
+
+TARGET_PYTHON3_CONF_OPTS = \
+    ac_cv_have_long_long_format=yes \
+    ac_cv_file__dev_ptmx=yes \
+    ac_cv_file__dev_ptc=no \
+    ac_cv_working_tzset=yes \
+    ac_cv_have_getentropy=no \
+    ac_cv_file__dev_ptmx=yes \
+    ac_cv_prog_HAS_HG=/bin/false \
+    --disable-ossaudiodev \
+    --without-ensurepip \
+    --without-cxx-main \
+    --with-system-ffi \
+    --disable-pydoc \
+    --disable-test-modules \
+    --disable-lib2to3 \
+    --disable-tk \
+    --disable-nis \
+    --disable-idle3 \
+    --disable-pyc-build \
+    --disable-ipv6 \
+    --with-openssl=$(I)/../libressl/usr \
+    --disable-sqlite3
+
+# Can disable zlib by adding --disable-zlib to TARGET_PYTHON3_CONF_OPTS.
+LIB_DEPENDS = zlib readline ncurses libressl libffi
+
+CFLAGS += -fPIC
+
+
+# ----------------------------------------------------------------------
+# First build a hosted version of python in $(O-build)
+toolkit:
+	# Rebuild configure script
+	ln -s $(srcdir)/configure.ac $(O)
+	ln -s $(srcdir)/m4 $(O)
+	cd $(O)  &&  autoreconf -i -f
+
+        # Configure the build so we can make a local build.  For this we
+        # can use the stock configuration.
+	cd $(O)  &&  \
+        ./configure --srcdir=$(srcdir) --prefix=$(I) \
+            LDFLAGS=-Wl,--enable-new-dtags $(HOST_PYTHON3_CONF_OPTS) \
+	    ac_cv_prog_HAS_HG=/bin/false
+	make -j1 -C $(O)
+	make -C $(O) install
+
+
+# ----------------------------------------------------------------------
+# Now build target python
+build:
+	ln -s $(srcdir)/configure.ac $(O)
+	ln -s $(srcdir)/m4 $(O)
+	cd $(O)  &&  autoreconf -i -f
+	# Configure the target.
+	cd $(O)  &&  \
+	./configure --srcdir=$(srcdir) --prefix=/usr \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
+            $(call EXPORT,CFLAGS CPPFLAGS LDFLAGS) \
+            $(TARGET_PYTHON3_CONF_OPTS)
+	# ----------------------------------------------------------------------
+	# Finally complete the build and create a local install
+	make -C $(O)
+	make -C $(O) DESTDIR=$(I) install
+
+ifeq ($(PYTHON3_PYC_ONLY),1)
+	find $(I)/usr/lib/python3.8 -name '*.py' -exec rm -f {} +
+endif
+
+	$(install-pkg-config) python-3.8
+
+
+install:
+	tar c -C $(I) usr/bin usr/lib | tar x -C $(sysroot)
+	$(mark-executable) $(I)/usr/bin/python3.8
+
+
+# vim: set filetype=make:
