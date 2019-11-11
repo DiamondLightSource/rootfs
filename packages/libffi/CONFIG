@@ -1,0 +1,25 @@
+libffi_VERSION ?= 3.3-rc0
+
+TAR_EXTENSION = .tar.gz
+
+PATCHES_3.3-rc0 = \
+    0001-Fix-installation-location-of-libffi.patch \
+    0002-Fix-use-of-compact-eh-frames-on-MIPS.patch \
+    0003-libffi-enable-hardfloat-in-the-MIPS-assembly-code.patch
+
+MD5_SUM_3.3-rc0 = 8d2a82a78faf10a5e53c27d986e8f04e
+
+
+build:
+	cd $(O)  &&  \
+	$(srcdir)/configure \
+            $(call EXPORT,CFLAGS CPPFLAGS LDFLAGS) \
+            --prefix=/usr \
+            --target=$(COMPILER_PREFIX) \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
+	make -C $(O) install DESTDIR=$(I)
+	$(install-pkg-config)
+
+install:
+
+# vim: set filetype=make:
