@@ -1,14 +1,10 @@
-libffi_VERSION ?= 3.3-rc0
+libffi_VERSION ?= 3.3-rc2
 
 TAR_EXTENSION = .tar.gz
 
-PATCHES_3.3-rc0 = \
-    0001-Fix-installation-location-of-libffi.patch \
-    0002-Fix-use-of-compact-eh-frames-on-MIPS.patch \
-    0003-libffi-enable-hardfloat-in-the-MIPS-assembly-code.patch
-
-MD5_SUM_3.3-rc0 = 8d2a82a78faf10a5e53c27d986e8f04e
-
+# The source code was downloaded from:
+# https://github.com/libffi/libffi/releases/download/v3.3-rc2/libffi-3.3-rc2.tar.gz
+MD5_SUM_3.3-rc2 = 21e86dde74a25a5034012ce7a49ecb90
 
 build:
 	cd $(O)  &&  \
