@@ -51,6 +51,7 @@ patch-extra = touch $(srcdir)/Include/graminit.h $(srcdir)/Python/graminit.c
 
 
 HOST_PYTHON3_CONF_OPTS = \
+    ac_cv_prog_HAS_HG=/bin/false \
     --without-ensurepip \
     --without-cxx-main \
     --disable-sqlite3 \
@@ -105,9 +106,8 @@ toolkit:
         # Configure the build so we can make a local build.  For this we
         # can use the stock configuration.
 	cd $(O)  &&  \
-        ./configure --srcdir=$(srcdir) --prefix=$(I) \
-            LDFLAGS=-Wl,--enable-new-dtags $(HOST_PYTHON3_CONF_OPTS) \
-	    ac_cv_prog_HAS_HG=/bin/false
+	./configure --srcdir=$(srcdir) --prefix=$(I) \
+            LDFLAGS=-Wl,--enable-new-dtags $(HOST_PYTHON3_CONF_OPTS)
 	make -j1 -C $(O)
 	make -C $(O) install
 
