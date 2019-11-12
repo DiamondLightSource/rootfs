@@ -54,6 +54,17 @@ python-build = \
     cd $(srcdir)  &&  \
     $(PYTHON_SETUP_ENV) python2 setup.py build -b $O install --prefix=$(I)/usr
 
+PYTHON3_ROOT = $(call pkg-config,Python3 --variable=prefix)
+PYTHON3_SETUP_ENV = \
+    CC=$(CROSS_COMPILE)gcc \
+    LD=$(CROSS_COMPILE)ld \
+    LDSHARED='$(CROSS_COMPILE)gcc -shared' \
+    _python_sysroot=$(PYTHON3_ROOT) \
+    _python_prefix=/ \
+    _python_exec_prefix=/
+python3-build = \
+    cd $(srcdir)  &&  \
+    $(PYTHON3_SETUP_ENV) python3 setup.py build -b $O install --prefix=$(I)/usr
 
 # Finally we can pull in the real package definitions and fire the
 # appropriate rules.
