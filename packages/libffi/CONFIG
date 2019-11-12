@@ -1,0 +1,21 @@
+libffi_VERSION ?= 3.3-rc2
+
+TAR_EXTENSION = .tar.gz
+
+# The source code was downloaded from:
+# https://github.com/libffi/libffi/releases/download/v3.3-rc2/libffi-3.3-rc2.tar.gz
+MD5_SUM_3.3-rc2 = 21e86dde74a25a5034012ce7a49ecb90
+
+build:
+	cd $(O)  &&  \
+	$(srcdir)/configure \
+            $(call EXPORT,CFLAGS CPPFLAGS LDFLAGS) \
+            --prefix=/usr \
+            --target=$(COMPILER_PREFIX) \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE)
+	make -C $(O) install DESTDIR=$(I)
+	$(install-pkg-config)
+
+install:
+
+# vim: set filetype=make:
