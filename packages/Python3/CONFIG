@@ -41,8 +41,7 @@ PATCHES_3.8.0 = \
     0030-Fix-cross-compiling-the-uuid-module.patch \
     0031-Add-an-option-to-disable-uuid-module.patch \
     0032-fix-building-on-older-distributions.patch \
-    0033-configure.ac-fixup-CC-print-multiarch-output-for-mus.patch \
-    1000-no-implicit-function-declaration-as-error.patch
+    0033-configure.ac-fixup-CC-print-multiarch-output-for-mus.patch
 
 # This is needed to make sure the Python build process doesn't try to regenerate
 # those files with the pgen program. Otherwise, it builds pgen for the target,
@@ -74,6 +73,7 @@ TARGET_PYTHON3_CONF_OPTS = \
     ac_cv_have_getentropy=no \
     ac_cv_file__dev_ptmx=yes \
     ac_cv_prog_HAS_HG=/bin/false \
+    ac_cv_enable_implicit_function_declaration_error=no \
     --disable-ossaudiodev \
     --without-ensurepip \
     --without-cxx-main \
