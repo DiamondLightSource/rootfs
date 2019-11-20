@@ -1,8 +1,12 @@
 Python3_VERSION ?= 3.8.0
 
-MD5_SUM_3.8.0 = 3689a67099dfaf3c9077293ef1f3e21e
+MD5_SUM_3.8.0 = e18a9d1a0a6d858b9787e03fc6fdaa20
 
-TAR_EXTENSION = .tar.gz
+TAR_FILE = Python-$(version).tgz
+
+# Rename extracted source to Python3
+untar-extra = \
+    mv $(SOURCE_ROOT)/Python-$(version) $(SOURCE_ROOT)/Python3-$(version)
 
 PYTHON3_PYC_ONLY ?= 0
 
@@ -94,6 +98,7 @@ LIB_DEPENDS = zlib readline ncurses libressl libffi
 
 CFLAGS += -fPIC
 
+python_ver := $(shell echo $(Python3_VERSION) | cut -d. -f1-2)
 
 # ----------------------------------------------------------------------
 # First build a hosted version of python in $(O-build)
@@ -130,15 +135,14 @@ build:
 	make -C $(O) DESTDIR=$(I) install
 
 ifeq ($(PYTHON3_PYC_ONLY),1)
-	find $(I)/usr/lib/python3.8 -name '*.py' -exec rm -f {} +
+	find $(I)/usr/lib/python$(python_ver) -name '*.py' -exec rm -f {} +
 endif
 
-	$(install-pkg-config) python-3.8
+	$(install-pkg-config) python3
 
 
 install:
 	tar c -C $(I) usr/bin usr/lib | tar x -C $(sysroot)
-	$(mark-executable) $(I)/usr/bin/python3.8
-
+	$(mark-executable) $(I)/usr/bin/python$(python_ver)
 
 # vim: set filetype=make:
