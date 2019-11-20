@@ -5,6 +5,8 @@ include $(makefiles)/TARGET_COMMON
 include $(makefiles)/SYSROOT_COMMON
 include $(makefiles)/PACKAGE_COMMON
 
+install-python-package = tar c -C $(I) usr/lib | tar x -C $(sysroot)
+
 include $(packagedir)/CONFIG
 
 # vim: set filetype=make:
