@@ -17,4 +17,12 @@ toolkit_I = $(TARGET_TOOLKIT)
 build_O = $(OBJECT_ROOT)/$(PACKAGE)
 toolkit_O = $(TARGET_TOOLKIT)/build/$(PACKAGE)
 
+# Can be called with a build receipe to discover pkg-config details
+pkg-config = $(shell $(call EXPORT,PKG_CONFIG_PATH) pkg-config $1)
+
+
+# Special treament of Python
+SYSTEM_PYTHON ?= 2
+PYTHON_VER = $(call pkg-config,--modversion Python$(SYSTEM_PYTHON))
+
 # vim: set filetype=make:

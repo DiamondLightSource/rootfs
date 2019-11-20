@@ -11,10 +11,6 @@ install-pkg-config = \
     $(call EXPORT,PKG_CONFIG_PATH I packagedir) \
         $(scripts)/install-pkg-config $(PACKAGE) $($(PACKAGE)_VERSION)
 
-# Can be called with a build receipe to discover pkg-config details
-pkg-config = $(shell $(call EXPORT,PKG_CONFIG_PATH) pkg-config $1)
-
-
 # Sets name to $name_$version if define or uses the default value.  Call thus:
 #
 #   $(call SET_VERSION,name,default)
@@ -40,31 +36,56 @@ srcdir = $(SOURCE_ROOT)/$(SOURCE_DIR_NAME)
 BUILD_TYPE = $(shell $(scripts)/config.guess)
 
 
+
 # Special definitions for Python building.  Note that the prefix and sysroot
 # values must agree with what is set in the installed Python.pc file.
-PYTHON_ROOT = $(call pkg-config,Python --variable=prefix)
-PYTHON_SETUP_ENV = \
+PYTHON2_ROOT = $(call pkg-config,Python --variable=prefix)
+PYTHON2_SYSCONFIGDATA_NAME = \
+    $(shell basename -s .py $(wildcard $(PYTHON2_ROOT)/lib/python2.7/_sysconfigdata__linux_*.py))
+PYTHON2_BUILD_OPTS =
+PYTHON2_INSTALL_OPTS = --prefix=$(I)/usr
+PYTHON2_SETUP_ENV = \
     CC=$(CROSS_COMPILE)gcc \
     LD=$(CROSS_COMPILE)ld \
     LDSHARED='$(CROSS_COMPILE)gcc -shared' \
-    _python_sysroot=$(PYTHON_ROOT) \
+    PYTHONPATH='$(PYTHON2_ROOT)/lib/python2.7' \
+    _PYTHON_SYSCONFIGDATA_NAME='$(PYTHON2_SYSCONFIGDATA_NAME)' \
+    _python_sysroot=$(PYTHON2_ROOT) \
     _python_prefix=/ \
     _python_exec_prefix=/
-python-build = \
+python2-build = \
     cd $(srcdir)  &&  \
-    $(PYTHON_SETUP_ENV) python2 setup.py build -b $O install --prefix=$(I)/usr
+    $(PYTHON2_SETUP_ENV) python3 setup.py build -b $O $(PYTHON2_BUILD_OPTS) \
+    install $(PYTHON2_INSTALL_OPTS)
 
 PYTHON3_ROOT = $(call pkg-config,Python3 --variable=prefix)
+PYTHON3_SYSCONFIGDATA_NAME = \
+    $(shell basename -s .py $(wildcard $(PYTHON3_ROOT)/lib/python3.8/_sysconfigdata__linux_*.py))
+PYTHON3_BUILD_OPTS =
+PYTHON3_INSTALL_OPTS = --prefix=$(I)/usr
 PYTHON3_SETUP_ENV = \
     CC=$(CROSS_COMPILE)gcc \
     LD=$(CROSS_COMPILE)ld \
     LDSHARED='$(CROSS_COMPILE)gcc -shared' \
+    PYTHONPATH='$(PYTHON3_ROOT)/lib/python3.8' \
+    _PYTHON_SYSCONFIGDATA_NAME=$(PYTHON3_SYSCONFIGDATA_NAME) \
     _python_sysroot=$(PYTHON3_ROOT) \
     _python_prefix=/ \
     _python_exec_prefix=/
 python3-build = \
     cd $(srcdir)  &&  \
-    $(PYTHON3_SETUP_ENV) python3 setup.py build -b $O install --prefix=$(I)/usr
+    $(PYTHON3_SETUP_ENV) python3 setup.py build -b $O $(PYTHON3_BUILD_OPTS) \
+    install $(PYTHON3_INSTALL_OPTS)
+
+PYTHON_ROOT = $(PYTHON$(SYSTEM_PYTHON)_ROOT)
+
+define python-build
+$(python$(SYSTEM_PYTHON)-build)
+# Do we want this?
+# ifeq ($(PYTHON_PYC_ONLY),1)
+#    find $(I)/usr/lib -name '*.py' -exec rm -f {} +
+# endif
+endef
 
 # Finally we can pull in the real package definitions and fire the
 # appropriate rules.
