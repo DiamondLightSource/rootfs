@@ -1,9 +1,10 @@
-libressl_VERSION ?= 2.2.0
+libressl_VERSION ?= 3.0.2
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_2.2.0 = 277e4bd258fd4fb2aadaed760320c566
+MD5_SUM_3.0.2 = 97d8bf90f858dc0a384e7f9693ca9ad2
 
-PATCHES = add_dummy_egd_functions
+PATCHES_2.2.0 = add_dummy_egd_functions
 
 build:
 	cd $(O)  &&  \
