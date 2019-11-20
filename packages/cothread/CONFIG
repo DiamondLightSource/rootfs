@@ -1,20 +1,26 @@
-cothread_VERSION ?= 2.14
+cothread_VERSION ?= 2-16
+
+
+define untar-extra
+    echo '[egg_info]' >> $(srcdir)/setup.cfg
+    echo 'egg_base = /tmp' >> $(srcdir)/setup.cfg
+endef
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_2.12 = 4021d7bbfc459eeeb7966e3bf0a3f5ce
 MD5_SUM_2.13 = 6af6c226638dc3ee10d6e73ed5d84cfa
 MD5_SUM_2.14 = 5d69a1b712fb8fec6ad461e676bf1097
+MD5_SUM_2-16 = 9b0b2cc321e778e5391ddfff4ba2546b
 
 PATCHES_2.12 = arm-vfp.patch
 
+PYTHON$(SYSTEM_PYTHON)_INSTALL_OPTS = \
+    --prefix=/usr \
+    --single-version-externally-managed \
+    --root=$(I)
 
 build:
 	$(python-build)
-
-        # Post installation cleanup
-ifeq ($(PYTHON_PYC_ONLY),1)
-	find $(I)/usr/lib/python2.7 -name '*.py' -exec rm -f {} +
-endif
 
         # Strictly this belongs elsewhere, but if requested install EPICS libs
 ifdef EPICS_BASE
@@ -27,13 +33,12 @@ endif
 
 
 install:
-	tar c -C $(I) usr/lib/python2.7 | tar x -C $(sysroot)
+	$(install-python-package)
 
         # Catools needs libca.so, and it will help to have caRepeater available.
         # It so happens that caRepeater pulls in libca.so
 	if [[ -e $(I)/usr/bin/caRepeater ]]; then \
             $(install) -x $(I)/usr/bin/caRepeater /usr/bin; \
         fi
-
 
 # vim: set filetype=make:
