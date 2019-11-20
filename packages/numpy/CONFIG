@@ -12,14 +12,12 @@ PATCHES_1.9.2 = \
     fix-paths.patch \
     fix-read-only.patch
 
+PATCHES_1.16.4 = \
+    avoid-writing-in-sources.patch
+
 LIB_DEPENDS = setuptools
 
 define untar-extra
-    # avoid writing a version file in the source directory
-    sed -i 's/    write_version_py()/    # write_version_py()/' $(srcdir)/setup.py
-    # avoid writing egg information in the source directory
-    echo '[egg_info]' >> $(srcdir)/setup.cfg
-    echo 'egg_base = /tmp' >> $(srcdir)/setup.cfg
     # files required for testing configuration
     # using a symlinks allows to keep a read-only source directory
     ln -s /tmp/_configtest.c $(srcdir)/_configtest.c

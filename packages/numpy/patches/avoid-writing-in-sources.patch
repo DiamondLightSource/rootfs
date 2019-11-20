@@ -1,0 +1,20 @@
+This patch prevents writing in the source directory while building
+
+diff -Nur --no-dereference a/setup.cfg b/setup.cfg
+--- a/setup.cfg	1970-01-01 01:00:00.000000000 +0100
++++ b/setup.cfg	2019-11-20 14:49:59.176649909 +0000
+@@ -0,0 +1,2 @@
++[egg_info]
++egg_base = /tmp
+diff -Nur --no-dereference a/setup.py b/setup.py
+--- a/setup.py	2019-05-27 21:06:47.000000000 +0100
++++ b/setup.py	2019-11-20 14:49:59.172649835 +0000
+@@ -347,7 +347,7 @@
+     sys.path.insert(0, src_path)
+ 
+     # Rewrite the version file everytime
+-    write_version_py()
++    # write_version_py()
+ 
+     # The f2py scripts that will be installed
+     if sys.platform == 'win32':
