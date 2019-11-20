@@ -1,4 +1,8 @@
+ifeq ($(SYSTEM_PYTHON),2)
+numpy_VERSION ?= 1.9.2
+else
 numpy_VERSION ?= 1.16.4
+endif
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_1.9.2 = a1ed53432dbcd256398898d35bc8e645
