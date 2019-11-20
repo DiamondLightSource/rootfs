@@ -1,0 +1,24 @@
+setuptools_VERSION ?= 41.6.0
+
+untar-extra = \
+	sed -i 's|\[egg_info\]|\[egg_info\]\negg_base = /tmp|' \
+	$(srcdir)/setup.cfg
+
+TAR_EXTENSION = .zip
+
+MD5_SUM_41.6.0 = 5585a55bfc28474ef13cc0b1819c5a46
+
+PYTHON_TOOLKIT = $(shell which python$(SYSTEM_PYTHON))
+PYTHON_TOOLKIT_ROOT = $(shell dirname $(PYTHON_TOOLKIT))/..
+
+toolkit:
+	cd $(srcdir) && \
+	python$(SYSTEM_PYTHON) setup.py build -b $O install \
+            --single-version-externally-managed \
+            --root=/
+
+build:
+
+install:
+
+# vim: set filetype=make:
