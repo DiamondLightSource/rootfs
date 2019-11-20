@@ -1,15 +1,28 @@
+ifeq ($(SYSTEM_PYTHON),2)
 tornado_VERSION ?= 4.3
+else
+tornado_VERSION ?= 6.0.3
+endif
 
 MD5_SUM_4.3 = d13a99dc0b60ba69f5f8ec1235e5b232
+MD5_SUM_6.0.3 = 28fe1d74c871f55accdd93cd6e184699
+
+define untar-extra
+    echo '[egg_info]' >> $(srcdir)/setup.cfg
+    echo 'egg_base = /tmp' >> $(srcdir)/setup.cfg
+endef
 
 TAR_EXTENSION = .tar.gz
 
+PYTHON$(SYSTEM_PYTHON)_INSTALL_OPTS = \
+    --prefix=/usr \
+    --single-version-externally-managed \
+    --root=$(I)
 
 build:
 	$(python-build)
 
 install:
-	tar c -C $(I) usr/lib/python2.7 | tar x -C $(sysroot)
-
+	$(install-python-package)
 
 # vim: set filetype=make:
