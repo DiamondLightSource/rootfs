@@ -55,7 +55,7 @@ PYTHON2_SETUP_ENV = \
     _python_exec_prefix=/
 python2-build = \
     cd $(srcdir)  &&  \
-    $(PYTHON2_SETUP_ENV) python3 setup.py build -b $O $(PYTHON2_BUILD_OPTS) \
+    $(PYTHON2_SETUP_ENV) python2 setup.py build -b $O $(PYTHON2_BUILD_OPTS) \
     install $(PYTHON2_INSTALL_OPTS)
 
 PYTHON3_ROOT = $(call pkg-config,Python3 --variable=prefix)
