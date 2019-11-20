@@ -1,46 +1,56 @@
-numpy_VERSION ?= 1.9.2
+numpy_VERSION ?= 1.16.4
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_1.9.2 = a1ed53432dbcd256398898d35bc8e645
+MD5_SUM_1.16.4 = 6edf7334d04d8e8849ad058ccd3b3803
 
 PATCHES_1.9.2 = \
     fix-paths.patch \
     fix-read-only.patch
+
+LIB_DEPENDS = setuptools
+
+define untar-extra
+    # avoid writing a version file in the source directory
+    sed -i 's/    write_version_py()/    # write_version_py()/' $(srcdir)/setup.py
+    # avoid writing egg information in the source directory
+    echo '[egg_info]' >> $(srcdir)/setup.cfg
+    echo 'egg_base = /tmp' >> $(srcdir)/setup.cfg
+    # files required for testing configuration
+    # using a symlinks allows to keep a read-only source directory
+    ln -s /tmp/_configtest.c $(srcdir)/_configtest.c
+    ln -s /tmp/_configtest.o $(srcdir)/_configtest.o
+    ln -s /tmp/_configtest $(srcdir)/_configtest
+    # make sure they don't exist, so that they are created
+    # after the source directory is made read-only
+    rm -rf /tmp/_configtest.c /tmp/_configtest.o /tmp/_configtest
+endef
+
+PYTHON$(SYSTEM_PYTHON)_INSTALL_OPTS = \
+    --prefix=/usr \
+    --single-version-externally-managed \
+    --root=$(I)
+
+PYTHON$(SYSTEM_PYTHON)_SETUP_ENV += BLAS=None LAPACK=None ATLAS=None
 
 # Note that the variables library_dirs and include_dirs are supported via the
 # fix-paths patch applied above.
 #
 # May also want to add -gfortran for F77 and/or F90 if building the more
 # advanced support libraries
-PYTHON_SETUP_ENV += \
-    library_dirs=$(PYTHON_ROOT)/usr/lib \
-    include_dirs=$(PYTHON_ROOT)/usr/include
+PYTHON2_SETUP_ENV += \
+    library_dirs=$(PYTHON_ROOT)/lib \
+    include_dirs=$(PYTHON_ROOT)/include
 
-# The numpy install places a really annoying amount of extra unwanted stuff in
-# the install, we delete all these patterns!
-DELETE_FROM_INSTALL = \
-    tests \
-    testing \
-    distutils \
-    doc \
-    include \
-    f2py
+
+PYTHON$(SYSTEM_PYTHON)_BUILD_OPTS += --fcompiler=None
 
 build:
 	$(python-build)
-
-# 	for dir in $(DELETE_FROM_INSTALL); do \
-#             find $(O-install) -name $$dir -prune -exec rm -rf {} +; \
-#         done
-# 	rm -rf $(O-install)/usr/bin
-
-ifeq ($(PYTHON_PYC_ONLY),1)
-	find $(I)/usr/lib/python2.7 -name '*.py' -exec rm -f {} +
-endif
-
+	rm -rf /tmp/_configtest.c /tmp/_configtest.o /tmp/_configtest
 
 install:
-	tar c -C $(I) usr/lib | tar x -C $(sysroot)
+	$(install-python-package)
 
 
 # vim: set filetype=make:
