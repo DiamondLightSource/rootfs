@@ -15,7 +15,9 @@ PATCHES_1.9.2 = \
 PATCHES_1.16.4 = \
     avoid-writing-in-sources.patch
 
+ifneq ($(SYSTEM_PYTHON),2)
 LIB_DEPENDS = setuptools
+endif
 
 define untar-extra
     # files required for testing configuration
@@ -28,7 +30,7 @@ define untar-extra
     rm -rf /tmp/_configtest.c /tmp/_configtest.o /tmp/_configtest
 endef
 
-PYTHON$(SYSTEM_PYTHON)_INSTALL_OPTS = \
+PYTHON3_INSTALL_OPTS = \
     --prefix=/usr \
     --single-version-externally-managed \
     --root=$(I)
@@ -45,7 +47,7 @@ PYTHON2_SETUP_ENV += \
     include_dirs=$(PYTHON_ROOT)/include
 
 
-PYTHON$(SYSTEM_PYTHON)_BUILD_OPTS += --fcompiler=None
+PYTHON3_BUILD_OPTS += --fcompiler=None
 
 build:
 	$(python-build)
