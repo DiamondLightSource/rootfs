@@ -1,0 +1,10 @@
+prefix=@prefix@
+libdir=${prefix}/usr/lib
+includedir=${prefix}/usr/include
+
+Name: libffi
+Description:  A portable foreign-function interface library
+Requires:
+Version: @version@
+Libs: -L${libdir} -lffi
+Cflags: -I${includedir}
