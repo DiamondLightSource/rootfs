@@ -98,7 +98,7 @@ TARGET_PYTHON_CONF_OPTS = \
 
 
 # Can disable zlib by adding --disable-zlib to TARGET_PYTHON_CONF_OPTS.
-LIB_DEPENDS = zlib readline ncurses libressl
+LIB_DEPENDS = zlib readline ncurses libressl libffi
 
 CFLAGS += -fPIC
 
@@ -142,7 +142,7 @@ ifeq ($(PYTHON_PYC_ONLY),1)
 	find $(I)/usr/lib/python2.7 -name '*.py' -exec rm -f {} +
 endif
 
-	$(install-pkg-config) python-2.7
+	$(install-pkg-config) python2
 
 
 install:
