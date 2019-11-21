@@ -39,7 +39,7 @@ BUILD_TYPE = $(shell $(scripts)/config.guess)
 
 # Special definitions for Python building.  Note that the prefix and sysroot
 # values must agree with what is set in the installed Python.pc file.
-PYTHON2_ROOT = $(call pkg-config,Python --variable=prefix)
+PYTHON2_ROOT = $(call pkg-config,Python --variable=prefix)/..
 PYTHON2_SYSCONFIGDATA_NAME = \
     $(shell basename -s .py $(wildcard $(PYTHON2_ROOT)/lib/python2.7/_sysconfigdata__linux_*.py))
 PYTHON2_BUILD_OPTS =
@@ -51,14 +51,14 @@ PYTHON2_SETUP_ENV = \
     PYTHONPATH='$(PYTHON2_ROOT)/lib/python2.7' \
     _PYTHON_SYSCONFIGDATA_NAME='$(PYTHON2_SYSCONFIGDATA_NAME)' \
     _python_sysroot=$(PYTHON2_ROOT) \
-    _python_prefix=/ \
-    _python_exec_prefix=/
+    _python_prefix=/usr \
+    _python_exec_prefix=/usr
 python2-build = \
     cd $(srcdir)  &&  \
     $(PYTHON2_SETUP_ENV) python2 setup.py build -b $O $(PYTHON2_BUILD_OPTS) \
-    install $(PYTHON2_INSTALL_OPTS)
+        install $(PYTHON2_INSTALL_OPTS)
 
-PYTHON3_ROOT = $(call pkg-config,Python3 --variable=prefix)
+PYTHON3_ROOT = $(call pkg-config,Python3 --variable=prefix)/..
 PYTHON3_SYSCONFIGDATA_NAME = \
     $(shell basename -s .py $(wildcard $(PYTHON3_ROOT)/lib/python3.8/_sysconfigdata__linux_*.py))
 PYTHON3_BUILD_OPTS =
@@ -70,12 +70,12 @@ PYTHON3_SETUP_ENV = \
     PYTHONPATH='$(PYTHON3_ROOT)/lib/python3.8' \
     _PYTHON_SYSCONFIGDATA_NAME=$(PYTHON3_SYSCONFIGDATA_NAME) \
     _python_sysroot=$(PYTHON3_ROOT) \
-    _python_prefix=/ \
-    _python_exec_prefix=/
+    _python_prefix=/usr \
+    _python_exec_prefix=/usr
 python3-build = \
     cd $(srcdir)  &&  \
     $(PYTHON3_SETUP_ENV) python3 setup.py build -b $O $(PYTHON3_BUILD_OPTS) \
-    install $(PYTHON3_INSTALL_OPTS)
+        install $(PYTHON3_INSTALL_OPTS)
 
 PYTHON_ROOT = $(PYTHON$(SYSTEM_PYTHON)_ROOT)
 

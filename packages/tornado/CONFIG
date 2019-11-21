@@ -14,7 +14,7 @@ endef
 
 TAR_EXTENSION = .tar.gz
 
-PYTHON$(SYSTEM_PYTHON)_INSTALL_OPTS = \
+PYTHON3_INSTALL_OPTS = \
     --prefix=/usr \
     --single-version-externally-managed \
     --root=$(I)
