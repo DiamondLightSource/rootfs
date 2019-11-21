@@ -139,6 +139,7 @@ ifeq ($(PYTHON3_PYC_ONLY),1)
 endif
 
 	$(install-pkg-config) python3
+	ln -s python3 $(I)/usr/bin/python
 
 
 install:
