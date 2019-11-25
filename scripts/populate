@@ -5,7 +5,6 @@
 #
 : ${SYSROOT:?}          # Glibc sysroot from cross compiler
 : ${sysroot:?}          # Root of rootfs being constructed
-: ${BINUTILS_DIR:?}     # Root of binutils directory
 : ${install_list:?}     # File containing list of installed files
 : ${STAGING_ROOT:?}     # Location of pre-installed packages
 
@@ -13,7 +12,7 @@
 #
 #  TERMS                  List of terminals to install
 #  EXTRA_LIBS             Extra libraries to be installed
-#  COMPILER_PREFIX        Must be set if cross compiling
+#  CROSS_COMPILE          Must be set if cross compiling
 
 # We have two notions of sysroot here.  $sysroot is the root of the *target*
 # filesystem that we're building, while $SYSROOT defined here is the glibc

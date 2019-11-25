@@ -28,6 +28,8 @@ ifdef TOOLCHAIN
     $(call INCLUDE_DEFS,TOOLCHAIN,toolchains)
 endif
 
+# If BINUTILS_DIR has been specified assume this needs to be added to the path,
+# otherwise assume the compiler is already on our path.
 ifdef BINUTILS_DIR
     export PATH := $(BINUTILS_DIR)/bin:$(PATH)
 endif

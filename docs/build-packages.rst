@@ -210,19 +210,27 @@ A configuration consists of the following specifications:
 Cross-Compilation Toolchain
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As a minimum this is specified by two definitions:
+The cross compiler toolchain must be specified by defining at least the
+following two symbols:
 
 `COMPILER_PREFIX`
     Compiler tuple to be prefixed before compiler commands, used as the tuple to
-    pass to `--host=` on `configure` commands.
+    pass to `--host=` on `configure` commands.  This can be empty for native
+    compilation.
+
+`SYSROOT`
+    This must point to a built libc.  On most toolchains this is found in the
+    subdirectory `sys-root` or `libc` under the `$(COMPILER_PREFIX)`
+    subdirectory of the installed compiler toolchain.  This directory typically
+    contains the `etc`, `lib`, `sbin`, `usr` skeleton, and the libraries are
+    used to populate the target rootfs.
+
+The compiler tools, typically `$(COMPILER_PREFIX)-gcc` etc, must be on the path,
+or else a third symbol can be defined:
 
 `BINUTILS_DIR`
-    Path to the complete toolchain directory.  This defaults to ::
-
-        BINUTILS_DIR = /dls_sw/targetOS/x-tools/$(TOOLCHAIN_VERSION)/$(COMPILER_PREFIX)
-
-    and so it can be sufficient to specify `TOOLCHAIN_VERSION` if a standard
-    toolchain is being used.
+    Path to the complete toolchain directory.  If this symbol is defined then
+    the directory `$(BINUTILS_DIR)/bin` is added to the path.
 
 
 File Locations
