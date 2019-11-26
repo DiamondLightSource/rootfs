@@ -143,6 +143,8 @@ ifeq ($(PYTHON_PYC_ONLY),1)
 endif
 
 	$(install-pkg-config) python2
+	# Alias name so that we can pick it using the python major version
+	ln -s Python.pc $(PKG_CONFIG_PATH)/Python2.pc
 
 
 install:

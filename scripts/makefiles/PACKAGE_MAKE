@@ -54,7 +54,7 @@ endif
 # values must agree with what is set in the installed Python.pc file.
 _SYSCONFIG_PATH = \
     $(PYTHON_PREFIX)/lib/python$(PYTHON_VER)/_sysconfigdata__linux_*.py
-PYTHON_PREFIX = $(call pkg-config,Python --variable=prefix)
+PYTHON_PREFIX = $(call pkg-config,Python$(SYSTEM_PYTHON) --variable=prefix)
 PYTHON_SYSCONFIGDATA_NAME = \
     $(shell basename -s .py $(wildcard $(_SYSCONFIG_PATH)))
 PYTHON_BUILD_OPTS =
