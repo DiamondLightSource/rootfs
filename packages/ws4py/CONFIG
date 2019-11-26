@@ -6,12 +6,7 @@ MD5_SUM_0.3.4 = 6b47e33cbd13f5c134b04f2a44a480ad
 build:
 	$(python-build)
 
-        # Post installation cleanup
-ifeq ($(PYTHON_PYC_ONLY),1)
-	find $(I)/usr/lib/python2.7 -name '*.py' -exec rm -f {} +
-endif
-
 install:
-	tar c -C $(I) usr/lib/python2.7 | tar x -C $(sysroot)
+	$(install-python-package)
 
 # vim: set filetype=make:

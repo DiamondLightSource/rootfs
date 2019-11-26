@@ -9,7 +9,7 @@ build:
 	$(python-build)
 
 install:
-	tar c -C $(I) usr/lib/python2.7 | tar x -C $(sysroot)
+	$(install-python-package)
 
 
 # vim: set filetype=make:
