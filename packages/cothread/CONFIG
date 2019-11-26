@@ -1,11 +1,6 @@
 cothread_VERSION ?= 2-16
 
 
-define untar-extra
-    echo '[egg_info]' >> $(srcdir)/setup.cfg
-    echo 'egg_base = /tmp' >> $(srcdir)/setup.cfg
-endef
-
 TAR_EXTENSION = .tar.gz
 MD5_SUM_2.12 = 4021d7bbfc459eeeb7966e3bf0a3f5ce
 MD5_SUM_2.13 = 6af6c226638dc3ee10d6e73ed5d84cfa

@@ -1,0 +1,18 @@
+During installation and preparation of the egg info files need to be written
+to the egg_base directory.  By default if not specified this is taken to be
+the source directory: this patches fixes this and uses the configured build_base
+directory instead.
+
+diff -ur setuptools-41.6.0.original/setuptools/command/egg_info.py setuptools-41.6.0/setuptools/command/egg_info.py
+--- setuptools-41.6.0.original/setuptools/command/egg_info.py	2019-10-29 14:01:06.000000000 +0000
++++ setuptools-41.6.0/setuptools/command/egg_info.py	2019-11-26 11:41:53.936772746 +0000
+@@ -215,7 +215,8 @@
+ 
+         if self.egg_base is None:
+             dirs = self.distribution.package_dir
+-            self.egg_base = (dirs or {}).get('', os.curdir)
++            build_base = self.get_finalized_command('build').build_base
++            self.egg_base = (dirs or {}).get('', build_base)
+ 
+         self.ensure_dirname('egg_base')
+         self.egg_info = to_filename(self.egg_name) + '.egg-info'
