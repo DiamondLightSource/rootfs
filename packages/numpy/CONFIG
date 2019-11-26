@@ -30,24 +30,24 @@ define untar-extra
     rm -rf /tmp/_configtest.c /tmp/_configtest.o /tmp/_configtest
 endef
 
-PYTHON3_INSTALL_OPTS = \
-    --prefix=/usr \
-    --single-version-externally-managed \
-    --root=$(I)
+PYTHON_BUILD_TYPE = setuptools
 
-PYTHON$(SYSTEM_PYTHON)_SETUP_ENV += BLAS=None LAPACK=None ATLAS=None
+
+PYTHON_SETUP_ENV += BLAS=None LAPACK=None ATLAS=None
 
 # Note that the variables library_dirs and include_dirs are supported via the
 # fix-paths patch applied above.
 #
 # May also want to add -gfortran for F77 and/or F90 if building the more
 # advanced support libraries
-PYTHON2_SETUP_ENV += \
+ifeq ($(SYSTEM_PYTHON),2)
+PYTHON_SETUP_ENV += \
     library_dirs=$(PYTHON_ROOT)/lib \
     include_dirs=$(PYTHON_ROOT)/include
+endif
 
+PYTHON_BUILD_OPTS += --fcompiler=None
 
-PYTHON3_BUILD_OPTS += --fcompiler=None
 
 build:
 	$(python-build)

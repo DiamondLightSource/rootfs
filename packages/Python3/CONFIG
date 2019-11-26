@@ -134,7 +134,7 @@ build:
 	make -C $(O)
 	make -C $(O) DESTDIR=$(I) install
 
-ifeq ($(PYTHON3_PYC_ONLY),1)
+ifeq ($(PYTHON_PYC_ONLY),1)
 	find $(I)/usr/lib/python$(python_ver) -name '*.py' -exec rm -f {} +
 endif
 

@@ -7,13 +7,10 @@ endif
 MD5_SUM_4.3 = d13a99dc0b60ba69f5f8ec1235e5b232
 MD5_SUM_6.0.3 = 28fe1d74c871f55accdd93cd6e184699
 
+PYTHON_BUILD_TYPE = setuptools
 
 TAR_EXTENSION = .tar.gz
 
-PYTHON3_INSTALL_OPTS = \
-    --prefix=/usr \
-    --single-version-externally-managed \
-    --root=$(I)
 
 build:
 	$(python-build)

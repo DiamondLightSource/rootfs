@@ -9,10 +9,7 @@ MD5_SUM_2-16 = 9b0b2cc321e778e5391ddfff4ba2546b
 
 PATCHES_2.12 = arm-vfp.patch
 
-PYTHON3_INSTALL_OPTS = \
-    --prefix=/usr \
-    --single-version-externally-managed \
-    --root=$(I)
+PYTHON_BUILD_TYPE = setuptools
 
 build:
 	$(python-build)
