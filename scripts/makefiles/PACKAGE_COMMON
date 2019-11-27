@@ -24,5 +24,6 @@ pkg-config = $(shell $(call EXPORT,PKG_CONFIG_PATH) pkg-config $1)
 # Special treament of Python
 SYSTEM_PYTHON ?= 2
 PYTHON_VER = $(call pkg-config,--modversion Python)
+toolkit-python = $(TARGET_TOOLKIT)/bin/python$(SYSTEM_PYTHON)
 
 # vim: set filetype=make:

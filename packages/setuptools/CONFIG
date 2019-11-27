@@ -7,15 +7,12 @@ MD5_SUM_41.6.0 = 5585a55bfc28474ef13cc0b1819c5a46
 
 PATCHES_41.6.0 = egg_base-from-build_base.patch
 
-PYTHON_TOOLKIT = $(shell which python$(SYSTEM_PYTHON))
-PYTHON_TOOLKIT_ROOT = $(shell dirname $(PYTHON_TOOLKIT))/..
-
 
 # Setuptools is only present as part of the toolkit environment, but is never
 # present on the target system.
 toolkit:
 	cd $(srcdir) && \
-	python$(SYSTEM_PYTHON) setup.py build -b $O install \
+	$(toolkit-python) setup.py build -b $O install \
             --single-version-externally-managed \
             --root=/
 

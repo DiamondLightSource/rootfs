@@ -69,7 +69,7 @@ PYTHON_SETUP_ENV = \
     _python_exec_prefix=/usr
 python-build = \
     cd $(srcdir)  &&  \
-    $(PYTHON_SETUP_ENV) python$(SYSTEM_PYTHON) setup.py \
+    $(PYTHON_SETUP_ENV) $(toolkit-python) setup.py \
         build -b $O $(PYTHON_BUILD_OPTS) \
         install $(PYTHON_INSTALL_OPTS)
 
