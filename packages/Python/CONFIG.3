@@ -76,7 +76,7 @@ TARGET_PYTHON_CONF_OPTS = \
     --disable-idle3 \
     --disable-pyc-build \
     --disable-ipv6 \
-    --with-openssl=$(I)/../libressl/usr \
+    --with-openssl=$(call pkg-config,libressl --variable=prefix)/usr \
     --disable-sqlite3
 
 # vim: set filetype=make:
