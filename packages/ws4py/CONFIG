@@ -3,6 +3,8 @@ ws4py_VERSION ?= 0.3.4
 TAR_EXTENSION = .tar.gz
 MD5_SUM_0.3.4 = 6b47e33cbd13f5c134b04f2a44a480ad
 
+BUILD_DEPENDS = Python setuptools
+
 build:
 	$(python-build)
 

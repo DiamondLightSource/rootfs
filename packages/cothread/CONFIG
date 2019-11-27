@@ -10,6 +10,7 @@ MD5_SUM_2-16 = 9b0b2cc321e778e5391ddfff4ba2546b
 PATCHES_2.12 = arm-vfp.patch
 
 PYTHON_BUILD_TYPE = setuptools
+BUILD_DEPENDS = Python setuptools
 
 build:
 	$(python-build)

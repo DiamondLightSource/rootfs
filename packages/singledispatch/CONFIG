@@ -8,6 +8,8 @@ PATCHES = \
     distutils.patch
 
 
+BUILD_DEPENDS = Python
+
 build:
 	$(python-build)
 

@@ -7,6 +7,8 @@ MD5_SUM_41.6.0 = 5585a55bfc28474ef13cc0b1819c5a46
 
 PATCHES_41.6.0 = egg_base-from-build_base.patch
 
+BUILD_DEPENDS = Python
+
 
 # Setuptools is only present as part of the toolkit environment, but is never
 # present on the target system.

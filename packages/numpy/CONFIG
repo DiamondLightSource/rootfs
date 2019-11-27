@@ -15,9 +15,6 @@ PATCHES_1.9.2 = \
 PATCHES_1.16.4 = \
     avoid-writing-in-sources.patch
 
-ifneq ($(SYSTEM_PYTHON),2)
-LIB_DEPENDS = setuptools
-endif
 
 define untar-extra
     # files required for testing configuration
@@ -31,6 +28,7 @@ define untar-extra
 endef
 
 PYTHON_BUILD_TYPE = setuptools
+BUILD_DEPENDS = Python setuptools
 
 
 PYTHON_SETUP_ENV += BLAS=None LAPACK=None ATLAS=None
@@ -51,7 +49,7 @@ PYTHON_BUILD_OPTS += --fcompiler=None
 
 build:
 	$(python-build)
-	rm -rf /tmp/_configtest.c /tmp/_configtest.o /tmp/_configtest
+	rm -f /tmp/_configtest.c /tmp/_configtest.o /tmp/_configtest
 
 install:
 	$(install-python-package)

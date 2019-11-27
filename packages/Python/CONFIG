@@ -7,13 +7,14 @@ TAR_EXTENSION = .tgz
 include $(packagedir)/CONFIG.$(SYSTEM_PYTHON)
 
 
+# Can disable zlib by adding --disable-zlib to TARGET_PYTHON_CONF_OPTS.
+LIB_DEPENDS = zlib readline ncurses libressl libffi
+
+
 # This is needed to make sure the Python build process doesn't try to regenerate
 # those files with the pgen program. Otherwise, it builds pgen for the target,
 # and tries to run it on the host.
 patch-extra = touch $(srcdir)/Include/graminit.h $(srcdir)/Python/graminit.c
-
-# Can disable zlib by adding --disable-zlib to TARGET_PYTHON_CONF_OPTS.
-LIB_DEPENDS = zlib readline ncurses libressl libffi
 
 CFLAGS += -fPIC
 
