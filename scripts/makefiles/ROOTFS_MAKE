@@ -36,17 +36,10 @@ imagefile: $(O)/imagefile.cpio
 .PHONY: imagefile $(O)/imagefile.cpio
 
 
-# The boot target specifies the action to take when assembling the final
-# rootfs build.  This should define the boot target and any actions to be
-# taken.
-ifdef BOOT
-$(call COMPUTE_PATH,BOOT,bootdir,boot)
-bootcommon = $(ROOTFS_TOP)/boot/COMMON
-include $(bootcommon)/COMMON
-include $(bootdir)/CONFIG
-endif
-
 boot: $(O)/imagefile.cpio
+ifdef BOOT
+	$(MAKE) $@ -f $(makefiles)/BOOT_MAKE boot
+endif
 .PHONY: boot
 
 default: boot

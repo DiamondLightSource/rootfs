@@ -1,0 +1,22 @@
+# Wrapper for running configured BOOT option.  This is called with BOOT pointing
+# to a configuration directory.
+
+include $(ROOTFS_TOP)/scripts/makefiles/COMMON
+include $(makefiles)/TARGET_COMMON
+
+O = $(TARGET_ROOT)/image
+
+# Default target.  This needs to be defined in $(BOOT)/CONFIG
+boot:
+.PHONY: boot
+
+
+# The boot target specifies the action to take when assembling the final rootfs
+# build.  This should define the boot target and any actions to be taken.
+$(call COMPUTE_PATH,BOOT,bootdir,boot)
+bootcommon = $(ROOTFS_TOP)/boot/COMMON
+include $(bootcommon)/COMMON
+include $(bootdir)/CONFIG
+
+
+# vim: set filetype=make:
