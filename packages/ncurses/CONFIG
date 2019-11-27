@@ -1,5 +1,4 @@
-ncurses_VERSION ?= 5.9
-# ncurses_VERSION ?= 6.1
+ncurses_VERSION ?= 6.1
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_5.9 = 8cb9c412e5f2d96bc6f459aa8c6282a1
