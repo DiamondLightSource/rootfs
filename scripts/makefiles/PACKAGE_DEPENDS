@@ -10,14 +10,12 @@ DEPENDS = $(TARGET_ROOT)/depends/$(PACKAGE)
 
 default: $(DEPENDS)
 
-$(DEPENDS):
+$(DEPENDS): $(packagedir)/CONFIG
 	mkdir -p $(dir $@)
 	rm -f $@
 	echo -n $(STAGING_ROOT)/$(PACKAGE): >>$@
 	for p in $(LIB_DEPENDS); do echo -n \ $(STAGING_ROOT)/$$p; done >>$@
 	for p in $(BUILD_DEPENDS); do echo -n \ $(STAGING_ROOT)/$$p; done >>$@
 	echo >>$@
-
-.PHONY: $(DEPENDS)
 
 # vim: set filetype=make:
