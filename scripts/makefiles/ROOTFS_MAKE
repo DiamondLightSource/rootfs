@@ -14,10 +14,15 @@ O = $(TARGET_ROOT)/image
 $(TOOLKIT_BIN):
 	$(MAKE) -f $(makefiles)/TOOLKIT_MAKE
 
-$(STAGING_ROOT)/%: $(TOOLKIT_BIN)
+$(PACKAGES:%=$(STAGING_ROOT)/%): $(STAGING_ROOT)/%: $(TOOLKIT_BIN)
 	$(MAKE) -f $(makefiles)/PACKAGE_MAKE PACKAGE=$* || { rm -rf $@; false; }
 
 ALL_PACKAGES = $(PACKAGES:%=$(STAGING_ROOT)/%)
+
+# Build dependency list to ensure packages are built in the right sequence.
+$(TARGET_ROOT)/depends/%:
+	$(MAKE) -f $(makefiles)/PACKAGE_DEPENDS PACKAGE=$*
+include $(PACKAGES:%=$(TARGET_ROOT)/depends/%)
 
 
 $(O):

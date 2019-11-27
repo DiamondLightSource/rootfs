@@ -1,0 +1,23 @@
+# Build package dependency file
+
+include $(ROOTFS_TOP)/scripts/makefiles/COMMON
+include $(makefiles)/TARGET_COMMON
+include $(makefiles)/PACKAGE_COMMON
+
+include $(packagedir)/CONFIG
+
+DEPENDS = $(TARGET_ROOT)/depends/$(PACKAGE)
+
+default: $(DEPENDS)
+
+$(DEPENDS):
+	mkdir -p $(dir $@)
+	rm -f $@
+	echo -n $(STAGING_ROOT)/$(PACKAGE): >>$@
+	for p in $(LIB_DEPENDS); do echo -n \ $(STAGING_ROOT)/$$p; done >>$@
+	for p in $(BUILD_DEPENDS); do echo -n \ $(STAGING_ROOT)/$$p; done >>$@
+	echo >>$@
+
+.PHONY: $(DEPENDS)
+
+# vim: set filetype=make:
