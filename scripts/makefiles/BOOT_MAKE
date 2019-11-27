@@ -11,11 +11,20 @@ boot:
 .PHONY: boot
 
 
+# Generic rule for generating .gz file.  Mostly triggered if building
+# $(O)/imagefile.cpio.gz.
+%.gz: %
+	gzip -c -1 $< >$@
+
+# Generic rule for generating u-boot executable scripts
+MKIMAGE ?= mkimage
+%.image: %
+	$(MKIMAGE) -T script -d $< $@
+
+
 # The boot target specifies the action to take when assembling the final rootfs
 # build.  This should define the boot target and any actions to be taken.
 $(call COMPUTE_PATH,BOOT,bootdir,boot)
-bootcommon = $(ROOTFS_TOP)/boot/COMMON
-include $(bootcommon)/COMMON
 include $(bootdir)/CONFIG
 
 
