@@ -23,6 +23,6 @@ pkg-config = $(shell $(call EXPORT,PKG_CONFIG_PATH) pkg-config $1)
 
 # Special treament of Python
 SYSTEM_PYTHON ?= 2
-PYTHON_VER = $(call pkg-config,--modversion Python$(SYSTEM_PYTHON))
+PYTHON_VER = $(call pkg-config,--modversion Python)
 
 # vim: set filetype=make:
