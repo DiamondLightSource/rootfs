@@ -1,0 +1,89 @@
+Python_VERSION ?= 2.7.10
+
+MD5_SUM_2.7.9 = 5eebcaa0030dc4061156d3429657fb83
+MD5_SUM_2.7.10 = d7547558fd673bd9d38e2108c6b42521
+
+
+# All the numbered patches below were taken from buildroot.
+PATCHES_2.7.9 = \
+    p2/001-remove-host-header-path.patch \
+    p2/002-fix-get-python-inc.patch \
+    p2/004-sysconfigdata-install-location.patch \
+    p2/005-pyc-pyo-conditional.patch \
+    p2/006-cross-compile-getaddrinfo.patch \
+    p2/007-disable-extensions.patch \
+    p2/008-distutils-use-python-sysroot.patch \
+    p2/009-no-termcap-host-path.patch \
+    p2/010-fix-python-config.patch \
+    p2/011-remove-python-symlink.patch \
+    p2/012-support-library-path-old-compilers.patch \
+    p2/013-dont-add-multiarch-path.patch \
+    p2/014-abort-on-failed-modules.patch \
+    p2/015-fix-sqlite-without-threads.patch \
+    p2/016-serial-ioctl-workaround.patch \
+    p2/017-distutils-scripts-dont-adjust-shebang.patch \
+    p2/100-optional-test-modules.patch \
+    p2/101-optional-pydoc.patch \
+    p2/102-optional-2to3.patch \
+    p2/103-optional-sqlite.patch \
+    p2/104-optional-tk.patch \
+    p2/105-optional-curses.patch \
+    p2/106-optional-expat.patch \
+    p2/107-optional-codecs-cjk.patch \
+    p2/108-optional-nis.patch \
+    p2/109-optional-unicodedata.patch \
+    p2/110-optional-db.patch \
+    p2/111-optional-ssl.patch \
+    p2/112-optional-bzip2.patch \
+    p2/113-optional-zlib.patch \
+    p2/114-remove-idle-editor.patch \
+    p2/115-optional-ossaudiodev.patch \
+    p2/read-only-configtest.patch
+
+# All the 2.7.9 patches work except for a configure.ac patch which needs a small
+# rewrite.
+PATCHES_2.7.10 := $(subst \
+    p2/004-sysconfigdata-install-location.patch,\
+    p2/004-sysconfigdata-install-location-2.7.10.patch,\
+    $(PATCHES_2.7.9))
+
+HOST_PYTHON_CONF_OPTS = \
+    --disable-shared \
+    --disable-sqlite3 \
+    --disable-tk \
+    --disable-curses \
+    --disable-codecs-cjk \
+    --disable-nis \
+    --enable-unicodedata \
+    --disable-dbm \
+    --disable-gdbm \
+    --disable-bsddb \
+    --disable-test-modules \
+    --disable-bz2 \
+    --disable-ssl \
+    --disable-ossaudiodev \
+    --disable-pyo-build
+
+TARGET_PYTHON_CONF_OPTS = \
+    ac_cv_have_long_long_format=yes \
+    ac_cv_file__dev_ptmx=yes \
+    ac_cv_file__dev_ptc=no \
+    ac_cv_working_tzset=yes \
+    --enable-shared \
+    --without-doc-strings \
+    --with-system-ffi \
+    --disable-bz2 \
+    --disable-codecs-cjk \
+    --disable-dbm \
+    --disable-gdbm \
+    --disable-ipv6 \
+    --disable-lib2to3 \
+    --disable-nis \
+    --disable-ossaudiodev \
+    --disable-pydoc \
+    --disable-pyo-build \
+    --disable-sqlite3 \
+    --disable-test-modules \
+    --disable-tk
+
+# vim: set filetype=make:

@@ -1,106 +1,23 @@
-Python_VERSION ?= 2.7.10
-
-MD5_SUM_2.7.9 = 5eebcaa0030dc4061156d3429657fb83
-MD5_SUM_2.7.10 = d7547558fd673bd9d38e2108c6b42521
-
-TAR_EXTENSION = .tgz
+# Only one version of Python can be installed at a time, this is configured by
+# setting the SYSTEM_PYTHON symbol to 2 or 3 as appropriate.
 
 PYTHON_PYC_ONLY ?= 0
+TAR_EXTENSION = .tgz
 
+include $(packagedir)/CONFIG.$(SYSTEM_PYTHON)
 
-# All the numbered patches below were taken from buildroot.
-PATCHES_2.7.9 = \
-    001-remove-host-header-path.patch \
-    002-fix-get-python-inc.patch \
-    004-sysconfigdata-install-location.patch \
-    005-pyc-pyo-conditional.patch \
-    006-cross-compile-getaddrinfo.patch \
-    007-disable-extensions.patch \
-    008-distutils-use-python-sysroot.patch \
-    009-no-termcap-host-path.patch \
-    010-fix-python-config.patch \
-    011-remove-python-symlink.patch \
-    012-support-library-path-old-compilers.patch \
-    013-dont-add-multiarch-path.patch \
-    014-abort-on-failed-modules.patch \
-    015-fix-sqlite-without-threads.patch \
-    016-serial-ioctl-workaround.patch \
-    017-distutils-scripts-dont-adjust-shebang.patch \
-    100-optional-test-modules.patch \
-    101-optional-pydoc.patch \
-    102-optional-2to3.patch \
-    103-optional-sqlite.patch \
-    104-optional-tk.patch \
-    105-optional-curses.patch \
-    106-optional-expat.patch \
-    107-optional-codecs-cjk.patch \
-    108-optional-nis.patch \
-    109-optional-unicodedata.patch \
-    110-optional-db.patch \
-    111-optional-ssl.patch \
-    112-optional-bzip2.patch \
-    113-optional-zlib.patch \
-    114-remove-idle-editor.patch \
-    115-optional-ossaudiodev.patch \
-    read-only-configtest.patch
-
-# All the 2.7.9 patches work except for a configure.ac patch which needs a small
-# rewrite.
-PATCHES_2.7.10 := $(subst \
-    004-sysconfigdata-install-location.patch,\
-    004-sysconfigdata-install-location-2.7.10.patch,\
-    $(PATCHES_2.7.9))
 
 # This is needed to make sure the Python build process doesn't try to regenerate
 # those files with the pgen program. Otherwise, it builds pgen for the target,
 # and tries to run it on the host.
 patch-extra = touch $(srcdir)/Include/graminit.h $(srcdir)/Python/graminit.c
 
-
-HOST_PYTHON_CONF_OPTS = \
-    --disable-shared \
-    --disable-sqlite3 \
-    --disable-tk \
-    --disable-curses \
-    --disable-codecs-cjk \
-    --disable-nis \
-    --enable-unicodedata \
-    --disable-dbm \
-    --disable-gdbm \
-    --disable-bsddb \
-    --disable-test-modules \
-    --disable-bz2 \
-    --disable-ssl \
-    --disable-ossaudiodev \
-    --disable-pyo-build
-
-TARGET_PYTHON_CONF_OPTS = \
-    ac_cv_have_long_long_format=yes \
-    ac_cv_file__dev_ptmx=yes \
-    ac_cv_file__dev_ptc=no \
-    ac_cv_working_tzset=yes \
-    --enable-shared \
-    --without-doc-strings \
-    --with-system-ffi \
-    --disable-bz2 \
-    --disable-codecs-cjk \
-    --disable-dbm \
-    --disable-gdbm \
-    --disable-ipv6 \
-    --disable-lib2to3 \
-    --disable-nis \
-    --disable-ossaudiodev \
-    --disable-pydoc \
-    --disable-pyo-build \
-    --disable-sqlite3 \
-    --disable-test-modules \
-    --disable-tk
-
-
 # Can disable zlib by adding --disable-zlib to TARGET_PYTHON_CONF_OPTS.
 LIB_DEPENDS = zlib readline ncurses libressl libffi
 
 CFLAGS += -fPIC
+
+python_ver := $(shell echo $(Python_VERSION) | cut -d. -f1-2)
 
 
 # ----------------------------------------------------------------------
@@ -108,6 +25,7 @@ CFLAGS += -fPIC
 toolkit:
 	# Rebuild configure script
 	ln -s $(srcdir)/configure.ac $(O)
+	ln -s $(srcdir)/m4 $(O)
 	cd $(O)  &&  autoreconf -i -f
 
         # Configure the build so we can make a local build.  For this we
@@ -123,6 +41,7 @@ toolkit:
 # Now build target python
 build:
 	ln -s $(srcdir)/configure.ac $(O)
+	ln -s $(srcdir)/m4 $(O)
 	cd $(O)  &&  autoreconf -i -f
 
         # Configure the target.
@@ -136,20 +55,19 @@ build:
         # Finally complete the build and create a local install
 	make -C $(O)
 	make -C $(O) DESTDIR=$(I) install
-	ln -s python2 $(I)/usr/bin/python
+	ln -s python$(SYSTEM_PYTHON) $(I)/usr/bin/python
 
 ifeq ($(PYTHON_PYC_ONLY),1)
-	find $(I)/usr/lib/python2.7 -name '*.py' -exec rm -f {} +
+	find $(I)/usr/lib/python$(python_ver) -name '*.py' -exec rm -f {} +
 endif
 
-	$(install-pkg-config) python2
+	ls $(I)/usr/lib/pkgconfig
+	$(install-pkg-config) python-$(python_ver)
 
 
 install:
 	tar c -C $(I) usr/bin usr/lib | tar x -C $(sysroot)
-	$(mark-executable) $(I)/usr/bin/python2.7
+	$(mark-executable) $(I)/usr/bin/python$(python_ver)
 
-
-# Patches and configuration taken from buildroot python package
 
 # vim: set filetype=make:
