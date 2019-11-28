@@ -1,21 +1,33 @@
 # Build package dependency file
 
+# The package name will be normalised by PACKAGE_COMMON, but we need the full
+# name for the build rule.
+FULL_PACKAGE := $(PACKAGE)
+
 include $(ROOTFS_TOP)/scripts/makefiles/COMMON
 include $(makefiles)/TARGET_COMMON
 include $(makefiles)/PACKAGE_COMMON
 
 include $(packagedir)/CONFIG
 
-DEPENDS = $(TARGET_ROOT)/depends/$(PACKAGE)
-
-default: $(DEPENDS)
-
-$(DEPENDS): $(packagedir)/CONFIG
-	mkdir -p $(dir $@)
-	rm -f $@
-	echo -n $(STAGING_ROOT)/$(PACKAGE): >>$@
-	for p in $(LIB_DEPENDS); do echo -n \ $(STAGING_ROOT)/$$p; done >>$@
-	for p in $(BUILD_DEPENDS); do echo -n \ $(STAGING_ROOT)/$$p; done >>$@
-	echo >>$@
+# Builds the dependency rule and recipe for building a package.  Each package
+# depends on its package CONFIG file and all the package staging areas.
+#
+# Unfortunately we need to create the build recipe here rather than using a
+# pattern because we need to pass the unmodified original package specification
+# through to the make rule.
+depends:
+	printf '# $(FULL_PACKAGE)\n'
+	printf '$$(STAGING_ROOT)/%s: %s/CONFIG' $(PACKAGE) $(packagedir)
+	for p in $(LIB_DEPENDS) $(BUILD_DEPENDS); do \
+	    printf ' $$(STAGING_ROOT)/%s' $$p; \
+        done
+	printf '\n'
+	printf '\t$$(MAKE) -f $$(makefiles)/PACKAGE_MAKE PACKAGE=%s' \
+            $(FULL_PACKAGE)
+	printf ' || { rm -rf $$@; false; }\n'
+	printf 'CHECK_PACKAGE_LIST += %s\n' $(PACKAGE)
+	printf '\n'
+.PHONY: depends
 
 # vim: set filetype=make:

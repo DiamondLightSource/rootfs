@@ -1,7 +1,7 @@
 # This captures the part of package definitions common to both building and
 # installing packages.
 
-# Pick up packagedir from PACKAGE.
+# Pick up packagedir from PACKAGE and normalise package name
 $(call COMPUTE_PATH,PACKAGE,packagedir,packages)
 
 

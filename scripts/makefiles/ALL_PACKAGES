@@ -13,11 +13,14 @@ endef
 
 # Pass target (and command line overrides) down to each package build.
 # This is quite a nice technique for makefile command pass-through.
-default $(filter-out default install,$(MAKECMDGOALS)):
+default $(filter-out default install depends,$(MAKECMDGOALS)):
 	$(foreach PACKAGE,$(PACKAGES),$(call make_package,MAKE))
 
 install:
 	$(foreach PACKAGE,$(PACKAGES),$(call make_package,INSTALL))
+
+depends:
+	$(foreach PACKAGE,$(PACKAGES),$(call make_package,DEPENDS))
 
 .PHONY: $(MAKECMDGOALS)
 

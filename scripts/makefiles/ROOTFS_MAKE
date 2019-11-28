@@ -14,15 +14,20 @@ O = $(TARGET_ROOT)/image
 $(TOOLKIT_BIN):
 	$(MAKE) -f $(makefiles)/TOOLKIT_MAKE
 
-ALL_PACKAGES = $(PACKAGES:%=$(STAGING_ROOT)/%)
 
-$(ALL_PACKAGES): $(STAGING_ROOT)/%: $(TOOLKIT_BIN)
-	$(MAKE) -f $(makefiles)/PACKAGE_MAKE PACKAGE=$* || { rm -rf $@; false; }
+ALL_PACKAGES = $(patsubst %,$(STAGING_ROOT)/%,$(notdir $(PACKAGES)))
+
 
 # Build dependency list to ensure packages are built in the right sequence.
-$(TARGET_ROOT)/depends/%: $(configdir)/CONFIG
-	$(MAKE) -f $(makefiles)/PACKAGE_DEPENDS PACKAGE=$*
-include $(PACKAGES:%=$(TARGET_ROOT)/depends/%)
+$(TARGET_ROOT)/depends: $(configdir)/CONFIG
+	$(MAKE) -s --no-print-directory -f $(makefiles)/ALL_PACKAGES depends >$@
+include $(TARGET_ROOT)/depends
+
+# Check for repeated package names, as this can cause problems.  Unfortunately,
+# it's quite tricky to report *which* names are repeated, so we don't.
+ifneq ($(words $(CHECK_PACKAGE_LIST)),$(words $(sort $(CHECK_PACKAGE_LIST))))
+    $(error Repeated package names in PACKAGES)
+endif
 
 
 $(O):
