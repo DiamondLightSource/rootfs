@@ -40,14 +40,10 @@ PYTHON_INSTALL_OPTS = \
     --prefix=/usr \
     --root=$(I)
 
-PYTHON_BUILD_TYPE ?= distutils
-ifeq ($(PYTHON_BUILD_TYPE),distutils)
-else
-ifeq ($(PYTHON_BUILD_TYPE),setuptools)
+
+# Special option needs to be set when using setuptools
+ifneq ($(filter setuptools,$(BUILD_DEPENDS)),)
 PYTHON_INSTALL_OPTS += --single-version-externally-managed
-else
-$(error Unknown PYTHON_BUILD_TYPE $(PYTHON_BUILD_TYPE))
-endif
 endif
 
 # Special definitions for Python building.  Note that the prefix and sysroot

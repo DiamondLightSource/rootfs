@@ -27,7 +27,6 @@ define untar-extra
     rm -rf /tmp/_configtest.c /tmp/_configtest.o /tmp/_configtest
 endef
 
-PYTHON_BUILD_TYPE = setuptools
 BUILD_DEPENDS = Python setuptools
 
 

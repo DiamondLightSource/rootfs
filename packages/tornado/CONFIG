@@ -9,7 +9,6 @@ MD5_SUM_6.0.3 = 28fe1d74c871f55accdd93cd6e184699
 
 TAR_EXTENSION = .tar.gz
 
-PYTHON_BUILD_TYPE = setuptools
 BUILD_DEPENDS = Python setuptools
 
 build:
