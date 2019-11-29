@@ -15,18 +15,6 @@ PATCHES_1.9.2 = \
 PATCHES_1.16.4 = \
     avoid-writing-in-sources.patch
 
-
-define untar-extra
-    # files required for testing configuration
-    # using a symlinks allows to keep a read-only source directory
-    ln -s /tmp/_configtest.c $(srcdir)/_configtest.c
-    ln -s /tmp/_configtest.o $(srcdir)/_configtest.o
-    ln -s /tmp/_configtest $(srcdir)/_configtest
-    # make sure they don't exist, so that they are created
-    # after the source directory is made read-only
-    rm -rf /tmp/_configtest.c /tmp/_configtest.o /tmp/_configtest
-endef
-
 BUILD_DEPENDS = Python setuptools
 
 
@@ -45,10 +33,15 @@ endif
 
 PYTHON_BUILD_OPTS += --fcompiler=None
 
+# An ugly ugly hack is needed to work around a very difficult to fix bug in
+# the interaction between numpy and distutils; basically there is a key point
+# where the -b flag to setup.py is (briefly) ignored, and the the system tries
+# to create files (_configtest{.c,.o,}) in $(srcdir).  The simplest workaround
+# is simply to permit this.
 
 build:
+	chmod +w $(srcdir)        # Ouch.
 	$(python-build)
-	rm -f /tmp/_configtest.c /tmp/_configtest.o /tmp/_configtest
 
 install:
 	$(install-python-package)
