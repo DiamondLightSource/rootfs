@@ -20,6 +20,7 @@ ALL_PACKAGES = $(patsubst %,$(STAGING_ROOT)/%,$(notdir $(PACKAGES)))
 
 # Build dependency list to ensure packages are built in the right sequence.
 $(TARGET_ROOT)/depends: $(configdir)/CONFIG
+	mkdir -p $(TARGET_ROOT)
 	$(MAKE) -s --no-print-directory -f $(makefiles)/ALL_PACKAGES depends >$@
 include $(TARGET_ROOT)/depends
 
