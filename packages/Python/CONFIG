@@ -58,6 +58,10 @@ build:
 	make -C $(O) DESTDIR=$(I) install
 	ln -s python$(SYSTEM_PYTHON) $(I)/usr/bin/python
 
+        # If we have a _sysconfigdata file copy it into the toolkit area
+	-cp $(I)/usr/lib/python$(python_ver)/_sysconfigdata_* \
+            $(TARGET_TOOLKIT)/lib/python$(python_ver)
+
 ifeq ($(PYTHON_PYC_ONLY),1)
 	find $(I)/usr/lib/python$(python_ver) -name '*.py' -exec rm -f {} +
 endif
