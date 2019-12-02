@@ -11,7 +11,7 @@ include $(makefiles)/SYSROOT_COMMON
 
 
 _populate_EXPORTS = \
-    sysroot SYSROOT TERMS install_list EXTRA_LIBS CROSS_COMPILE STAGING_ROOT
+    sysroot SYSROOT install_list EXTRA_LIBS CROSS_COMPILE STAGING_ROOT
 populate = $(call EXPORT,$(_populate_EXPORTS)) $(scripts)/populate
 
 define install-option

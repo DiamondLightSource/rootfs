@@ -10,7 +10,6 @@
 
 # The following environment variables are optional
 #
-#  TERMS                  List of terminals to install
 #  EXTRA_LIBS             Extra libraries to be installed
 #  CROSS_COMPILE          Must be set if cross compiling
 
@@ -28,16 +27,6 @@ set -o pipefail
 READELF="$CROSS_COMPILE"readelf
 
 LIB_SEARCH_PATH=("$STAGING_ROOT"/*)
-
-
-install_terminfo()
-{
-    for term; do
-        local dir=/usr/share/terminfo/${term::1}
-        mkdir -p "$sysroot/$dir"  &&
-        cp "$SYSROOT/$dir/$term" "$sysroot/$dir"  ||  return 1
-    done
-}
 
 
 # Searches for given library in lib and usr/lib, optionally searching for
@@ -173,6 +162,3 @@ while [ -n "$ND" ]; do
     # Finally add to the list of libraries and go around again.
     LIBS="$(sort <<<"$LIBS"$'\n'"$ND" | uniq)"
 done
-
-
-install_terminfo $TERMS
