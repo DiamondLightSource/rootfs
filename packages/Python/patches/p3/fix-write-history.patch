@@ -1,0 +1,17 @@
+On a target system with a read only rootfs filesystem this call to
+write_history_file generates OSError(30, 'Read-only file system'), which is
+not one of the special-cased OSError subclasses.  It's simpler to catch
+*everything*!
+
+diff -ur Python-3.8.0.original/Lib/site.py Python-3.8.0/Lib/site.py
+--- Python-3.8.0.original/Lib/site.py	2019-10-14 14:34:47.000000000 +0100
++++ Python-3.8.0/Lib/site.py	2019-12-02 09:03:54.982925758 +0000
+@@ -444,7 +444,7 @@
+             def write_history():
+                 try:
+                     readline.write_history_file(history)
+-                except (FileNotFoundError, PermissionError):
++                except OSError:
+                     # home directory does not exist or is not writable
+                     # https://bugs.python.org/issue19891
+                     pass
