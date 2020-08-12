@@ -49,7 +49,7 @@ The following options can be passed before any action:
         This overrides the default definition of ROOTFS_ROOT and the value set
         in CONFIG.local.
 
-    -f<tar-files>
+    -f<tar-dirs>
         Overrides the list of tar files set in CONFIG.local
 EOF
 }
@@ -70,7 +70,7 @@ while getopts 't:r:f:h' option; do
     case "$option" in
     t)  EXTRA_OPTIONS=("${EXTRA_OPTIONS[@]}" TARGET="$OPTARG") ;;
     r)  EXTRA_OPTIONS=("${EXTRA_OPTIONS[@]}" ROOTFS_ROOT="$OPTARG") ;;
-    f)  EXTRA_OPTIONS=("${EXTRA_OPTIONS[@]}" TAR_FILES="$OPTARG") ;;
+    f)  EXTRA_OPTIONS=("${EXTRA_OPTIONS[@]}" TAR_DIRS="$OPTARG") ;;
     h)  usage
         exit 0 ;;
     *)  Error 'Invalid option: try -h for help' ;;

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # This script installs a pkg-config .pc file in the appropriate location.
 # Called as:
 #
