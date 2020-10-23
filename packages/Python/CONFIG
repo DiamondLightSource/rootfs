@@ -17,6 +17,7 @@ LIB_DEPENDS = zlib readline ncurses libressl libffi
 patch-extra = touch $(srcdir)/Include/graminit.h $(srcdir)/Python/graminit.c
 
 CFLAGS += -fPIC
+CFLAGS += -std=c99
 
 python_ver := $(shell echo $(Python_VERSION) | cut -d. -f1-2)
 
