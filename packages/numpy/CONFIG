@@ -7,7 +7,8 @@ endif
 TAR_EXTENSION = .tar.gz
 MD5_SUM_1.9.2 = a1ed53432dbcd256398898d35bc8e645
 MD5_SUM_1.16.4 = 6edf7334d04d8e8849ad058ccd3b3803
-MD5_SUM_1.17.5 = 6156f61cd11aad269f9c698eba4fb7bd
+# https://github.com/numpy/numpy/releases/tag/v1.17.5
+MD5_SUM_1.17.5 = 59d27965e42caedf8913ebe03cf36f87
 
 PATCHES_1.9.2 = \
     fix-paths.patch \
