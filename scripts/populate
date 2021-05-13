@@ -41,7 +41,7 @@ locate_library()
 
     local lib_dir lib_prefix
     for lib_prefix in "$SYSROOT" "${LIB_SEARCH_PATH[@]}"; do
-        for lib_dir in lib usr/lib; do
+        for lib_dir in lib lib64 usr/lib usr/lib64; do
             if (($#)); then
                 for suffix; do
                     for file in "$lib_prefix/$lib_dir/$lib"$suffix; do
@@ -108,10 +108,12 @@ install_libs()
         lib_path="$(library_path "$lib")"  &&
         if [ -L "$lib_path" ]; then
             filename="$(readlink "$lib_path")"  &&
+            mkdir -p "$sysroot/$(dirname $lib)" &&
             ln -s "$filename" "$sysroot/$lib"  &&
             lib="$(dirname "$lib")/$filename"
         fi  &&
         { [ -e "$sysroot/$lib" ]  ||
+          mkdir -p "$sysroot/$(dirname $lib)" &&
           cp "$lib_path" "$sysroot/$lib"; }  &&
         do_strip "$sysroot/$lib"  &&
         chmod -w "$sysroot/$lib"  ||
