@@ -1,13 +1,19 @@
-mtd-utils_VERSION ?= 1.5.1
+mtd-utils_VERSION ?= 2.1.2
 
 MD5_SUM_1.5.1 = 4ad1f758d49615efe14edb107eddac5c
+MD5_SUM_2.1.2 = 19191bc0195a779c0bd1284c886084ab
 
 mtd-utils_INSTALL_FILES ?= flashcp flash_erase
 
 
 build:
-	CROSS=$(CROSS_COMPILE) make -C $(srcdir) WITHOUT_XATTR=1 \
-            $(mtd-utils_INSTALL_FILES:%=$(O)/%) BUILDDIR=$(O)
+	cd $(O)  &&  \
+	$(srcdir)/configure CFLAGS='$(CFLAGS)' \
+	    --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
+	    --without-jffs --without-ubifs --without-lzo \
+	    --without-zstd
+	make -C $(O)
+	make -C $(O) install DESTDIR=$(I)
 	cp $(mtd-utils_INSTALL_FILES:%=$(O)/%) $(I)
 
 install:

@@ -2,6 +2,7 @@ e2fsprogs_VERSION ?= 1.42.13
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_1.42.13 = bc759fc62666786f5436e2075beb3265
+MD5_SUM_1.46.2 = e8ef5fa3b72557be5e9fe564a25da6eb
 
 e2fsprogs_INSTALL_FILES ?= /sbin/fsck.ext4 /sbin/mkfs.ext4
 
@@ -10,6 +11,7 @@ build:
 	$(srcdir)/configure CFLAGS='$(CFLAGS)' \
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --enable-elf-shlibs
+	make -C $(O)
 	make -C $(O) install DESTDIR=$(I)
 
 install:
