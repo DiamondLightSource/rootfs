@@ -5,14 +5,14 @@ MD5_SUM_2.1.2 = 19191bc0195a779c0bd1284c886084ab
 
 mtd-utils_INSTALL_FILES ?= flashcp flash_erase
 
+LIB_DEPENDS = zlib
 
 build:
 	cd $(O)  &&  \
 	$(srcdir)/configure CFLAGS='$(CFLAGS)' \
 	    --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
-	    --without-jffs --without-ubifs --without-lzo \
-	    --without-zstd
-	make -C $(O)
+	    --without-ubifs --without-lzo --without-zstd
+	make -C $(O) WITHOUT_XATTR=1
 	make -C $(O) install DESTDIR=$(I)
 	cp $(mtd-utils_INSTALL_FILES:%=$(O)/%) $(I)
 
