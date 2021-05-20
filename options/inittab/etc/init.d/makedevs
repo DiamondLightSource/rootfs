@@ -20,5 +20,9 @@ ln -s fd/2 /dev/stderr
 echo >/dev/mdev.seq
 
 # /dev is ready and waiting to be filled.  Get mdev to populate it.
-echo /sbin/mdev >/proc/sys/kernel/hotplug
+if [ -f /proc/sys/kernel/hotplug ]; then
+    echo /sbin/mdev >/proc/sys/kernel/hotplug
+else
+    mdev -d
+fi
 mdev -s
