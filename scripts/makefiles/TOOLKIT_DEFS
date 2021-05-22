@@ -29,8 +29,8 @@ MD5_SUM_autoconf_2.69 = 82d05e03b93e45f5a39b828dc9c6c29b
 # Download from:
 #   http://ftp.gnu.org/gnu/m4/m4-1.4.12.tar.bz2
 #   ftp://ftp.gnu.org/gnu/m4/m4-1.4.12.tar.bz2
-m4_VERSION ?= 1.4.17
-MD5_SUM_m4_1.4.17 = a5e9954b1dae036762f7b13673a2cf76
+m4_VERSION ?= 1.4.18
+MD5_SUM_m4_1.4.18 = 3b53feb7063fea08ed47e874ac5ce802
 
 # Libtool (shared library support)
 # Homepage:
