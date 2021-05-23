@@ -10,7 +10,7 @@ import crypt
 import random
 
 
-charset = string.lowercase + string.uppercase + string.digits + './'
+charset = string.ascii_lowercase + string.ascii_uppercase + string.digits + './'
 
 
 parser = optparse.OptionParser(
