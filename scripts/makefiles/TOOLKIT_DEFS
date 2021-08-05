@@ -4,15 +4,14 @@
 # This is the list of tools to be installed.
 TOOLKIT_COMPONENTS = m4 autoconf automake libtool pkg-config
 
-
 # Automake (builds Makefile.in files)
 # Homepage:
 #   http://www.gnu.org/software/automake/
 # Download from:
 #   http://ftp.gnu.org/gnu/automake/automake-1.10.2.tar.bz2
 #   ftp://ftp.gnu.org/gnu/automake/automake-1.10.2.tar.bz2
-automake_VERSION ?= 1.15
-MD5_SUM_automake_1.15 = 716946a105ca228ab545fc37a70df3a3
+automake_VERSION ?= 1.15.1
+MD5_SUM_automake_1.15.1 = 95df3f2d6eb8f81e70b8cb63a93c8853
 
 # Autoconf (M4 macros for generating configuration scripts)
 # Homepage:
@@ -25,12 +24,12 @@ MD5_SUM_autoconf_2.69 = 82d05e03b93e45f5a39b828dc9c6c29b
 
 # M4 (macro processor)
 # Homepage:
-#   http://www.gnu.org/software/m4/
+#   https://www.gnu.org/software/m4/
 # Download from:
-#   http://ftp.gnu.org/gnu/m4/m4-1.4.12.tar.bz2
-#   ftp://ftp.gnu.org/gnu/m4/m4-1.4.12.tar.bz2
-m4_VERSION ?= 1.4.18
-MD5_SUM_m4_1.4.18 = 3b53feb7063fea08ed47e874ac5ce802
+#   https://ftp.gnu.org/gnu/m4/m4-1.4.19.tar.gz
+#   ftp://ftp.gnu.org/gnu/m4/m4-1.4.19.tar.gz
+m4_VERSION ?= 1.4.19
+MD5_SUM_m4_1.4.19 = f4a2b0284d80353b995f8ef2385ed73c
 
 # Libtool (shared library support)
 # Homepage:
