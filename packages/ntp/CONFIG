@@ -19,6 +19,7 @@ build:
             --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
             --with-yielding-select=yes --without-crypto \
             --disable-all-clocks --disable-parse-clocks \
+            --enable-local-libevent \
             --prefix=/usr --with-locfile=redhat
 	make -C $(O) install DESTDIR=$(I)
 
