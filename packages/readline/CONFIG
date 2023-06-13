@@ -1,8 +1,9 @@
-readline_VERSION ?= 6.3
+readline_VERSION ?= 8.2
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_6.2 = 67948acb2ca081f23359d0256e9a271c
 MD5_SUM_6.3 = 33c8fb279e981274f485fd91da77e94a
+MD5_SUM_8.2 = 4aa1b31be779e6b84f9a96cb66bc50f6
 
 CFLAGS += -fPIC
 

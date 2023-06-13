@@ -10,6 +10,7 @@ MD5_SUM_1.23.2 = 7925683d7dd105aabe9b6b618d48cc73
 MD5_SUM_1.24.2 = 2eaae519cac1143bcf583636a745381f
 MD5_SUM_1.31.0 = cdba5d4458f944ceec5cdcf7c4914b69
 MD5_SUM_1.33.1 = 7f9f8acf026ed11dfa9b672c41b204e0
+MD5_SUM_1.36.1 = 0fc591bc9f4e365dfd9ade0014f32561
 
 # Patches downloaded from http://busybox.net/downloads/fixes-1.14.3/
 PATCHES_1.14.3 = \

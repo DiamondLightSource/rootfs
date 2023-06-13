@@ -1,7 +1,8 @@
-dropbear_VERSION ?= 2015.67
+dropbear_VERSION ?= 2022.83
 
 MD5_SUM_0.51 = 95d900913bee4b27d7e9ce55f8a55427
 MD5_SUM_2015.67 = e967e320344cd4bfebe321e3ab8514d6
+MD5_SUM_2022.83 = a75a34bcc03cacf71a2db9da3b7c94a5
 
 PROGRAMS = dbclient dropbearkey dropbearconvert scp
 INETD_CONF = \
