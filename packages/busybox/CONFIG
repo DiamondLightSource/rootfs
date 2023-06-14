@@ -1,4 +1,4 @@
-busybox_VERSION ?= 1.23.2
+busybox_VERSION ?= 1.36.1
 
 MD5_SUM_1.13.4 = 8a5eb7f15d4077d18fa97bda7a4e5412
 MD5_SUM_1.14.3 = d170bf5f97a41aec3a505eab690d5699
@@ -60,15 +60,13 @@ PATCHES_1.24.2 = \
     busybox-1.24.2-CVE-2016-2147.patch \
     busybox-1.24.2-CVE-2016-2148.patch
 
-
-# If no config specified, use one we prepared earlier.
-busybox_CONFIG ?= $(packagedir)/busybox-default-$(busybox_VERSION).config
-
-
 build: $(busybox_CONFIG)
+ifdef busybox_CONFIG
 	cp $(busybox_CONFIG) $(O)/.config
 	make O=$(O) -C $(srcdir) oldconfig
-
+else
+	make O=$(O) -C $(srcdir) defconfig
+endif
 	CFLAGS='$(CFLAGS)' make -C $(O)
 	make -C $(O) busybox.links
 	cp $(O)/busybox $(O)/busybox.links $(I)
