@@ -1,0 +1,16 @@
+libmnl_VERSION ?= 1.0.5
+
+TAR_EXTENSION = .tar.bz2
+MD5_SUM_1.0.5 = 0bbb70573119ec5d49435114583e7a49
+
+build:
+	cd $(O)  &&  \
+        $(srcdir)/configure CFLAGS='$(CFLAGS)' \
+            --host=$(COMPILER_PREFIX) --build=$(BUILD_TYPE) \
+            --prefix=/usr
+	make -C $(O) install DESTDIR=$(I)
+	$(install-pkg-config)
+
+install:
+
+# vim: set filetype=make:

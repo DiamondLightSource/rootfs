@@ -1,8 +1,9 @@
-ncurses_VERSION ?= 6.1
+ncurses_VERSION ?= 6.4
 
 TAR_EXTENSION = .tar.gz
 MD5_SUM_5.9 = 8cb9c412e5f2d96bc6f459aa8c6282a1
 MD5_SUM_6.1 = 98c889aaf8d23910d2b92d65be2e737a
+MD5_SUM_6.4 = 5a62487b5d4ac6b132fe2bf9f8fad29b
 
 ifeq ($(TERMS),)
 ncurses_TERMS ?= xterm xterm-color xterm-256color screen vt100 vt102
